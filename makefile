@@ -1,0 +1,48 @@
+LINUX = 1
+
+VPATH=./src
+EXEC=main.exe
+OBJDIR=./obj/
+
+DEBUG = 0
+
+CC=gcc
+CPP=g++
+
+LDFLAGS= -lm
+COMMON= -Iinclude/ -Isrc -std=c99
+CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors
+
+OBJ=matrix.o array.o victor.o list.o
+EXECOBJA=main.o
+
+EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
+OBJS = $(addprefix $(OBJDIR), $(OBJ))
+DEPS = $(wildcard src/*.h) $(wildcard test/*.h) $(wildcard utils/*.h) makefile
+
+ifeq ($(LINUX),1)
+CFLAGS += -fPIC
+endif
+
+ifeq ($(DEBUG),1)
+COMMON += -DDEBUG
+endif
+
+all: obj $(EXEC)
+#all: obj $(EXEC)
+
+$(EXEC): $(OBJS) $(EXECOBJ)
+	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+$(OBJDIR)%.o: %.c $(DEPS)
+	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@
+
+obj:
+	mkdir obj
+	mkdir result
+	mkdir backup
+
+.PHONY: clean
+
+clean:
+	python clean.py
