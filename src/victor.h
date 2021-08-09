@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "include.h"
 #include "matrix.h"
@@ -51,5 +52,11 @@ void Victor_multiplication_x(Victor *v, float x);
 void Victor_divide_x(Victor *v, float x);
 
 void Victor_saxpy(Victor *vx, Victor *vy, float x);
+
+float Victor_1norm(Victor *v);
+float Victor_2norm(Victor *v);
+float Victor_pnorm(Victor *v, int p);
+float Victor_infinite_norm(Victor *v);
+float Victor_ninfinite_norm(Victor *v);
 
 #endif

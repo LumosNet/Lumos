@@ -751,3 +751,91 @@ void array_saxpy(Array *ax, Array *ay, float x)
 {
     matrix_saxpy(ax, ay, x);
 }
+
+float array_1norm(Array *a)
+{
+    float res = -9999;
+    for (int i = 0; i < a->size[1]; ++i){
+        float sum = 0;
+        for (int j = 0; j < a->size[0]; ++j){
+            sum += get_pixel_in_array(a, j, i);
+        }
+        if (res < sum){
+            res = sum;
+        }
+    }
+    return res;
+}
+
+float array_2norm(Array *a)
+{
+    return 0;
+}
+
+float array_infinite_norm(Array *a)
+{
+    float res = -9999;
+    for (int i = 0; i < a->size[0]; ++i){
+        float sum = 0;
+        for (int j = 0; j < a->size[1]; ++j){
+            sum += get_pixel_in_array(a, i, j);
+        }
+        if (res < sum){
+            res = sum;
+        }
+    }
+    return res;
+}
+
+float array_frobenius_norm(Array *a)
+{
+    float res = 0;
+    for (int i = 0; i < a->num; ++i){
+        res += a->data[i] * a->data[i];
+    }
+    res = sqrt(res);
+    return res;
+}
+
+Victor *__householder_v(Victor *x, float *beta)
+{
+    Victor *m = slice_Victor(x, 1, x->size[0]);
+    Victor *mt = copy_victor(m);
+    transposition(mt);
+    float theta = Victor_x_multiplication(mt, m)->data[0];
+    Victor *v = copy_victor(x);
+    m->data[0] = 1;
+    beta[0] = 0;
+    if (theta != 0){
+        float u = sqrt(x->data[0]*x->data[0] + theta);
+        if (x->data[0] <= 0) v->data[0] = x->data[0] - u;
+        else v->data[0] = -theta / (x->data[0] + u);
+        beta[0] = (2*v->data[0]*v->data[0]) / (theta + v->data[0]*v->data[0]);
+        Victor_divide_x(v, v->data[0]);
+    }
+    del_Victor(m);
+    del_Victor(mt);
+    return v;
+}
+
+Array *__householder_a(Victor *v, float beta)
+{
+    Array *In = create_unit_array(v->size[0], v->size[0], 1, 1);
+    Array *vt = copy_array(v);
+    transposition(vt);
+    Array *k = array_x_multiplication(v, vt);
+    array_multiplication_x(k, beta);
+    Array *P = array_subtract(In, k);
+    del_array(In);
+    del_array(vt);
+    del_array(k);
+    return P;
+}
+
+Array *householder(Victor *x)
+{
+    float *beta = malloc(sizeof(float));
+    Victor *v = __householder_v(x, beta);
+    Array *res = __householder_a(v, beta[0]);
+    return res;
+}

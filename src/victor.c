@@ -200,3 +200,44 @@ void Victor_saxpy(Victor *vx, Victor *vy, float x)
 {
     array_saxpy(vx, vy, x);
 }
+
+float Victor_1norm(Victor *v)
+{
+    float res = 0;
+    for (int i = 0; i < v->num; ++i){
+        res += fabs(v->data[i]);
+    }
+    return res;
+}
+
+float Victor_2norm(Victor *v)
+{
+    float res = 0;
+    for (int i = 0; i < v->num; ++i){
+        res += v->data[i] * v->data[i];
+    }
+    res = sqrt(res);
+    return res;
+}
+
+float Victor_pnorm(Victor *v, int p)
+{
+    float res = 0;
+    for (int i = 0; i < v->num; ++i){
+        res += pow(v->data[i], (double)p);
+    }
+    res = pow(res, (double)1/p);
+    return res;
+}
+
+float Victor_infinite_norm(Victor *v)
+{
+    float res = get_Victor_max(v);
+    return res;
+}
+
+float Victor_ninfinite_norm(Victor *v)
+{
+    float res = get_Victor_min(v);
+    return res;
+}
