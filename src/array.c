@@ -282,6 +282,14 @@ void insert_col_in_array(Array *a, int index, float *data)
     a->size[0] += 1;
 }
 
+void replace_part_array(Array *a, Array *b, int row, int col)
+{
+    int *index = malloc(2*sizeof(int));
+    index[0] = row;
+    index[1] = col;
+    replace_part_matrix(a, b, index);
+}
+
 // flag=1代表扩充行，flag=0代表扩充列
 Array *merge_array(Array *a, Array *b, int flag, int index)
 {
@@ -832,10 +840,65 @@ Array *__householder_a(Victor *v, float beta)
     return P;
 }
 
-Array *householder(Victor *x)
+Array *householder(Victor *x, float *beta)
 {
-    float *beta = malloc(sizeof(float));
     Victor *v = __householder_v(x, beta);
     Array *res = __householder_a(v, beta[0]);
+    return res;
+}
+
+float *givens(float a, float b)
+{
+    float *res = malloc(2*sizeof(float));
+    if (b == 0){
+        res[0] = 1;
+        res[1] = 0;
+    }
+    else{
+        if (fabs(b) > fabs(a)){
+            float x = -a / b;
+            res[1] = 1 / (sqrt(1+x*x));
+            res[0] = res[1] * x;
+        }
+        else{
+            float x = -b /a;
+            res[0] = 1 / (sqrt(1+x*x));
+            res[1] = res[0] * x;
+        }
+    }
+}
+
+Array *givens_rotate(Array *a, int i, int k, float c, float s)
+{
+    Array *res = copy_array(a);
+    for (int j = 0; j < res->size[0]; ++j){
+        float x = get_pixel_in_array(res, j, i);
+        float y = get_pixel_in_array(res, j, k);
+        change_pixel_in_array(res, j, i, c*x - s*y);
+        change_pixel_in_array(res, j, k, s*x + c*y);
+    }
+    return res;
+}
+
+Array *__householder_QR(Array *a, Array *r, Array *q)
+{
+    Array *res = copy_array(a);
+    for (int i = 0; i < res->size[1]; ++i){
+        Array *x = slice_array(res, i+1, res->size[0], i+1, i+1);
+        Victor *y = list_to_Victor(x->num, 1, x->data);
+        float *beta = malloc(sizeof(float));
+        Victor *v = __householder_v(x, beta);
+        Array *house = __householder_a(v, beta[0]);
+
+        Array *apart = slice_array(res, i, res->size[0], i, res->size[1]);
+        Array *rpart = array_x_multiplication(house, apart);
+        replace_part_array(res, rpart, i, i);
+        if (i < res->size[0]){
+            Victor *vpart = slice_Victor(v, 2, res->size[0]-i+1);
+            for (int j = i+1; j < res->size[0]; ++j){
+                change_pixel_in_array(res, j, i, vpart->data[j-i-1]);
+            }
+        }
+    }
     return res;
 }

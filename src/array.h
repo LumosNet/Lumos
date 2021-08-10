@@ -479,6 +479,8 @@ void insert_row_in_array(Array *a, int index, float *data);
 \*************************************************************************************************/
 void insert_col_in_array(Array *a, int index, float *data);
 
+void replace_part_array(Array *a, Array *b, int row, int col);
+
 /*************************************************************************************************\
  * 描述
        合并两个矩阵，支持向不同维不同位置索引进行合并
@@ -944,6 +946,14 @@ Victor *__householder_v(Victor *x, float *beta);
 
 Array *__householder_a(Victor *v, float beta);
 
-Array *householder(Victor *x);
+Array *householder(Victor *x, float *beta);
+
+
+// 给定标量a、b，计算c=cosθ、s=sinθ
+float *givens(float a, float b);
+
+Array *givens_rotate(Array *a, int i, int k, float c, float s);
+
+Array *__householder_QR(Array *a, Array *r, Array *q);
 
 #endif

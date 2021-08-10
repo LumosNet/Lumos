@@ -19,6 +19,8 @@ int *replace_lindex_to_mindex(int dim, int *size, int index);
 
 float get_pixel_in_matrix(Matrix *m, int *index);
 void change_pixel_in_matrix(Matrix *m, int *index, float x);
+void replace_part_matrix(Matrix *m, Matrix *n, int *index);
+int __ergodic_matrix(Matrix *m, int *index);
 
 void resize_matrix(Matrix *m, int dim, int *size);
 

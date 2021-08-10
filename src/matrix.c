@@ -83,6 +83,35 @@ void change_pixel_in_matrix(Matrix *m, int *index, float x)
     change_float_in_list(m->data, x, lindex);
 }
 
+void replace_part_matrix(Matrix *m, Matrix *n, int *index)
+{
+    int *nindex = malloc(n->dim*sizeof(int));
+    full_list_with_int(nindex, 1, n->dim, 1, 0);
+    int *mindex = calloc(m->dim, sizeof(int));
+    while (__ergodic_matrix(n, nindex)){
+        for (int i = 0; i < m->dim; ++i){
+            mindex[i] = nindex[i] + index[i];
+        }
+        change_pixel_in_matrix(m, mindex, get_pixel_in_matrix(n, nindex));
+    }
+}
+
+int __ergodic_matrix(Matrix *m, int *index)
+{
+    int res = 1;
+    int dim = m->dim - 1;
+    while (index[dim] == m->size[dim]){
+        index[dim] = 1;
+        dim -= 1;
+        if (dim == -1){
+            res = 0;
+            break;
+        }
+    }
+    if (res) index[dim] += 1;
+    return res;
+}
+
 void resize_matrix(Matrix *m, int dim, int *size)
 {
     float *data = m->data;
