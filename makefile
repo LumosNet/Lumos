@@ -1,6 +1,6 @@
-LINUX = 1
+LINUX = 0
 
-VPATH=./src
+VPATH=./src/:./include/:./test
 EXEC=main.exe
 OBJDIR=./obj/
 
@@ -13,8 +13,8 @@ LDFLAGS= -lm
 COMMON= -Iinclude/ -Isrc -std=c99
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors
 
-OBJ=matrix.o array.o victor.o list.o
-EXECOBJA=main.o
+OBJ=list.o algebraic_space.o
+EXECOBJA=test.o
 
 EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
 OBJS = $(addprefix $(OBJDIR), $(OBJ))

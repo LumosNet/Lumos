@@ -6,7 +6,7 @@
 #include <math.h>
 
 #include "include.h"
-#include "matrix.h"
+#include "algebraic_space.h"
 #include "array.h"
 
 // flag = 1代表为行向量，flag = 0代表列向量

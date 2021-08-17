@@ -1,69 +1,51 @@
-#include "matrix.h"
+#include "algebraic_space.h"
 
-Matrix *create_matrix(int dim, int *size)
+AS *create(int dim, int *size, float x)
 {
-    Matrix *ret = malloc(sizeof(Matrix));
-    int *m_size = malloc(dim*sizeof(int));
-    memcpy(m_size, size, dim*sizeof(int));
-    ret->dim = dim;
-    ret->size = m_size;
-    ret->num = multing_int_list(size, 0, dim);
-    ret->data = malloc(ret->num*sizeof(float));
-    return ret;
-}
-
-Matrix *create_zeros_matrix(int dim, int *size)
-{
-    Matrix *ret = malloc(sizeof(Matrix));
+    AS *ret = malloc(sizeof(AS));
     int *m_size = malloc(dim*sizeof(int));
     memcpy(m_size, size, dim*sizeof(int));
     ret->dim = dim;
     ret->size = m_size;
     ret->num = multing_int_list(size, 0, dim);
     ret->data = calloc(ret->num, sizeof(float));
+    if (x != 0) full_list_with_float(ret->data, x, ret->num, 0, 0);
     return ret;
 }
 
-Matrix *create_matrix_full_x(int dim, int *size, float x)
+AS *list_to_AS(int dim, int *size, float *list)
 {
-    Matrix *ret = create_matrix(dim, size);
-    full_list_with_float(ret->data, x, ret->num, 0, 0);
-    return ret;
-}
-
-Matrix *list_to_matrix(int dim, int *size, float *list)
-{
-    Matrix *ret = create_matrix(dim, size);
+    AS *ret = create(dim, size, 0);
     memcpy_float_list(ret->data, list, 0, 0, ret->num);
     return ret;
 }
 
-Matrix *copy_matrix(Matrix *m)
+AS *copy(AS *m)
 {
-    Matrix *ret = list_to_matrix(m->dim, m->size, m->data);
+    AS *ret = list_to_AS(m->dim, m->size, m->data);
     return ret;
 }
 
-int replace_mindex_to_lindex(int dim, int *size, int *index)
+int get_lindex(AS *m, int *index)
 {
     int ret = 0;
-    for (int i = 0; i < dim; ++i){
+    for (int i = 0; i < m->dim; ++i){
         int x = index[i]-1;
         for (int j = 0; j < i; ++j){
-            x *= size[j];
+            x *= m->size[j];
         }
         ret += x;
     }
     return ret;
 }
 
-int *replace_lindex_to_mindex(int dim, int *size, int index)
+int *get_mindex(AS *m, int index)
 {
-    int *ret = malloc(dim*sizeof(int));
-    for (int i = dim-1; i >= 0; --i){
+    int *ret = malloc(m->dim*sizeof(int));
+    for (int i = m->dim-1; i >= 0; --i){
         int x = 1;
         for (int j = 0; j < i; ++j){
-            x *= size[j];
+            x *= m->size[j];
         }
         ret[i] = (int)(index / x) + 1;
         index %= x;
@@ -71,32 +53,32 @@ int *replace_lindex_to_mindex(int dim, int *size, int index)
     return ret;
 }
 
-float get_pixel_in_matrix(Matrix *m, int *index)
+float get_pixel(AS *m, int *index)
 {
-    int lindex = replace_mindex_to_lindex(m->dim, m->size, index);
+    int lindex = get_lindex(m, index);
     return get_float_in_list(m->data, lindex);
 }
 
-void change_pixel_in_matrix(Matrix *m, int *index, float x)
+void change_pixel(AS *m, int *index, float x)
 {
-    int lindex = replace_mindex_to_lindex(m->dim, m->size, index);
+    int lindex = get_lindex(m, index);
     change_float_in_list(m->data, x, lindex);
 }
 
-void replace_part_matrix(Matrix *m, Matrix *n, int *index)
+void replace_part(AS *m, AS *n, int *index)
 {
     int *nindex = malloc(n->dim*sizeof(int));
     full_list_with_int(nindex, 1, n->dim, 1, 0);
     int *mindex = calloc(m->dim, sizeof(int));
-    while (__ergodic_matrix(n, nindex)){
+    while (__ergodic(n, nindex)){
         for (int i = 0; i < m->dim; ++i){
             mindex[i] = nindex[i] + index[i];
         }
-        change_pixel_in_matrix(m, mindex, get_pixel_in_matrix(n, nindex));
+        change_pixel(m, mindex, get_pixel(n, nindex));
     }
 }
 
-int __ergodic_matrix(Matrix *m, int *index)
+int __ergodic(AS *m, int *index)
 {
     int res = 1;
     int dim = m->dim - 1;
@@ -112,7 +94,7 @@ int __ergodic_matrix(Matrix *m, int *index)
     return res;
 }
 
-void resize_matrix(Matrix *m, int dim, int *size)
+void resize(AS *m, int dim, int *size)
 {
     float *data = m->data;
     m->data = malloc(m->num*sizeof(float));
@@ -122,7 +104,7 @@ void resize_matrix(Matrix *m, int dim, int *size)
     free(data);
 }
 
-void slice_matrix(Matrix *m, float *workspace, int *dim_c, int **size_c)
+void slice(AS *m, float *workspace, int *dim_c, int **size_c)
 {
     int **sections = malloc(m->dim*sizeof(int*));
     for (int i = 0; i < dim_c[0]; ++i){
@@ -151,7 +133,7 @@ void slice_matrix(Matrix *m, float *workspace, int *dim_c, int **size_c)
     __slice(m, sections, workspace, dim_c[0]);
 }
 
-void __slice(Matrix *m, int **sections, float *workspace, int dim)
+void __slice(AS *m, int **sections, float *workspace, int dim)
 {
     int *offset = malloc(sizeof(int));
     *offset = 0;
@@ -160,7 +142,7 @@ void __slice(Matrix *m, int **sections, float *workspace, int dim)
 }
 
 // 每一个区间的第一个值，代表区间分块的数量
-void __slicing(Matrix *m, int **sections, float *workspace, int dim_now, int offset_o, int *offset_a, int offset, int dim)
+void __slicing(AS *m, int **sections, float *workspace, int dim_now, int offset_o, int *offset_a, int offset, int dim)
 {
     int *section = sections[dim_now-1];
     int num = section[0];
@@ -179,7 +161,7 @@ void __slicing(Matrix *m, int **sections, float *workspace, int dim_now, int off
     }
 }
 
-void merge_matrix(Matrix *m, Matrix *n, int dim, int index, float *workspace)
+void merge(AS *m, AS *n, int dim, int index, float *workspace)
 {
     int **sections = malloc(m->dim*sizeof(int*));
     for (int i = 0; i < dim-1; ++i){
@@ -226,7 +208,7 @@ void merge_matrix(Matrix *m, Matrix *n, int dim, int index, float *workspace)
     free(offset);
 }
 
-void __merging(Matrix *m, Matrix *n, int **sections, float *workspace, int dim_now, int offset_m, int *offset_n, int *offset_a, int offset, int *size, int dim)
+void __merging(AS *m, AS *n, int **sections, float *workspace, int dim_now, int offset_m, int *offset_n, int *offset_a, int offset, int *size, int dim)
 {
     int *section = sections[dim_now-1];
     int num = section[0];
@@ -254,19 +236,19 @@ void __merging(Matrix *m, Matrix *n, int **sections, float *workspace, int dim_n
     }
 }
 
-void del_matrix(Matrix *matrix)
+void del(AS *AS)
 {
-    free(matrix->data);
-    free(matrix->size);
-    free(matrix);
+    free(AS->data);
+    free(AS->size);
+    free(AS);
 }
 
-float sum_matrix(Matrix *m)
+float get_sum(AS *m)
 {
     return sum_float_list(m->data, 0, m->num);
 }
 
-float get_matrix_min(Matrix *m)
+float get_min(AS *m)
 {
     float min = m->data[0];
     for (int i = 1; i < m->num; ++i){
@@ -275,7 +257,7 @@ float get_matrix_min(Matrix *m)
     return min;
 }
 
-float get_matrix_max(Matrix *m)
+float get_max(AS *m)
 {
     float max = m->data[0];
     for (int i = 1; i < m->num; ++i){
@@ -284,23 +266,45 @@ float get_matrix_max(Matrix *m)
     return max;
 }
 
-float get_matrix_mean(Matrix *m)
+float get_mean(AS *m)
 {
-    return sum_matrix(m) / m->num;
+    return get_sum(m) / m->num;
 }
 
-void matrix_saxpy(Matrix *mx, Matrix *my, float x)
+void saxpy(AS *mx, AS *my, float x)
 {
     for (int i = 0; i < mx->num; ++i){
         my->data[i] += x * mx->data[i];
     }
 }
 
-int pixel_num_matrix(Matrix *m, float x)
+int get_num(AS *m, float x)
 {
     int num = 0;
     for (int i = 0; i < m->num; ++i){
         if (m->data[i] == x) num += 1;
     }
     return num;
+}
+
+ASproxy *init_asproxy()
+{
+    ASproxy *proxy = malloc(sizeof(ASproxy));
+    proxy->create = create;
+    proxy->copy = copy;
+    proxy->get_lindex = get_lindex;
+    proxy->get_mindex = get_mindex;
+    proxy->get_pixel = get_pixel;
+    proxy->replace_part = replace_part;
+    proxy->resize = resize;
+    proxy->slice = slice;
+    proxy->merge = merge;
+    proxy->del = del;
+    proxy->get_sum = get_sum;
+    proxy->get_min = get_min;
+    proxy->get_max = get_max;
+    proxy->get_mean = get_mean;
+    proxy->get_num = get_num;
+    proxy->saxpy = saxpy;
+    return proxy;
 }
