@@ -13,8 +13,8 @@ LDFLAGS= -lm
 COMMON= -Iinclude/ -Isrc -std=c99
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors
 
-OBJ=list.o algebraic_space.o
-EXECOBJA=test.o
+OBJ=list.o algebraic_space.o array.o victor.o
+EXECOBJA=array_test.o
 
 EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
 OBJS = $(addprefix $(OBJDIR), $(OBJ))

@@ -287,24 +287,24 @@ int get_num(AS *m, float x)
     return num;
 }
 
-ASproxy *init_asproxy()
-{
-    ASproxy *proxy = malloc(sizeof(ASproxy));
-    proxy->create = create;
-    proxy->copy = copy;
-    proxy->get_lindex = get_lindex;
-    proxy->get_mindex = get_mindex;
-    proxy->get_pixel = get_pixel;
-    proxy->replace_part = replace_part;
-    proxy->resize = resize;
-    proxy->slice = slice;
-    proxy->merge = merge;
-    proxy->del = del;
-    proxy->get_sum = get_sum;
-    proxy->get_min = get_min;
-    proxy->get_max = get_max;
-    proxy->get_mean = get_mean;
-    proxy->get_num = get_num;
-    proxy->saxpy = saxpy;
-    return proxy;
-}
+// ASproxy *init_asproxy()
+// {
+//     ASproxy *proxy = malloc(sizeof(ASproxy));
+//     proxy->create = create;
+//     proxy->copy = copy;
+//     proxy->get_lindex = get_lindex;
+//     proxy->get_mindex = get_mindex;
+//     proxy->get_pixel = get_pixel;
+//     proxy->replace_part = replace_part;
+//     proxy->resize = resize;
+//     proxy->slice = slice;
+//     proxy->merge = merge;
+//     proxy->del = del;
+//     proxy->get_sum = get_sum;
+//     proxy->get_min = get_min;
+//     proxy->get_max = get_max;
+//     proxy->get_mean = get_mean;
+//     proxy->get_num = get_num;
+//     proxy->saxpy = saxpy;
+//     return proxy;
+// }

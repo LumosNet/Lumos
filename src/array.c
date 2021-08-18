@@ -2,46 +2,6 @@
 
 /*************************************************************************************************\
  * 描述
-       创建空矩阵，不会对内存空间进行初始化
- * 参数
-       row:行数
-       col:列数
- * 返回
-       Array*
-       返回创建好的Array对象，您可以使用该Array对象进行一切与矩阵相关的操作
-\*************************************************************************************************/
-Array *create_array(int row, int col)
-{
-    int *size = malloc(2*sizeof(int));
-    size[0] = col;
-    size[1] = row;
-    Array *ret = create_AS(2, size);
-    free(size);
-    return ret;
-}
-
-/*************************************************************************************************\
- * 描述
-       创建空矩阵，初始化内存空间为0
- * 参数
-       row:行数
-       col:列数
- * 返回
-       Array*
-       返回创建好的Array对象，您可以使用该Array对象进行一切与矩阵相关的操作
-\*************************************************************************************************/
-Array *create_zeros_array(int row, int col)
-{
-    int *size = malloc(2*sizeof(int));
-    size[0] = col;
-    size[1] = row;
-    Array *ret = create_zeros_AS(2, size);
-    free(size);
-    return ret;
-}
-
-/*************************************************************************************************\
- * 描述
        创建矩阵，初始化内存空间为x
  * 参数
        row:行数
@@ -51,12 +11,12 @@ Array *create_zeros_array(int row, int col)
        Array*
        返回创建好的Array对象，您可以使用该Array对象进行一切与矩阵相关的操作
 \*************************************************************************************************/
-Array *create_array_full_x(int row, int col, float x)
+Array *create_array(int row, int col, float x)
 {
     int *size = malloc(2*sizeof(int));
     size[0] = col;
     size[1] = row;
-    Array *ret = create_AS_full_x(2, size, x);
+    Array *ret = create(2, size, x);
     free(size);
     return ret;
 }
@@ -147,10 +107,9 @@ Array *create_unit_array(int row, int col, float x, int flag)
     int *size = malloc(2*sizeof(int));
     size[0] = col;
     size[1] = row;
-    Array *ret = create_array(row, col);
+    Array *ret = create_array(row, col, 0);
     int min_row_col = (row <= col) ? row : col;
     for (int i = 0; i < min_row_col; ++i){
-        // change_x_in_list(ret->data, y, data_type, i*col+i);
         if (flag) change_float_in_list(ret->data, x, i*col+i);
         else change_float_in_list(ret->data, x, i*col+(col-i-1));
     }
@@ -168,7 +127,7 @@ Array *create_unit_array(int row, int col, float x, int flag)
 \*************************************************************************************************/
 Array *copy_array(Array *a)
 {
-    return copy_AS(a);
+    return copy(a);
 }
 
 /*************************************************************************************************\
@@ -189,10 +148,10 @@ Array *copy_array(Array *a)
        那么二维索引对应的一维索引为
        x*n + y
 \*************************************************************************************************/
-int replace_aindex_to_get_lindex(int *size, int row, int col)
+int get_array_lindex(Array *a, int row, int col)
 {
     int index[] = {col, row};
-    return get_lindex(2, size, index);
+    return get_lindex(a, index);
 }
 
 /*************************************************************************************************\
@@ -211,9 +170,9 @@ int replace_aindex_to_get_lindex(int *size, int row, int col)
        那么一维索引对应的二维索引为
        index / n, index % n
 \*************************************************************************************************/
-int *replace_lindex_to_aindex(int *size, int index)
+int *get_array_aindex(Array *a, int index)
 {
-    int *lindex = get_mindex(2, size, index);
+    int *lindex = get_mindex(a, index);
     int x = lindex[0];
     lindex[0] = lindex[1];
     lindex[1] = x;
@@ -231,7 +190,7 @@ int *replace_lindex_to_aindex(int *size, int index)
        float
        返回索引到的元素值
 \*************************************************************************************************/
-float get_pixel_in_array(Array *a, int row, int col)
+float get_array_pixel(Array *a, int row, int col)
 {
     int index[] = {col, row};
     return get_pixel(a, index);
@@ -306,7 +265,7 @@ int pixel_num_array(Array *a, float x)
  * 返回
        void
 \*************************************************************************************************/
-void change_pixel_in_array(Array *a, int row, int col, float x)
+void change_array_pixel(Array *a, int row, int col, float x)
 {
     int index[] = {col, row};
     change_pixel(a, index, x);
@@ -366,7 +325,7 @@ float *get_col_in_array(Array *a, int col)
     int y = a->size[1];
     float *data = malloc(y*sizeof(float));
     for (int i = 0; i < x; ++i){
-        data[i] = get_pixel_in_array(a, i+1, col);
+        data[i] = get_array_pixel(a, i+1, col);
     }
     return data;
 }
@@ -388,8 +347,8 @@ float *get_diagonal_in_array(Array *a, int flag)
     int min = (x<y) ? x : y;
     float *data = malloc(min*sizeof(float));
     for (int i = 0; i < min; ++i){
-        if (flag) data[i] = get_pixel_in_array(a, i+1, i+1);
-        else data[i] = get_pixel_in_array(a, i+1, min-i);
+        if (flag) data[i] = get_array_pixel(a, i+1, i+1);
+        else data[i] = get_array_pixel(a, i+1, min-i);
     }
     return data;
 }
@@ -429,7 +388,7 @@ Victor *col2Victor(Array *a, int col)
     int y = a->size[1];
     float *data = malloc(y*sizeof(float));
     for (int i = 0; i < x; ++i){
-        data[i] = get_pixel_in_array(a, i+1, col);
+        data[i] = get_array_pixel(a, i+1, col);
     }
     return list_to_Victor(y, 0, data);
 }
@@ -451,8 +410,8 @@ Victor *diagonal2Victor(Array *a, int flag)
     int min = (x<y) ? x : y;
     float *data = malloc(min*sizeof(float));
     for (int i = 0; i < min; ++i){
-        if (flag) data[i] = get_pixel_in_array(a, i+1, i+1);
-        else data[i] = get_pixel_in_array(a, i+1, min-i);
+        if (flag) data[i] = get_array_pixel(a, i+1, i+1);
+        else data[i] = get_array_pixel(a, i+1, min-i);
     }
     return list_to_Victor(min, flag, data);
 }
@@ -487,7 +446,7 @@ void replace_array_row2list(Array *a, int row, float *list)
 void replace_array_col2list(Array *a, int col, float *list)
 {
     for (int i = 0; i < a->size[1]; ++i){
-        change_pixel_in_array(a, i+1, col, list[i]);
+        change_array_pixel(a, i+1, col, list[i]);
     }
 }
 
@@ -505,8 +464,8 @@ void replace_array_diagonal2list(Array *a, float *list, int flag)
 {
     int min = (a->size[0] < a->size[1]) ? a->size[0] : a->size[1];
     for (int i = 0; i < min; ++i){
-        if (flag) change_pixel_in_array(a, i+1, i+1, list[i]);
-        else change_pixel_in_array(a, i+1, a->size[0]-i, list[i]);
+        if (flag) change_array_pixel(a, i+1, i+1, list[i]);
+        else change_array_pixel(a, i+1, a->size[0]-i, list[i]);
     }
 }
 
@@ -523,7 +482,7 @@ void replace_array_diagonal2list(Array *a, float *list, int flag)
 void replace_array_row_with_x(Array *a, int row, float x)
 {
     for (int i = 0; i < a->size[0]; ++i){
-        change_pixel_in_array(a, row, i+1, x);
+        change_array_pixel(a, row, i+1, x);
     }
 }
 
@@ -540,7 +499,7 @@ void replace_array_row_with_x(Array *a, int row, float x)
 void replace_array_col_with_x(Array *a, int col, float x)
 {
     for (int i = 0; i < a->size[1]; ++i){
-        change_pixel_in_array(a, i+1, col, x);
+        change_array_pixel(a, i+1, col, x);
     }
 }
 
@@ -558,8 +517,8 @@ void replace_diagonal_with_x(Array *a, float x, int flag)
 {
     int min = (a->size[0] < a->size[1]) ? a->size[0] : a->size[1];
     for (int i = 0; i < min; ++i){
-        if (flag) change_pixel_in_array(a, i+1, i+1, x);
-        else change_pixel_in_array(a, i+1, a->size[0]-i, x);
+        if (flag) change_array_pixel(a, i+1, i+1, x);
+        else change_array_pixel(a, i+1, a->size[0]-i, x);
     }
 }
 
@@ -743,7 +702,7 @@ Array *merge_array(Array *a, Array *b, int flag, int index)
         size[0] += b->size[0];
         dim = 1;
     }
-    Array *ret = create_array(size[1], size[0]);
+    Array *ret = create_array(size[1], size[0], 0);
     merge(a, b, dim, index, ret->data);
     return ret;
 }
@@ -779,7 +738,7 @@ Array *merge_array(Array *a, Array *b, int flag, int index)
 \*************************************************************************************************/
 Array *slice_array(Array *a, int rowu, int rowd, int coll, int colr)
 {
-    Array *ret = create_array(rowd-rowu+1, colr-coll+1);
+    Array *ret = create_array(rowd-rowu+1, colr-coll+1, 0);
     int offset_row = coll-1;
     int size = colr-coll+1;
     for (int i = rowu-1, n = 0; i < rowd; ++i, ++n){
@@ -1137,7 +1096,7 @@ Array *array_add(Array *a, Array *b)
 {
     int x = a->size[1];
     int y = a->size[0];
-    Array *res = create_array(x, y);
+    Array *res = create_array(x, y, 0);
     for (int i = 0; i < x; ++i){
         for (int j = 0; j < y; ++j){
             res->data[i*y+j] = a->data[i*y+j] + b->data[i*y+j];
@@ -1160,7 +1119,7 @@ Array *array_subtract(Array *a, Array *b)
 {
     int x = a->size[1];
     int y = a->size[0];
-    Array *res = create_array(x, y);
+    Array *res = create_array(x, y, 0);
     for (int i = 0; i < x; ++i){
         for (int j = 0; j < y; ++j){
             res->data[i*y+j] = a->data[i*y+j] - b->data[i*y+j];
@@ -1183,7 +1142,7 @@ Array *array_divide(Array *a, Array *b)
 {
     int x = a->size[1];
     int y = a->size[0];
-    Array *res = create_array(x, y);
+    Array *res = create_array(x, y, 0);
     for (int i = 0; i < x; ++i){
         for (int j = 0; j < y; ++j){
             res->data[i*y+j] = a->data[i*y+j] / b->data[i*y+j];
@@ -1205,7 +1164,7 @@ Array *array_x_multiplication(Array *a, Array *b)
 {
     int x = a->size[1];
     int y = a->size[0];
-    Array *res = create_array(x, y);
+    Array *res = create_array(x, y, 0);
     for (int i = 0; i < x; ++i){
         for (int j = 0; j < y; ++j){
             res->data[i*y+j] = a->data[i*y+j] * b->data[i*y+j];
@@ -1473,7 +1432,7 @@ Array *gemm(Array *a, Array *b)
     int x = a->size[1];
     int y = a->size[0];
     int z = b->size[0];
-    Array *res = create_zeros_array(x, z);
+    Array *res = create_array(x, z, 0);
     #pragma omp parallel for
     for (int i = 0; i < x; ++i){
         for (int k = 0; k < y; ++k){
@@ -1516,7 +1475,7 @@ float array_1norm(Array *a)
     for (int i = 0; i < a->size[1]; ++i){
         float sum = 0;
         for (int j = 0; j < a->size[0]; ++j){
-            sum += get_pixel_in_array(a, j, i);
+            sum += get_array_pixel(a, j, i);
         }
         if (res < sum){
             res = sum;
@@ -1554,7 +1513,7 @@ float array_infinite_norm(Array *a)
     for (int i = 0; i < a->size[0]; ++i){
         float sum = 0;
         for (int j = 0; j < a->size[1]; ++j){
-            sum += get_pixel_in_array(a, i, j);
+            sum += get_array_pixel(a, i, j);
         }
         if (res < sum){
             res = sum;
@@ -1659,10 +1618,10 @@ Array *givens_rotate(Array *a, int i, int k, float c, float s)
 {
     Array *res = copy_array(a);
     for (int j = 0; j < res->size[0]; ++j){
-        float x = get_pixel_in_array(res, j, i);
-        float y = get_pixel_in_array(res, j, k);
-        change_pixel_in_array(res, j, i, c*x - s*y);
-        change_pixel_in_array(res, j, k, s*x + c*y);
+        float x = get_array_pixel(res, j, i);
+        float y = get_array_pixel(res, j, k);
+        change_array_pixel(res, j, i, c*x - s*y);
+        change_array_pixel(res, j, k, s*x + c*y);
     }
     return res;
 }
@@ -1683,7 +1642,7 @@ Array *__householder_QR(Array *a, Array *r, Array *q)
         if (i < res->size[0]){
             Victor *vpart = slice_Victor(v, 2, res->size[0]-i+1);
             for (int j = i+1; j < res->size[0]; ++j){
-                change_pixel_in_array(res, j, i, vpart->data[j-i-1]);
+                change_array_pixel(res, j, i, vpart->data[j-i-1]);
             }
         }
     }

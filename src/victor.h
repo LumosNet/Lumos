@@ -10,10 +10,7 @@
 #include "array.h"
 
 // flag = 1代表为行向量，flag = 0代表列向量
-
-Victor *create_Victor(int num, int flag);
-Victor *create_zeros_Victor(int num, int flag);
-Victor *create_Victor_full_x(int num, int flag, float x);
+Victor *create_Victor(int num, int flag, float x);
 Victor *list_to_Victor(int num, int flag, float *list);
 
 Victor *copy_victor(Victor *v);

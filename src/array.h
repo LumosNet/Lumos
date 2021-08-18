@@ -15,20 +15,21 @@
 #include "algebraic_space.h"
 #include "victor.h"
 
-Array *create_array(int row, int col);
-Array *create_zeros_array(int row, int col);
-Array *create_array_full_x(int row, int col, float x);
+Victor *__householder_v(Victor *x, float *beta);
+Array *__householder_a(Victor *v, float beta);
+Array *__householder_QR(Array *a, Array *r, Array *q);
+Array *create_array(int row, int col, float x);
 Array *list_to_array(int row, int col, float *list);
 Array *create_unit_array(int row, int col, float x, int flag);
 Array *copy_array(Array *a);
-int replace_aindex_to_get_lindex(int *size, int row, int col);
-int *replace_lindex_to_aindex(int *size, int index);
-float get_pixel_in_array(Array *a, int row, int col);
+int get_array_lindex(Array *a, int row, int col);
+int *get_array_aindex(Array *a, int index);
+float get_array_pixel(Array *a, int row, int col);
 float get_array_min(Array *a);
 float get_array_max(Array *a);
 float get_array_mean(Array *a);
 int pixel_num_array(Array *a, float x);
-void change_pixel_in_array(Array *a, int row, int col, float x);
+void change_array_pixel(Array *a, int row, int col, float x);
 void resize_array(Array *a, int row, int col);
 float *get_row_in_array(Array *a, int row);
 float *get_col_in_array(Array *a, int col);
@@ -81,12 +82,9 @@ float array_1norm(Array *a);
 float array_2norm(Array *a);
 float array_infinite_norm(Array *a);
 float array_frobenius_norm(Array *a);
-Victor *__householder_v(Victor *x, float *beta);
-Array *__householder_a(Victor *v, float beta);
 Array *householder(Victor *x, float *beta);
 // 给定标量a、b，计算c=cosθ、s=sinθ
 float *givens(float a, float b);
 Array *givens_rotate(Array *a, int i, int k, float c, float s);
-Array *__householder_QR(Array *a, Array *r, Array *q);
 
 #endif

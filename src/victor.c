@@ -1,21 +1,9 @@
 #include "victor.h"
 
-Victor *create_Victor(int num, int flag)
+Victor *create_Victor(int num, int flag, float x)
 {
-    if (flag) return create_array(num, 1);
-    else return create_array(1, num);
-}
-
-Victor *create_zeros_Victor(int num, int flag)
-{
-    if (flag) return create_zeros_array(num, 1);
-    else return create_zeros_array(1, num);
-}
-
-Victor *create_Victor_full_x(int num, int flag, float x)
-{
-    if (flag) return create_array_full_x(num, 1, x);
-    else return create_array_full_x(1, num, x);
+    if (flag) return create_array(num, 1, x);
+    else return create_array(1, num, x);
 }
 
 Victor *list_to_Victor(int num, int flag, float *list)
@@ -101,7 +89,7 @@ void insert_pixel_in_Victor(Victor *v, int index, float x)
 Victor *merge_Victor(Victor *a, Victor *b, int index)
 {
     int flag = a->size[0] > a->size[1] ? 0 : 1;
-    Victor *res = create_Victor(a->num + b->num, flag);
+    Victor *res = create_Victor(a->num + b->num, flag, 0);
     memcpy(res->data, a->data, a->num*sizeof(float));
     memcpy(res->data+a->num, b->data, b->num*sizeof(float));
     return res;
@@ -110,7 +98,7 @@ Victor *merge_Victor(Victor *a, Victor *b, int index)
 Victor *slice_Victor(Victor *v, int index_h, int index_t)
 {
     int flag = v->size[0] > v->size[1] ? 0 : 1;
-    Victor *res = create_Victor(index_t-index_h, flag);
+    Victor *res = create_Victor(index_t-index_h, flag, 0);
     memcpy(res->data, v->data+index_h, (index_t-index_h)*sizeof(float));
     return res;
 }
