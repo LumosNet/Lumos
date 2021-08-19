@@ -1,18 +1,5 @@
 #include "array.h"
 
-void show_array(Array *a)
-{
-    printf("Array dimension: %d\n", a->dim);
-    printf("Array data num: %d\n", a->num);
-    printf("Array size: %d x %d\n", a->size[1], a->size[0]);
-    for (int i = 0; i < a->size[1]; ++i){
-        for (int j = 0; j < a->size[0]; ++j){
-            printf("%f ", a->data[i*a->size[0]+j]);
-        }
-        printf("\n");
-    }
-}
-
 void test_create_array(int row, int col, float x)
 {
     Array *a = create_array(row, col, x);
@@ -31,15 +18,12 @@ void test_create_unit_array(int row, int col, float x, int flag)
     show_array(a);
 }
 
-void test_get_array_lindex(int *size, int row, int col)
+void test_get_array_index(Array *a, int row, int col)
 {
-    int index = get_array_lindex(size, row, col);
+    int index = get_array_lindex(a, row, col);
     printf("Index: %d\n", index);
-}
-
-void test_get_array_aindex(int *size, int index)
-{
-    int *lindex = get_array_aindex(size, index);
+    printf("Pixel: %f\n", a->data[index]);
+    int *lindex = get_array_aindex(a, index);
     printf("Index: (%d,%d)\n", lindex[0], lindex[1]);
 }
 
@@ -52,8 +36,34 @@ void test_get_array_pixel()
     13, 14, 15, 16  \
     };
     Array *a = list_to_array(4, 4, list);
-    float pixel = get_array_pixel(a, 1, 2);
+    float pixel = get_array_pixel(a, 3, 2);
     printf("Pixel: %f\n", pixel);
+}
+
+void test_get_array_min()
+{
+    float list[] = {\
+    1 ,  2,  3,  4, \
+    5 ,  6,  7,  8, \
+    9 , 10, 11, 12, \
+    13, 14, 15, 16  \
+    };
+    Array *a = list_to_array(4, 4, list);
+    float min = get_array_mean(a);
+    printf("Min Pixel: %f\n", min);
+}
+
+void test_pixel_num_array()
+{
+    float list[] = {\
+    1 ,  1,  3,  4, \
+    5 ,  6,  6,  8, \
+    9 , 11, 11, 12, \
+    13, 14, 15, 6  \
+    };
+    Array *a = list_to_array(4, 4, list);
+    int num = pixel_num_array(a, -1);
+    printf("num: %d\n", num);
 }
 
 void test_change_array_pixel()
@@ -117,6 +127,45 @@ void test_get_col_in_array()
     printf("\n");
 }
 
+void test_row2Victor()
+{
+    float list[] = {\
+    1 ,  2,  3,  4, \
+    5 ,  6,  7,  8, \
+    9 , 10, 11, 12, \
+    13, 14, 15, 16  \
+    };
+    Array *a = list_to_array(4, 4, list);
+    Victor *v = row2Victor(a, 1);
+    show_array(v);
+}
+
+void test_col2Victor()
+{
+    float list[] = {\
+    1 ,  2,  3,  4, \
+    5 ,  6,  7,  8, \
+    9 , 10, 11, 12, \
+    13, 14, 15, 16  \
+    };
+    Array *a = list_to_array(4, 4, list);
+    Victor *v = col2Victor(a, 1);
+    show_array(v);
+}
+
+void test_diagonal2Victor()
+{
+    float list[] = {\
+    1 ,  2,  3,  4, \
+    5 ,  6,  7,  8, \
+    9 , 10, 11, 12, \
+    13, 14, 15, 16  \
+    };
+    Array *a = list_to_array(4, 4, list);
+    Victor *v = diagonal2Victor(a, 0);
+    show_array(v);
+}
+
 void test_get_diagonal_in_array()
 {
     float list[] = {\
@@ -138,7 +187,7 @@ void test_get_diagonal_in_array()
     Array *a = list_to_array(5, 4, list);
     */
     show_array(a);
-    float *diagonal = get_diagonal_in_array(a, 1);
+    float *diagonal = get_diagonal_in_array(a, 0);
     int min = (a->size[0] < a->size[1]) ? a->size[0] : a->size[1];
     printf("Diagonal data: ");
     for (int i = 0; i < min; ++i){
@@ -246,7 +295,7 @@ void test_replace_diagonal_with_x()
     };
     Array *a = list_to_array(5, 4, list);
     */
-    replace_diagonal_with_x(a, 0.5, 0);
+    replace_diagonal_with_x(a, 0.5, 1);
     show_array(a);
 }
 
@@ -286,7 +335,7 @@ void test_insert_row_in_array()
     };
     Array *a = list_to_array(4, 4, list);
     float data[] = {0.1,0.2,0.3,0.4};
-    insert_row_in_array(a, 5, data);
+    insert_row_in_array(a, 1, data);
     show_array(a);
 }
 
@@ -300,7 +349,26 @@ void test_insert_col_in_array()
     };
     Array *a = list_to_array(4, 4, list);
     float data[] = {0.1,0.2,0.3,0.4};
-    insert_col_in_array(a, 5, data);
+    insert_col_in_array(a, 1, data);
+    show_array(a);
+}
+
+void test_replace_part_array()
+{
+    float list1[] = {\
+    1 ,  2,  3,  4, \
+    5 ,  6,  7,  8, \
+    9 , 10, 11, 12, \
+    13, 14, 15, 16  \
+    };
+
+    float list2[] = {
+    0.1 , 0.2, 0.3, \
+    0.4 , 0.5, 0.6  \
+    };
+    Array *a = list_to_array(4, 4, list1);
+    Array *b = list_to_array(2, 3, list2);
+    replace_part_array(a, b, 3, 2);
     show_array(a);
 }
 
@@ -322,7 +390,7 @@ void test_merge_array()
     116, 117, 118, 119
     };
     Array *b = list_to_array(5, 4, list_2);
-    AS *c = merge_array(a, b, 1, 4);
+    AS *c = merge_array(a, b, 1, 0);
     show_array(c);
 }
 
@@ -335,7 +403,7 @@ void test_slice_array()
     13, 14, 15, 16  \
     };
     Array *a = list_to_array(4, 4, list);
-    Array *b = slice_array(a, 1, 4, 1, 4);
+    Array *b = slice_array(a, 2, 2, 1, 4);
     show_array(b);
 }
 
@@ -478,7 +546,7 @@ void test_get_trace()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = list_to_array(4, 5, list);
+    Array *a = list_to_array(5, 4, list);
     float f = get_trace(a);
     show_array(a);
     printf("矩阵的迹 %f",f);
@@ -532,8 +600,7 @@ void test_array_x_multiplication()
      1,  2,  3,  4, \
      5,  6,  7,  8, \
      9, 10, 11, 12, \
-    13, 14, 15, 16, \
-    17, 18, 19, 20  \
+    13, 14, 15, 16  \
     };
     float listb[] = {\
      1,  2,  3,  4, \
@@ -541,7 +608,7 @@ void test_array_x_multiplication()
      9, 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = list_to_array(5, 4, lista);
+    Array *a = list_to_array(4, 4, lista);
     Array *b = list_to_array(4, 4, listb);
     Array *c = array_x_multiplication(a, b);
     show_array(c);
@@ -589,48 +656,6 @@ void test_array_add_col_x()
     show_array(a);
 }
 
-void test_array_subtract_x()
-{
-    float list[] = {\
-    1 ,  2,  3,  4, \
-    5 ,  6,  7,  8, \
-    9 , 10, 11, 12, \
-    13, 14, 15, 16, \
-    17, 18, 19, 20  \
-    };
-    Array *a = list_to_array(5, 4, list);
-    array_subtract_x(a, 2);
-    show_array(a);
-}
-
-void test_array_subtract_row_x()
-{
-    float list[] = {\
-    1 ,  2,  3,  4, \
-    5 ,  6,  7,  8, \
-    9 , 10, 11, 12, \
-    13, 14, 15, 16, \
-    17, 18, 19, 20  \
-    };
-    Array *a = list_to_array(5, 4, list);
-    array_subtract_row_x(a, 1, 2);
-    show_array(a);
-}
-
-void test_array_subtract_col_x()
-{
-    float list[] = {\
-    1 ,  2,  3,  4, \
-    5 ,  6,  7,  8, \
-    9 , 10, 11, 12, \
-    13, 14, 15, 16, \
-    17, 18, 19, 20  \
-    };
-    Array *a = list_to_array(5, 4, list);
-    array_subtract_col_x(a, 1, 2);
-    show_array(a);
-}
-
 void test_array_multiplication_x()
 {
     float list[] = {\
@@ -673,48 +698,6 @@ void test_array_multiplication_col_x()
     show_array(a);
 }
 
-void test_array_divide_x()
-{
-    float list[] = {\
-    1 ,  2,  3,  4, \
-    5 ,  6,  7,  8, \
-    9 , 10, 11, 12, \
-    13, 14, 15, 16, \
-    17, 18, 19, 20  \
-    };
-    Array *a = list_to_array(5, 4, list);
-    array_divide_x(a, 2);
-    show_array(a);
-}
-
-void test_array_divide_row_x()
-{
-    float list[] = {\
-    1 ,  2,  3,  4, \
-    5 ,  6,  7,  8, \
-    9 , 10, 11, 12, \
-    13, 14, 15, 16, \
-    17, 18, 19, 20  \
-    };
-    Array *a = list_to_array(5, 4, list);
-    array_divide_row_x(a, 0, 2);
-    show_array(a);
-}
-
-void test_array_divide_col_x()
-{
-    float list[] = {\
-    1 ,  2,  3,  4, \
-    5 ,  6,  7,  8, \
-    9 , 10, 11, 12, \
-    13, 14, 15, 16, \
-    17, 18, 19, 20  \
-    };
-    Array *a = list_to_array(5, 4, list);
-    array_divide_col_x(a, 0, 2);
-    show_array(a);
-}
-
 void test_array_add_row_to_row()
 {
     float list[] = {\
@@ -724,8 +707,8 @@ void test_array_add_row_to_row()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = list_to_array(4, 5, list);
-    array_add_row_to_row(a, 0, 3);
+    Array *a = list_to_array(5, 4, list);
+    array_add_row_to_row(a, 1, 2);
     show_array(a);
 }
 
@@ -738,8 +721,8 @@ void test_array_add_col_to_col()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = list_to_array(4, 5, list);
-    array_add_col_to_col(a, 0, 1);
+    Array *a = list_to_array(5, 4, list);
+    array_add_col_to_col(a, 1, 2);
     show_array(a);
 }
 
@@ -753,7 +736,7 @@ void test_array_rowmulti_add_to_row()
     17, 18, 19, 20  \
     };
     Array *a = list_to_array(5, 4, list);
-    array_rowmulti_add_to_row(a, 0, 1, 1.2);
+    array_rowmulti_add_to_row(a, 1, 2, 2);
     show_array(a);
 }
 
@@ -767,11 +750,83 @@ void test_array_colmulti_add_to_col()
     17, 18, 19, 20  \
     };
     Array *a = list_to_array(5, 4, list);
-    array_colmulti_add_to_col(a, 0, 2 ,2);
+    array_colmulti_add_to_col(a, 1, 2 ,2);
     show_array(a);
+}
+
+void test_gemm()
+{
+    float list1[] = {\
+    1 ,  2,  3,  4, \
+    5 ,  6,  7,  8, \
+    9 , 10, 11, 12, \
+    13, 14, 15, 16, \
+    17, 18, 19, 20  \
+    };
+    float list2[] = {\
+    1,  2,  3,  4,  5, \
+    6,  7,  8,  9, 10, \
+    11, 12, 13, 14,15, \
+    16, 17, 18, 19,20  \
+    };
+    Array *a = list_to_array(5, 4, list1);
+    Array *b = list_to_array(4, 5, list2);
+    Array *res = gemm(a, b);
+    show_array(res);
+}
+
+void test_array_saxpy()
+{
+    float list1[] = {\
+    1 ,  2,  3,  4, \
+    5 ,  6,  7,  8, \
+    9 , 10, 11, 12, \
+    13, 14, 15, 16, \
+    17, 18, 19, 20  \
+    };
+    float list2[] = {\
+    1,  2,  3,  4,  5, \
+    6,  7,  8,  9, 10, \
+    11, 12, 13, 14,15, \
+    16, 17, 18, 19,20  \
+    };
+    Array *a = list_to_array(5, 4, list1);
+    Array *b = list_to_array(5, 4, list2);
+    array_saxpy(a, b, 3);
+    show_array(a);
+}
+
+void test_array_1norm()
+{
+    float list[] = {\
+    1 ,  2,  3,  4, \
+    5 ,  6,  7,  8, \
+    9 , 10, 11, 12, \
+    13, 14, 15, 16, \
+    17, 18, 19, 20  \
+    };
+    Array *a = list_to_array(5, 4, list);
+    float res = array_frobenius_norm(a);
+    printf("Array 1-norm: %f\n", res);
+}
+
+void test_householder()
+{
+    float list[] = {\
+    1, 2, 3, 4, 5 \
+    };
+    Victor *v = list_to_Victor(5, 1, list);
+    float *beta = malloc(sizeof(float));
+    Victor *hv = householder(v, beta);
+    printf("Beta: %f\n", beta[0]);
+    show_array(hv);
 }
 
 int main(int argc, char **argv)
 {
-    test_array_x_multiplication();
+    // float list[] = {1,2,3,4,5,6,7,8,9};
+    // Array *a = list_to_array(3, 3, list);
+    // test_get_array_index(a, 3, 3);
+    test_householder();
+    return 0;
 }

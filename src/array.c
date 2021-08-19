@@ -369,7 +369,7 @@ Victor *row2Victor(Array *a, int row)
     int offset = (row-1)*size;
     float *data = malloc(size*sizeof(float));
     memcpy_float_list(data, a->data, 0, offset, size);
-    return list_to_Victor(size, 1, data);
+    return list_to_Victor(size, 0, data);
 }
 
 /*************************************************************************************************\
@@ -390,7 +390,7 @@ Victor *col2Victor(Array *a, int col)
     for (int i = 0; i < x; ++i){
         data[i] = get_array_pixel(a, i+1, col);
     }
-    return list_to_Victor(y, 0, data);
+    return list_to_Victor(y, 1, data);
 }
 
 /*************************************************************************************************\
@@ -413,7 +413,7 @@ Victor *diagonal2Victor(Array *a, int flag)
         if (flag) data[i] = get_array_pixel(a, i+1, i+1);
         else data[i] = get_array_pixel(a, i+1, min-i);
     }
-    return list_to_Victor(min, flag, data);
+    return list_to_Victor(min, 1, data);
 }
 
 /*************************************************************************************************\
@@ -644,8 +644,8 @@ void insert_col_in_array(Array *a, int index, float *data)
 void replace_part_array(Array *a, Array *b, int row, int col)
 {
     int *index = malloc(2*sizeof(int));
-    index[0] = row;
-    index[1] = col;
+    index[0] = col;
+    index[1] = row;
     replace_part(a, b, index);
 }
 
@@ -1207,7 +1207,7 @@ void array_add_row_x(Array *a, int row, float x)
 {
     int y = a->size[0];
     for (int i = 0; i < y; ++i){
-        a->data[row*y+i] += x;
+        a->data[(row-1)*y+i] += x;
     }
 }
 
@@ -1226,7 +1226,7 @@ void array_add_col_x(Array *a, int col, float x)
     int m = a->size[1];
     int n = a->size[0];
     for (int i = 0; i < m; ++i){
-        a->data[i*n+col] += x;
+        a->data[i*n+col-1] += x;
     }
 }
 
@@ -1292,7 +1292,7 @@ void array_multiplication_row_x(Array *a, int row, float x)
 {
     int y = a->size[0];
     for (int i = 0; i < y; ++i){
-        a->data[row*y+i] *= x;
+        a->data[(row-1)*y+i] *= x;
     }
 }
 
@@ -1311,7 +1311,7 @@ void array_multiplication_col_x(Array *a, int col, float x)
     int m = a->size[1];
     int n = a->size[0];
     for (int i = 0; i < m; ++i){
-        a->data[i*n+col] *= x;
+        a->data[i*n+col-1] *= x;
     }
 }
 
@@ -1359,7 +1359,7 @@ void array_add_row_to_row(Array *a, int row1, int row2)
 {
     int y = a->size[0];
     for (int i = 0; i < y; ++i){
-        a->data[row2*y+i] += a->data[row1*y+i];
+        a->data[(row2-1)*y+i] += a->data[(row1-1)*y+i];
     }
 }
 
@@ -1377,7 +1377,7 @@ void array_add_col_to_col(Array *a, int col1, int col2)
     int m = a->size[1];
     int n = a->size[0];
     for (int i = 0; i < m; ++i){
-        a->data[i*n+col2] += a->data[i*n+col1];
+        a->data[i*n+col2-1] += a->data[i*n+col1-1];
     }
 }
 
@@ -1395,7 +1395,7 @@ void array_rowmulti_add_to_row(Array *a, int row1, int row2, float x)
 {
     int y = a->size[0];
     for (int i = 0; i < y; ++i){
-        a->data[row2*y+i] += a->data[row1*y+i] * x;
+        a->data[(row2-1)*y+i] += a->data[(row1-1)*y+i] * x;
     }
 }
 
@@ -1414,7 +1414,7 @@ void array_colmulti_add_to_col(Array *a, int col1, int col2, float x)
     int m = a->size[1];
     int n = a->size[0];
     for (int i = 0; i < m; ++i){
-        a->data[i*n+col2] += a->data[i*n+col1] * x;
+        a->data[i*n+col2-1] += a->data[i*n+col1-1] * x;
     }
 }
 
@@ -1472,10 +1472,10 @@ void array_saxpy(Array *ax, Array *ay, float x)
 float array_1norm(Array *a)
 {
     float res = -9999;
-    for (int i = 0; i < a->size[1]; ++i){
+    for (int i = 0; i < a->size[0]; ++i){
         float sum = 0;
-        for (int j = 0; j < a->size[0]; ++j){
-            sum += get_array_pixel(a, j, i);
+        for (int j = 0; j < a->size[1]; ++j){
+            sum += get_array_pixel(a, j+1, i+1);
         }
         if (res < sum){
             res = sum;
@@ -1510,10 +1510,10 @@ float array_2norm(Array *a)
 float array_infinite_norm(Array *a)
 {
     float res = -9999;
-    for (int i = 0; i < a->size[0]; ++i){
+    for (int i = 0; i < a->size[1]; ++i){
         float sum = 0;
-        for (int j = 0; j < a->size[1]; ++j){
-            sum += get_array_pixel(a, i, j);
+        for (int j = 0; j < a->size[0]; ++j){
+            sum += get_array_pixel(a, i+1, j+1);
         }
         if (res < sum){
             res = sum;
@@ -1552,7 +1552,8 @@ float array_frobenius_norm(Array *a)
 \*************************************************************************************************/
 Victor *__householder_v(Victor *x, float *beta)
 {
-    Victor *m = slice_Victor(x, 1, x->size[0]);
+    Victor *m = slice_Victor(x, 1, x->num);
+    show_array(m);
     Victor *mt = copy_victor(m);
     transposition(mt);
     float theta = Victor_x_multiplication(mt, m)->data[0];
@@ -1573,7 +1574,7 @@ Victor *__householder_v(Victor *x, float *beta)
 
 Array *__householder_a(Victor *v, float beta)
 {
-    Array *In = create_unit_array(v->size[0], v->size[0], 1, 1);
+    Array *In = create_unit_array(v->num, v->num, 1, 1);
     Array *vt = copy_array(v);
     transposition(vt);
     Array *k = array_x_multiplication(v, vt);
@@ -1647,4 +1648,17 @@ Array *__householder_QR(Array *a, Array *r, Array *q)
         }
     }
     return res;
+}
+
+void show_array(Array *a)
+{
+    printf("Array dimension: %d\n", a->dim);
+    printf("Array data num: %d\n", a->num);
+    printf("Array size: %d x %d\n", a->size[1], a->size[0]);
+    for (int i = 0; i < a->size[1]; ++i){
+        for (int j = 0; j < a->size[0]; ++j){
+            printf("%f ", a->data[i*a->size[0]+j]);
+        }
+        printf("\n");
+    }
 }

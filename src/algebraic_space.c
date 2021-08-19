@@ -69,10 +69,11 @@ void replace_part(AS *m, AS *n, int *index)
 {
     int *nindex = malloc(n->dim*sizeof(int));
     full_list_with_int(nindex, 1, n->dim, 1, 0);
-    int *mindex = calloc(m->dim, sizeof(int));
+    int *mindex = malloc(m->dim*sizeof(int));
+    full_list_with_int(mindex, 1, n->dim, 1, 0);
     while (__ergodic(n, nindex)){
         for (int i = 0; i < m->dim; ++i){
-            mindex[i] = nindex[i] + index[i];
+            mindex[i] = nindex[i] + index[i] - 1;
         }
         change_pixel(m, mindex, get_pixel(n, nindex));
     }
@@ -273,8 +274,8 @@ float get_mean(AS *m)
 
 void saxpy(AS *mx, AS *my, float x)
 {
-    for (int i = 0; i < mx->num; ++i){
-        my->data[i] += x * mx->data[i];
+    for (int i = 0; i < my->num; ++i){
+        mx->data[i] += x * my->data[i];
     }
 }
 

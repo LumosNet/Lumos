@@ -87,4 +87,5 @@ Array *householder(Victor *x, float *beta);
 float *givens(float a, float b);
 Array *givens_rotate(Array *a, int i, int k, float c, float s);
 
+void show_array(Array *a);
 #endif
