@@ -7,7 +7,7 @@
        包含所有C语言支持的基本数值类型，分别为
        char, unsigned char, short, unsigned short, int, unsigned int, long
        unsigned long, float, double, long int, long long, long double
-       该文件内容为AS库的最基础依赖
+       该文件内容为tensor库的最基础依赖
  * 内容
        主要实现内容为
        1.不同数据类型的内存空间申请
@@ -34,7 +34,7 @@ typedef enum DataType{
  * 参数
        num:数量
        data_type:数据类型，DataType为一个枚举类型，包含所有C语言支持的数值类型
-                     详细信息请查看AS.h中的相关定义
+                     详细信息请查看tensor.h中的相关定义
  * 返回
        void*
        返回创建好的内存空间指针
@@ -48,7 +48,7 @@ void *create_memory(int num, DataType data_type);
        origin:待填充的数组（地址）
        x:想要填充的数据
        data_type:数据类型，DataType为一个枚举类型，包含所有C语言支持的数值类型
-                     详细信息请查看AS.h中的相关定义
+                     详细信息请查看tensor.h中的相关定义
        num:待填充数组的大小
        stride:填充步长（每隔stride进行一次填充）
  * 返回
@@ -64,7 +64,7 @@ void full_list_with_x(void *origin, void *x, DataType data_type, int num, int st
        origin:待填充的数组（地址）
        x:想要填充的数据
        data_type:数据类型，DataType为一个枚举类型，包含所有C语言支持的数值类型
-                     详细信息请查看AS.h中的相关定义
+                     详细信息请查看tensor.h中的相关定义
        num:待填充数组的大小
        stride:填充步长（每隔stride进行一次填充）
        flag:当flag=0 stride为赋值后步长，当flag=1 stride为赋值前步长
@@ -93,7 +93,7 @@ void full_list_with_long_double(long double *origin, long double x, int num, int
        origin:待修改的数组（地址）
        x:想要修改的数据
        data_type:数据类型，DataType为一个枚举类型，包含所有C语言支持的数值类型
-                     详细信息请查看AS.h中的相关定义
+                     详细信息请查看tensor.h中的相关定义
        index:修改数据的位置索引
  * 返回
 \*************************************************************************************************/
@@ -121,7 +121,7 @@ void change_long_double_in_list(long double *origin, long double x, int index); 
  * 参数
        origin:待获取的数组（地址）
        data_type:数据类型，DataType为一个枚举类型，包含所有C语言支持的数值类型
-                     详细信息请查看AS.h中的相关定义
+                     详细信息请查看tensor.h中的相关定义
        index:获取数据的位置索引
  * 返回
        void*
@@ -153,7 +153,7 @@ long double get_long_double_in_list(long double *origin, int index);            
        ret:拷贝数据存放内存地址
        origin:待拷贝的数组（地址）
        data_type:数据类型，DataType为一个枚举类型，包含所有C语言支持的数值类型
-                     详细信息请查看AS.h中的相关定义
+                     详细信息请查看tensor.h中的相关定义
        offset_r:拷贝数据存放地址偏移量
        offset_o:拷贝数据源数组的偏移量
        num:拷贝数据数量
@@ -193,7 +193,7 @@ void memcpy_long_double_list(long double *ret, long double *origin, int offset_r
  * 参数
        origin:待累加的数组（地址）
        data_type:数据类型，DataType为一个枚举类型，包含所有C语言支持的数值类型
-                     详细信息请查看AS.h中的相关定义
+                     详细信息请查看tensor.h中的相关定义
        index:数组长度
  * 返回
        void*
@@ -225,7 +225,7 @@ long double sum_long_double_list(long double *origin, int offset, int len);     
  * 参数
        origin:待累乘的数组（地址）
        data_type:数据类型，DataType为一个枚举类型，包含所有C语言支持的数值类型
-                     详细信息请查看AS.h中的相关定义
+                     详细信息请查看tensor.h中的相关定义
        index:数组长度
  * 返回
        void*

@@ -1,4 +1,4 @@
-# LumosAS
+# Lumostensor
 
 ## 简介
 

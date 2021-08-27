@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "AS.h"
+#include "tensor.h"
 
 void test_replace_mindex_to_lindex(int dim, int *size, int *index)
 {

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "AS.h"
+#include "tensor.h"
 #include "list.h"
 
 void test()
@@ -44,12 +44,12 @@ void test()
     128, 129, 130, 131  \
     };
 
-    AS *m = list_to_AS(3, size, list);
-    AS *n = list_to_AS(3, size_m, list_m);
+    tensor *m = list_to_tensor(3, size, list);
+    tensor *n = list_to_tensor(3, size_m, list_m);
 
     int num = 4*4*(4+2);
     float *workspace = malloc(num*sizeof(float));
-    merge_AS(m, n, 2, 4, workspace);
+    merge_tensor(m, n, 2, 4, workspace);
     for (int i = 0; i < num; ++i){
         printf("%f\n", workspace[i]);
     }

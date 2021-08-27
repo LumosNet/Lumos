@@ -1,8 +1,8 @@
 #include "algebraic_space.h"
 
-AS *create(int dim, int *size, float x)
+tensor *create(int dim, int *size, float x)
 {
-    AS *ret = malloc(sizeof(AS));
+    tensor *ret = malloc(sizeof(tensor));
     int *m_size = malloc(dim*sizeof(int));
     memcpy(m_size, size, dim*sizeof(int));
     ret->dim = dim;
@@ -13,20 +13,20 @@ AS *create(int dim, int *size, float x)
     return ret;
 }
 
-AS *list_to_AS(int dim, int *size, float *list)
+tensor *list_to_tensor(int dim, int *size, float *list)
 {
-    AS *ret = create(dim, size, 0);
+    tensor *ret = create(dim, size, 0);
     memcpy_float_list(ret->data, list, 0, 0, ret->num);
     return ret;
 }
 
-AS *copy(AS *m)
+tensor *copy(tensor *m)
 {
-    AS *ret = list_to_AS(m->dim, m->size, m->data);
+    tensor *ret = list_to_tensor(m->dim, m->size, m->data);
     return ret;
 }
 
-int get_lindex(AS *m, int *index)
+int get_lindex(tensor *m, int *index)
 {
     int ret = 0;
     for (int i = 0; i < m->dim; ++i){
@@ -39,7 +39,7 @@ int get_lindex(AS *m, int *index)
     return ret;
 }
 
-int *get_mindex(AS *m, int index)
+int *get_mindex(tensor *m, int index)
 {
     int *ret = malloc(m->dim*sizeof(int));
     for (int i = m->dim-1; i >= 0; --i){
@@ -53,19 +53,19 @@ int *get_mindex(AS *m, int index)
     return ret;
 }
 
-float get_pixel(AS *m, int *index)
+float get_pixel(tensor *m, int *index)
 {
     int lindex = get_lindex(m, index);
     return get_float_in_list(m->data, lindex);
 }
 
-void change_pixel(AS *m, int *index, float x)
+void change_pixel(tensor *m, int *index, float x)
 {
     int lindex = get_lindex(m, index);
     change_float_in_list(m->data, x, lindex);
 }
 
-void replace_part(AS *m, AS *n, int *index)
+void replace_part(tensor *m, tensor *n, int *index)
 {
     int *nindex = malloc(n->dim*sizeof(int));
     full_list_with_int(nindex, 1, n->dim, 1, 0);
@@ -79,7 +79,7 @@ void replace_part(AS *m, AS *n, int *index)
     }
 }
 
-int __ergodic(AS *m, int *index)
+int __ergodic(tensor *m, int *index)
 {
     int res = 1;
     int dim = m->dim - 1;
@@ -95,7 +95,7 @@ int __ergodic(AS *m, int *index)
     return res;
 }
 
-void resize(AS *m, int dim, int *size)
+void resize(tensor *m, int dim, int *size)
 {
     float *data = m->data;
     m->data = malloc(m->num*sizeof(float));
@@ -105,7 +105,7 @@ void resize(AS *m, int dim, int *size)
     free(data);
 }
 
-void slice(AS *m, float *workspace, int *dim_c, int **size_c)
+void slice(tensor *m, float *workspace, int *dim_c, int **size_c)
 {
     int **sections = malloc(m->dim*sizeof(int*));
     for (int i = 0; i < dim_c[0]; ++i){
@@ -134,7 +134,7 @@ void slice(AS *m, float *workspace, int *dim_c, int **size_c)
     __slice(m, sections, workspace, dim_c[0]);
 }
 
-void __slice(AS *m, int **sections, float *workspace, int dim)
+void __slice(tensor *m, int **sections, float *workspace, int dim)
 {
     int *offset = malloc(sizeof(int));
     *offset = 0;
@@ -143,26 +143,26 @@ void __slice(AS *m, int **sections, float *workspace, int dim)
 }
 
 // 每一个区间的第一个值，代表区间分块的数量
-void __slicing(AS *m, int **sections, float *workspace, int dim_now, int offset_o, int *offset_a, int offset, int dim)
+void __slicing(tensor *m, int **sections, float *workspace, int dim_now, int offset_o, int *offset_a, int offset, int dim)
 {
     int *section = sections[dim_now-1];
     int num = section[0];
-    int offset_base = (int)(offset / m->size[dim_now-1]); // 基础偏移量
+    int offset_btensore = (int)(offset / m->size[dim_now-1]); // 基础偏移量
     for (int i = 0; i < num; ++i){
-        int offset_h = section[i*2+1] * offset_base + offset_o;
-        int size = (section[i*2+2] - section[i*2+1]) * offset_base;
+        int offset_h = section[i*2+1] * offset_btensore + offset_o;
+        int size = (section[i*2+2] - section[i*2+1]) * offset_btensore;
         if (dim_now == dim){
             printf("num: %d\n", num);
             memcpy_float_list(workspace, m->data, *offset_a, offset_h, size);
             *offset_a += size;
         }
         else{
-            __slicing(m, sections, workspace, dim_now-1, offset_h, offset_a, offset_base, dim);
+            __slicing(m, sections, workspace, dim_now-1, offset_h, offset_a, offset_btensore, dim);
         }
     }
 }
 
-void merge(AS *m, AS *n, int dim, int index, float *workspace)
+void merge(tensor *m, tensor *n, int dim, int index, float *workspace)
 {
     int **sections = malloc(m->dim*sizeof(int*));
     for (int i = 0; i < dim-1; ++i){
@@ -209,13 +209,13 @@ void merge(AS *m, AS *n, int dim, int index, float *workspace)
     free(offset);
 }
 
-void __merging(AS *m, AS *n, int **sections, float *workspace, int dim_now, int offset_m, int *offset_n, int *offset_a, int offset, int *size, int dim)
+void __merging(tensor *m, tensor *n, int **sections, float *workspace, int dim_now, int offset_m, int *offset_n, int *offset_a, int offset, int *size, int dim)
 {
     int *section = sections[dim_now-1];
     int num = section[0];
-    int offset_base = (int)(offset / m->size[dim_now-1]);
+    int offset_btensore = (int)(offset / m->size[dim_now-1]);
     for (int i = 0; i < num; ++i){
-        int offset_h = section[i*2+1] * offset_base + offset_m;
+        int offset_h = section[i*2+1] * offset_btensore + offset_m;
         if (dim_now == dim){
             if (i == 0){
                 memcpy_float_list(workspace, m->data, *offset_a, offset_h, size[i]);
@@ -232,24 +232,24 @@ void __merging(AS *m, AS *n, int **sections, float *workspace, int dim_now, int 
             }
         }
         else{
-            __merging(m, n, sections, workspace, dim_now-1, offset_h, offset_n, offset_a, offset_base, size, dim);
+            __merging(m, n, sections, workspace, dim_now-1, offset_h, offset_n, offset_a, offset_btensore, size, dim);
         }
     }
 }
 
-void del(AS *AS)
+void del(tensor *tensor)
 {
-    free(AS->data);
-    free(AS->size);
-    free(AS);
+    free(tensor->data);
+    free(tensor->size);
+    free(tensor);
 }
 
-float get_sum(AS *m)
+float get_sum(tensor *m)
 {
     return sum_float_list(m->data, 0, m->num);
 }
 
-float get_min(AS *m)
+float get_min(tensor *m)
 {
     float min = m->data[0];
     for (int i = 1; i < m->num; ++i){
@@ -258,7 +258,7 @@ float get_min(AS *m)
     return min;
 }
 
-float get_max(AS *m)
+float get_max(tensor *m)
 {
     float max = m->data[0];
     for (int i = 1; i < m->num; ++i){
@@ -267,19 +267,19 @@ float get_max(AS *m)
     return max;
 }
 
-float get_mean(AS *m)
+float get_mean(tensor *m)
 {
     return get_sum(m) / m->num;
 }
 
-void saxpy(AS *mx, AS *my, float x)
+void saxpy(tensor *mx, tensor *my, float x)
 {
     for (int i = 0; i < my->num; ++i){
         mx->data[i] += x * my->data[i];
     }
 }
 
-int get_num(AS *m, float x)
+int get_num(tensor *m, float x)
 {
     int num = 0;
     for (int i = 0; i < m->num; ++i){
@@ -288,9 +288,9 @@ int get_num(AS *m, float x)
     return num;
 }
 
-// ASproxy *init_asproxy()
+// tensorproxy *init_tensorproxy()
 // {
-//     ASproxy *proxy = malloc(sizeof(ASproxy));
+//     tensorproxy *proxy = malloc(sizeof(tensorproxy));
 //     proxy->create = create;
 //     proxy->copy = copy;
 //     proxy->get_lindex = get_lindex;

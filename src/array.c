@@ -64,7 +64,7 @@ Array *list_to_array(int row, int col, float *list)
     int *size = malloc(2*sizeof(int));
     size[0] = col;
     size[1] = row;
-    Array *a = list_to_AS(2, size, list);
+    Array *a = list_to_tensor(2, size, list);
     free(size);
     return a;
 }

@@ -11,7 +11,7 @@ CPP=g++
 
 LDFLAGS= -lm
 COMMON= -Iinclude/ -Isrc -std=c99
-CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors
+CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 
 OBJ=list.o algebraic_space.o array.o victor.o
 EXECOBJA=array_test.o

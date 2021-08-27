@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "AS.h"
+#include "tensor.h"
 #include "list.h"
 
-// void slice(AS *m, int **sections, float *workspace);
+// void slice(tensor *m, int **sections, float *workspace);
 
 void test()
 {
@@ -30,7 +30,7 @@ void test()
     56, 57, 58, 59, \
     60, 61, 62, 63  \
     };
-    AS *m = list_to_AS(3, size, list);
+    tensor *m = list_to_tensor(3, size, list);
     int **sections = malloc(3*sizeof(int*));
     int section_1[] = {1, 0, 4};
     int section_2[] = {2, 0, 1, 2, 4};

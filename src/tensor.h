@@ -1,8 +1,12 @@
-#ifndef INCLUDE_H
-#define INCLUDE_H
+#ifndef TENSOR_H
+#define TENSOR_H
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifdef  __cplusplus
+extern "C" {
+#endif
 
 typedef struct session;
 
@@ -12,7 +16,6 @@ typedef struct tensor{
     int *size;
     int num;
     float *data;
-    struct session *ptr;
 } tensor, Tensor;
 
 struct tensor_session{
@@ -26,10 +29,27 @@ struct tensor_session{
     float (*get_min)();
     float (*get_max)();
     float (*get_mean)();
+    void (*del)();
 };
 
 tensor *create_x(int dim, int *size, float x);
 tensor *create_list(int dim, int *size, float *list);
 Tensor *create_sparse(int dim, int *size, int **index, float *list);
+
+tensor *copy(tensor *m);
+int get_index(tensor *m, float x);
+float get_pixel(tensor *m, int *index);
+void resize(tensor *m, int dim, int *size);
+void slice(tensor *m, float *workspace, int *dim_c, int **size_c);
+void merge(tensor *m, tensor *n, int dim, int index, float *workspace);
+float get_sum(tensor *m);
+float get_min(tensor *m);
+float get_max(tensor *m);
+float get_mean(tensor *m);
+void del(tensor *m);
+
+#ifdef  __cplusplus
+}
+#endif
 
 #endif

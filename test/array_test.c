@@ -390,7 +390,7 @@ void test_merge_array()
     116, 117, 118, 119
     };
     Array *b = list_to_array(5, 4, list_2);
-    AS *c = merge_array(a, b, 1, 0);
+    tensor *c = merge_array(a, b, 1, 0);
     show_array(c);
 }
 
