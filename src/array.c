@@ -1558,7 +1558,7 @@ Victor *__householder_v(Victor *x, float *beta)
     transposition(mt);
     float theta = Victor_x_multiplication(mt, m)->data[0];
     Victor *v = copy_victor(x);
-    m->data[0] = 1;
+    ts->data[0] = 1;
     beta[0] = 0;
     if (theta != 0){
         float u = sqrt(x->data[0]*x->data[0] + theta);

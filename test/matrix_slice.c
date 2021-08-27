@@ -39,7 +39,7 @@ void test()
     sections[1] = section_2;
     sections[2] = section_3;
     float *workspace = malloc(24*sizeof(float));
-    int offset = multing_int_list(m->size, 0, m->dim);
+    int offset = multing_int_list(ts->size, 0, ts->dim);
     printf("offset: %d\n", offset);
     __slice(m, sections, workspace, 2);
     for (int i = 0; i < 24; ++i){

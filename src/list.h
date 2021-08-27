@@ -249,4 +249,17 @@ long int multing_long_int_list(long int *origin, int offset, int len);          
 long long multing_long_long_list(long long *origin, int offset, int len);                                                   // 累乘long long类型数组
 long double multing_long_double_list(long double *origin, int offset, int len);                                             // 累乘long double类型数组
 
+/*************************************************************************************************\
+ * 描述
+       
+ * 参数
+       
+ * 返回
+       
+ * 补充
+       
+\*************************************************************************************************/
+int *index_ls2ts(int dim, int *size, int index);
+int index_ts2ls(int *index, int dim, int *size);
+
 #endif
