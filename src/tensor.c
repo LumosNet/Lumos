@@ -15,14 +15,14 @@ tensor *create_x(int dim, int *size, float x)
 
 tensor *create_list(int dim, int *size, float *list)
 {
-    tensor *ts = create(dim, size, 0);
+    tensor *ts = create_x(dim, size, 0);
     memcpy_float_list(ts->data, list, 0, 0, ts->num);
     return ts;
 }
 
 Tensor *create_sparse(int dim, int *size, int **index, float *list, int n)
 {
-    tensor *ts = create(dim, size, 0);
+    tensor *ts = create_x(dim, size, 0);
     for (int i = 0; i < n; ++i){
         int lindex = index_ts2ls(index[i], dim, size);
         ts->data[lindex] = list[i];
@@ -30,10 +30,21 @@ Tensor *create_sparse(int dim, int *size, int **index, float *list, int n)
     return ts;
 }
 
+void tsprint(tensor *ts)
+{
+    printf("dimenssion : %d\n", ts->dim);
+    printf("instruction : ");
+    for (int i = 0; i < ts->dim-1; ++i){
+        printf("%d * ", ts->size[i]);
+    }
+    printf("%d\n", ts->size[ts->dim-1]);
+    printf("data num : %d\n", ts->num);
+}
+
 tensor *copy(tensor *ts)
 {
-    tensor *ts = create_list(ts->dim, ts->size, ts->data);
-    return ts;
+    tensor *ret_ts = create_list(ts->dim, ts->size, ts->data);
+    return ret_ts;
 }
 
 index_list* get_index(tensor *ts, float x)
@@ -248,4 +259,47 @@ void __merging(tensor *ts1, tensor *ts2, int **sections, float *workspace, int d
             __merging(ts1, ts2, sections, workspace, dim_now-1, offset_h, offset_n, offset_a, offset_btensore, size, dim);
         }
     }
+}
+
+void test_gan(tensor *ts, int *index)
+{
+    for (int i = ts->dim-1; i >= 0; --i){
+        if (index[i] == ts->size[i]){
+            if (i == 0) printf_1(0, "\n\0", 0, "\0\0");
+            else {
+                printf("\n");
+                printf_1(ts->dim-i, "]", 0, "\n\0");
+            }
+            if (i+1 == ts->dim) return;
+            index[i] = 0;
+            index[i+1] += 1;
+        }
+    }
+    for (int i = ts->dim; i >= 0; --i){
+        if (index[i] == 0) {
+            if (i == 0){
+                break;
+            }
+            else {
+                index[i] += 1;
+                printf_1(ts->dim-i, "[\0", 0, "\n\0");
+            }
+        }
+    }
+    index[0] += 1;
+    printf_1(ts->dim-2, " \0", 0, " \0");
+    printf("%f ", get_pixel(ts, index));
+    test_gan(ts, index);
+}
+
+void printf_1(int num1, char *a, int num2, char *b)
+{
+    for (int i = 0; i < num1; ++i){
+        printf(" ");
+    }
+    printf("%s", a);
+    for (int i = 0; i < num2; ++i){
+        printf(" ");
+    }
+    printf("%s", b);
 }

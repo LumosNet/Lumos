@@ -10,8 +10,6 @@
 extern "C" {
 #endif
 
-typedef struct session;
-
 /* 行优先存储 */
 typedef struct tensor{
     int dim;
@@ -28,9 +26,9 @@ struct index_list
 
 typedef struct index_list index_list;
 
-
-struct tensor_session{
+typedef struct session{
     tensor* (*copy)();
+    void (*tsprint)();
     int (*get_index)();
     float (*get_pixel)();
     void (*resize)();
@@ -41,13 +39,14 @@ struct tensor_session{
     float (*get_max)();
     float (*get_mean)();
     void (*del)();
-};
+} session, Session;
 
 tensor *create_x(int dim, int *size, float x);
 tensor *create_list(int dim, int *size, float *list);
-Tensor *create_sparse(int dim, int *size, int **index, float *list);
+Tensor *create_sparse(int dim, int *size, int **index, float *list, int n);
 
 tensor *copy(tensor *ts);
+void tsprint(tensor *ts);
 index_list *get_index(tensor *ts, float x);
 float get_pixel(tensor *ts, int *index);
 void resize(tensor *ts, int dim, int *size);
@@ -64,6 +63,8 @@ void __slice(tensor *ts, int **sections, float *workspace, int dim);
 void __slicing(tensor *ts, int **sections, float *workspace, int dim_now, int offset_o, int *offset_a, int offset, int dim);
 void __merging(tensor *ts1, tensor *ts2, int **sections, float *workspace, int dim_now, int offset_m, int *offset_n, int *offset_a, int offset, int *size, int dim);
 
+void test_gan(tensor *ts, int *index);
+void printf_1(int num1, char *a, int num2, char *b);
 #ifdef  __cplusplus
 }
 #endif
