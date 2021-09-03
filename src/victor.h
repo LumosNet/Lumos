@@ -5,55 +5,44 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "include.h"
-#include "algebraic_space.h"
-#include "array.h"
+#include "tensor.h"
+
+#ifdef  __cplusplus
+extern "C" {
+#endif
 
 // flag = 1代表为行向量，flag = 0代表列向量
-Victor *create_Victor(int num, int flag, float x);
-Victor *list_to_Victor(int num, int flag, float *list);
+Victor *victor_x(int num, int flag, float x);
+Victor *victor_list(int num, int flag, float *list);
 
-Victor *copy_victor(Victor *v);
+float get_pixel_vt(Victor *v, int index);
+void change_pixel_vt(Victor *v, int index, float x);
 
-float get_pixel_in_Victor(Victor *v, int index);
-float get_Victor_min(Victor *v);
-float get_Victor_max(Victor *v);
-float get_Victor_mean(Victor *v);
-int pixel_num_Victor(Victor *v, float x);
+void replace_victorlist(Victor *v, float *list);
+void replace_victorx(Victor *v, float x);
 
-void change_pixel_in_Victor(Victor *v, int index, float x);
+void del_pixel(Victor *v, int index);
+void insert_pixel(Victor *v, int index, float x);
 
-void replace_Victor2list(Victor *v, float *list);
-void replace_Victor_with_x(Victor *v, float x);
+Victor *merge_victor(Victor *a, Victor *b, int index);
+Victor *slice_victor(Victor *v, int index_h, int index_t);
 
-void del_pixel_in_Victor(Victor *v, int index);
-void insert_pixel_in_Victor(Victor *v, int index, float x);
+Victor *add_vt(Victor *a, Victor *b);
+Victor *subtract_vt(Victor *a, Victor *b);
+Victor *divide_vt(Victor *a, Victor *b);
+Victor *multiply_vt(Victor *a, Victor *b);
 
-Victor *merge_Victor(Victor *a, Victor *b, int index);
-Victor *slice_Victor(Victor *v, int index_h, int index_t);
+void Victor_addx(Victor *v, float x);
+void Victor_multx(Victor *v, float x);
 
-void del_Victor(Victor *v);
+float norm1_vt(Victor *v);
+float norm2_vt(Victor *v);
+float normp_vt(Victor *v, int p);
+float infnorm_vt(Victor *v);
+float ninfnorm_vt(Victor *v);
 
-void exchange2pixel_in_Victor(Victor *v, int index_1, int index_2);
-
-float sum_Victor(Victor *v);
-
-Victor *Victor_add(Victor *a, Victor *b);
-Victor *Victor_subtract(Victor *a, Victor *b);
-Victor *Victor_divide(Victor *a, Victor *b);
-Victor *Victor_x_multiply(Victor *a, Victor *b);
-
-void Victor_add_x(Victor *v, float x);
-void Victor_subtract_x(Victor *v, float x);
-void Victor_multiply_x(Victor *v, float x);
-void Victor_divide_x(Victor *v, float x);
-
-void Victor_saxpy(Victor *vx, Victor *vy, float x);
-
-float Victor_1norm(Victor *v);
-float Victor_2norm(Victor *v);
-float Victor_pnorm(Victor *v, int p);
-float Victor_infinite_norm(Victor *v);
-float Victor_ninfinite_norm(Victor *v);
+#ifdef  __cplusplus
+}
+#endif
 
 #endif

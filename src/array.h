@@ -60,30 +60,38 @@ typedef struct numeric_op{
      Array*   (*divide_ar)();
      Array*   (*multiply_ar)();
 
-     void     (*array_add_x)();
-     void     (*array_add_row_x)();
-     void     (*array_add_col_x)();
+     void     (*array_addx)();
+     void     (*row_addx)();
+     void     (*col_addx)();
 
-     void     (*array_multiply_x)();
-     void     (*array_multiply_row_x)();
-     void     (*array_multiply_col_x)();
+     void     (*array_multx)();
+     void     (*row_multx)();
+     void     (*col_multx)();
 
-     void     (*array_add_row_to_row)();
-     void     (*array_add_col_to_col)();
-     void     (*array_rowmulti_add_to_row)();
-     void     (*array_colmulti_add_to_col)();
+     void     (*add_row2r)();
+     void     (*add_col2c)();
+     void     (*add_multrow2r)();
+     void     (*add_multcol2c)();
 
      float    (*trace)();
 
      Array*   (*gemm)();
-     Array*   (*array_inverse)();
-     void     (*array_saxpy)();
+     Array*   (*inverse)();
+     void     (*saxpy)();
 
-     float    (*array_1norm)();
-     float    (*array_2norm)();
-     float    (*array_infinite_norm)();
-     float    (*array_frobenius_norm)();
+     float    (*norm1_ar)();
+     float    (*norm2_ar)();
+     float    (*infnorm_ar)();
+     float    (*fronorm_ar)();
 } numeric_op, NumericOp;
+
+typedef struct transform_op
+{
+     float*   (*givens)();
+     Array*   (*givens_rotate)();
+     Array*   (*householder)();
+} transform_op, TransformOp;
+
 
 Array *array_x(int row, int col, float x);
 Array *array_list(int row, int col, float *list);
