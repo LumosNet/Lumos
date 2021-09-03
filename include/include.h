@@ -28,8 +28,8 @@ struct tensor_session{
     float (*get_mean)();
 };
 
-tensor *create_x(int dim, int *size, float x);
-tensor *create_list(int dim, int *size, float *list);
-Tensor *create_sparse(int dim, int *size, int **index, float *list);
+tensor *tensor_x(int dim, int *size, float x);
+tensor *tensor_list(int dim, int *size, float *list);
+Tensor *tensor_sparse(int dim, int *size, int **index, float *list);
 
 #endif

@@ -1,6 +1,6 @@
 #include "tensor.h"
 
-tensor *create_x(int dim, int *size, float x)
+tensor *tensor_x(int dim, int *size, float x)
 {
     tensor *ts = malloc(sizeof(tensor));
     int *ts_size = malloc(dim*sizeof(int));
@@ -13,16 +13,16 @@ tensor *create_x(int dim, int *size, float x)
     return ts;
 }
 
-tensor *create_list(int dim, int *size, float *list)
+tensor *tensor_list(int dim, int *size, float *list)
 {
-    tensor *ts = create_x(dim, size, 0);
+    tensor *ts = tensor_x(dim, size, 0);
     memcpy_float_list(ts->data, list, 0, 0, ts->num);
     return ts;
 }
 
-Tensor *create_sparse(int dim, int *size, int **index, float *list, int n)
+Tensor *tensor_sparse(int dim, int *size, int **index, float *list, int n)
 {
-    tensor *ts = create_x(dim, size, 0);
+    tensor *ts = tensor_x(dim, size, 0);
     for (int i = 0; i < n; ++i){
         int lindex = index_ts2ls(index[i], dim, size);
         ts->data[lindex] = list[i];
@@ -39,34 +39,61 @@ void tsprint(tensor *ts)
     }
     printf("%d\n", ts->size[ts->dim-1]);
     printf("data num : %d\n", ts->num);
+    for (int i = 0; i < ts->num; ++i){
+        if ((i+1) % ts->size[0] == 0) printf(" %f\n", ts->data[i]);
+        else printf(" %f", ts->data[i]);
+        if ((i+1) % (ts->size[0]*ts->size[1]) == 0) printf("\n");
+    }
+}
+
+int pixel_num(tensor *ts, float x)
+{
+    int num = 0;
+    for (int i = 0; i < ts->num; ++i){
+        if (ts->data[i] == x) num += 1;
+    }
+    return num;
 }
 
 tensor *copy(tensor *ts)
 {
-    tensor *ret_ts = create_list(ts->dim, ts->size, ts->data);
+    tensor *ret_ts = tensor_list(ts->dim, ts->size, ts->data);
     return ret_ts;
 }
 
 index_list* get_index(tensor *ts, float x)
 {
-    index_list *index;
+    index_list *head = NULL;
+    index_list *node;
     for (int i = 0; i < ts->num; ++i){
         if (ts->data[i] == x){
             int *ls2ts = index_ls2ts(ts->dim, ts->size, i);
             index_list *index_n = malloc(sizeof(index_list));
             index_n->index = ls2ts;
             index_n->next = NULL;
-            if (index) index->next = index_n;
-            else index = index_n;
+            if (head == NULL) {
+                node = index_n;
+                head = node;
+            }
+            else {
+                node->next = index_n;
+                node = node->next;
+            }
         }
     }
-    return index;
+    return head;
 }
 
 float get_pixel(tensor *ts, int *index)
 {
     int ts2ls = index_ts2ls(index, ts->dim, ts->size);
     return ts->data[ts2ls];
+}
+
+void change_pixel(tensor *ts, int *index, float x)
+{
+    int ts2ls = index_ts2ls(index, ts->dim, ts->size);
+    ts->data[ts2ls] = x;
 }
 
 void resize(tensor *ts, int dim, int *size)
@@ -259,47 +286,4 @@ void __merging(tensor *ts1, tensor *ts2, int **sections, float *workspace, int d
             __merging(ts1, ts2, sections, workspace, dim_now-1, offset_h, offset_n, offset_a, offset_btensore, size, dim);
         }
     }
-}
-
-void test_gan(tensor *ts, int *index)
-{
-    for (int i = ts->dim-1; i >= 0; --i){
-        if (index[i] == ts->size[i]){
-            if (i == 0) printf_1(0, "\n\0", 0, "\0\0");
-            else {
-                printf("\n");
-                printf_1(ts->dim-i, "]", 0, "\n\0");
-            }
-            if (i+1 == ts->dim) return;
-            index[i] = 0;
-            index[i+1] += 1;
-        }
-    }
-    for (int i = ts->dim; i >= 0; --i){
-        if (index[i] == 0) {
-            if (i == 0){
-                break;
-            }
-            else {
-                index[i] += 1;
-                printf_1(ts->dim-i, "[\0", 0, "\n\0");
-            }
-        }
-    }
-    index[0] += 1;
-    printf_1(ts->dim-2, " \0", 0, " \0");
-    printf("%f ", get_pixel(ts, index));
-    test_gan(ts, index);
-}
-
-void printf_1(int num1, char *a, int num2, char *b)
-{
-    for (int i = 0; i < num1; ++i){
-        printf(" ");
-    }
-    printf("%s", a);
-    for (int i = 0; i < num2; ++i){
-        printf(" ");
-    }
-    printf("%s", b);
 }

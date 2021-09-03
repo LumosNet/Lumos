@@ -41,11 +41,11 @@ float sum_Victor(Victor *v);
 Victor *Victor_add(Victor *a, Victor *b);
 Victor *Victor_subtract(Victor *a, Victor *b);
 Victor *Victor_divide(Victor *a, Victor *b);
-Victor *Victor_x_multiplication(Victor *a, Victor *b);
+Victor *Victor_x_multiply(Victor *a, Victor *b);
 
 void Victor_add_x(Victor *v, float x);
 void Victor_subtract_x(Victor *v, float x);
-void Victor_multiplication_x(Victor *v, float x);
+void Victor_multiply_x(Victor *v, float x);
 void Victor_divide_x(Victor *v, float x);
 
 void Victor_saxpy(Victor *vx, Victor *vy, float x);

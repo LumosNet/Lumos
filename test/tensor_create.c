@@ -6,17 +6,22 @@
 
 int main(int argc, char **argv)
 {
-    int dim = 4;
-    int *size = malloc(dim*sizeof(int));
-    for (int i = 0; i < dim; ++i){
-        size[i] = i+1;
-    }
-    tensor * ts = create_x(dim, size, 0.1);
+    int dim = 3;
+    int size[] = {3, 2, 4};
+    int **index = malloc(3*sizeof(int*));
+    int index1[] = {1, 2, 2, 1};
+    int index2[] = {3, 1, 1, 1};
+    int index3[] = {2, 2, 3, 2};
+    index[0] = index1;
+    index[1] = index2;
+    index[2] = index3;
+    float list[] = {20, 30, 40};
+    tensor * ts = tensor_sparse(dim, size, index, list, 3);
+
+    int dim2 = 4;
+    int size2[] = {2, 2, 3, 2};
     tsprint(ts);
-    int *index = malloc(ts->dim*sizeof(int));
-    for (int i = 0; i < ts->dim; ++i){
-        index[i] = 0;
-    }
-    test_gan(ts, index);
+    resize(ts, dim2, size2);
+    tsprint(ts);
     return 0;
 }

@@ -2,14 +2,14 @@
 
 Victor *create_Victor(int num, int flag, float x)
 {
-    if (flag) return create_array(num, 1, x);
-    else return create_array(1, num, x);
+    if (flag) return array_x(num, 1, x);
+    else return array_x(1, num, x);
 }
 
 Victor *list_to_Victor(int num, int flag, float *list)
 {
-    if (flag) return list_to_array(num, 1, list);
-    else return list_to_array(1, num, list);
+    if (flag) return array_list(num, 1, list);
+    else return array_list(1, num, list);
 }
 
 Victor *copy_victor(Victor *v)
@@ -147,7 +147,7 @@ Victor *Victor_divide(Victor *a, Victor *b)
     return res;
 }
 
-Victor *Victor_x_multiplication(Victor *a, Victor *b)
+Victor *Victor_x_multiply(Victor *a, Victor *b)
 {
     Victor *res = copy_victor(a);
     for (int i = 0; i < a->num; ++i){
@@ -170,7 +170,7 @@ void Victor_subtract_x(Victor *v, float x)
     }
 }
 
-void Victor_multiplication_x(Victor *v, float x)
+void Victor_multiply_x(Victor *v, float x)
 {
     for (int i = 0; i < v->num; ++i){
         v->data[i] *= x;

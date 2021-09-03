@@ -11,7 +11,7 @@
        Array*
        返回创建好的Array对象，您可以使用该Array对象进行一切与矩阵相关的操作
 \*************************************************************************************************/
-Array *create_array(int row, int col, float x)
+Array *array_x(int row, int col, float x)
 {
     int *size = malloc(2*sizeof(int));
     size[0] = col;
@@ -59,7 +59,7 @@ Array *create_array(int row, int col, float x)
                4, 5, x
                x, x, x
 \*************************************************************************************************/
-Array *list_to_array(int row, int col, float *list)
+Array *array_list(int row, int col, float *list)
 {
     int *size = malloc(2*sizeof(int));
     size[0] = col;
@@ -102,12 +102,12 @@ Array *list_to_array(int row, int col, float *list)
                o x o o        o o x o
                o o x o        o x o o
 \*************************************************************************************************/
-Array *create_unit_array(int row, int col, float x, int flag)
+Array *array_unit(int row, int col, float x, int flag)
 {
     int *size = malloc(2*sizeof(int));
     size[0] = col;
     size[1] = row;
-    Array *ret = create_array(row, col, 0);
+    Array *ret = array_x(row, col, 0);
     int min_row_col = (row <= col) ? row : col;
     for (int i = 0; i < min_row_col; ++i){
         if (flag) change_float_in_list(ret->data, x, i*col+i);
@@ -702,7 +702,7 @@ Array *merge_array(Array *a, Array *b, int flag, int index)
         size[0] += b->size[0];
         dim = 1;
     }
-    Array *ret = create_array(size[1], size[0], 0);
+    Array *ret = array_x(size[1], size[0], 0);
     merge(a, b, dim, index, ret->data);
     return ret;
 }
@@ -738,7 +738,7 @@ Array *merge_array(Array *a, Array *b, int flag, int index)
 \*************************************************************************************************/
 Array *slice_array(Array *a, int rowu, int rowd, int coll, int colr)
 {
-    Array *ret = create_array(rowd-rowu+1, colr-coll+1, 0);
+    Array *ret = array_x(rowd-rowu+1, colr-coll+1, 0);
     int offset_row = coll-1;
     int size = colr-coll+1;
     for (int i = rowu-1, n = 0; i < rowd; ++i, ++n){
@@ -1013,7 +1013,7 @@ Array *array_inverse(Array *a)
     int x = a->size[1];
     int y = a->size[0];
     int key = -1;
-    Array *res = create_unit_array(x, x, 1, 1);
+    Array *res = array_unit(x, x, 1, 1);
     for (int i = 0; i < x; ++i) {
         if (a->data[i*y+i] == 0.0) {
             //交换行获得一个非零的对角元素
@@ -1031,8 +1031,8 @@ Array *array_inverse(Array *a)
             exchange2row_in_array(res, i+1, key+1);
         }
         float scalar = 1.0 / a->data[i*y+i];
-        array_multiplication_row_x(a, i, scalar);
-        array_multiplication_row_x(res, i, scalar);
+        array_multiply_row_x(a, i, scalar);
+        array_multiply_row_x(res, i, scalar);
         for (int k = 0; k < x; ++k) {
             if (i == k) {
                 continue;
@@ -1096,7 +1096,7 @@ Array *array_add(Array *a, Array *b)
 {
     int x = a->size[1];
     int y = a->size[0];
-    Array *res = create_array(x, y, 0);
+    Array *res = array_x(x, y, 0);
     for (int i = 0; i < x; ++i){
         for (int j = 0; j < y; ++j){
             res->data[i*y+j] = a->data[i*y+j] + b->data[i*y+j];
@@ -1119,7 +1119,7 @@ Array *array_subtract(Array *a, Array *b)
 {
     int x = a->size[1];
     int y = a->size[0];
-    Array *res = create_array(x, y, 0);
+    Array *res = array_x(x, y, 0);
     for (int i = 0; i < x; ++i){
         for (int j = 0; j < y; ++j){
             res->data[i*y+j] = a->data[i*y+j] - b->data[i*y+j];
@@ -1142,7 +1142,7 @@ Array *array_divide(Array *a, Array *b)
 {
     int x = a->size[1];
     int y = a->size[0];
-    Array *res = create_array(x, y, 0);
+    Array *res = array_x(x, y, 0);
     for (int i = 0; i < x; ++i){
         for (int j = 0; j < y; ++j){
             res->data[i*y+j] = a->data[i*y+j] / b->data[i*y+j];
@@ -1160,11 +1160,11 @@ Array *array_divide(Array *a, Array *b)
        Array*
        相乘后的新矩阵
 \*************************************************************************************************/
-Array *array_x_multiplication(Array *a, Array *b)
+Array *array_x_multiply(Array *a, Array *b)
 {
     int x = a->size[1];
     int y = a->size[0];
-    Array *res = create_array(x, y, 0);
+    Array *res = array_x(x, y, 0);
     for (int i = 0; i < x; ++i){
         for (int j = 0; j < y; ++j){
             res->data[i*y+j] = a->data[i*y+j] * b->data[i*y+j];
@@ -1267,7 +1267,7 @@ void array_subtract_col_x(Array *a, int col, float x)
  * 返回
        void
 \*************************************************************************************************/
-void array_multiplication_x(Array *a, float x)
+void array_multiply_x(Array *a, float x)
 {
     int m = a->size[1];
     int n = a->size[0];
@@ -1288,7 +1288,7 @@ void array_multiplication_x(Array *a, float x)
  * 返回
        void
 \*************************************************************************************************/
-void array_multiplication_row_x(Array *a, int row, float x)
+void array_multiply_row_x(Array *a, int row, float x)
 {
     int y = a->size[0];
     for (int i = 0; i < y; ++i){
@@ -1306,7 +1306,7 @@ void array_multiplication_row_x(Array *a, int row, float x)
  * 返回
        void
 \*************************************************************************************************/
-void array_multiplication_col_x(Array *a, int col, float x)
+void array_multiply_col_x(Array *a, int col, float x)
 {
     int m = a->size[1];
     int n = a->size[0];
@@ -1432,7 +1432,7 @@ Array *gemm(Array *a, Array *b)
     int x = a->size[1];
     int y = a->size[0];
     int z = b->size[0];
-    Array *res = create_array(x, z, 0);
+    Array *res = array_x(x, z, 0);
     #pragma omp parallel for
     for (int i = 0; i < x; ++i){
         for (int k = 0; k < y; ++k){
@@ -1556,7 +1556,7 @@ Victor *__householder_v(Victor *x, float *beta)
     show_array(m);
     Victor *mt = copy_victor(m);
     transposition(mt);
-    float theta = Victor_x_multiplication(mt, m)->data[0];
+    float theta = Victor_x_multiply(mt, m)->data[0];
     Victor *v = copy_victor(x);
     ts->data[0] = 1;
     beta[0] = 0;
@@ -1574,11 +1574,11 @@ Victor *__householder_v(Victor *x, float *beta)
 
 Array *__householder_a(Victor *v, float beta)
 {
-    Array *In = create_unit_array(v->num, v->num, 1, 1);
+    Array *In = array_unit(v->num, v->num, 1, 1);
     Array *vt = copy_array(v);
     transposition(vt);
-    Array *k = array_x_multiplication(v, vt);
-    array_multiplication_x(k, beta);
+    Array *k = array_x_multiply(v, vt);
+    array_multiply_x(k, beta);
     Array *P = array_subtract(In, k);
     del_array(In);
     del_array(vt);
@@ -1638,7 +1638,7 @@ Array *__householder_QR(Array *a, Array *r, Array *q)
         Array *house = __householder_a(v, beta[0]);
 
         Array *apart = slice_array(res, i, res->size[0], i, res->size[1]);
-        Array *rpart = array_x_multiplication(house, apart);
+        Array *rpart = array_x_multiply(house, apart);
         replace_part_array(res, rpart, i, i);
         if (i < res->size[0]){
             Victor *vpart = slice_Victor(v, 2, res->size[0]-i+1);
