@@ -3,25 +3,18 @@
 #include <string.h>
 
 #include "tensor.h"
+#include "array.h"
+#include "victor.h"
+
+#include "loss.h"
 
 int main(int argc, char **argv)
 {
-    int dim = 3;
-    int size[] = {3, 2, 4};
-    int **index = malloc(3*sizeof(int*));
-    int index1[] = {1, 2, 2, 1};
-    int index2[] = {3, 1, 1, 1};
-    int index3[] = {2, 2, 3, 2};
-    index[0] = index1;
-    index[1] = index2;
-    index[2] = index3;
-    float list[] = {20, 30, 40};
-    tensor * ts = tensor_sparse(dim, size, index, list, 3);
-
-    int dim2 = 4;
-    int size2[] = {2, 2, 3, 2};
-    tsprint(ts);
-    resize(ts, dim2, size2);
-    tsprint(ts);
+    float list1[] = {1, 2, 3};
+    float list2[] = {-1, -2, -3};
+    Victor *v1 = victor_list(3, 1, list1);
+    Victor *v2 = victor_list(3, 1, list2);
+    float res = mse(v1, v2);
+    printf("%f\n", res);
     return 0;
 }

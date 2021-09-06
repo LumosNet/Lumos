@@ -12,6 +12,13 @@ Victor *victor_list(int num, int flag, float *list)
     else return array_list(1, num, list);
 }
 
+/* 0代表行向量, 1代表列向量 */
+int colorrow(Victor *v)
+{
+    if (v->size[0] > 1) return 0;
+    return 1;
+}
+
 float get_pixel_vt(Victor *v, int index)
 {
     return v->data[index];

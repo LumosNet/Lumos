@@ -1,6 +1,6 @@
 LINUX = 0
 
-VPATH=./src/:./include/:./test
+VPATH=./src/tensor:./src/operator:./include/:./test
 EXEC=main.exe
 OBJDIR=./obj/
 
@@ -10,14 +10,16 @@ CC=gcc
 CPP=g++
 
 LDFLAGS= -lm
-COMMON= -Iinclude/ -Isrc -std=c99 -fopenmp
+COMMON= -Iinclude/ -Isrc/tensor -Isrc/operator -std=c99 -fopenmp
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 
-OBJ=array.o list.o tensor.o victor.o session.o
+TENSOR=array.o list.o tensor.o victor.o session.o
+OPERATOR=active.o cluster.o loss.o
 EXECOBJA=tensor_create.o
 
 EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
-OBJS = $(addprefix $(OBJDIR), $(OBJ))
+TENSORS = $(addprefix $(OBJDIR), $(TENSOR))
+OPERATORS = $(addprefix $(OBJDIR), $(OPERATOR))
 DEPS = $(wildcard src/*.h) $(wildcard test/*.h) $(wildcard utils/*.h) makefile
 
 ifeq ($(LINUX),1)
@@ -31,7 +33,7 @@ endif
 all: obj $(EXEC)
 #all: obj $(EXEC)
 
-$(EXEC): $(OBJS) $(EXECOBJ)
+$(EXEC): $(TENSORS) $(OPERATORS) $(EXECOBJ)
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(OBJDIR)%.o: %.c $(DEPS)

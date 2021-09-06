@@ -23,6 +23,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef  __cplusplus
+extern "C" {
+#endif
+
 typedef enum DataType{
     CHAR, UNSIGNED_CHAR, SHORT, UNSIGNED_SHORT, INT, UNSIGNED_INT,\
     LONG, UNSIGNED_LONG, FLOAT, DOUBLE, LONG_INT, LONG_LONG, LONG_DOUBLE
@@ -261,5 +265,9 @@ long double multing_long_double_list(long double *origin, int offset, int len); 
 \*************************************************************************************************/
 int *index_ls2ts(int dim, int *size, int index);
 int index_ts2ls(int *index, int dim, int *size);
+
+#ifdef  __cplusplus
+}
+#endif
 
 #endif
