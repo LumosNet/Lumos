@@ -11,87 +11,14 @@
      在这里，我们定义了矩阵的创建、元素获取、矩阵计算等内容
      可以将其定义为一个轻量级的线性矩阵计算库
 \*************************************************************************************************/
+#include <math.h>
+
 #include "tensor.h"
+#include "victor.h"
 
 #ifdef  __cplusplus
 extern "C" {
 #endif
-
-typedef struct base_arop{
-     Victor*  (*row2Victor)();
-     Victor*  (*col2Victor)();
-     Victor*  (*diagonal2Victor)();
-
-     void     (*replace_rowlist)();
-     void     (*replace_collist)();
-     void     (*replace_diagonallist)();
-
-     void     (*replace_rowx)();
-     void     (*replace_colx)();
-     void     (*replace_diagonalx)();
-
-     void     (*del_row)();
-     void     (*del_col)();
-
-     void     (*insert_row)();
-     void     (*insert_col)();
-
-     void     (*replace_part)();
-
-     Array*   (*merge_array)();
-     Array*   (*slice_array)();
-
-     void     (*overturn_lr)();
-     void     (*overturn_ud)();
-     void     (*overturn_diagonal)();
-
-     void     (*rotate_left)();
-     void     (*rotate_right)();
-
-     void     (*exchange2row)();
-     void     (*exchange2col)();
-
-     void     (*transposition)();
-} base_arop, BaseAROp;
-
-typedef struct numeric_op{
-     Array*   (*add_ar)();
-     Array*   (*subtract_ar)();
-     Array*   (*divide_ar)();
-     Array*   (*multiply_ar)();
-
-     void     (*array_addx)();
-     void     (*row_addx)();
-     void     (*col_addx)();
-
-     void     (*array_multx)();
-     void     (*row_multx)();
-     void     (*col_multx)();
-
-     void     (*add_row2r)();
-     void     (*add_col2c)();
-     void     (*add_multrow2r)();
-     void     (*add_multcol2c)();
-
-     float    (*trace)();
-
-     Array*   (*gemm)();
-     Array*   (*inverse)();
-     void     (*saxpy)();
-
-     float    (*norm1_ar)();
-     float    (*norm2_ar)();
-     float    (*infnorm_ar)();
-     float    (*fronorm_ar)();
-} numeric_op, NumericOp;
-
-typedef struct transform_op
-{
-     float*   (*givens)();
-     Array*   (*givens_rotate)();
-     Array*   (*householder)();
-} transform_op, TransformOp;
-
 
 Array *array_x(int row, int col, float x);
 Array *array_list(int row, int col, float *list);
@@ -108,7 +35,7 @@ Victor *diagonal2Victor(Array *a, int flag);
 
 void replace_rowlist(Array *a, int row, float *list);
 void replace_collist(Array *a, int col, float *list);
-void replace_diagonallist(Array *a, float *list, int flag);
+void replace_diagonalist(Array *a, float *list, int flag);
 
 void replace_rowx(Array *a, int row, float x);
 void replace_colx(Array *a, int col, float x);
@@ -137,29 +64,28 @@ void exchange2col(Array *a, int colx, int coly);
 
 void transposition(Array *a);
 
-Array *array_inverse(Array *a);
-float sum_array(Array *a);
-float get_trace(Array *a);
-Array *array_add(Array *a, Array *b);
-Array *array_subtract(Array *a, Array *b);
-Array *array_divide(Array *a, Array *b);
-Array *array_x_multiply(Array *a, Array *b);
-void array_add_x(Array *a, float x);
-void array_add_row_x(Array *a, int row, float x);
-void array_add_col_x(Array *a, int col, float x);
-void array_multiply_x(Array *a, float x);
-void array_multiply_row_x(Array *a, int row, float x);
-void array_multiply_col_x(Array *a, int col, float x);
-void array_add_row_to_row(Array *a, int row1, int row2);
-void array_add_col_to_col(Array *a, int col1, int col2);
-void array_rowmulti_add_to_row(Array *a, int row1, int row2, float x);
-void array_colmulti_add_to_col(Array *a, int col1, int col2, float x);
+Array *inverse(Array *a);
+float trace(Array *a);
+Array *add_ar(Array *a, Array *b);
+Array *subtract_ar(Array *a, Array *b);
+Array *divide_ar(Array *a, Array *b);
+Array *multiply_ar(Array *a, Array *b);
+void add_arx(Array *a, float x);
+void row_addx(Array *a, int row, float x);
+void col_addx(Array *a, int col, float x);
+void array_multx(Array *a, float x);
+void row_multx(Array *a, int row, float x);
+void col_multx(Array *a, int col, float x);
+void add_row2r(Array *a, int row1, int row2);
+void add_col2c(Array *a, int col1, int col2);
+void add_multrow2r(Array *a, int row1, int row2, float x);
+void add_multcol2c(Array *a, int col1, int col2, float x);
 Array *gemm(Array *a, Array *b);
-void array_saxpy(Array *ax, Array *ay, float x);
-float array_1norm(Array *a);
-float array_2norm(Array *a);
-float array_infinite_norm(Array *a);
-float array_frobenius_norm(Array *a);
+void saxpy(Array *ax, Array *ay, float x);
+float norm1_ar(Array *a);
+float norm2_ar(Array *a);
+float infnorm_ar(Array *a);
+float fronorm_ar(Array *a);
 
 Array *householder(Victor *x, float *beta);
 // 给定标量a、b，计算c=cosθ、s=sinθ

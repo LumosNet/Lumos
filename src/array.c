@@ -16,7 +16,7 @@ Array *array_x(int row, int col, float x)
     int *size = malloc(2*sizeof(int));
     size[0] = col;
     size[1] = row;
-    Array *ret = create(2, size, x);
+    Array *ret = tensor_x(2, size, x);
     free(size);
     return ret;
 }
@@ -64,7 +64,7 @@ Array *array_list(int row, int col, float *list)
     int *size = malloc(2*sizeof(int));
     size[0] = col;
     size[1] = row;
-    Array *a = list_to_tensor(2, size, list);
+    Array *a = tensor_list(2, size, list);
     free(size);
     return a;
 }
@@ -118,69 +118,6 @@ Array *array_unit(int row, int col, float x, int flag)
 
 /*************************************************************************************************\
  * 描述
-       复制一个矩阵对象
- * 参数
-       a:待复制矩阵对象
- * 返回
-       Array*
-       返回复制后的Array对象
-\*************************************************************************************************/
-Array *copy_array(Array *a)
-{
-    return copy(a);
-}
-
-/*************************************************************************************************\
- * 描述
-       将二维索引转换为一维索引
- * 参数
-       size:int类型列表，大小为2(size[0], size[1])
-             表示一个二维空间的大小(行数，列数)
-       row:行索引
-       col:列索引
- * 返回
-       int
-       返回二维索引(row，col)对应的一维索引值
- * 补充
-       设一个二维空间大小为m*n
-       一个二维索引为x、y，即索引第x行，第y列
-       如果以行优先将二维空间展开为一维空间
-       那么二维索引对应的一维索引为
-       x*n + y
-\*************************************************************************************************/
-int get_array_lindex(Array *a, int row, int col)
-{
-    int index[] = {col, row};
-    return get_lindex(a, index);
-}
-
-/*************************************************************************************************\
- * 描述
-       将一维索引转换为二维索引
- * 参数
-       size:int类型列表，大小为2(size[0], size[1])
-             表示一个二维空间的大小(行数，列数)
-       index:一维索引值
- * 返回
-       int*
-       返回一维索引对应的二维索引
- * 补充
-       设一个二维空间大小为m*n
-       一个一维索引为index
-       那么一维索引对应的二维索引为
-       index / n, index % n
-\*************************************************************************************************/
-int *get_array_aindex(Array *a, int index)
-{
-    int *lindex = get_mindex(a, index);
-    int x = lindex[0];
-    lindex[0] = lindex[1];
-    lindex[1] = x;
-    return lindex;
-}
-
-/*************************************************************************************************\
- * 描述
        以二维索引方式，索引矩阵元素
  * 参数
        a:待索引矩阵
@@ -190,67 +127,10 @@ int *get_array_aindex(Array *a, int index)
        float
        返回索引到的元素值
 \*************************************************************************************************/
-float get_array_pixel(Array *a, int row, int col)
+float get_pixel_ar(Array *a, int row, int col)
 {
     int index[] = {col, row};
     return get_pixel(a, index);
-}
-
-/*************************************************************************************************\
- * 描述
-       获取矩阵中最小元素值
- * 参数
-       a:待获取矩阵
- * 返回
-       float
-       矩阵中的最小元素值
-\*************************************************************************************************/
-float get_array_min(Array *a)
-{
-    return get_min(a);
-}
-
-/*************************************************************************************************\
- * 描述
-       获取矩阵中最大元素值
- * 参数
-       a:待获取矩阵
- * 返回
-       float
-       矩阵中的最大元素值
-\*************************************************************************************************/
-float get_array_max(Array *a)
-{
-    return get_max(a);
-}
-
-/*************************************************************************************************\
- * 描述
-       计算矩阵元素的算数平均值
- * 参数
-       a:待计算矩阵
- * 返回
-       float
-       矩阵的算数平均值
-\*************************************************************************************************/
-float get_array_mean(Array *a)
-{
-    return get_mean(a);
-}
-
-/*************************************************************************************************\
- * 描述
-       获取矩阵中指定数值元素个数
- * 参数
-       a:待统计的矩阵
-       x:指定的数值
- * 返回
-       int
-       返回矩阵中指定数值元素个数
-\*************************************************************************************************/
-int pixel_num_array(Array *a, float x)
-{
-    return get_num(a, x);
 }
 
 /*************************************************************************************************\
@@ -265,7 +145,7 @@ int pixel_num_array(Array *a, float x)
  * 返回
        void
 \*************************************************************************************************/
-void change_array_pixel(Array *a, int row, int col, float x)
+void change_pixel_ar(Array *a, int row, int col, float x)
 {
     int index[] = {col, row};
     change_pixel(a, index, x);
@@ -281,76 +161,13 @@ void change_array_pixel(Array *a, int row, int col, float x)
  * 返回
        void
 \*************************************************************************************************/
-void resize_array(Array *a, int row, int col)
+void resize_ar(Array *a, int row, int col)
 {
     int *size = malloc(2*sizeof(int));
     size[0] = col;
     size[1] = row;
     resize(a, 2, size);
     free(size);
-}
-
-/*************************************************************************************************\
- * 描述
-       获取矩阵某一行（以列表形式返回）
- * 参数
-       a:待获取矩阵
-       row:待获取的行（1开始）
- * 返回
-       float*
-       获取的行数据列表
-\*************************************************************************************************/
-float *get_row_in_array(Array *a, int row)
-{
-    int size = a->size[0];
-    int offset = (row-1)*size;
-    float *data = malloc(size*sizeof(float));
-    memcpy_float_list(data, a->data, 0, offset, size);
-    return data;
-}
-
-/*************************************************************************************************\
- * 描述
-       获取矩阵某一列（以列表形式返回）
- * 参数
-       a:待获取矩阵
-       col:待获取的列（1开始）
- * 返回
-       float*
-       获取的列数据列表
-\*************************************************************************************************/
-float *get_col_in_array(Array *a, int col)
-{
-    int x = a->size[0];
-    int y = a->size[1];
-    float *data = malloc(y*sizeof(float));
-    for (int i = 0; i < x; ++i){
-        data[i] = get_array_pixel(a, i+1, col);
-    }
-    return data;
-}
-
-/*************************************************************************************************\
- * 描述
-       获取矩阵对角线元素（以列表形式返回）
- * 参数
-       a:待获取矩阵
-       flag:1代表主对角线，0代表斜对角线
- * 返回
-       float*
-       获取的对角线数据列表
-\*************************************************************************************************/
-float *get_diagonal_in_array(Array *a, int flag)
-{
-    int x = a->size[0];
-    int y = a->size[1];
-    int min = (x<y) ? x : y;
-    float *data = malloc(min*sizeof(float));
-    for (int i = 0; i < min; ++i){
-        if (flag) data[i] = get_array_pixel(a, i+1, i+1);
-        else data[i] = get_array_pixel(a, i+1, min-i);
-    }
-    return data;
 }
 
 /*************************************************************************************************\
@@ -369,7 +186,7 @@ Victor *row2Victor(Array *a, int row)
     int offset = (row-1)*size;
     float *data = malloc(size*sizeof(float));
     memcpy_float_list(data, a->data, 0, offset, size);
-    return list_to_Victor(size, 0, data);
+    return victor_list(size, 0, data);
 }
 
 /*************************************************************************************************\
@@ -388,9 +205,9 @@ Victor *col2Victor(Array *a, int col)
     int y = a->size[1];
     float *data = malloc(y*sizeof(float));
     for (int i = 0; i < x; ++i){
-        data[i] = get_array_pixel(a, i+1, col);
+        data[i] = get_pixel_ar(a, i+1, col);
     }
-    return list_to_Victor(y, 1, data);
+    return victor_list(y, 1, data);
 }
 
 /*************************************************************************************************\
@@ -410,10 +227,10 @@ Victor *diagonal2Victor(Array *a, int flag)
     int min = (x<y) ? x : y;
     float *data = malloc(min*sizeof(float));
     for (int i = 0; i < min; ++i){
-        if (flag) data[i] = get_array_pixel(a, i+1, i+1);
-        else data[i] = get_array_pixel(a, i+1, min-i);
+        if (flag) data[i] = get_pixel_ar(a, i+1, i+1);
+        else data[i] = get_pixel_ar(a, i+1, min-i);
     }
-    return list_to_Victor(min, 1, data);
+    return victor_list(min, 1, data);
 }
 
 /*************************************************************************************************\
@@ -426,7 +243,7 @@ Victor *diagonal2Victor(Array *a, int flag)
  * 返回
        void
 \*************************************************************************************************/
-void replace_array_row2list(Array *a, int row, float *list)
+void replace_rowlist(Array *a, int row, float *list)
 {
     int size = a->size[0];
     int index = (row-1)*size;
@@ -443,10 +260,10 @@ void replace_array_row2list(Array *a, int row, float *list)
  * 返回
        void
 \*************************************************************************************************/
-void replace_array_col2list(Array *a, int col, float *list)
+void replace_collist(Array *a, int col, float *list)
 {
     for (int i = 0; i < a->size[1]; ++i){
-        change_array_pixel(a, i+1, col, list[i]);
+        change_pixel_ar(a, i+1, col, list[i]);
     }
 }
 
@@ -460,12 +277,12 @@ void replace_array_col2list(Array *a, int col, float *list)
  * 返回
        void
 \*************************************************************************************************/
-void replace_array_diagonal2list(Array *a, float *list, int flag)
+void replace_diagonalist(Array *a, float *list, int flag)
 {
     int min = (a->size[0] < a->size[1]) ? a->size[0] : a->size[1];
     for (int i = 0; i < min; ++i){
-        if (flag) change_array_pixel(a, i+1, i+1, list[i]);
-        else change_array_pixel(a, i+1, a->size[0]-i, list[i]);
+        if (flag) change_pixel_ar(a, i+1, i+1, list[i]);
+        else change_pixel_ar(a, i+1, a->size[0]-i, list[i]);
     }
 }
 
@@ -479,10 +296,10 @@ void replace_array_diagonal2list(Array *a, float *list, int flag)
  * 返回
        void
 \*************************************************************************************************/
-void replace_array_row_with_x(Array *a, int row, float x)
+void replace_rowx(Array *a, int row, float x)
 {
     for (int i = 0; i < a->size[0]; ++i){
-        change_array_pixel(a, row, i+1, x);
+        change_pixel_ar(a, row, i+1, x);
     }
 }
 
@@ -496,10 +313,10 @@ void replace_array_row_with_x(Array *a, int row, float x)
  * 返回
        void
 \*************************************************************************************************/
-void replace_array_col_with_x(Array *a, int col, float x)
+void replace_colx(Array *a, int col, float x)
 {
     for (int i = 0; i < a->size[1]; ++i){
-        change_array_pixel(a, i+1, col, x);
+        change_pixel_ar(a, i+1, col, x);
     }
 }
 
@@ -513,12 +330,12 @@ void replace_array_col_with_x(Array *a, int col, float x)
  * 返回
        void
 \*************************************************************************************************/
-void replace_diagonal_with_x(Array *a, float x, int flag)
+void replace_diagonalx(Array *a, float x, int flag)
 {
     int min = (a->size[0] < a->size[1]) ? a->size[0] : a->size[1];
     for (int i = 0; i < min; ++i){
-        if (flag) change_array_pixel(a, i+1, i+1, x);
-        else change_array_pixel(a, i+1, a->size[0]-i, x);
+        if (flag) change_pixel_ar(a, i+1, i+1, x);
+        else change_pixel_ar(a, i+1, a->size[0]-i, x);
     }
 }
 
@@ -531,7 +348,7 @@ void replace_diagonal_with_x(Array *a, float x, int flag)
  * 返回
        void
 \*************************************************************************************************/
-void del_row_in_array(Array *a, int row)
+void del_row(Array *a, int row)
 {
     a->num -= a->size[0];
     float *data = malloc((a->num)*sizeof(float));
@@ -551,7 +368,7 @@ void del_row_in_array(Array *a, int row)
  * 返回
        void
 \*************************************************************************************************/
-void del_col_in_array(Array *a, int col)
+void del_col(Array *a, int col)
 {
     a->num -= a->size[1];
     float *data = malloc((a->num)*sizeof(float));
@@ -590,7 +407,7 @@ void del_col_in_array(Array *a, int col)
             a31  a32  a33  a34                        a41  a42  a43  a44
             a41  a42  a43  a44                        x1   x2   x3   x4
 \*************************************************************************************************/
-void insert_row_in_array(Array *a, int index, float *data)
+void insert_row(Array *a, int index, float *data)
 {
     a->num += a->size[0];
     float *new_data = malloc(a->num*sizeof(float));
@@ -626,7 +443,7 @@ void insert_row_in_array(Array *a, int index, float *data)
             x3  a31  a32  a33  a34                    a31  a32  a33  a34  x3
             x4  a41  a42  a43  a44                    a41  a42  a43  a44  x4
 \*************************************************************************************************/
-void insert_col_in_array(Array *a, int index, float *data)
+void insert_col(Array *a, int index, float *data)
 {
     a->num += a->size[1];
     float *new_data = malloc((a->num)*sizeof(float));
@@ -641,12 +458,12 @@ void insert_col_in_array(Array *a, int index, float *data)
     a->size[0] += 1;
 }
 
-void replace_part_array(Array *a, Array *b, int row, int col)
+void replace_part(Array *a, Array *b, int row, int col)
 {
-    int *index = malloc(2*sizeof(int));
-    index[0] = col;
-    index[1] = row;
-    replace_part(a, b, index);
+    // int *index = malloc(2*sizeof(int));
+    // index[0] = col;
+    // index[1] = row;
+    // replace_part(a, b, index);
 }
 
 /*************************************************************************************************\
@@ -667,7 +484,7 @@ void replace_part_array(Array *a, Array *b, int row, int col)
        a:                                       b:
             a11  a12  a13                             b11  b12
             a21  a22  a23                             b21  b22
-      
+
        dim:1
        由于a、b行数相同，所以只能向列（第二维）合并
 
@@ -751,19 +568,6 @@ Array *slice_array(Array *a, int rowu, int rowd, int coll, int colr)
 
 /*************************************************************************************************\
  * 描述
-       删除矩阵，回收内存
- * 参数
-       a：待删除矩阵
- * 返回
-       void
-\*************************************************************************************************/
-void del_array(Array *a)
-{
-    del(a);
-}
-
-/*************************************************************************************************\
- * 描述
        对矩阵进行左右翻转
  * 参数
        a：待处理矩阵
@@ -780,7 +584,7 @@ void del_array(Array *a)
             a23  a22  a21
             a33  a32  a31
 \*************************************************************************************************/
-void array_overturn_lr(Array *a)
+void overturn_lr(Array *a)
 {
     int x = a->size[1];
     int y = a->size[0];
@@ -813,7 +617,7 @@ void array_overturn_lr(Array *a)
             a21  a22  a23
             a11  a12  a13
 \*************************************************************************************************/
-void array_overturn_ud(Array *a)
+void overturn_ud(Array *a)
 {
     int x = a->size[1];
     int y = a->size[0];
@@ -837,7 +641,7 @@ void array_overturn_ud(Array *a)
  * 返回
        void
 \*************************************************************************************************/
-void array_overturn_diagonal(Array *a, int flag)
+void overturn_diagonal(Array *a, int flag)
 {
     float *data = malloc(a->num*sizeof(float));
     for (int i = 0; i < a->size[1]; ++i){
@@ -862,7 +666,7 @@ void array_overturn_diagonal(Array *a, int flag)
  * 返回
        void
 \*************************************************************************************************/
-void array_rotate_left(Array *a, int k)
+void rotate_left(Array *a, int k)
 {
     k %= 4;
     if (k == 0) return;
@@ -881,8 +685,8 @@ void array_rotate_left(Array *a, int k)
         a->data = data;
     }
     if (k == 2){
-        array_overturn_ud(a);
-        array_overturn_lr(a);
+        overturn_ud(a);
+        overturn_lr(a);
     }
     if (k == 3){
         int x = a->size[1];
@@ -909,7 +713,7 @@ void array_rotate_left(Array *a, int k)
  * 返回
        void
 \*************************************************************************************************/
-void array_rotate_right(Array *a, int k)
+void rotate_right(Array *a, int k)
 {
     k %= 4;
     if (k == 0) return;
@@ -928,8 +732,8 @@ void array_rotate_right(Array *a, int k)
         a->data = data;
     }
     if (k == 2){
-        array_overturn_ud(a);
-        array_overturn_lr(a);
+        overturn_ud(a);
+        overturn_lr(a);
     }
     if (k == 3){
         int x = a->size[1];
@@ -956,7 +760,7 @@ void array_rotate_right(Array *a, int k)
  * 返回
        void
 \*************************************************************************************************/
-void exchange2row_in_array(Array *a, int rowx, int rowy)
+void exchange2row(Array *a, int rowx, int rowy)
 {
     int y = a->size[0];
     for (int i = 0; i < y; ++i){
@@ -975,7 +779,7 @@ void exchange2row_in_array(Array *a, int rowx, int rowy)
  * 返回
        void
 \*************************************************************************************************/
-void exchange2col_in_array(Array *a, int colx, int coly)
+void exchange2col(Array *a, int colx, int coly)
 {
     int x = a->size[1];
     int y = a->size[0];
@@ -996,7 +800,7 @@ void exchange2col_in_array(Array *a, int colx, int coly)
 \*************************************************************************************************/
 void transposition(Array *a)
 {
-    array_overturn_diagonal(a, 1);
+    overturn_diagonal(a, 1);
 }
 
 /*************************************************************************************************\
@@ -1008,7 +812,7 @@ void transposition(Array *a)
        Array*
        矩阵a的逆矩阵
 \*************************************************************************************************/
-Array *array_inverse(Array *a)
+Array *inverse(Array *a)
 {
     int x = a->size[1];
     int y = a->size[0];
@@ -1027,38 +831,24 @@ Array *array_inverse(Array *a)
                 return res;
             }
             // 交换矩阵两行
-            exchange2row_in_array(a, i+1, key+1);
-            exchange2row_in_array(res, i+1, key+1);
+            exchange2row(a, i+1, key+1);
+            exchange2row(res, i+1, key+1);
         }
         float scalar = 1.0 / a->data[i*y+i];
-        array_multiply_row_x(a, i, scalar);
-        array_multiply_row_x(res, i, scalar);
+        row_multx(a, i, scalar);
+        row_multx(res, i, scalar);
         for (int k = 0; k < x; ++k) {
             if (i == k) {
                 continue;
             }
             float shear_needed = -a->data[k*y+i];
             // 行乘以一个系数加到另一行
-            array_rowmulti_add_to_row(a, i, k, shear_needed);
-            array_rowmulti_add_to_row(res, i, k, shear_needed);
+            add_multrow2r(a, i, k, shear_needed);
+            add_multrow2r(res, i, k, shear_needed);
         }
         key = -1;
     }
     return res;
-}
-
-/*************************************************************************************************\
- * 描述
-       求矩阵中所有元素之和
- * 参数
-       a：待求矩阵
- * 返回
-       float
-       元素之和
-\*************************************************************************************************/
-float sum_array(Array *a)
-{
-    return sum_float_list(a->data, 0, a->num);
 }
 
 /*************************************************************************************************\
@@ -1070,12 +860,12 @@ float sum_array(Array *a)
        float
        矩阵的迹
 \*************************************************************************************************/
-float get_trace(Array *a)
+float trace(Array *a)
 {
     int x = a->size[1];
     int y = a->size[0];
     int min = (x < y) ? x : y;
-    float *diagonal = get_diagonal_in_array(a, 1);
+    float *diagonal = diagonal2Victor(a, 1)->data;
     float res = 0;
     for (int i = 0; i < min; ++i){
         res += diagonal[i];
@@ -1092,7 +882,7 @@ float get_trace(Array *a)
        Array*
        相加后的新矩阵
 \*************************************************************************************************/
-Array *array_add(Array *a, Array *b)
+Array *add_ar(Array *a, Array *b)
 {
     int x = a->size[1];
     int y = a->size[0];
@@ -1115,7 +905,7 @@ Array *array_add(Array *a, Array *b)
        Array*
        相减后的新矩阵
 \*************************************************************************************************/
-Array *array_subtract(Array *a, Array *b)
+Array *subtract_ar(Array *a, Array *b)
 {
     int x = a->size[1];
     int y = a->size[0];
@@ -1138,7 +928,7 @@ Array *array_subtract(Array *a, Array *b)
        Array*
        相除后的新矩阵
 \*************************************************************************************************/
-Array *array_divide(Array *a, Array *b)
+Array *divide_ar(Array *a, Array *b)
 {
     int x = a->size[1];
     int y = a->size[0];
@@ -1160,7 +950,7 @@ Array *array_divide(Array *a, Array *b)
        Array*
        相乘后的新矩阵
 \*************************************************************************************************/
-Array *array_x_multiply(Array *a, Array *b)
+Array *multiply_ar(Array *a, Array *b)
 {
     int x = a->size[1];
     int y = a->size[0];
@@ -1182,7 +972,7 @@ Array *array_x_multiply(Array *a, Array *b)
  * 返回
        void
 \*************************************************************************************************/
-void array_add_x(Array *a, float x)
+void add_arx(Array *a, float x)
 {
     int m = a->size[1];
     int n = a->size[0];
@@ -1203,7 +993,7 @@ void array_add_x(Array *a, float x)
  * 返回
        void
 \*************************************************************************************************/
-void array_add_row_x(Array *a, int row, float x)
+void row_addx(Array *a, int row, float x)
 {
     int y = a->size[0];
     for (int i = 0; i < y; ++i){
@@ -1221,40 +1011,12 @@ void array_add_row_x(Array *a, int row, float x)
  * 返回
        void
 \*************************************************************************************************/
-void array_add_col_x(Array *a, int col, float x)
+void col_addx(Array *a, int col, float x)
 {
     int m = a->size[1];
     int n = a->size[0];
     for (int i = 0; i < m; ++i){
         a->data[i*n+col-1] += x;
-    }
-}
-
-void array_subtract_x(Array *a, float x)
-{
-    int m = a->size[1];
-    int n = a->size[0];
-    for (int i = 0; i < m; ++i){
-        for (int j = 0; j < n; ++j){
-            a->data[i*n+j] -= x;
-        }
-    }
-}
-
-void array_subtract_row_x(Array *a, int row, float x)
-{
-    int y = a->size[0];
-    for (int i = 0; i < y; ++i){
-        a->data[row*y+i] -= x;
-    }
-}
-
-void array_subtract_col_x(Array *a, int col, float x)
-{
-    int m = a->size[1];
-    int n = a->size[0];
-    for (int i = 0; i < m; ++i){
-        a->data[i*n+col] -= x;
     }
 }
 
@@ -1267,7 +1029,7 @@ void array_subtract_col_x(Array *a, int col, float x)
  * 返回
        void
 \*************************************************************************************************/
-void array_multiply_x(Array *a, float x)
+void array_multx(Array *a, float x)
 {
     int m = a->size[1];
     int n = a->size[0];
@@ -1288,7 +1050,7 @@ void array_multiply_x(Array *a, float x)
  * 返回
        void
 \*************************************************************************************************/
-void array_multiply_row_x(Array *a, int row, float x)
+void row_multx(Array *a, int row, float x)
 {
     int y = a->size[0];
     for (int i = 0; i < y; ++i){
@@ -1306,43 +1068,12 @@ void array_multiply_row_x(Array *a, int row, float x)
  * 返回
        void
 \*************************************************************************************************/
-void array_multiply_col_x(Array *a, int col, float x)
+void col_multx(Array *a, int col, float x)
 {
     int m = a->size[1];
     int n = a->size[0];
     for (int i = 0; i < m; ++i){
         a->data[i*n+col-1] *= x;
-    }
-}
-
-void array_divide_x(Array *a, float x)
-{
-    if (x == 0) printf("警告，被除数为0\n");
-    int m = a->size[1];
-    int n = a->size[0];
-    for (int i = 0; i < m; ++i){
-        for (int j = 0; j < n; ++j){
-            a->data[i*n+j] /= x;
-        }
-    }
-}
-
-void array_divide_row_x(Array *a, int row, float x)
-{
-    if (x == 0) printf("警告，被除数为0\n");
-    int y = a->size[0];
-    for (int i = 0; i < y; ++i){
-        a->data[row*y+i] /= x;
-    }
-}
-
-void array_divide_col_x(Array *a, int col, float x)
-{
-    if (x == 0) printf("警告，被除数为0\n");
-    int m = a->size[1];
-    int n = a->size[0];
-    for (int i = 0; i < m; ++i){
-        a->data[i*n+col] /= x;
     }
 }
 
@@ -1355,7 +1086,7 @@ void array_divide_col_x(Array *a, int col, float x)
  * 返回
        void
 \*************************************************************************************************/
-void array_add_row_to_row(Array *a, int row1, int row2)
+void add_row2r(Array *a, int row1, int row2)
 {
     int y = a->size[0];
     for (int i = 0; i < y; ++i){
@@ -1372,7 +1103,7 @@ void array_add_row_to_row(Array *a, int row1, int row2)
  * 返回
        void
 \*************************************************************************************************/
-void array_add_col_to_col(Array *a, int col1, int col2)
+void add_col2c(Array *a, int col1, int col2)
 {
     int m = a->size[1];
     int n = a->size[0];
@@ -1391,7 +1122,7 @@ void array_add_col_to_col(Array *a, int col1, int col2)
  * 返回
        void
 \*************************************************************************************************/
-void array_rowmulti_add_to_row(Array *a, int row1, int row2, float x)
+void add_multrow2r(Array *a, int row1, int row2, float x)
 {
     int y = a->size[0];
     for (int i = 0; i < y; ++i){
@@ -1409,7 +1140,7 @@ void array_rowmulti_add_to_row(Array *a, int row1, int row2, float x)
  * 返回
        void
 \*************************************************************************************************/
-void array_colmulti_add_to_col(Array *a, int col1, int col2, float x)
+void add_multcol2c(Array *a, int col1, int col2, float x)
 {
     int m = a->size[1];
     int n = a->size[0];
@@ -1455,7 +1186,7 @@ Array *gemm(Array *a, Array *b)
  * 返回
        void
 \*************************************************************************************************/
-void array_saxpy(Array *ax, Array *ay, float x)
+void saxpy(Array *ax, Array *ay, float x)
 {
     saxpy(ax, ay, x);
 }
@@ -1469,13 +1200,13 @@ void array_saxpy(Array *ax, Array *ay, float x)
        float
        求得的结果
 \*************************************************************************************************/
-float array_1norm(Array *a)
+float norm1_ar(Array *a)
 {
     float res = -9999;
     for (int i = 0; i < a->size[0]; ++i){
         float sum = 0;
         for (int j = 0; j < a->size[1]; ++j){
-            sum += get_array_pixel(a, j+1, i+1);
+            sum += get_pixel_ar(a, j+1, i+1);
         }
         if (res < sum){
             res = sum;
@@ -1493,7 +1224,7 @@ float array_1norm(Array *a)
        float
        求得的结果
 \*************************************************************************************************/
-float array_2norm(Array *a)
+float norm2_ar(Array *a)
 {
     return 0;
 }
@@ -1507,13 +1238,13 @@ float array_2norm(Array *a)
        float
        求得的结果
 \*************************************************************************************************/
-float array_infinite_norm(Array *a)
+float infnorm_ar(Array *a)
 {
     float res = -9999;
     for (int i = 0; i < a->size[1]; ++i){
         float sum = 0;
         for (int j = 0; j < a->size[0]; ++j){
-            sum += get_array_pixel(a, i+1, j+1);
+            sum += get_pixel_ar(a, i+1, j+1);
         }
         if (res < sum){
             res = sum;
@@ -1531,7 +1262,7 @@ float array_infinite_norm(Array *a)
        float
        求得的结果
 \*************************************************************************************************/
-float array_frobenius_norm(Array *a)
+float fronorm_ar(Array *a)
 {
     float res = 0;
     for (int i = 0; i < a->num; ++i){
@@ -1552,37 +1283,36 @@ float array_frobenius_norm(Array *a)
 \*************************************************************************************************/
 Victor *__householder_v(Victor *x, float *beta)
 {
-    Victor *m = slice_Victor(x, 1, x->num);
-    show_array(m);
-    Victor *mt = copy_victor(m);
+    Victor *m = slice_vt(x, 1, x->num);
+    Victor *mt = copy(m);
     transposition(mt);
-    float theta = Victor_x_multiply(mt, m)->data[0];
-    Victor *v = copy_victor(x);
-    ts->data[0] = 1;
+	float theta = multiply_ar(mt, m)->data[0];
+    Victor *v = copy(x);
+    // ts->data[0] = 1;
     beta[0] = 0;
     if (theta != 0){
         float u = sqrt(x->data[0]*x->data[0] + theta);
         if (x->data[0] <= 0) v->data[0] = x->data[0] - u;
         else v->data[0] = -theta / (x->data[0] + u);
         beta[0] = (2*v->data[0]*v->data[0]) / (theta + v->data[0]*v->data[0]);
-        Victor_divide_x(v, v->data[0]);
+        array_multx(v, -v->data[0]);
     }
-    del_Victor(m);
-    del_Victor(mt);
+    del(m);
+    del(mt);
     return v;
 }
 
 Array *__householder_a(Victor *v, float beta)
 {
     Array *In = array_unit(v->num, v->num, 1, 1);
-    Array *vt = copy_array(v);
+    Array *vt = copy(v);
     transposition(vt);
-    Array *k = array_x_multiply(v, vt);
-    array_multiply_x(k, beta);
-    Array *P = array_subtract(In, k);
-    del_array(In);
-    del_array(vt);
-    del_array(k);
+    Array *k = multiply_ar(v, vt);
+    array_multx(k, beta);
+    Array *P = subtract_ar(In, k);
+    del(In);
+    del(vt);
+    del(k);
     return P;
 }
 
@@ -1617,33 +1347,33 @@ float *givens(float a, float b)
 
 Array *givens_rotate(Array *a, int i, int k, float c, float s)
 {
-    Array *res = copy_array(a);
+    Array *res = copy(a);
     for (int j = 0; j < res->size[0]; ++j){
-        float x = get_array_pixel(res, j, i);
-        float y = get_array_pixel(res, j, k);
-        change_array_pixel(res, j, i, c*x - s*y);
-        change_array_pixel(res, j, k, s*x + c*y);
+        float x = get_pixel_ar(res, j, i);
+        float y = get_pixel_ar(res, j, k);
+        change_pixel_ar(res, j, i, c*x - s*y);
+        change_pixel_ar(res, j, k, s*x + c*y);
     }
     return res;
 }
 
 Array *__householder_QR(Array *a, Array *r, Array *q)
 {
-    Array *res = copy_array(a);
+    Array *res = copy(a);
     for (int i = 0; i < res->size[1]; ++i){
         Array *x = slice_array(res, i+1, res->size[0], i+1, i+1);
-        Victor *y = list_to_Victor(x->num, 1, x->data);
+        Victor *y = victor_list(x->num, 1, x->data);
         float *beta = malloc(sizeof(float));
         Victor *v = __householder_v(y, beta);
         Array *house = __householder_a(v, beta[0]);
 
         Array *apart = slice_array(res, i, res->size[0], i, res->size[1]);
-        Array *rpart = array_x_multiply(house, apart);
-        replace_part_array(res, rpart, i, i);
+        Array *rpart = multiply_ar(house, apart);
+        replace_part(res, rpart, i, i);
         if (i < res->size[0]){
-            Victor *vpart = slice_Victor(v, 2, res->size[0]-i+1);
+            Victor *vpart = slice_vt(v, 2, res->size[0]-i+1);
             for (int j = i+1; j < res->size[0]; ++j){
-                change_array_pixel(res, j, i, vpart->data[j-i-1]);
+                change_pixel_ar(res, j, i, vpart->data[j-i-1]);
             }
         }
     }

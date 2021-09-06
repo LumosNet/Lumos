@@ -44,8 +44,8 @@ void test()
     128, 129, 130, 131  \
     };
 
-    tensor *m = list_to_tensor(3, size, list);
-    tensor *n = list_to_tensor(3, size_m, list_m);
+    tensor *m = tensor_list(3, size, list);
+    tensor *n = tensor_list(3, size_m, list_m);
 
     int num = 4*4*(4+2);
     float *workspace = malloc(num*sizeof(float));

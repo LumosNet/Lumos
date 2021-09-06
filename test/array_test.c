@@ -27,7 +27,7 @@ void test_get_array_index(Array *a, int row, int col)
     printf("Index: (%d,%d)\n", lindex[0], lindex[1]);
 }
 
-void test_get_array_pixel()
+void test_get_pixel_ar()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -36,7 +36,7 @@ void test_get_array_pixel()
     13, 14, 15, 16  \
     };
     Array *a = array_list(4, 4, list);
-    float pixel = get_array_pixel(a, 3, 2);
+    float pixel = get_pixel_ar(a, 3, 2);
     printf("Pixel: %f\n", pixel);
 }
 
@@ -66,7 +66,7 @@ void test_pixel_num_array()
     printf("num: %d\n", num);
 }
 
-void test_change_array_pixel()
+void test_change_pixel_ar()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -75,11 +75,11 @@ void test_change_array_pixel()
     13, 14, 15, 16  \
     };
     Array *a = array_list(4, 4, list);
-    change_array_pixel(a, 4, 4, 0.12);
+    change_pixel_ar(a, 4, 4, 0.12);
     show_array(a);
 }
 
-void test_resize_array()
+void test_resize_ar()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -89,7 +89,7 @@ void test_resize_array()
     };
     Array *a = array_list(4, 4, list);
     show_array(a);
-    resize_array(a, 8, 2);
+    resize_ar(a, 8, 2);
     show_array(a);
 }
 
@@ -196,7 +196,7 @@ void test_get_diagonal_in_array()
     printf("\n");
 }
 
-void test_replace_array_row2list()
+void test_replace_rowlist()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -206,11 +206,11 @@ void test_replace_array_row2list()
     };
     Array *a = array_list(4, 4, list);
     float data[] = {0.1, 0.2, 0.3, 0.4};
-    replace_array_row2list(a, 4, data);
+    replace_rowlist(a, 4, data);
     show_array(a);
 }
 
-void test_replace_array_col2list()
+void test_replace_collist()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -220,11 +220,11 @@ void test_replace_array_col2list()
     };
     Array *a = array_list(4, 4, list);
     float data[] = {0.1, 0.2, 0.3, 0.4};
-    replace_array_col2list(a, 1, data);
+    replace_collist(a, 1, data);
     show_array(a);
 }
 
-void test_replace_array_diagonal2list()
+void test_replace_diagonalist()
 {
     /*
     float list[] = {\
@@ -245,11 +245,11 @@ void test_replace_array_diagonal2list()
     };
     Array *a = array_list(5, 4, list);
     float data[] = {0.1, 0.2, 0.3, 0.4};
-    replace_array_diagonal2list(a, data, 1);
+    replace_diagonalist(a, data, 1);
     show_array(a);
 }
 
-void test_replace_array_row_with_x()
+void test_replace_rowx()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -258,11 +258,11 @@ void test_replace_array_row_with_x()
     13, 14, 15, 16  \
     };
     Array *a = array_list(4, 4, list);
-    replace_array_row_with_x(a, 1, 0.5);
+    replace_rowx(a, 1, 0.5);
     show_array(a);
 }
 
-void test_replace_array_col_with_x()
+void test_replace_colx()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -271,11 +271,11 @@ void test_replace_array_col_with_x()
     13, 14, 15, 16  \
     };
     Array *a = array_list(4, 4, list);
-    replace_array_col_with_x(a, 4, 0.5);
+    replace_colx(a, 4, 0.5);
     show_array(a);
 }
 
-void test_replace_diagonal_with_x()
+void test_replace_diagonalx()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -295,11 +295,11 @@ void test_replace_diagonal_with_x()
     };
     Array *a = array_list(5, 4, list);
     */
-    replace_diagonal_with_x(a, 0.5, 1);
+    replace_diagonalx(a, 0.5, 1);
     show_array(a);
 }
 
-void test_del_row_in_array()
+void test_del_row()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -308,11 +308,11 @@ void test_del_row_in_array()
     13, 14, 15, 16  \
     };
     Array *a = array_list(4, 4, list);
-    del_row_in_array(a, 1);
+    del_row(a, 1);
     show_array(a);
 }
 
-void test_del_col_in_array()
+void test_del_col()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -321,25 +321,11 @@ void test_del_col_in_array()
     13, 14, 15, 16  \
     };
     Array *a = array_list(4, 4, list);
-    del_col_in_array(a, 4);
+    del_col(a, 4);
     show_array(a);
 }
 
-void test_insert_row_in_array()
-{
-    float list[] = {\
-    1 ,  2,  3,  4, \
-    5 ,  6,  7,  8, \
-    9 , 10, 11, 12, \
-    13, 14, 15, 16  \
-    };
-    Array *a = array_list(4, 4, list);
-    float data[] = {0.1,0.2,0.3,0.4};
-    insert_row_in_array(a, 1, data);
-    show_array(a);
-}
-
-void test_insert_col_in_array()
+void test_insert_row()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -349,11 +335,25 @@ void test_insert_col_in_array()
     };
     Array *a = array_list(4, 4, list);
     float data[] = {0.1,0.2,0.3,0.4};
-    insert_col_in_array(a, 1, data);
+    insert_row(a, 1, data);
     show_array(a);
 }
 
-void test_replace_part_array()
+void test_insert_col()
+{
+    float list[] = {\
+    1 ,  2,  3,  4, \
+    5 ,  6,  7,  8, \
+    9 , 10, 11, 12, \
+    13, 14, 15, 16  \
+    };
+    Array *a = array_list(4, 4, list);
+    float data[] = {0.1,0.2,0.3,0.4};
+    insert_col(a, 1, data);
+    show_array(a);
+}
+
+void test_replace_part()
 {
     float list1[] = {\
     1 ,  2,  3,  4, \
@@ -368,7 +368,7 @@ void test_replace_part_array()
     };
     Array *a = array_list(4, 4, list1);
     Array *b = array_list(2, 3, list2);
-    replace_part_array(a, b, 3, 2);
+    replace_part(a, b, 3, 2);
     show_array(a);
 }
 
@@ -407,7 +407,7 @@ void test_slice_array()
     show_array(b);
 }
 
-void test_array_overturn_lr()
+void test_overturn_lr()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -416,11 +416,11 @@ void test_array_overturn_lr()
     13, 14, 15, 16  \
     };
     Array *a = array_list(4, 4, list);
-    array_overturn_lr(a);
+    overturn_lr(a);
     show_array(a);
 }
 
-void test_array_overturn_ud()
+void test_overturn_ud()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -429,11 +429,11 @@ void test_array_overturn_ud()
     13, 14, 15, 16  \
     };
     Array *a = array_list(4, 4, list);
-    array_overturn_ud(a);
+    overturn_ud(a);
     show_array(a);
 }
 
-void test_array_overturn_diagonal()
+void test_overturn_diagonal()
 {
     /*
     float list[] = {\
@@ -453,11 +453,11 @@ void test_array_overturn_diagonal()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_overturn_diagonal(a, 0);
+    overturn_diagonal(a, 0);
     show_array(a);
 }
 
-void test_array_rotate_left()
+void test_rotate_left()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -467,11 +467,11 @@ void test_array_rotate_left()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_rotate_left(a, 2);
+    rotate_left(a, 2);
     show_array(a);
 }
 
-void test_array_rotate_right()
+void test_rotate_right()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -481,11 +481,11 @@ void test_array_rotate_right()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_rotate_right(a, 2);
+    rotate_right(a, 2);
     show_array(a);
 }
 
-void test_exchange2row_in_array()
+void test_exchange2row()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -495,11 +495,11 @@ void test_exchange2row_in_array()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    exchange2row_in_array(a, 1, 5);
+    exchange2row(a, 1, 5);
     show_array(a);
 }
 
-void test_exchange2col_in_array()
+void test_exchange2col()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -509,7 +509,7 @@ void test_exchange2col_in_array()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    exchange2col_in_array(a, 1, 4);
+    exchange2col(a, 1, 4);
     show_array(a);
 }
 
@@ -527,17 +527,17 @@ void test_transposition()
     show_array(a);
 }
 
-void test_array_inverse()
+void test_inverse()
 {
     
     float list[] = {\
     0,1,2,1,0,3,4,-3,8
     };
     Array *a = array_list(3,3, list);
-    Array *res = array_inverse(a);
+    Array *res = inverse(a);
     show_array(res);
 }
-void test_get_trace()
+void test_trace()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -547,11 +547,11 @@ void test_get_trace()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    float f = get_trace(a);
+    float f = trace(a);
     show_array(a);
     printf("矩阵的迹 %f",f);
 }
-void test_array_add()
+void test_add_ar()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -562,7 +562,7 @@ void test_array_add()
     };
     Array *a = array_list(5, 4 , list);
     show_array(a);
-    Array *res =  array_add(a,a);
+    Array *res =  add_ar(a,a);
     show_array(res);
 }
 void test_array_substract()
@@ -577,10 +577,10 @@ void test_array_substract()
     Array *a = array_list(5, 4, list);
     show_array(a);
     printf("相减完成之后的是--\n");
-    Array *b = array_subtract(a,a);
+    Array *b = subtract_ar(a,a);
     show_array(b);
 }
-void test_array_divide()
+void test_divide_ar()
 {
      float list[] = {\
     1 ,  2,  3,  4, \
@@ -591,10 +591,10 @@ void test_array_divide()
     };
     Array *a = array_list(4, 5, list);
     show_array(a);
-    Array *b = array_divide(a,a);
+    Array *b = divide_ar(a,a);
     show_array(b);
 }
-void test_array_x_multiply()
+void test_multiply_ar()
 {
     float lista[] = {\
      1,  2,  3,  4, \
@@ -610,11 +610,11 @@ void test_array_x_multiply()
     };
     Array *a = array_list(4, 4, lista);
     Array *b = array_list(4, 4, listb);
-    Array *c = array_x_multiply(a, b);
+    Array *c = multiply_ar(a, b);
     show_array(c);
 }
 
-void test_array_add_x()
+void test_add_arx()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -624,11 +624,11 @@ void test_array_add_x()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_add_x(a, 1);
+    add_arx(a, 1);
     show_array(a);
 }
 
-void test_array_add_row_x()
+void test_row_addx()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -638,11 +638,11 @@ void test_array_add_row_x()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_add_row_x(a, 1, 2);
+    row_addx(a, 1, 2);
     show_array(a);
 }
 
-void test_array_add_col_x()
+void test_col_addx()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -652,11 +652,11 @@ void test_array_add_col_x()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_add_col_x(a, 1, 2);
+    col_addx(a, 1, 2);
     show_array(a);
 }
 
-void test_array_multiply_x()
+void test_array_multx()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -666,11 +666,11 @@ void test_array_multiply_x()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_multiply_x(a, 2);
+    array_multx(a, 2);
     show_array(a);
 }
 
-void test_array_multiply_row_x()
+void test_row_multx()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -680,11 +680,11 @@ void test_array_multiply_row_x()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_multiply_row_x(a, 1, 2);
+    row_multx(a, 1, 2);
     show_array(a);
 }
 
-void test_array_multiply_col_x()
+void test_col_multx()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -694,11 +694,11 @@ void test_array_multiply_col_x()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_multiply_col_x(a, 1, 2);
+    col_multx(a, 1, 2);
     show_array(a);
 }
 
-void test_array_add_row_to_row()
+void test_add_row2r()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -708,11 +708,11 @@ void test_array_add_row_to_row()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_add_row_to_row(a, 1, 2);
+    add_row2r(a, 1, 2);
     show_array(a);
 }
 
-void test_array_add_col_to_col()
+void test_add_col2c()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -722,11 +722,11 @@ void test_array_add_col_to_col()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_add_col_to_col(a, 1, 2);
+    add_col2c(a, 1, 2);
     show_array(a);
 }
 
-void test_array_rowmulti_add_to_row()
+void test_add_multrow2r()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -736,11 +736,11 @@ void test_array_rowmulti_add_to_row()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_rowmulti_add_to_row(a, 1, 2, 2);
+    add_multrow2r(a, 1, 2, 2);
     show_array(a);
 }
 
-void test_array_colmulti_add_to_col()
+void test_add_multcol2c()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -750,7 +750,7 @@ void test_array_colmulti_add_to_col()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    array_colmulti_add_to_col(a, 1, 2 ,2);
+    add_multcol2c(a, 1, 2 ,2);
     show_array(a);
 }
 
@@ -775,7 +775,7 @@ void test_gemm()
     show_array(res);
 }
 
-void test_array_saxpy()
+void test_saxpy()
 {
     float list1[] = {\
     1 ,  2,  3,  4, \
@@ -792,11 +792,11 @@ void test_array_saxpy()
     };
     Array *a = array_list(5, 4, list1);
     Array *b = array_list(5, 4, list2);
-    array_saxpy(a, b, 3);
+    saxpy(a, b, 3);
     show_array(a);
 }
 
-void test_array_1norm()
+void test_norm1_ar()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -806,7 +806,7 @@ void test_array_1norm()
     17, 18, 19, 20  \
     };
     Array *a = array_list(5, 4, list);
-    float res = array_frobenius_norm(a);
+    float res = fronorm_ar(a);
     printf("Array 1-norm: %f\n", res);
 }
 
@@ -815,7 +815,7 @@ void test_householder()
     float list[] = {\
     1, 2, 3, 4, 5 \
     };
-    Victor *v = list_to_Victor(5, 1, list);
+    Victor *v = victor_list(5, 1, list);
     float *beta = malloc(sizeof(float));
     Victor *hv = householder(v, beta);
     printf("Beta: %f\n", beta[0]);

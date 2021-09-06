@@ -30,26 +30,11 @@ struct index_list
 
 typedef struct index_list index_list;
 
-typedef struct session{
-    tensor*   (*copy)();
-    void      (*tsprint)();
-    int       (*pixel_num)();
-    int       (*get_index)();
-    float     (*get_pixel)();
-    void      (*change_pixel)();
-    void      (*resize)();
-    void      (*slice)();
-    void      (*merge)();
-    float     (*get_sum)();
-    float     (*get_min)();
-    float     (*get_max)();
-    float     (*get_mean)();
-    void      (*del)();
-} session, Session;
-
 tensor *tensor_x(int dim, int *size, float x);
 tensor *tensor_list(int dim, int *size, float *list);
 Tensor *tensor_sparse(int dim, int *size, int **index, float *list, int n);
+
+void tsprint(tensor *ts);
 
 tensor *copy(tensor *ts);
 void tsprint(tensor *ts);

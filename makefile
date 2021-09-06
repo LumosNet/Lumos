@@ -10,10 +10,10 @@ CC=gcc
 CPP=g++
 
 LDFLAGS= -lm
-COMMON= -Iinclude/ -Isrc -std=c99
+COMMON= -Iinclude/ -Isrc -std=c99 -fopenmp
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 
-OBJ=list.o tensor.o
+OBJ=array.o list.o tensor.o victor.o session.o
 EXECOBJA=tensor_create.o
 
 EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
