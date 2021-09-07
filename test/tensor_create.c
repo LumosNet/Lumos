@@ -10,11 +10,14 @@
 
 int main(int argc, char **argv)
 {
-    float list1[] = {1, 2, 3};
-    float list2[] = {-1, -2, -3};
-    Victor *v1 = victor_list(3, 1, list1);
-    Victor *v2 = victor_list(3, 1, list2);
-    float res = mse(v1, v2);
-    printf("%f\n", res);
+    // float list1[] = {1, 2, 3};
+    // float list2[] = {-1, -2, -3};
+    // Victor *v1 = victor_list(3, 1, list1);
+    // Victor *v2 = victor_list(3, 1, list2);
+    // float res = mse(v1, v2);
+    // printf("%f\n", res);
+
+    Array *a = array_x(0, 3, 0);
+    tsprint(a);
     return 0;
 }
