@@ -1,5 +1,6 @@
 #include "cluster.h"
 
+// K_Means聚类算法
 ClusterPile *k_means(Array *data, ClusterPile *initial, LossFunc lossfunc)
 {
     ClusterK *new_classes;
@@ -20,6 +21,7 @@ ClusterPile *k_means(Array *data, ClusterPile *initial, LossFunc lossfunc)
     return new_pile;
 }
 
+// 根据聚类中心对数据重分类
 ClusterK *__classify(Array *data, ClusterPile *pile, LossFunc lossfunc)
 {
     ClusterK *clusterk = malloc(sizeof(ClusterK));
@@ -34,14 +36,12 @@ ClusterK *__classify(Array *data, ClusterPile *pile, LossFunc lossfunc)
     for (int i = 0; i < data->size[1]; ++i){
         Victor *x = row2Victor(data, i+1);
         float loss = -1;
-        MiddelVt *best_mvt;
         int index = -1;
         for (int j = 0; j < pile->k; ++j){
             MiddelVt *vt = pile->pile[j];
             float lossk = lossfunc(x, vt->vt);
             if (lossk <= loss){
                 loss = lossk;
-                best_mvt = vt;
                 index = j;
             }
         }
@@ -53,6 +53,7 @@ ClusterK *__classify(Array *data, ClusterPile *pile, LossFunc lossfunc)
     return clusterk;
 }
 
+// 计算聚类中心（中心向量）
 ClusterPile *__middlevt(ClusterK *pile)
 {
     ClusterPile *clusterpile = malloc(sizeof(ClusterPile));

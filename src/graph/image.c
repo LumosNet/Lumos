@@ -12,34 +12,9 @@ Image *create_image(int w, int h, int c)
     size[0] = w;
     size[1] = h;
     size[2] = c;
-    Image *image = create_matrix(3, size);
+    Image *image = tensor_x(3, size, 0);
     free(size);
     return image;
-}
-
-Image *copy_image(Image *img)
-{
-    return copy_matrix(img);
-}
-
-float min_pixel(Image *img)
-{
-    return get_matrix_min(img);
-}
-
-float max_pixel(Image *img)
-{
-    return get_matrix_max(img);
-}
-
-float pixel_mean(Image *img)
-{
-    return get_matrix_mean(img);
-}
-
-int pixel_num_image(Image *img, float x)
-{
-    return pixel_num_matrix(img, x);
 }
 
 int *census_image_pixel(Image *img)

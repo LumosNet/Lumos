@@ -3,8 +3,14 @@
 
 #include <math.h>
 
+#include "image.h"
 #include "tensor.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef GRAY
 // 图像反转
 Image *img_reversal(Image *img);
 
@@ -31,7 +37,10 @@ Image *bit_restructure(Image **imgs, int *bit_index, int len);
 Image *histogram_equalization(Image *img);
 // 对图像某一channel进行直方图均衡
 void __histogram_equalization_channel(Image *o_img, Image *a_img, int c);
+#endif
 
-// 直方图匹配/直方图规定化
+#ifdef  __cplusplus
+}
+#endif
 
 #endif

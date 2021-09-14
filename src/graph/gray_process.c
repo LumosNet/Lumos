@@ -1,5 +1,7 @@
 #include "gray_process.h"
 
+#ifdef GRAY
+
 Image *img_reversal(Image *img)
 {
     Image *new_img = copy_image(img);
@@ -120,3 +122,5 @@ void __histogram_equalization_channel(Image *o_img, Image *a_img, int c)
     free(num);
     free(gray_level);
 }
+
+#endif
