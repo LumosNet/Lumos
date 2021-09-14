@@ -1,6 +1,8 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include <string.h>
+
 #include "tensor.h"
 
 #ifdef __cplusplus

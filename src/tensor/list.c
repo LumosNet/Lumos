@@ -243,6 +243,7 @@ int index_ts2ls(int *index, int dim, int *size)
 {
     int ret = 0;
     for (int i = 0; i < dim; ++i){
+        // if (index[i] < 1 || index[i] > size[i]) return -1;
         int x = index[i]-1;
         for (int j = 0; j < i; ++j){
             x *= size[j];

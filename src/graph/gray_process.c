@@ -124,3 +124,55 @@ void __histogram_equalization_channel(Image *o_img, Image *a_img, int c)
 }
 
 #endif
+
+Image *resize_im(Image *img, int width, int height)
+{
+    Image *resized = create_image(width, height, img->size[2]);
+    Image *part = create_image(width, img->size[1], img->size[2]);
+    int r, c, k;
+    float w_scale = (float)(img->size[0] - 1) / (width - 1);
+    float h_scale = (float)(img->size[1] - 1) / (height - 1);
+    for(k = 0; k < img->size[2]; ++k){
+        for(r = 0; r < img->size[1]; ++r){
+            for(c = 0; c < width; ++c){
+                float val = 0;
+                if(c == width-1 || img->size[0] == 1){
+                    int index[] = {img->size[0]-1, r, k};
+                    val = get_pixel(img, index);
+                } else {
+                    float sx = c*w_scale;
+                    int ix = (int) sx;
+                    float dx = sx - ix;
+                    int index1[] = {ix, r, k};
+                    int index2[] = {ix+1, r, k};
+                    val = (1 - dx) * get_pixel(img, index1) + dx * get_pixel(img, index2);
+                }
+                int index[] = {c, r, k};
+                change_pixel(part, index, val);
+            }
+        }
+    }
+    for(k = 0; k < img->size[2]; ++k){
+        for(r = 0; r < height; ++r){
+            float sy = r*h_scale;
+            int iy = (int) sy;
+            float dy = sy - iy;
+            for(c = 0; c < width; ++c){
+                int index[] = {c, iy, k};
+                int index1[] = {c, r, k};
+                float val = (1-dy) * get_pixel(part, index);
+                change_pixel(resized, index1, val);
+            }
+            if(r == height-1 || img->size[1] == 1) continue;
+            for(c = 0; c < width; ++c){
+                int index[] = {c, iy+1, k};
+                int index1[] = {c, r, k};
+                float val = dy * get_pixel(part, index);
+                int lindex = index_ts2ls(index1, img->dim, img->size);
+                if (lindex >= 0) resized->data[lindex] += val;
+            }
+        }
+    }
+    del(part);
+    return resized;
+}

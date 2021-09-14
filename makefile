@@ -30,7 +30,7 @@ TENSOR=array.o list.o tensor.o victor.o session.o
 OPERATOR=active.o cluster.o loss.o
 GRAPH=gray_process.o image.o
 UTIL=umath.o
-EXECOBJA=tensor_create.o
+EXECOBJA=main.o
 
 ifeq ($(GPU), 1)
 LDFLAGS+= -lstdc++

@@ -1,10 +1,9 @@
+#include "image.h"
+
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
-
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
-#include "image.h"
 
 Image *create_image(int w, int h, int c)
 {
@@ -40,6 +39,7 @@ Image *load_image_data(char *img_path)
 {
     int w, h, c;
     unsigned char *data = stbi_load(img_path, &w, &h, &c, 0);
+    printf("w:%d h:%d c:%d", w, h, c);
     Image *im_new = create_image(w, h, c);
     int i, j, k;
     for(k = 0; k < c; ++k){
