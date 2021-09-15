@@ -137,17 +137,17 @@ Image *resize_im(Image *img, int width, int height)
             for(c = 0; c < width; ++c){
                 float val = 0;
                 if(c == width-1 || img->size[0] == 1){
-                    int index[] = {img->size[0]-1, r, k};
+                    int index[] = {img->size[0], r+1, k+1};
                     val = get_pixel(img, index);
                 } else {
                     float sx = c*w_scale;
                     int ix = (int) sx;
                     float dx = sx - ix;
-                    int index1[] = {ix, r, k};
-                    int index2[] = {ix+1, r, k};
+                    int index1[] = {ix+1, r+1, k+1};
+                    int index2[] = {ix+2, r+1, k+1};
                     val = (1 - dx) * get_pixel(img, index1) + dx * get_pixel(img, index2);
                 }
-                int index[] = {c, r, k};
+                int index[] = {c+1, r+1, k+1};
                 change_pixel(part, index, val);
             }
         }
@@ -158,18 +158,18 @@ Image *resize_im(Image *img, int width, int height)
             int iy = (int) sy;
             float dy = sy - iy;
             for(c = 0; c < width; ++c){
-                int index[] = {c, iy, k};
-                int index1[] = {c, r, k};
+                int index[] = {c+1, iy+1, k+1};
+                int index1[] = {c+1, r+1, k+1};
                 float val = (1-dy) * get_pixel(part, index);
                 change_pixel(resized, index1, val);
             }
             if(r == height-1 || img->size[1] == 1) continue;
             for(c = 0; c < width; ++c){
-                int index[] = {c, iy+1, k};
-                int index1[] = {c, r, k};
+                int index[] = {c+1, iy+2, k+1};
+                int index1[] = {c+1, r+1, k+1};
                 float val = dy * get_pixel(part, index);
-                int lindex = index_ts2ls(index1, img->dim, img->size);
-                if (lindex >= 0) resized->data[lindex] += val;
+                int lindex = index_ts2ls(index1, resized->dim, resized->size);
+                if (lindex) resized->data[lindex] += val;
             }
         }
     }

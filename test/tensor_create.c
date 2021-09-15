@@ -17,7 +17,11 @@ int main(int argc, char **argv)
     // float res = mse(v1, v2);
     // printf("%f\n", res);
 
-    Array *a = array_x(0, 3, 0);
-    tsprint(a);
+    int size[] = {4, 3, 2, 2};
+    tensor *ts = tensor_x(4, size, 1);
+    int index[] = {3, 2, 1, 2};
+    index_ts2ls(index, ts->dim, ts->size);
+    change_pixel(ts, index, 14);
+    tsprint(ts);
     return 0;
 }

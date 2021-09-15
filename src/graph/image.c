@@ -39,7 +39,6 @@ Image *load_image_data(char *img_path)
 {
     int w, h, c;
     unsigned char *data = stbi_load(img_path, &w, &h, &c, 0);
-    printf("w:%d h:%d c:%d", w, h, c);
     Image *im_new = create_image(w, h, c);
     int i, j, k;
     for(k = 0; k < c; ++k){

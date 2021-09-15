@@ -86,24 +86,15 @@ index_list* get_index(tensor *ts, float x)
 
 float get_pixel(tensor *ts, int *index)
 {
-    // for (int i = 0; i < ts->dim; ++i){
-    //     if (index[i] < 1 || index[i] > ts->size[i]){
-    //         return 0;
-    //     }
-    // }
     int ts2ls = index_ts2ls(index, ts->dim, ts->size);
-    return ts->data[ts2ls];
+    if (ts2ls) return ts->data[ts2ls];
+    return 0;
 }
 
 void change_pixel(tensor *ts, int *index, float x)
 {
-    // for (int i = 0; i < ts->dim; ++i){
-    //     if (index[i] < 1 || index[i] > ts->size[i]) {
-    //         return;
-    //     }
-    // }
     int ts2ls = index_ts2ls(index, ts->dim, ts->size);
-    ts->data[ts2ls] = x;
+    if (ts2ls) ts->data[ts2ls] = x;
 }
 
 void resize(tensor *ts, int dim, int *size)
