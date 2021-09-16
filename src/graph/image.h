@@ -10,6 +10,7 @@ extern "C"{
 #endif
 
 typedef Tensor Image;
+typedef Tensor Kernel;
 
 Image *create_image(int w, int h, int c);
 
