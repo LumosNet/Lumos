@@ -118,3 +118,18 @@ Image *resize_im(Image *img, int width, int height)
     del(part);
     return resized;
 }
+
+Image *conv(Image *img, Array **channels, int k, int pad, int stride)
+{
+
+}
+
+Image *ave_pool(Image *img, int ksize)
+{
+
+}
+
+Image *max_pool(Image *img, int ksize)
+{
+    
+}

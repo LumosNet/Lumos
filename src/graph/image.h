@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "tensor.h"
+#include "im2col.h"
 
 #ifdef __cplusplus
 extern "C"{
@@ -24,6 +25,10 @@ void save_image_data(Image *img, char *savepath);
 
 // 双线性内插值
 Image *resize_im(Image *img, int width, int height);
+
+Image *conv(Image *img, Array **channels, int k, int pad, int stride);
+Image *ave_pool(Image *img, int ksize);
+Image *max_pool(Image *img, int ksize);
 
 #ifdef  __cplusplus
 }
