@@ -26,7 +26,6 @@ Tensor *im2col(Image *img, int ksize, int stride, int pad)
             }
         }
     }
-    printf("ok\n");
     Array *colim = array_list(height_col*width_col, ksize*ksize, data_col);
     return colim;
 }
