@@ -2,6 +2,8 @@
 #define IMAGE_H
 
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "tensor.h"
 #include "im2col.h"
@@ -26,8 +28,8 @@ void save_image_data(Image *img, char *savepath);
 // 双线性内插值
 Image *resize_im(Image *img, int width, int height);
 
-Image *conv(Image *img, Array **channels, int k, int pad, int stride);
-Image *ave_pool(Image *img, int ksize);
+Image *conv(Image *img, Array *channel, int pad, int stride);
+Image *avg_pool(Image *img, int ksize);
 Image *max_pool(Image *img, int ksize);
 
 #ifdef  __cplusplus

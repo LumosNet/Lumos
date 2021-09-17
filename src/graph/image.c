@@ -119,17 +119,67 @@ Image *resize_im(Image *img, int width, int height)
     return resized;
 }
 
-Image *conv(Image *img, Array **channels, int k, int pad, int stride)
+Image *conv(Image *img, Array *channel, int pad, int stride)
 {
-
+    int height_col = (img->size[1] + 2*pad - channel->size[0]) / stride + 1;
+    int width_col = (img->size[0] + 2*pad - channel->size[0]) / stride + 1;
+    Array *img2col = im2col(img, channel->size[0], stride, pad);
+    Array *k = copy(channel);
+    resize_ar(k, channel->num, 1);
+    Array *convolutional = gemm(img2col, k);
+    int size[] = {width_col, height_col, 1};
+    resize(convolutional, 3, size);
+    del(k);
+    return convolutional;
 }
 
-Image *ave_pool(Image *img, int ksize)
+Image *avg_pool(Image *img, int ksize)
 {
-
+    Array *channel = array_x(ksize, ksize, (float)1/(ksize*ksize));
+    int height_col = (img->size[1] - ksize) / ksize + 1;
+    int width_col = (img->size[0] - ksize) / ksize + 1;
+    float *data = malloc((height_col*width_col*img->size[2])*sizeof(float));
+    for (int i = 0; i < img->size[2]; ++i){
+        int size[] = {img->size[0], img->size[1], 1};
+        Image *x = tensor_x(3, size, 0);
+        memcpy(x->data, img->data+img->size[0]*img->size[1]*i, img->size[0]*img->size[1]*sizeof(float));
+        Image *pooling = conv(x, channel, 0, ksize);
+        memcpy(data+height_col*width_col*i, pooling->data, pooling->num*sizeof(float));
+        del(x);
+        del(pooling);
+    }
+    int res_size[] = {width_col, height_col, img->size[2]};
+    Image *res = tensor_list(3, res_size, data);
+    del(channel);
+    return res;
 }
 
 Image *max_pool(Image *img, int ksize)
 {
-    
+    Array *channel = array_x(ksize, ksize, (float)1/(ksize*ksize));
+    int height_col = (img->size[1] - ksize) / ksize + 1;
+    int width_col = (img->size[0] - ksize) / ksize + 1;
+    float *data = malloc((height_col*width_col*img->size[2])*sizeof(float));
+    for (int i = 0; i < img->size[2]; ++i){
+        int size[] = {img->size[0], img->size[1], 1};
+        Image *x = tensor_x(3, size, 0);
+        memcpy(x->data, img->data+img->size[0]*img->size[1]*i, img->size[0]*img->size[1]*sizeof(float));
+        Array *img2col = im2col(x, ksize, ksize, 0);
+        // tsprint(img2col);
+        for (int h = 0; h < img2col->size[1]; h++){
+            float max = -999;
+            for (int w = 0; w <img2col->size[0]; w++){
+                int index = h*img2col->size[0] + w;
+                if (img2col->data[index] > max) max = img2col->data[index];
+            }
+            // printf("max: %f\n", max);
+            data[height_col*width_col*i + h] = max;
+        }
+        del(x);
+        del(img2col);
+    }
+    int res_size[] = {width_col, height_col, img->size[2]};
+    Image *res = tensor_list(3, res_size, data);
+    del(channel);
+    return res;
 }
