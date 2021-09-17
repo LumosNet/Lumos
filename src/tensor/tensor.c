@@ -87,7 +87,7 @@ index_list* get_index(tensor *ts, float x)
 float get_pixel(tensor *ts, int *index)
 {
     int ts2ls = index_ts2ls(index, ts->dim, ts->size);
-    if (ts2ls) return ts->data[ts2ls];
+    if (ts2ls >= 0 && ts2ls < ts->num) return ts->data[ts2ls];
     return 0;
 }
 

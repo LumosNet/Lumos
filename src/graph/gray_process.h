@@ -39,9 +39,6 @@ Image *histogram_equalization(Image *img);
 void __histogram_equalization_channel(Image *o_img, Image *a_img, int c);
 #endif
 
-// 采用双线性内插值算法
-Image *resize_im(Image *img, int width, int height);
-
 #ifdef  __cplusplus
 }
 #endif

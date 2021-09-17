@@ -28,7 +28,7 @@ endif
 
 TENSOR=array.o list.o tensor.o victor.o session.o
 OPERATOR=active.o cluster.o loss.o
-GRAPH=gray_process.o image.o
+GRAPH=gray_process.o image.o im2col.o
 UTIL=umath.o
 EXECOBJA=main.o
 
