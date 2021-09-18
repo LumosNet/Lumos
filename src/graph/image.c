@@ -119,7 +119,7 @@ Image *resize_im(Image *img, int width, int height)
     return resized;
 }
 
-Image *conv(Image *img, Array *channel, int pad, int stride)
+Image *forward_conv(Image *img, Array *channel, int pad, int stride)
 {
     int height_col = (img->size[1] + 2*pad - channel->size[0]) / stride + 1;
     int width_col = (img->size[0] + 2*pad - channel->size[0]) / stride + 1;
@@ -133,7 +133,7 @@ Image *conv(Image *img, Array *channel, int pad, int stride)
     return convolutional;
 }
 
-Image *avg_pool(Image *img, int ksize)
+Image *forward_avg_pool(Image *img, int ksize)
 {
     Array *channel = array_x(ksize, ksize, (float)1/(ksize*ksize));
     int height_col = (img->size[1] - ksize) / ksize + 1;
@@ -143,7 +143,7 @@ Image *avg_pool(Image *img, int ksize)
         int size[] = {img->size[0], img->size[1], 1};
         Image *x = tensor_x(3, size, 0);
         memcpy(x->data, img->data+img->size[0]*img->size[1]*i, img->size[0]*img->size[1]*sizeof(float));
-        Image *pooling = conv(x, channel, 0, ksize);
+        Image *pooling = forward_conv(x, channel, 0, ksize);
         memcpy(data+height_col*width_col*i, pooling->data, pooling->num*sizeof(float));
         del(x);
         del(pooling);
@@ -154,7 +154,7 @@ Image *avg_pool(Image *img, int ksize)
     return res;
 }
 
-Image *max_pool(Image *img, int ksize)
+Image *forward_max_pool(Image *img, int ksize, int *index)
 {
     Array *channel = array_x(ksize, ksize, (float)1/(ksize*ksize));
     int height_col = (img->size[1] - ksize) / ksize + 1;
@@ -165,15 +165,18 @@ Image *max_pool(Image *img, int ksize)
         Image *x = tensor_x(3, size, 0);
         memcpy(x->data, img->data+img->size[0]*img->size[1]*i, img->size[0]*img->size[1]*sizeof(float));
         Array *img2col = im2col(x, ksize, ksize, 0);
-        // tsprint(img2col);
         for (int h = 0; h < img2col->size[1]; h++){
             float max = -999;
+            int max_index = -1;
             for (int w = 0; w <img2col->size[0]; w++){
-                int index = h*img2col->size[0] + w;
-                if (img2col->data[index] > max) max = img2col->data[index];
+                int mindex = h*img2col->size[0] + w;
+                if (img2col->data[mindex] > max){
+                    max = img2col->data[mindex];
+                    max_index = (i*img->size[1]*img->size[0])+(h/width_col*ksize+w/ksize)*img->size[0]+(h%width_col*ksize+w%ksize);
+                }
             }
-            // printf("max: %f\n", max);
             data[height_col*width_col*i + h] = max;
+            index[height_col*width_col*i + h] = max_index;
         }
         del(x);
         del(img2col);
@@ -182,4 +185,31 @@ Image *max_pool(Image *img, int ksize)
     Image *res = tensor_list(3, res_size, data);
     del(channel);
     return res;
+}
+
+Image *backward_avg_pool(Image *img, int ksize, int height, int width)
+{
+    Image *origin = create_image(width, height, img->size[2]);
+    for (int c = 0; c < img->size[2]; ++c){
+        for (int i = 0; i < height; ++i){
+            for (int j = 0; j < width; ++j){
+                int height_index = i / ksize;
+                int width_index = j / ksize;
+                int index[] = {width_index+1, height_index+1, c+1};
+                int indexl[] = {j+1, i+1, c+1};
+                float val = (float)get_pixel(img, index)/(ksize*ksize);
+                change_pixel(origin, indexl, val);
+            }
+        }
+    }
+    return origin;
+}
+
+Image *backward_max_pool(Image *img, int ksize, int height, int width, int *index)
+{
+    Image *origin = create_image(width, height, img->size[2]);
+    for (int i = 0; i < img->num; ++i){
+        origin->data[index[i]] = img->data[i];
+    }
+    return origin;
 }
