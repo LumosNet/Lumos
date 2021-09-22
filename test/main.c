@@ -13,6 +13,5 @@
 int main(int argc, char **argv)
 {
     Network *net = load_network("./cfg/lumos.cfg");
-    printf("ok\n");
     return 0;
 }

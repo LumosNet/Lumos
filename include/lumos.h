@@ -18,8 +18,8 @@ typedef struct tensor{
 
 typedef tensor array, Array, victor, Victor, image, Image, matrix, Matrix;
 
-typedef float (*activate)(float);
-typedef float (*gradient)(float);
+typedef float   (*activate)(float);
+typedef float   (*gradient)(float);
 
 typedef activate Activate;
 typedef gradient Gradient;
@@ -58,6 +58,7 @@ typedef struct layer layer;
 typedef struct layer{
     LayerType type;
     PoolingType pool;
+    int *index;
     Tensor *input;
     Tensor *output;
 
