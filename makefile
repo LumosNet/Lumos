@@ -7,7 +7,7 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
       	-gencode arch=compute_52,code=[sm_52,compute_52] \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
 
-VPATH=./src/tensor:./src/operator:./src/utils:./src/graph:./include/:./test
+VPATH=./src/:./test
 EXEC=main.exe
 OBJDIR=./obj/
 
@@ -15,9 +15,10 @@ DEBUG = 0
 
 CC=gcc
 CPP=g++
+NVCC=nvcc
 
 LDFLAGS= -lm -pthread
-COMMON= -Iinclude/ -Isrc/tensor -Isrc/operator -Isrc/utils -Isrc/graph -std=c99 -fopenmp
+COMMON= -Iinclude/ -Isrc -std=c99 -fopenmp
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 
 ifeq ($(GPU), 1)
@@ -26,11 +27,7 @@ CFLAGS+= -DGPU
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 endif
 
-TENSOR=array.o list.o tensor.o victor.o session.o
-OPERATOR=active.o cluster.o loss.o
-GRAPH=gray_process.o image.o im2col.o
-NETWORK=convolutional_layer.o network.o
-UTIL=umath.o parser.o utils.o
+OBJ=array.o list.o tensor.o victor.o session.o active.o cluster.o loss.o gray_process.o image.o im2col.o convolution.o pooling.o network.o convolutional_layer.o pooling_layer.o activation_layer.o umath.o parser.o utils.o
 EXECOBJA=main.o
 
 ifeq ($(GPU), 1)
@@ -46,17 +43,13 @@ COMMON += -DDEBUG
 endif
 
 EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
-TENSORS = $(addprefix $(OBJDIR), $(TENSOR))
-OPERATORS = $(addprefix $(OBJDIR), $(OPERATOR))
-GRAPHS = $(addprefix $(OBJDIR), $(GRAPH))
-NETWORKS = $(addprefix $(OBJDIR), $(NETWORK))
-UTILS = $(addprefix $(OBJDIR), $(UTIL))
-DEPS = $(wildcard src/*.h) makefile
+OBJS = $(addprefix $(OBJDIR), $(OBJ))
+DEPS = $(wildcard src/*.h) makefile include/lumos.h
 
 all: obj $(EXEC)
 #all: obj $(EXEC)
 
-$(EXEC): $(TENSORS) $(OPERATORS) $(GRAPHS) $(NETWORK) $(UTILS) $(EXECOBJ)
+$(EXEC): $(OBJS) $(EXECOBJ)
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(OBJDIR)%.o: %.cpp $(DEPS)

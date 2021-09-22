@@ -2,6 +2,9 @@
 #define ACTIVE_H
 
 #include <math.h>
+#include <string.h>
+
+#include "lumos.h"
 
 #ifdef  __cplusplus
 extern "C" {
@@ -73,6 +76,11 @@ static inline float ramp_gradient(float x){return (x>0)+.1;}
 static inline float leaky_gradient(float x){return (x>0) ? 1 : .1;}
 static inline float tanh_gradient(float x){return 1-x*x;}
 static inline float plse_gradient(float x){return (x < 0 || x > 1) ? .01 : .125;}
+
+Activation load_activate_type(char *activate);
+
+Activate load_activate(Activation TYPE);
+Gradient load_gradient(Activation TYPE);
 
 #ifdef  __cplusplus
 }

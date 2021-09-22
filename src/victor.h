@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <math.h>
 
+#include "lumos.h"
 #include "tensor.h"
 #include "array.h"
 

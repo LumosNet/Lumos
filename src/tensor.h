@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "lumos.h"
 #include "list.h"
 
 #ifdef  __cplusplus
@@ -11,16 +12,6 @@ extern "C" {
 #endif
 
 #define SESSIONT
-
-/* 行优先存储 */
-typedef struct tensor{
-    int       dim;
-    int       *size;
-    int       num;
-    float     *data;
-} tensor, Tensor;
-
-typedef tensor array, Array, victor, Victor, image, Image, matrix, Matrix;
 
 struct index_list
 {

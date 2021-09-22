@@ -4,38 +4,65 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "tensor.h"
-#include "array.h"
-#include "victor.h"
-#include "list.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef enum {
-    STAIR, HARDTAN, LINEAR, LOGISTIC, LOGGY, RELU, \
-    ELU, SELU, RELIE, RAMP, LEAKY, TANH, PLSE, LHTAN
-} activation, Activation;
+/* 行优先存储 */
+typedef struct tensor{
+    int       dim;
+    int       *size;
+    int       num;
+    float     *data;
+} tensor, Tensor;
+
+typedef tensor array, Array, victor, Victor, image, Image, matrix, Matrix;
+
+typedef float (*activate)(float);
+typedef float (*gradient)(float);
+
+typedef activate Activate;
+typedef gradient Gradient;
 
 typedef enum {
-    CONVOLUTIONAL, MAXPOOL, AVGPOOL, ACTIVE
-} layer_type, LayerType;
+    STAIR,
+    HARDTAN,
+    LINEAR,
+    LOGISTIC,
+    LOGGY,
+    RELU,
+    ELU,
+    SELU,
+    RELIE,
+    RAMP,
+    LEAKY,
+    TANH,
+    PLSE,
+    LHTAN
+} Activation;
 
-typedef struct network{
-    int n;
-    int batch;
-    Layer **layers;
-} network, Network, NetWork;
+typedef enum {
+    CONVOLUTIONAL, POOLING, ACTIVE, FULLCONNECT
+} LayerType;
+
+typedef enum {
+    MAX, AVG
+} PoolingType;
+
+struct network;
+typedef struct network network;
+
+struct layer;
+typedef struct layer layer;
 
 typedef struct layer{
     LayerType type;
-    Activation activation;
+    PoolingType pool;
     Tensor *input;
     Tensor *output;
 
+    int filters;
     int ksize;
-    int n;
     int stride;
     int pad;
 
@@ -43,7 +70,18 @@ typedef struct layer{
 
     void (*forward)  (struct layer , struct network);
     void (*backward) (struct layer , struct network);
+    Activate active;
+    Gradient gradient;
 } layer, Layer;
+
+typedef struct network{
+    int n;
+    int batch;
+    int width;
+    int height;
+    float learning_rate;
+    Layer **layers;
+} network, Network, NetWork;
 
 #ifdef __cplusplus
 }

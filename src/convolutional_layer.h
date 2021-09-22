@@ -2,14 +2,14 @@
 #define CONVOLUTIONAL_LAYER_H
 
 #include "active.h"
-#include "image.h"
-#include "im2col.h"
+#include "convolution.h"
 
 #ifdef __cplusplus
 extern "C"{
 #endif
 
-
+void forward_convolutional_layer(Layer *l, Network *net);
+void backward_convolutional_layer(Layer *l, Network *net);
 
 #ifdef __cplusplus
 }

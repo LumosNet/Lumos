@@ -28,13 +28,6 @@ void save_image_data(Image *img, char *savepath);
 // 双线性内插值
 Image *resize_im(Image *img, int width, int height);
 
-Image *forward_conv(Image *img, Array *channel, int pad, int stride);
-Image *forward_avg_pool(Image *img, int ksize);
-Image *forward_max_pool(Image *img, int ksize, int *index);
-
-Image *backward_avg_pool(Image *img, int ksize, int height, int width);
-Image *backward_max_pool(Image *img, int ksize, int height, int width, int *index);
-
 #ifdef  __cplusplus
 }
 #endif
