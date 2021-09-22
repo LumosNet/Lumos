@@ -1,17 +1,11 @@
-#include "image.h"
-#include "gray_process.h"
-#include "array.h"
-#include "im2col.h"
-#include "parser.h"
-#include "utils.h"
+#include "network.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-int main(int argc, char **argv)
+Network *load_network(char **cfg)
 {
     NetParams *p = load_data_cfg("./cfg/lumos.cfg");
     Node *n = p->head;
+
+    LayerParams 
     while (n){
         LayerParams *l = n->val;
         printf("%s\n", l->type);
@@ -23,5 +17,4 @@ int main(int argc, char **argv)
         }
         n = n->next;
     }
-    return 0;
 }

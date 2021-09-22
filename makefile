@@ -29,7 +29,8 @@ endif
 TENSOR=array.o list.o tensor.o victor.o session.o
 OPERATOR=active.o cluster.o loss.o
 GRAPH=gray_process.o image.o im2col.o
-UTIL=umath.o
+NETWORK=convolutional_layer.o network.o
+UTIL=umath.o parser.o utils.o
 EXECOBJA=main.o
 
 ifeq ($(GPU), 1)
@@ -48,13 +49,14 @@ EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
 TENSORS = $(addprefix $(OBJDIR), $(TENSOR))
 OPERATORS = $(addprefix $(OBJDIR), $(OPERATOR))
 GRAPHS = $(addprefix $(OBJDIR), $(GRAPH))
+NETWORKS = $(addprefix $(OBJDIR), $(NETWORK))
 UTILS = $(addprefix $(OBJDIR), $(UTIL))
 DEPS = $(wildcard src/*.h) makefile
 
 all: obj $(EXEC)
 #all: obj $(EXEC)
 
-$(EXEC): $(TENSORS) $(OPERATORS) $(GRAPHS) $(UTILS) $(EXECOBJ)
+$(EXEC): $(TENSORS) $(OPERATORS) $(GRAPHS) $(NETWORK) $(UTILS) $(EXECOBJ)
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(OBJDIR)%.o: %.cpp $(DEPS)
