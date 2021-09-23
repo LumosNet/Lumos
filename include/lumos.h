@@ -59,8 +59,11 @@ typedef struct layer{
     LayerType type;
     PoolingType pool;
     int *index;
-    Tensor *input;
-    Tensor *output;
+    Tensor **input;
+    Tensor **output;
+
+    int width;
+    int height;
 
     int filters;
     int ksize;

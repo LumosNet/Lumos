@@ -10,7 +10,7 @@ Image *forward_avg_pool(Image *img, int ksize)
         int size[] = {img->size[0], img->size[1], 1};
         Image *x = tensor_x(3, size, 0);
         memcpy(x->data, img->data+img->size[0]*img->size[1]*i, img->size[0]*img->size[1]*sizeof(float));
-        Image *pooling = forward_conv(x, channel, 0, ksize);
+        Image *pooling = forward_convolutional(x, channel, 0, ksize);
         memcpy(data+height_col*width_col*i, pooling->data, pooling->num*sizeof(float));
         del(x);
         del(pooling);

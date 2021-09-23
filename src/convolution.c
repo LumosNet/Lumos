@@ -1,6 +1,6 @@
 #include "convolution.h"
 
-Image *forward_conv(Image *img, Array *channel, int pad, int stride)
+Image *forward_convolutional(Image *img, Array *channel, int pad, int stride)
 {
     int height_col = (img->size[1] + 2*pad - channel->size[0]) / stride + 1;
     int width_col = (img->size[0] + 2*pad - channel->size[0]) / stride + 1;

@@ -81,3 +81,13 @@ Layer *create_layer(LayerParams *p)
 }
 
 void add_layer2net(Network *net, Layer *l);
+
+void forward_network(Network *net)
+{
+
+}
+
+void backward_network(Network *net)
+{
+    
+}

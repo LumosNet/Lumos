@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-Image *forward_conv(Image *img, Array *channel, int pad, int stride);
+Image *forward_convolutional(Image *img, Array *channel, int pad, int stride);
 
 #ifdef __cplusplus
 }
