@@ -46,7 +46,7 @@ EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
 OBJS = $(addprefix $(OBJDIR), $(OBJ))
 DEPS = $(wildcard src/*.h) makefile include/lumos.h
 
-all: obj $(EXEC)
+all: obj results $(EXEC)
 #all: obj $(EXEC)
 
 $(EXEC): $(OBJS) $(EXECOBJ)
@@ -63,6 +63,8 @@ $(OBJDIR)%.o: %.cu $(DEPS)
 
 obj:
 	mkdir obj
+results:
+	mkdir results
 
 .PHONY: clean
 
