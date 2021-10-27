@@ -11,7 +11,7 @@ void forward_pooling_layer(Layer *l, Network *net)
     if (l){
         for (int i = 0; i < net->batch; ++i){
             if (l->pool == MAX){
-                Image *img = l->input;
+                Image *img = l->input[i];
                 int height_col = (img->size[1] - l->ksize) / l->ksize + 1;
                 int width_col = (img->size[0] - l->ksize) / l->ksize + 1;
                 l->index = malloc((height_col*width_col*img->size[2])*sizeof(int));
@@ -27,7 +27,7 @@ void backward_pooling_layer(Layer *l, Network *net)
 {
     if (l){
         for (int i = 0; i < net->batch; ++i){
-            Image *img = l->input;
+            Image *img = l->input[i];
             if (l->pool == MAX){
                 l->input[i] = backward_max_pool(l->output[i], l->ksize, img->size[1], img->size[0], l->index);
             } else {
