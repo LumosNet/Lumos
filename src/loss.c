@@ -1,9 +1,9 @@
 #include "loss.h"
 
-float mse(Victor *yi, Victor *yh)
+float mse(Vector *yi, Vector *yh)
 {
-    Victor *y = subtract_ar(yi, yh);
-    victor *x = copy(y);
+    Vector *y = subtract_ar(yi, yh);
+    Vector *x = copy(y);
     transposition(x);
     Tensor *ts = gemm(x, y);
     float res = ts->data[0] / yi->num;
@@ -13,7 +13,7 @@ float mse(Victor *yi, Victor *yh)
     return res;
 }
 
-float mae(Victor *yi, Victor *yh)
+float mae(Vector *yi, Vector *yh)
 {
     int sum = 0;
     for (int i = 0; i < yi->num; ++i){
@@ -22,7 +22,7 @@ float mae(Victor *yi, Victor *yh)
     return sum / yi->num;
 }
 
-float huber(Victor *yi, Victor *yh, float theta)
+float huber(Vector *yi, Vector *yh, float theta)
 {
     float huber = 0;
     for (int i = 0; i < yi->num; ++i){
@@ -33,7 +33,7 @@ float huber(Victor *yi, Victor *yh, float theta)
     return huber / yi->num;
 }
 
-float quantile(Victor *yi, Victor *yh, float r)
+float quantile(Vector *yi, Vector *yh, float r)
 {
     float quant = 0;
     for (int i = 0; i < yi->num; ++i){
@@ -46,7 +46,7 @@ float quantile(Victor *yi, Victor *yh, float r)
     return quant / yi->num;
 }
 
-float cross_entropy(Victor *yi, Victor *yh)
+float cross_entropy(Vector *yi, Vector *yh)
 {
     float entropy = 0;
     for (int i = 0; i < yi->num; ++i){
@@ -55,7 +55,7 @@ float cross_entropy(Victor *yi, Victor *yh)
     return -entropy;
 }
 
-float hinge(Victor *yi, Victor *yh)
+float hinge(Vector *yi, Vector *yh)
 {
     float hinge = 0;
     for (int i = 0; i < yi->num; ++i){

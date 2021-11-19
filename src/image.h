@@ -21,6 +21,8 @@ Image *create_image(int w, int h, int c);
 int *census_image_pixel(Image *img);
 // 统计通道中不同灰度等级的像素点数量
 int *census_channel_pixel(Image *img, int c);
+// 获取图像通道数
+int get_channels(Image *img);
 
 Image *load_image_data(char *img_path);
 void save_image_data(Image *img, char *savepath);

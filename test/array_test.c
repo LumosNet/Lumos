@@ -127,7 +127,7 @@ void test_get_col_in_array()
     printf("\n");
 }
 
-void test_row2Victor()
+void test_row2Vector()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -136,11 +136,11 @@ void test_row2Victor()
     13, 14, 15, 16  \
     };
     Array *a = array_list(4, 4, list);
-    Victor *v = row2Victor(a, 1);
+    Vector *v = row2Vector(a, 1);
     show_array(v);
 }
 
-void test_col2Victor()
+void test_col2Vector()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -149,11 +149,11 @@ void test_col2Victor()
     13, 14, 15, 16  \
     };
     Array *a = array_list(4, 4, list);
-    Victor *v = col2Victor(a, 1);
+    Vector *v = col2Vector(a, 1);
     show_array(v);
 }
 
-void test_diagonal2Victor()
+void test_diagonal2Vector()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -162,7 +162,7 @@ void test_diagonal2Victor()
     13, 14, 15, 16  \
     };
     Array *a = array_list(4, 4, list);
-    Victor *v = diagonal2Victor(a, 0);
+    Vector *v = diagonal2Vector(a, 0);
     show_array(v);
 }
 
@@ -815,9 +815,9 @@ void test_householder()
     float list[] = {\
     1, 2, 3, 4, 5 \
     };
-    Victor *v = victor_list(5, 1, list);
+    Vector *v = Vector_list(5, 1, list);
     float *beta = malloc(sizeof(float));
-    Victor *hv = householder(v, beta);
+    Vector *hv = householder(v, beta);
     printf("Beta: %f\n", beta[0]);
     show_array(hv);
 }

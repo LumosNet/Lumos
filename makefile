@@ -1,5 +1,5 @@
-LINUX = 0
-GPU=0
+LINUX=1 
+GPU=1
 DEBUG=0
 
 ARCH= 	-gencode arch=compute_35,code=sm_35 \
@@ -27,7 +27,7 @@ CFLAGS+= -DGPU
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 endif
 
-OBJ=array.o list.o tensor.o victor.o session.o active.o cluster.o loss.o gray_process.o image.o im2col.o convolution.o pooling.o network.o convolutional_layer.o pooling_layer.o activation_layer.o umath.o parser.o utils.o
+OBJ=array.o list.o tensor.o Vector.o session.o active.o cluster.o loss.o gray_process.o image.o im2col.o convolution.o pooling.o network.o convolutional_layer.o pooling_layer.o activation_layer.o umath.o parser.o utils.o
 EXECOBJA=test.o
 
 ifeq ($(GPU), 1)

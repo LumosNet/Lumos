@@ -1,49 +1,49 @@
-#include "victor.h"
+#include "Vector.h"
 
-Victor *victor_x(int num, int flag, float x)
+Vector *Vector_x(int num, int flag, float x)
 {
     if (flag) return array_x(num, 1, x);
     else return array_x(1, num, x);
 }
 
-Victor *victor_list(int num, int flag, float *list)
+Vector *Vector_list(int num, int flag, float *list)
 {
     if (flag) return array_list(num, 1, list);
     else return array_list(1, num, list);
 }
 
 /* 0代表行向量, 1代表列向量 */
-int colorrow(Victor *v)
+int colorrow(Vector *v)
 {
     if (v->size[0] > 1) return 0;
     return 1;
 }
 
-float get_pixel_vt(Victor *v, int index)
+float get_pixel_vt(Vector *v, int index)
 {
     return v->data[index];
 }
 
-void change_pixel_vt(Victor *v, int index, float x)
+void change_pixel_vt(Vector *v, int index, float x)
 {
     v->data[index] = x;
 }
 
-void replace_vtlist(Victor *v, float *list)
+void replace_vtlist(Vector *v, float *list)
 {
     for (int i = 0; i < v->num; ++i){
         v->data[i] = list[i];
     }
 }
 
-void replace_vtx(Victor *v, float x)
+void replace_vtx(Vector *v, float x)
 {
     for (int i = 0; i < v->num; ++i){
         v->data[i] = x;
     }
 }
 
-void del_pixel(Victor *v, int index)
+void del_pixel(Vector *v, int index)
 {
     int flag = v->size[0] > v->size[1] ? 0 : 1;
     v->size[flag] -= 1;
@@ -55,7 +55,7 @@ void del_pixel(Victor *v, int index)
     v->data = data;
 }
 
-void insert_pixel(Victor *v, int index, float x)
+void insert_pixel(Vector *v, int index, float x)
 {
     int flag = v->size[0] > v->size[1] ? 0 : 1;
     v->size[flag] += 1;
@@ -68,74 +68,74 @@ void insert_pixel(Victor *v, int index, float x)
     v->data = data;
 }
 
-Victor *merge_vt(Victor *a, Victor *b, int index)
+Vector *merge_vt(Vector *a, Vector *b, int index)
 {
     int flag = a->size[0] > a->size[1] ? 0 : 1;
-    Victor *res = victor_x(a->num + b->num, flag, 0);
+    Vector *res = Vector_x(a->num + b->num, flag, 0);
     memcpy(res->data, a->data, a->num*sizeof(float));
     memcpy(res->data+a->num, b->data, b->num*sizeof(float));
     return res;
 }
 
-Victor *slice_vt(Victor *v, int index_h, int index_t)
+Vector *slice_vt(Vector *v, int index_h, int index_t)
 {
     int flag = v->size[0] > v->size[1] ? 0 : 1;
-    Victor *res = victor_x(index_t-index_h, flag, 0);
+    Vector *res = Vector_x(index_t-index_h, flag, 0);
     memcpy(res->data, v->data+index_h, (index_t-index_h)*sizeof(float));
     return res;
 }
 
-Victor *add_vt(Victor *a, Victor *b)
+Vector *add_vt(Vector *a, Vector *b)
 {
-    Victor *res = copy(a);
+    Vector *res = copy(a);
     for (int i = 0; i < a->num; ++i){
         res->data[i] += b->data[i];
     }
     return res;
 }
 
-Victor *subtract_vt(Victor *a, Victor *b)
+Vector *subtract_vt(Vector *a, Vector *b)
 {
-    Victor *res = copy(a);
+    Vector *res = copy(a);
     for (int i = 0; i < a->num; ++i){
         res->data[i] -= b->data[i];
     }
     return res;
 }
 
-Victor *divide_vt(Victor *a, Victor *b)
+Vector *divide_vt(Vector *a, Vector *b)
 {
-    Victor *res = copy(a);
+    Vector *res = copy(a);
     for (int i = 0; i < a->num; ++i){
         res->data[i] /= (float)b->data[i];
     }
     return res;
 }
 
-Victor *multiply_vt(Victor *a, Victor *b)
+Vector *multiply_vt(Vector *a, Vector *b)
 {
-    Victor *res = copy(a);
+    Vector *res = copy(a);
     for (int i = 0; i < a->num; ++i){
         res->data[i] *= b->data[i];
     }
     return res;
 }
 
-void add_vtx(Victor *v, float x)
+void add_vtx(Vector *v, float x)
 {
     for (int i = 0; i < v->num; ++i){
         v->data[i] += x;
     }
 }
 
-void victor_multx(Victor *v, float x)
+void Vector_multx(Vector *v, float x)
 {
     for (int i = 0; i < v->num; ++i){
         v->data[i] *= x;
     }
 }
 
-float norm1_vt(Victor *v)
+float norm1_vt(Vector *v)
 {
     float res = 0;
     for (int i = 0; i < v->num; ++i){
@@ -144,7 +144,7 @@ float norm1_vt(Victor *v)
     return res;
 }
 
-float norm2_vt(Victor *v)
+float norm2_vt(Vector *v)
 {
     float res = 0;
     for (int i = 0; i < v->num; ++i){
@@ -154,7 +154,7 @@ float norm2_vt(Victor *v)
     return res;
 }
 
-float normp_vt(Victor *v, int p)
+float normp_vt(Vector *v, int p)
 {
     float res = 0;
     for (int i = 0; i < v->num; ++i){
@@ -164,13 +164,13 @@ float normp_vt(Victor *v, int p)
     return res;
 }
 
-float infnorm_vt(Victor *v)
+float infnorm_vt(Vector *v)
 {
     float res = get_max(v);
     return res;
 }
 
-float ninfnorm_vt(Victor *v)
+float ninfnorm_vt(Vector *v)
 {
     float res = get_min(v);
     return res;

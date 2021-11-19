@@ -1,16 +1,17 @@
 #include "im2col.h"
 
-Tensor *im2col(Image *img, int ksize, int stride, int pad)
+void im2col(Image *img, int ksize, int stride, int pad, float *space)
 {
     int channels = 0;
     if (img->dim == 2) channels = 1;
     else if (img->dim) channels = img->size[2];
     else return NULL;
-    int height_col = (img->size[1] + 2*pad - ksize) / stride + 1;
-    int width_col = (img->size[0] + 2*pad - ksize) / stride + 1;
+    int height = img->size[1];
+    int width = img->size[0];
+    int height_col = (height + 2*pad - ksize) / stride + 1;
+    int width_col = (width + 2*pad - ksize) / stride + 1;
 
     int channels_col = channels * ksize * ksize;
-    float *data_col = calloc(height_col * width_col * ksize * ksize, sizeof(float));
     for (int c = 0; c < channels_col; ++c){
         int w_offset = c % ksize;
         int h_offset = (c / ksize) % ksize;
@@ -19,13 +20,11 @@ Tensor *im2col(Image *img, int ksize, int stride, int pad)
             for (int w = 0; w < width_col; ++w){
                 int im_row = h_offset + h * stride;
                 int im_col = w_offset + w * stride;
-                int col_index = (h*width_col + w)*(ksize * ksize) + h_offset * ksize + w_offset;
+                int col_index = (c*height_col + h)*width_col + w;
                 int index[] = {im_col+1-pad, im_row+1-pad, c_offset+1};
                 float val = get_pixel(img, index);
-                data_col[col_index] += val;
+                space[col_index] = val;
             }
         }
     }
-    Array *colim = array_list(height_col*width_col, ksize*ksize, data_col);
-    return colim;
 }

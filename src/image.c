@@ -35,6 +35,13 @@ int *census_channel_pixel(Image *img, int c)
     return num;
 }
 
+int get_channels(Image *img)
+{
+    if (img->dim == 2) return 1;
+    else if (img->dim) return img->size[2];
+    return 0;
+}
+
 Image *load_image_data(char *img_path)
 {
     int w, h, c;

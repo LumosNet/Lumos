@@ -177,16 +177,16 @@ void resize_ar(Array *a, int row, int col)
        a:待获取矩阵
        row:待获取的行（1开始）
  * 返回
-       Victor*
+       Vector*
        获取的行数据组成的向量
 \*************************************************************************************************/
-Victor *row2Victor(Array *a, int row)
+Vector *row2Vector(Array *a, int row)
 {
     int size = a->size[0];
     int offset = (row-1)*size;
     float *data = malloc(size*sizeof(float));
     memcpy_float_list(data, a->data, 0, offset, size);
-    return victor_list(size, 0, data);
+    return Vector_list(size, 0, data);
 }
 
 /*************************************************************************************************\
@@ -196,10 +196,10 @@ Victor *row2Victor(Array *a, int row)
        a:待获取矩阵
        col:待获取的列（1开始）
  * 返回
-       Victor*
+       Vector*
        获取的列数据组成的向量
 \*************************************************************************************************/
-Victor *col2Victor(Array *a, int col)
+Vector *col2Vector(Array *a, int col)
 {
     int x = a->size[0];
     int y = a->size[1];
@@ -207,7 +207,7 @@ Victor *col2Victor(Array *a, int col)
     for (int i = 0; i < x; ++i){
         data[i] = get_pixel_ar(a, i+1, col);
     }
-    return victor_list(y, 1, data);
+    return Vector_list(y, 1, data);
 }
 
 /*************************************************************************************************\
@@ -217,10 +217,10 @@ Victor *col2Victor(Array *a, int col)
        a:待获取矩阵
        flag:1代表主对角线，0代表斜对角线
  * 返回
-       Victor*
+       Vector*
        获取的对角线数据向量
 \*************************************************************************************************/
-Victor *diagonal2Victor(Array *a, int flag)
+Vector *diagonal2Vector(Array *a, int flag)
 {
     int x = a->size[0];
     int y = a->size[1];
@@ -230,7 +230,7 @@ Victor *diagonal2Victor(Array *a, int flag)
         if (flag) data[i] = get_pixel_ar(a, i+1, i+1);
         else data[i] = get_pixel_ar(a, i+1, min-i);
     }
-    return victor_list(min, 1, data);
+    return Vector_list(min, 1, data);
 }
 
 /*************************************************************************************************\
@@ -865,7 +865,7 @@ float trace(Array *a)
     int x = a->size[1];
     int y = a->size[0];
     int min = (x < y) ? x : y;
-    float *diagonal = diagonal2Victor(a, 1)->data;
+    float *diagonal = diagonal2Vector(a, 1)->data;
     float res = 0;
     for (int i = 0; i < min; ++i){
         res += diagonal[i];
@@ -1278,16 +1278,16 @@ float fronorm_ar(Array *a)
  * 参数
        x：求给定向量x对应的householder变换分解式中的householder向量以及β值
  * 返回
-       Victor*
+       Vector*
        返回householder向量
 \*************************************************************************************************/
-Victor *__householder_v(Victor *x, float *beta)
+Vector *__householder_v(Vector *x, float *beta)
 {
-    Victor *m = slice_vt(x, 1, x->num);
-    Victor *mt = copy(m);
+    Vector *m = slice_vt(x, 1, x->num);
+    Vector *mt = copy(m);
     transposition(mt);
 	float theta = multiply_ar(mt, m)->data[0];
-    Victor *v = copy(x);
+    Vector *v = copy(x);
     // ts->data[0] = 1;
     beta[0] = 0;
     if (theta != 0){
@@ -1302,7 +1302,7 @@ Victor *__householder_v(Victor *x, float *beta)
     return v;
 }
 
-Array *__householder_a(Victor *v, float beta)
+Array *__householder_a(Vector *v, float beta)
 {
     Array *In = array_unit(v->num, v->num, 1, 1);
     Array *vt = copy(v);
@@ -1316,9 +1316,9 @@ Array *__householder_a(Victor *v, float beta)
     return P;
 }
 
-Array *householder(Victor *x, float *beta)
+Array *householder(Vector *x, float *beta)
 {
-    Victor *v = __householder_v(x, beta);
+    Vector *v = __householder_v(x, beta);
     Array *res = __householder_a(v, beta[0]);
     return res;
 }
@@ -1362,16 +1362,16 @@ Array *__householder_QR(Array *a, Array *r, Array *q)
     Array *res = copy(a);
     for (int i = 0; i < res->size[1]; ++i){
         Array *x = slice_array(res, i+1, res->size[0], i+1, i+1);
-        Victor *y = victor_list(x->num, 1, x->data);
+        Vector *y = Vector_list(x->num, 1, x->data);
         float *beta = malloc(sizeof(float));
-        Victor *v = __householder_v(y, beta);
+        Vector *v = __householder_v(y, beta);
         Array *house = __householder_a(v, beta[0]);
 
         Array *apart = slice_array(res, i, res->size[0], i, res->size[1]);
         Array *rpart = multiply_ar(house, apart);
         replace_part(res, rpart, i, i);
         if (i < res->size[0]){
-            Victor *vpart = slice_vt(v, 2, res->size[0]-i+1);
+            Vector *vpart = slice_vt(v, 2, res->size[0]-i+1);
             for (int j = i+1; j < res->size[0]; ++j){
                 change_pixel_ar(res, j, i, vpart->data[j-i-1]);
             }

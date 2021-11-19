@@ -34,7 +34,7 @@ ClusterK *__classify(Array *data, ClusterPile *pile, LossFunc lossfunc)
         clusterk->clusters[i] = cluster;
     }
     for (int i = 0; i < data->size[1]; ++i){
-        Victor *x = row2Victor(data, i+1);
+        Vector *x = row2Vector(data, i+1);
         float loss = -1;
         int index = -1;
         for (int j = 0; j < pile->k; ++j){
@@ -47,7 +47,7 @@ ClusterK *__classify(Array *data, ClusterPile *pile, LossFunc lossfunc)
         }
         Cluster *belong = clusterk->clusters[index];
         Array *class = belong->data;
-        Victor *one = row2Victor(data, i+1);
+        Vector *one = row2Vector(data, i+1);
         insert_row(class, class->size[1]+1, one->data);
     }
     return clusterk;
@@ -67,8 +67,8 @@ ClusterPile *__middlevt(ClusterK *pile)
         vt->label = ovt->label;
 
         Array *data = cluster->data;
-        Victor *x = victor_x(data->size[0], 0, 1);
-        Victor *nvt = gemm(x, data);
+        Vector *x = Vector_x(data->size[0], 0, 1);
+        Vector *nvt = gemm(x, data);
         vt->vt = nvt;
         del(x);
     }

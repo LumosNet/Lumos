@@ -15,7 +15,7 @@
 
 #include "lumos.h"
 #include "tensor.h"
-#include "victor.h"
+#include "Vector.h"
 
 #ifdef  __cplusplus
 extern "C" {
@@ -30,9 +30,9 @@ float get_pixel_ar(Array *a, int row, int col);
 void change_pixel_ar(Array *a, int row, int col, float x);
 void resize_ar(Array *a, int row, int col);
 
-Victor *row2Victor(Array *a, int row);
-Victor *col2Victor(Array *a, int col);
-Victor *diagonal2Victor(Array *a, int flag);
+Vector *row2Vector(Array *a, int row);
+Vector *col2Vector(Array *a, int col);
+Vector *diagonal2Vector(Array *a, int flag);
 
 void replace_rowlist(Array *a, int row, float *list);
 void replace_collist(Array *a, int col, float *list);
@@ -88,13 +88,13 @@ float norm2_ar(Array *a);
 float infnorm_ar(Array *a);
 float fronorm_ar(Array *a);
 
-Array *householder(Victor *x, float *beta);
+Array *householder(Vector *x, float *beta);
 // 给定标量a、b，计算c=cosθ、s=sinθ
 float *givens(float a, float b);
 Array *givens_rotate(Array *a, int i, int k, float c, float s);
 
-Victor *__householder_v(Victor *x, float *beta);
-Array *__householder_a(Victor *v, float beta);
+Vector *__householder_v(Vector *x, float *beta);
+Array *__householder_a(Vector *v, float beta);
 Array *__householder_QR(Array *a, Array *r, Array *q);
 
 #ifdef  __cplusplus

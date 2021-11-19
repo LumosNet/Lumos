@@ -5,7 +5,7 @@
 
 #include "tensor.h"
 #include "array.h"
-#include "victor.h"
+#include "Vector.h"
 
 #include "umath.h"
 
@@ -15,14 +15,14 @@ extern "C" {
 
 typedef float (*LossFunc)();
 
-float mse(Victor *yi, Victor *yh);
-float mae(Victor *yi, Victor *yh);
+float mse(Vector *yi, Vector *yh);
+float mae(Vector *yi, Vector *yh);
 
-float huber(Victor *yi, Victor *yh, float theta);
-float quantile(Victor *yi, Victor *yh, float r);
+float huber(Vector *yi, Vector *yh, float theta);
+float quantile(Vector *yi, Vector *yh, float r);
 
-float cross_entropy(Victor *yi, Victor *yh);
-float hinge(Victor *yi, Victor *yh);
+float cross_entropy(Vector *yi, Vector *yh);
+float hinge(Vector *yi, Vector *yh);
 
 #ifdef  __cplusplus
 }

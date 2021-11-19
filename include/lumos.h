@@ -16,7 +16,7 @@ typedef struct tensor{
     float     *data;
 } tensor, Tensor;
 
-typedef tensor array, Array, victor, Victor, image, Image, matrix, Matrix;
+typedef tensor array, Array, Vector, Vector, image, Image, matrix, Matrix;
 
 typedef float   (*activate)(float);
 typedef float   (*gradient)(float);

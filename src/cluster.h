@@ -11,7 +11,7 @@ extern "C" {
 
 typedef struct middle_vt{
     char *label;
-    Victor *vt;
+    Vector *vt;
 } middle_vt, MiddelVt;
 
 typedef struct cluster_pile

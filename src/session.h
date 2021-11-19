@@ -3,7 +3,7 @@
 
 #include "tensor.h"
 #include "array.h"
-#include "victor.h"
+#include "Vector.h"
 
 #ifdef  __cplusplus
 extern "C" {
@@ -27,9 +27,9 @@ typedef struct session{
 } session, Session;
 
 typedef struct base_arop{
-    Victor*  (*row2Victor)();
-    Victor*  (*col2Victor)();
-    Victor*  (*diagonal2Victor)();
+    Vector*  (*row2Vector)();
+    Vector*  (*col2Vector)();
+    Vector*  (*diagonal2Vector)();
 
     void     (*replace_rowlist)();
     void     (*replace_collist)();
@@ -109,8 +109,8 @@ typedef struct base_vtop
     void      (*del_pixel)();
     void      (*insert_pixel)();
 
-    Victor*   (*merge_vt)();
-    Victor*   (*slice_vt)();
+    Vector*   (*merge_vt)();
+    Vector*   (*slice_vt)();
 } base_vtop, BaseVTOP;
 
 typedef struct numeric_vtop
