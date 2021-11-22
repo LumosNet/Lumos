@@ -59,6 +59,12 @@ typedef struct layer{
     LayerType type;
     PoolingType pool;
     int *index;
+    int input_h;
+    int input_w;
+    int input_c;
+    int output_h;
+    int output_w;
+    int output_c;
     Tensor **input;
     Tensor **output;
 
@@ -70,7 +76,11 @@ typedef struct layer{
     int stride;
     int pad;
 
-    Array **weights;
+    int bias;
+    int batchnorm;
+
+    Array *kernel_weights;
+    Array *bias_weights;
 
     void (*forward)  (struct layer , struct network);
     void (*backward) (struct layer , struct network);

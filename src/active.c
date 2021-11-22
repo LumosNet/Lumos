@@ -58,3 +58,10 @@ Gradient load_gradient(Activation TYPE)
     else if (TYPE == LHTAN)     func = lhtan_gradient;
     return func;
 }
+
+void activate_tensor(Tensor *ts, Activate a)
+{
+    for (int i = 0; i < ts->num; ++i){
+        ts->data[i] = a(ts->data[i]);
+    }
+}

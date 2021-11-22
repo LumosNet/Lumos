@@ -211,6 +211,20 @@ float get_mean(tensor *ts)
     return get_sum(ts) / ts->num;
 }
 
+void add_tsx(tensor *ts, float x)
+{
+    for (int i = 0; i < ts->num; ++i){
+        ts->data[i] += x;
+    }
+}
+
+void tensor_multx(tensor *ts, float x)
+{
+    for (int i = 0; i < ts->num; ++i){
+        ts->data[i] *= x;
+    }
+}
+
 void del(tensor *ts)
 {
     free(ts->data);

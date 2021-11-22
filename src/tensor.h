@@ -40,6 +40,9 @@ float get_sum(tensor *ts);
 float get_min(tensor *ts);
 float get_max(tensor *ts);
 float get_mean(tensor *ts);
+
+void add_tsx(tensor *ts, float x);
+void tensor_multx(tensor *ts, float x);
 void del(tensor *ts);
 
 int __ergodic(tensor *ts, int *index);

@@ -1,17 +1,13 @@
-#include "convolution.h"
+#include "convolutional_layer.h"
 
-void forward_convolutional_layer(Layer *l, Network *net)
+void convolutional_layer(Layer *l, Network *net)
 {
     for (int i = 0; i < net->batch; ++i){
-        for (int j = 0; j < l->filters; ++j){
-            Image *channel = forward_convolutional(l->input[i], l->weights[j], l->pad, l->stride);
-            memcpy(l->output[i]+j*l->width*l->height, channel, l->width*l->height);
-            del(channel);
+        l->output[i] = convolutional(l->input[i], l->kernel_weights, l->pad, l->stride);
+        if (l->bias){
+            add_bias(l->output[i], l->bias_weights, l->filters, l->output_h*l->output_w);
         }
-        for (int k = 0; k < l->height*l->width*l->filters; ++k){
-            Image *out = l->output[i];
-            out->data[k] = l->active(out->data[k]);
-        }
+        activate_tensor(l->output[i], l->active);
     }
 }
 
