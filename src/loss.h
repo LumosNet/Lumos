@@ -5,7 +5,7 @@
 
 #include "tensor.h"
 #include "array.h"
-#include "Vector.h"
+#include "vector.h"
 
 #include "umath.h"
 

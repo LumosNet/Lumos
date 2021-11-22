@@ -11,7 +11,7 @@
 extern "C"{
 #endif
 
-void im2col(Image *img, int ksize, int stride, int pad, float *space);
+Tensor *im2col(Image *img, int ksize, int stride, int pad);
 
 #ifdef __cplusplus
 }

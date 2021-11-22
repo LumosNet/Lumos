@@ -15,7 +15,7 @@
 
 #include "lumos.h"
 #include "tensor.h"
-#include "Vector.h"
+#include "vector.h"
 
 #ifdef  __cplusplus
 extern "C" {

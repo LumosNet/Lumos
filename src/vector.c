@@ -1,4 +1,4 @@
-#include "Vector.h"
+#include "vector.h"
 
 Vector *Vector_x(int num, int flag, float x)
 {

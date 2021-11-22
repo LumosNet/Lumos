@@ -12,6 +12,16 @@
 
 int main(int argc, char **argv)
 {
-    Network *net = load_network("./cfg/lumos.cfg");
+    float *list = malloc((3*3*3)*sizeof(float));
+    for (int i = 0; i < 3*3*3; ++i){
+        list[i] = i;
+    }
+    int size[3] = {3, 3, 3};
+    Tensor *im = tensor_list(3, size, list);
+    tsprint(im);
+    int new_size[] = {9, 3};
+    resize(im, 2, new_size);
+    transposition(im);
+    tsprint(im);
     return 0;
 }
