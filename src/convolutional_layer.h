@@ -2,6 +2,7 @@
 #define CONVOLUTIONAL_LAYER_H
 
 #include "lumos.h"
+#include "parser.h"
 #include "image.h"
 #include "active.h"
 #include "convolution.h"
@@ -11,8 +12,10 @@
 extern "C"{
 #endif
 
-void convolutional_layer(Layer *l, Network *net);
+void forward_convolutional_layer(Layer *l, Network *net);
 void backward_convolutional_layer(Layer *l, Network *net);
+
+Layer *make_convolutional_layer(LayerParams *p, int h, int w, int c);
 
 #ifdef __cplusplus
 }

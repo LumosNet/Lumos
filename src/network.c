@@ -2,13 +2,21 @@
 
 Network *load_network(char *cfg)
 {
-    NetParams *p = load_data_cfg("./cfg/lumos.cfg");
-    Network *net = create_network(p);
+    NetParams *p = load_data_cfg(cfg);
     Node *n = p->head;
+    Network *net = create_network(n->val, p->size);
+    n = n->next;
+    int h = net->height;
+    int w = net->width;
+    int c = net->channel;
     int index = 0;
     while (n){
         LayerParams *l = n->val;
-        Layer *layer = create_layer(l);
+        fprintf(stderr, "  %d  ", index+1);
+        Layer *layer = create_layer(l, h, w, c);
+        h = layer->output_h;
+        w = layer->output_w;
+        c = layer->output_c;
         net->layers[index] = layer;
         index += 1;
         n = n->next;
@@ -16,12 +24,11 @@ Network *load_network(char *cfg)
     return net;
 }
 
-Network *create_network(NetParams *p)
+Network *create_network(LayerParams *p, int size)
 {
     Network *net = malloc(sizeof(Network));
+    fprintf(stderr, "%s\n", p->type);
     Node *n = p->head;
-    LayerParams *lp = n->val;
-    n = lp->head;
     while (n){
         Params *pa = n->val;
         if (0 == strcmp(pa->key, "batch")){
@@ -30,52 +37,26 @@ Network *create_network(NetParams *p)
             net->width = atoi(pa->val);
         } else if (0 == strcmp(pa->key, "height")){
             net->height = atoi(pa->val);
+        } else if (0 == strcmp(pa->key, "channel")){
+            net->channel = atoi(pa->key);
         } else if (0 == strcmp(pa->key, "learning_rate")){
-            net->learning_rate = atoi(pa->val);
+            net->learning_rate = atof(pa->val);
         }
         n = n->next;
     }
-    net->n = -1;
-    n = p->head;
-    while (n){
-        net->n += 1;
-        n = n->next;
-    }
-    net->layers = malloc(sizeof(struct Layer*));
+    net->n = size;
+    net->layers = malloc(size*sizeof(struct Layer*));
+    fprintf(stderr, "index  type   filters   ksize        input                  output\n");
     return net;
 }
 
-Layer *create_layer(LayerParams *p)
+Layer *create_layer(LayerParams *p, int h, int w, int c)
 {
-    Layer *layer = malloc(sizeof(Layer));
+    Layer *layer;
     if (0 == strcmp(p->type, "convolutional")){
-        layer->type = CONVOLUTIONAL;
-    } else if (0 == strcmp(p->type, "pool")){
-        layer->type = POOLING;
-    }  else if (0 == strcmp(p->type, "active")){
-        layer->type = ACTIVE;
-    } else if (0 == strcmp(p->type, "fullconnect")){
-        layer->type = FULLCONNECT;
-    }
-    Node *n = p->head;
-    while (n){
-        Params *pa = n->val;
-        if (0 == strcmp(pa->key, "filters")){
-            layer->filters = atoi(pa->val);
-        } else if (0 == strcmp(pa->key, "ksize")){
-            layer->ksize = atoi(pa->val);
-        } else if (0 == strcmp(pa->key, "stride")){
-            layer->stride = atoi(pa->val);
-        } else if (0 == strcmp(pa->key, "pad")){
-            layer->pad = atoi(pa->val);
-        } else if (0 == strcmp(pa->key, "activation")){
-            Activation active = load_activate_type(pa->val);
-            layer->active = load_activate(active);
-            layer->gradient = load_gradient(active);
-        } else if (0 == strcmp(pa->key, "type")){
-            layer->pool = load_pooling_type(pa->key);
-        }
-        n = n->next;
+        layer = make_convolutional_layer(p, h, w, c);
+    } else if (0 == strcmp(p->type, "pooling")){
+        layer = make_pooling_layer(p, h, w, c);
     }
     return layer;
 }
@@ -89,5 +70,5 @@ void forward_network(Network *net)
 
 void backward_network(Network *net)
 {
-    
+
 }

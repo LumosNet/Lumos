@@ -55,6 +55,12 @@ typedef struct network network;
 struct layer;
 typedef struct layer layer;
 
+typedef void (*forward)  (struct layer * , struct network *);
+typedef void (*backward) (struct layer * , struct network *);
+
+typedef forward Forward;
+typedef backward Backward;
+
 typedef struct layer{
     LayerType type;
     PoolingType pool;
@@ -68,9 +74,6 @@ typedef struct layer{
     Tensor **input;
     Tensor **output;
 
-    int width;
-    int height;
-
     int filters;
     int ksize;
     int stride;
@@ -82,8 +85,9 @@ typedef struct layer{
     Array *kernel_weights;
     Array *bias_weights;
 
-    void (*forward)  (struct layer , struct network);
-    void (*backward) (struct layer , struct network);
+    Forward forward;
+    Backward backward;
+
     Activate active;
     Gradient gradient;
 } layer, Layer;
@@ -93,7 +97,9 @@ typedef struct network{
     int batch;
     int width;
     int height;
+    int channel;
     float learning_rate;
+    Tensor **delta;
     Layer **layers;
 } network, Network, NetWork;
 

@@ -83,6 +83,7 @@ Activate load_activate(Activation TYPE);
 Gradient load_gradient(Activation TYPE);
 
 void activate_tensor(Tensor *ts, Activate a);
+void gradient_tensor(Tensor *ts, Gradient g);
 
 #ifdef  __cplusplus
 }

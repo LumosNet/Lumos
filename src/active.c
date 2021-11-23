@@ -65,3 +65,10 @@ void activate_tensor(Tensor *ts, Activate a)
         ts->data[i] = a(ts->data[i]);
     }
 }
+
+void gradient_tensor(Tensor *ts, Gradient g)
+{
+    for (int i = 0; i < ts->num; ++i){
+        ts->data[i] = g(ts->data[i]);
+    }
+}

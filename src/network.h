@@ -8,6 +8,7 @@
 #include "utils.h"
 #include "active.h"
 #include "pooling_layer.h"
+#include "convolutional_layer.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -18,8 +19,8 @@ void train(Network *net);
 void forward_network(Network *net);
 void backward_network(Network *net);
 
-Network *create_network(NetParams *p);
-Layer *create_layer(LayerParams *p);
+Network *create_network(LayerParams *p, int size);
+Layer *create_layer(LayerParams *p, int h, int w, int c);
 void add_layer2net(Network *net, Layer *l);
 
 #ifdef __cplusplus
