@@ -67,7 +67,7 @@ Layer *make_softmax_layer(LayerParams *p, int h, int w, int c)
         l->backward = backward_softmax_layer;
         layer = l;
     }
-    fprintf(stderr, "  softmax          %5d      %4d x%4d x%4d   ->  %4d x%4d x%4d\n", \
-            layer->group, layer->input_h, layer->input_w, layer->input_c, layer->output_h, layer->output_w, layer->output_c);
+    fprintf(stderr, "  softmax          %5d      %4d x%4d         ->  %4d x%4d\n", \
+            layer->group, layer->input_h, layer->input_w, layer->output_h, layer->output_w);
     return layer;
 }

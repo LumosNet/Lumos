@@ -3,6 +3,9 @@
 
 #include "lumos.h"
 #include "parser.h"
+#include "array.h"
+#include "bias.h"
+#include "active.h"
 
 #ifdef __cplusplus
 extern "C" {
