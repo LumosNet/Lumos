@@ -9,6 +9,7 @@
 #include "active.h"
 #include "pooling_layer.h"
 #include "convolutional_layer.h"
+#include "softmax_layer.h"
 
 #ifdef __cplusplus
 extern "C" {

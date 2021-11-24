@@ -1,5 +1,13 @@
 #include "loss.h"
 
+// label表示是第几类
+int *one_hot_encoding(int n, int label)
+{
+    int *code = calloc(n, sizeof(int));
+    code[label-1] = 1;
+    return code;
+}
+
 float mse(Vector *yi, Vector *yh)
 {
     Vector *y = subtract_ar(yi, yh);

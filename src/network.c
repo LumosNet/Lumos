@@ -57,6 +57,8 @@ Layer *create_layer(LayerParams *p, int h, int w, int c)
         layer = make_convolutional_layer(p, h, w, c);
     } else if (0 == strcmp(p->type, "pooling")){
         layer = make_pooling_layer(p, h, w, c);
+    } else if (0 == strcmp(p->type, "softmax")){
+        layer = make_softmax_layer(p, h, w, c);
     }
     return layer;
 }

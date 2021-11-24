@@ -42,7 +42,7 @@ typedef enum {
 } Activation;
 
 typedef enum {
-    CONVOLUTIONAL, POOLING, ACTIVE, FULLCONNECT
+    CONVOLUTIONAL, POOLING, ACTIVATION, CONNECT, SOFTMAX
 } LayerType;
 
 typedef enum {
@@ -78,6 +78,7 @@ typedef struct layer{
     int ksize;
     int stride;
     int pad;
+    int group;
 
     int bias;
     int batchnorm;

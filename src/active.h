@@ -45,6 +45,7 @@ static inline float lhtan_activate(float x)
     if(x > 1) return .001*(x-1) + 1;
     return x;
 }
+
 static inline float lhtan_gradient(float x)
 {
     if(x > 0 && x < 1) return 1;
