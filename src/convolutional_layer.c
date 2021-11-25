@@ -8,6 +8,9 @@ void forward_convolutional_layer(Layer *l, Network *net)
             add_bias(l->output[i], l->bias_weights, l->filters, l->output_h*l->output_w);
         }
         activate_tensor(l->output[i], l->active);
+        transposition(l->output[i]);
+        int size[] = {l->output_h, l->output_w, l->output_c};
+        resize(l->input[i], 3, size);
     }
 }
 
@@ -21,7 +24,7 @@ void backward_convolutional_layer(Layer *l, Network *net)
         Tensor *input = copy(l->input[i]);
         transposition(input);
         transposition(k_weights);
-        net->delta[i] = gemm(d, k_weights);
+        net->delta[i] = col2im(gemm(d, k_weights), l->ksize, l->stride, l->pad, l->input_h, l->input_w, l->input_c);
         Tensor *d_w = gemm(d, input);
         saxpy(l->kernel_weights, d_w, net->batch*net->learning_rate);
         saxpy(l->bias_weights, d, net->batch*net->learning_rate);
