@@ -61,6 +61,8 @@ Layer *create_layer(LayerParams *p, int h, int w, int c)
         layer = make_softmax_layer(p, h, w, c);
     } else if (0 == strcmp(p->type, "connect")){
         layer = make_connect_layer(p, h, w, c);
+    } else if (0 == strcmp(p->type, "activation")){
+        layer = make_activation_layer(p, h, w, c);
     }
     return layer;
 }

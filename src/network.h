@@ -11,6 +11,7 @@
 #include "convolutional_layer.h"
 #include "softmax_layer.h"
 #include "connect_layer.h"
+#include "activation_layer.h"
 
 #ifdef __cplusplus
 extern "C" {

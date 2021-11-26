@@ -41,15 +41,15 @@ float huber(Vector *yi, Vector *yh, float theta)
     return huber / yi->num;
 }
 
-float quantile(Vector *yi, Vector *yh, float r)
+float quantile(Vector *yi, Vector *yh, float gamma)
 {
     float quant = 0;
     for (int i = 0; i < yi->num; ++i){
         float differ = fabs(yi->data[i] - yh->data[i]);
         if (yi->data[i] <  yh->data[i]){
-            quant += (1-r) * differ;
+            quant += (1-gamma) * differ;
         }
-        else quant += r * differ;
+        else quant += gamma * differ;
     }
     return quant / yi->num;
 }
@@ -71,4 +71,167 @@ float hinge(Vector *yi, Vector *yh)
         hinge += MAX(0, x);
     }
     return hinge;
+}
+
+void forward_mse_loss(Layer *l, Network *net)
+{
+    for (int i = 0; i < net->batch; ++i){
+        Tensor *output = l->output[i];
+        output->data[0] = mse(net->labels[i], l->input[i]);
+    }
+}
+
+void forward_mae_loss(Layer *l, Network *net)
+{
+    for (int i = 0; i < net->batch; ++i){
+        Tensor *output = l->output[i];
+        output->data[0] = mae(net->labels[i], l->input[i]);
+    }
+}
+
+void forward_huber_loss(Layer *l, Network *net)
+{
+    for (int i = 0; i < net->batch; ++i){
+        Tensor *output = l->output[i];
+        output->data[0] = huber(net->labels[i], l->input[i], l->theta);
+    }
+}
+
+void forward_quantile_loss(Layer *l, Network *net)
+{
+    for (int i = 0; i < net->batch; ++i){
+        Tensor *output = l->output[i];
+        output->data[0] = quantile(net->labels[i], l->input[i], l->gamma);
+    }
+}
+
+void forward_cross_entropy_loss(Layer *l, Network *net)
+{
+    for (int i = 0; i < net->batch; ++i){
+        Tensor *output = l->output[i];
+        output->data[0] = cross_entropy(net->labels[i], l->input[i]);
+    }
+}
+
+void forward_hinge_loss(Layer *l, Network *net)
+{
+    for (int i = 0; i < net->batch; ++i){
+        Tensor *output = l->output[i];
+        output->data[0] = hinge(net->labels[i], l->input[i]);
+    }
+}
+
+void backward_mse_loss(Layer *l, Network *net)
+{
+    for (int i = 0; i < net->batch; ++i){
+        Array *a = subtract_ar(l->input[i], net->labels[i]);
+        array_multx(a, 2/a->num);
+        net->delta[i] = a;
+    }
+}
+
+void backward_mae_loss(Layer *l, Network *net)
+{
+    for (int i = 0; i < net->batch; ++i){
+        Tensor *delta = net->delta[i];
+        Tensor *input = l->input[i];
+        Tensor *label = net->labels[i];
+        for (int j = 0; j < delta->num; ++j){
+            delta->data[j] = 1/delta->num;
+            if (label->data[j] - input->data[j] >= 0) delta->data[j] *= -1;
+        }
+    }
+}
+
+void backward_huber_loss(Layer *l, Network *net)
+{
+    for (int i = 0; i < net->batch; ++i){
+        Tensor *delta = net->delta[i];
+        Tensor *input = l->input[i];
+        Tensor *label = net->labels[i];
+        for (int j = 0; j < delta->num; ++j){
+            float differ = fabs(label->data[j] - input->data[j]);
+            if (differ <= l->theta) delta->data[j] = -differ;
+            else {
+                if (label->data[j] - input->data[j] >= 0) delta->data[j] = -l->theta;
+                else delta->data[j] = l->theta;
+            }
+        }
+    }
+}
+
+void backward_quantile_loss(Layer *l, Network *net)
+{
+    for (int i = 0; i < net->batch; ++i){
+        Tensor *delta = net->delta[i];
+        Tensor *input = l->input[i];
+        Tensor *label = net->labels[i];
+        for (int j = 0; j < delta->num; ++j){
+            float differ = label->data[j] - input->data[j];
+            if (differ < 0) delta->data[j] = 1-l->gamma;
+            else delta->data[j] = -l->gamma;
+        }
+    }
+}
+
+void backward_cross_entropy_loss(Layer *l, Network *net)
+{
+    for (int i = 0; i < net->batch; ++i){
+        Tensor *delta = net->delta[i];
+        Tensor *input = l->input[i];
+        Tensor *label = net->labels[i];
+        for (int j = 0; j < delta->num; ++j){
+            if (label->data[j] == 0) delta->data[j] = 0;
+            else delta->data[j] = -label->data[j] / (input->data[j] + .00000001);
+        }
+    }
+}
+
+void backward_hinge_loss(Layer *l, Network *net)
+{
+    for (int i = 0; i < net->batch; ++i){
+        Tensor *delta = net->delta[i];
+        Tensor *input = l->input[i];
+        Tensor *label = net->labels[i];
+        for (int j = 0; j < delta->num; ++j){
+            float differ = input->data[j] * label->data[j];
+            if (differ >= 1) delta->data[j] = 0;
+            else delta->data[j] = -label->data[j];
+        }
+    }
+}
+
+LossType load_loss_type(char *loss)
+{
+    if (0 == strcmp(loss, "mse"))                   return MSE;
+    else if (0 == strcmp(loss, "mae"))              return MAE;
+    else if (0 == strcmp(loss, "huber"))            return HUBER;
+    else if (0 == strcmp(loss, "quantile"))         return QUANTILE;
+    else if (0 == strcmp(loss, "cross_entropy"))    return CROSS_ENTROPY;
+    else if (0 == strcmp(loss, "hinge"))            return HINGE;
+    return MSE;
+}
+
+Forward load_forward_loss(LossType TYPE)
+{
+    forward func;
+    if (TYPE == MSE)                    func = forward_mse_loss;
+    else if (TYPE == MAE)               func = forward_mae_loss;
+    else if (TYPE == HUBER)             func = forward_huber_loss;
+    else if (TYPE == QUANTILE)          func = forward_quantile_loss;
+    else if (TYPE == CROSS_ENTROPY)     func = forward_cross_entropy_loss;
+    else if (TYPE == HINGE)             func = forward_hinge_loss;
+    return func;
+}
+
+Backward load_backward_loss(LossType TYPE)
+{
+    backward func;
+    if (TYPE == MSE)                    func = backward_mse_loss;
+    else if (TYPE == MAE)               func = backward_mae_loss;
+    else if (TYPE == HUBER)             func = backward_huber_loss;
+    else if (TYPE == QUANTILE)          func = backward_quantile_loss;
+    else if (TYPE == CROSS_ENTROPY)     func = backward_cross_entropy_loss;
+    else if (TYPE == HINGE)             func = backward_hinge_loss;
+    return func;
 }

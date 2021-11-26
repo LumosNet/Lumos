@@ -49,6 +49,10 @@ typedef enum {
     MAX, AVG
 } PoolingType;
 
+typedef enum {
+    MSE, MAE, HUBER, QUANTILE, CROSS_ENTROPY, HINGE
+} LossType;
+
 struct network;
 typedef struct network network;
 
@@ -64,6 +68,7 @@ typedef backward Backward;
 typedef struct layer{
     LayerType type;
     PoolingType pool;
+    LossType loss;
     int *index;
     int input_h;
     int input_w;
@@ -82,6 +87,10 @@ typedef struct layer{
 
     int bias;
     int batchnorm;
+
+    // 损失计算参数
+    float theta;
+    float gamma;
 
     Array *kernel_weights;
     Array *bias_weights;
@@ -102,6 +111,8 @@ typedef struct network{
     float learning_rate;
     Tensor **delta;
     Layer **layers;
+
+    Tensor **labels;
 } network, Network, NetWork;
 
 #ifdef __cplusplus

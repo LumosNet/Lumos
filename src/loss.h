@@ -26,15 +26,33 @@ typedef float (*LossFunc)();
 float mse(Vector *yi, Vector *yh);
 // 平均绝对值误差
 float mae(Vector *yi, Vector *yh);
-
+// 平滑平均绝对误差
 float huber(Vector *yi, Vector *yh, float theta);
 // 分位数损失
-float quantile(Vector *yi, Vector *yh, float r);
-
+float quantile(Vector *yi, Vector *yh, float gamma);
 // 交叉熵损失
 float cross_entropy(Vector *yi, Vector *yh);
 
 float hinge(Vector *yi, Vector *yh);
+
+void forward_mse_loss(Layer *l, Network *net);
+void forward_mae_loss(Layer *l, Network *net);
+void forward_huber_loss(Layer *l, Network *net);
+void forward_quantile_loss(Layer *l, Network *net);
+void forward_cross_entropy_loss(Layer *l, Network *net);
+void forward_hinge_loss(Layer *l, Network *net);
+
+void backward_mse_loss(Layer *l, Network *net);
+void backward_mae_loss(Layer *l, Network *net);
+void backward_huber_loss(Layer *l, Network *net);
+void backward_quantile_loss(Layer *l, Network *net);
+void backward_cross_entropy_loss(Layer *l, Network *net);
+void backward_hinge_loss(Layer *l, Network *net);
+
+LossType load_loss_type(char *loss);
+
+Forward load_forward_loss(LossType TYPE);
+Backward load_backward_loss(LossType TYPE);
 
 #ifdef  __cplusplus
 }
