@@ -79,3 +79,40 @@ Layer *make_convolutional_layer(LayerParams *p, int h, int w, int c)
             layer->input_w, layer->input_c, layer->output_h, layer->output_w, layer->output_c);
     return layer;
 }
+
+void save_convolutional_weights(Layer *l, FILE *file)
+{
+    for (int i = 0; i < l->filters; ++i){
+        for (int j = 0; j < l->ksize*l->ksize; ++j){
+            Tensor *kernel_weights = l->kernel_weights;
+            int index[] = {j+1, i+1};
+            int offset = index_ts2ls(index, 2, kernel_weights->size);
+            fread(kernel_weights+offset, sizeof(float), 1, file);
+        }
+    }
+    Tensor *bias_weights = l->bias_weights;
+    fread(bias_weights, sizeof(float), bias_weights->num, file);
+}
+
+void load_convolutional_weights(Layer *l, FILE *file)
+{
+    int size_k[] = {l->ksize*l->ksize*l->input_c, l->filters};
+    int size_b[] = {1, l->filters};
+    Tensor *kernel_weights = tensor_x(2, size_k, 0);
+
+    int weights_num = l->ksize*l->ksize*l->filters + l->filters;
+    float *weights = malloc(weights_num*sizeof(float));
+    fread(weights, sizeof(float), weights_num, file);
+
+    for (int i = 0; i < size_k[0]; ++i){
+        for (int j = 0; j < size_k[1]; ++j){
+            int kernels_offset = j*l->ksize*l->ksize;
+            int kerneli_offset = i % (l->ksize*l->ksize);
+            change_pixel_ar(kernel_weights, i+1, j+1, weights[kernels_offset+kerneli_offset]);
+        }
+    }
+
+    Tensor *bias_weights = tensor_list(2, size_b, weights+l->ksize*l->ksize*l->filters);
+    l->kernel_weights = kernel_weights;
+    l->bias_weights = bias_weights;
+}

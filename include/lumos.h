@@ -65,6 +65,12 @@ typedef void (*backward) (struct layer * , struct network *);
 typedef forward Forward;
 typedef backward Backward;
 
+typedef void (*saveweight) (struct layer *, FILE *);
+typedef void (*loadweight) (struct layer *, FILE *);
+
+typedef saveweight SaveWeight;
+typedef loadweight LoadWeight;
+
 typedef struct layer{
     LayerType type;
     PoolingType pool;
@@ -100,6 +106,9 @@ typedef struct layer{
 
     Activate active;
     Gradient gradient;
+
+    SaveWeight sweights;
+    LoadWeight lweights;
 } layer, Layer;
 
 typedef struct network{

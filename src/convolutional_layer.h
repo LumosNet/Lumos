@@ -17,6 +17,9 @@ void backward_convolutional_layer(Layer *l, Network *net);
 
 Layer *make_convolutional_layer(LayerParams *p, int h, int w, int c);
 
+void save_convolutional_weights(Layer *l, FILE *file);
+void load_convolutional_weights(Layer *l, FILE *file);
+
 #ifdef __cplusplus
 }
 #endif
