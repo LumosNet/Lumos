@@ -10,7 +10,7 @@
 extern "C" {
 #endif
 
-Layer *make_activation_layer(LayerParams *p, int h, int w, int c);
+Layer *make_activation_layer(Network *net, LayerParams *p, int h, int w, int c);
 
 #ifdef __cplusplus
 }

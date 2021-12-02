@@ -84,6 +84,7 @@ typedef struct layer{
     int output_c;
     Tensor **input;
     Tensor **output;
+    Tensor **delta;
 
     int filters;
     int ksize;

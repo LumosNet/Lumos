@@ -13,7 +13,7 @@ Network *load_network(char *cfg)
     while (n){
         LayerParams *l = n->val;
         fprintf(stderr, "  %d  ", index+1);
-        Layer *layer = create_layer(l, h, w, c);
+        Layer *layer = create_layer(net, l, h, w, c);
         h = layer->output_h;
         w = layer->output_w;
         c = layer->output_c;
@@ -50,19 +50,19 @@ Network *create_network(LayerParams *p, int size)
     return net;
 }
 
-Layer *create_layer(LayerParams *p, int h, int w, int c)
+Layer *create_layer(Network*net, LayerParams *p, int h, int w, int c)
 {
     Layer *layer;
     if (0 == strcmp(p->type, "convolutional")){
-        layer = make_convolutional_layer(p, h, w, c);
+        layer = make_convolutional_layer(net, p, h, w, c);
     } else if (0 == strcmp(p->type, "pooling")){
-        layer = make_pooling_layer(p, h, w, c);
+        layer = make_pooling_layer(net, p, h, w, c);
     } else if (0 == strcmp(p->type, "softmax")){
-        layer = make_softmax_layer(p, h, w, c);
+        layer = make_softmax_layer(net, p, h, w, c);
     } else if (0 == strcmp(p->type, "connect")){
-        layer = make_connect_layer(p, h, w, c);
+        layer = make_connect_layer(net, p, h, w, c);
     } else if (0 == strcmp(p->type, "activation")){
-        layer = make_activation_layer(p, h, w, c);
+        layer = make_activation_layer(net, p, h, w, c);
     }
     return layer;
 }

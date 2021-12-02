@@ -1,6 +1,6 @@
 #include "activation_layer.h"
 
-Layer *make_activation_layer(LayerParams *p, int h, int w, int c)
+Layer *make_activation_layer(Network *net, LayerParams *p, int h, int w, int c)
 {
     Layer *layer = NULL;
     char *loss_name = NULL;
@@ -28,6 +28,15 @@ Layer *make_activation_layer(LayerParams *p, int h, int w, int c)
         l->output_h = 1;
         l->output_w = 1;
         l->output_c = 1;
+
+        int size_o[] = {1, 1, 1};
+        int size_d[] = {l->input_w, l->input_h, l->input_c};
+        l->output = malloc(net->batch*sizeof(struct Tensor *));
+        l->delta = malloc(net->batch*sizeof(struct Tensor *));
+        for (int i = 0; i < net->batch; ++i){
+            l->output[i] = tensor_x(3, size_o, 0);
+            l->delta[i] = tensor_x(3, size_d, 0);
+        }
         layer = l;
     }
     fprintf(stderr, "  loss    %s        %4d x%4d         ->     %d\n", \

@@ -16,6 +16,7 @@ void forward_convolutional_layer(Layer *l, Network *net)
 
 void backward_convolutional_layer(Layer *l, Network *net)
 {
+    float rate = net->learning_rate / (float)net->batch;
     for (int i = 0; i < net->batch; ++i){
         gradient_tensor(l->output[i], l->gradient);
         Tensor *delta = net->delta[i];
@@ -26,8 +27,8 @@ void backward_convolutional_layer(Layer *l, Network *net)
         transposition(k_weights);
         net->delta[i] = col2im(gemm(d, k_weights), l->ksize, l->stride, l->pad, l->input_h, l->input_w, l->input_c);
         Tensor *d_w = gemm(d, input);
-        saxpy(l->kernel_weights, d_w, net->batch*net->learning_rate);
-        saxpy(l->bias_weights, d, net->batch*net->learning_rate);
+        saxpy(l->kernel_weights, d_w, rate);
+        saxpy(l->bias_weights, d, rate);
         del(delta);
         del(d);
         del(k_weights);
@@ -36,7 +37,7 @@ void backward_convolutional_layer(Layer *l, Network *net)
     }
 }
 
-Layer *make_convolutional_layer(LayerParams *p, int h, int w, int c)
+Layer *make_convolutional_layer(Network *net, LayerParams *p, int h, int w, int c)
 {
     Layer *layer = NULL;
     if (0 == strcmp(p->type, "convolutional")){
