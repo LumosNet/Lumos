@@ -54,7 +54,7 @@ void full_list_with_long_int(long int *origin, long int x, int num, int stride, 
 void full_list_with_long_long(long long *origin, long long x, int num, int stride, int flag)                {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
 void full_list_with_long_double(long double *origin, long double x, int num, int stride, int flag)          {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
 
-void change_pixel_in_list(void *origin, void *x, DataType data_type, int index)
+void ts_change_pixel_in_list(void *origin, void *x, DataType data_type, int index)
 {
     switch (data_type){
         case CHAR:              {char *data = (char*)origin; char *data_x = (char*)x; change_char_in_list(data, data_x[0], index); break;}
@@ -87,7 +87,7 @@ void change_long_int_in_list(long int *origin, long int x, int index)           
 void change_long_long_in_list(long long *origin, long long x, int index)                          {origin[index] = x;}
 void change_long_double_in_list(long double *origin, long double x, int index)                    {origin[index] = x;}
 
-void *get_pixel_in_list(void *origin, DataType data_type, int index)
+void *ts_get_pixel_in_list(void *origin, DataType data_type, int index)
 {
     void *ret;
     switch (data_type){
@@ -225,26 +225,24 @@ long int multing_long_int_list(long int *origin, int offset, int len)           
 long long multing_long_long_list(long long *origin, int offset, int len)                        {long long ret = (long long)1; for(int i = offset; i < len+offset; ++i){ret *= origin[i];} return ret;}
 long double multing_long_double_list(long double *origin, int offset, int len)                  {long double ret = (long double)1; for(int i = offset; i < len+offset; ++i){ret *= origin[i];} return ret;}
 
-int *index_ls2ts(int dim, int *size, int index)
+void index_ls2ts(int dim, int *size, int index, int *res_index)
 {
-    int *ret = malloc(dim*sizeof(int));
     for (int i = dim-1; i >= 0; --i){
         int x = 1;
         for (int j = 0; j < i; ++j){
             x *= size[j];
         }
-        ret[i] = (int)(index / x) + 1;
+        res_index[i] = (int)(index / x);
         index %= x;
     }
-    return ret;
 }
 
 int index_ts2ls(int *index, int dim, int *size)
 {
     int ret = 0;
     for (int i = 0; i < dim; ++i){
-        if (index[i] < 1 || index[i] > size[i]) return -1;
-        int x = index[i]-1;
+        if (index[i] < 0 || index[i] >= size[i]) return -1;
+        int x = index[i];
         for (int j = 0; j < i; ++j){
             x *= size[j];
         }

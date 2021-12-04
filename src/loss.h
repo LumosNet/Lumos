@@ -23,17 +23,17 @@ typedef float (*LossFunc)();
 */
 
 // 均方误差
-float mse(Vector *yi, Vector *yh);
+float mse(Tensor *yi, Tensor *yh);
 // 平均绝对值误差
-float mae(Vector *yi, Vector *yh);
+float mae(Tensor *yi, Tensor *yh);
 // 平滑平均绝对误差
-float huber(Vector *yi, Vector *yh, float theta);
+float huber(Tensor *yi, Tensor *yh, float theta);
 // 分位数损失
-float quantile(Vector *yi, Vector *yh, float gamma);
+float quantile(Tensor *yi, Tensor *yh, float gamma);
 // 交叉熵损失
-float cross_entropy(Vector *yi, Vector *yh);
+float cross_entropy(Tensor *yi, Tensor *yh);
 
-float hinge(Vector *yi, Vector *yh);
+float hinge(Tensor *yi, Tensor *yh);
 
 void forward_mse_loss(Layer *l, Network *net);
 void forward_mae_loss(Layer *l, Network *net);

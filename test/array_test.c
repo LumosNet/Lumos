@@ -2,23 +2,23 @@
 
 void test_array_x(int row, int col, float x)
 {
-    Array *a = array_x(row, col, x);
+    Tensor *a = array_x(row, col, x);
     show_array(a);
 }
 
 void test_array_list(int row, int col, float *list)
 {
-    Array *a = array_list(row, col, list);
+    Tensor *a = array_list(row, col, list);
     show_array(a);
 }
 
 void test_array_unit(int row, int col, float x, int flag)
 {
-    Array *a = array_unit(row, col, x, flag);
+    Tensor *a = array_unit(row, col, x, flag);
     show_array(a);
 }
 
-void test_get_array_index(Array *a, int row, int col)
+void test_get_array_index(Tensor *a, int row, int col)
 {
     int index = get_array_lindex(a, row, col);
     printf("Index: %d\n", index);
@@ -27,7 +27,7 @@ void test_get_array_index(Array *a, int row, int col)
     printf("Index: (%d,%d)\n", lindex[0], lindex[1]);
 }
 
-void test_get_pixel_ar()
+void test_ts_get_pixel_ar()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -35,8 +35,8 @@ void test_get_pixel_ar()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
-    float pixel = get_pixel_ar(a, 3, 2);
+    Tensor *a = array_list(4, 4, list);
+    float pixel = ts_get_pixel_ar(a, 3, 2);
     printf("Pixel: %f\n", pixel);
 }
 
@@ -48,12 +48,12 @@ void test_get_array_min()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     float min = get_array_mean(a);
     printf("Min Pixel: %f\n", min);
 }
 
-void test_pixel_num_array()
+void test_ts_pixel_num_array()
 {
     float list[] = {\
     1 ,  1,  3,  4, \
@@ -61,12 +61,12 @@ void test_pixel_num_array()
     9 , 11, 11, 12, \
     13, 14, 15, 6  \
     };
-    Array *a = array_list(4, 4, list);
-    int num = pixel_num_array(a, -1);
+    Tensor *a = array_list(4, 4, list);
+    int num = ts_pixel_num_array(a, -1);
     printf("num: %d\n", num);
 }
 
-void test_change_pixel_ar()
+void test_ts_change_pixel_ar()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -74,8 +74,8 @@ void test_change_pixel_ar()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
-    change_pixel_ar(a, 4, 4, 0.12);
+    Tensor *a = array_list(4, 4, list);
+    ts_change_pixel_ar(a, 4, 4, 0.12);
     show_array(a);
 }
 
@@ -87,7 +87,7 @@ void test_resize_ar()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     show_array(a);
     resize_ar(a, 8, 2);
     show_array(a);
@@ -101,7 +101,7 @@ void test_get_row_in_array()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     float *row = get_row_in_array(a, 4);
     printf("Row data: ");
     for (int i = 0; i < a->size[0]; ++i){
@@ -118,7 +118,7 @@ void test_get_col_in_array()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     float *col = get_col_in_array(a, 4);
     printf("Col data: ");
     for (int i = 0; i < a->size[1]; ++i){
@@ -127,7 +127,7 @@ void test_get_col_in_array()
     printf("\n");
 }
 
-void test_row2Vector()
+void test_row2Tensor()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -135,12 +135,12 @@ void test_row2Vector()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
-    Vector *v = row2Vector(a, 1);
+    Tensor *a = array_list(4, 4, list);
+    Tensor *v = row2Tensor(a, 1);
     show_array(v);
 }
 
-void test_col2Vector()
+void test_col2Tensor()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -148,12 +148,12 @@ void test_col2Vector()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
-    Vector *v = col2Vector(a, 1);
+    Tensor *a = array_list(4, 4, list);
+    Tensor *v = col2Tensor(a, 1);
     show_array(v);
 }
 
-void test_diagonal2Vector()
+void test_diagonal2Tensor()
 {
     float list[] = {\
     1 ,  2,  3,  4, \
@@ -161,8 +161,8 @@ void test_diagonal2Vector()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
-    Vector *v = diagonal2Vector(a, 0);
+    Tensor *a = array_list(4, 4, list);
+    Tensor *v = diagonal2Tensor(a, 0);
     show_array(v);
 }
 
@@ -174,7 +174,7 @@ void test_get_diagonal_in_array()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
 
     /*
     float list[] = {\
@@ -184,7 +184,7 @@ void test_get_diagonal_in_array()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     */
     show_array(a);
     float *diagonal = get_diagonal_in_array(a, 0);
@@ -204,7 +204,7 @@ void test_replace_rowlist()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     float data[] = {0.1, 0.2, 0.3, 0.4};
     replace_rowlist(a, 4, data);
     show_array(a);
@@ -218,7 +218,7 @@ void test_replace_collist()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     float data[] = {0.1, 0.2, 0.3, 0.4};
     replace_collist(a, 1, data);
     show_array(a);
@@ -233,7 +233,7 @@ void test_replace_diagonalist()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     */
 
     float list[] = {\
@@ -243,7 +243,7 @@ void test_replace_diagonalist()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     float data[] = {0.1, 0.2, 0.3, 0.4};
     replace_diagonalist(a, data, 1);
     show_array(a);
@@ -257,7 +257,7 @@ void test_replace_rowx()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     replace_rowx(a, 1, 0.5);
     show_array(a);
 }
@@ -270,7 +270,7 @@ void test_replace_colx()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     replace_colx(a, 4, 0.5);
     show_array(a);
 }
@@ -283,7 +283,7 @@ void test_replace_diagonalx()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
 
     /*
     float list[] = {\
@@ -293,7 +293,7 @@ void test_replace_diagonalx()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     */
     replace_diagonalx(a, 0.5, 1);
     show_array(a);
@@ -307,7 +307,7 @@ void test_del_row()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     del_row(a, 1);
     show_array(a);
 }
@@ -320,7 +320,7 @@ void test_del_col()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     del_col(a, 4);
     show_array(a);
 }
@@ -333,7 +333,7 @@ void test_insert_row()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     float data[] = {0.1,0.2,0.3,0.4};
     insert_row(a, 1, data);
     show_array(a);
@@ -347,7 +347,7 @@ void test_insert_col()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     float data[] = {0.1,0.2,0.3,0.4};
     insert_col(a, 1, data);
     show_array(a);
@@ -366,8 +366,8 @@ void test_replace_part()
     0.1 , 0.2, 0.3, \
     0.4 , 0.5, 0.6  \
     };
-    Array *a = array_list(4, 4, list1);
-    Array *b = array_list(2, 3, list2);
+    Tensor *a = array_list(4, 4, list1);
+    Tensor *b = array_list(2, 3, list2);
     replace_part(a, b, 3, 2);
     show_array(a);
 }
@@ -380,7 +380,7 @@ void test_merge_array()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list_1);
+    Tensor *a = array_list(4, 4, list_1);
 
     float list_2[] = {\
     100, 101, 102, 103, \
@@ -389,7 +389,7 @@ void test_merge_array()
     112, 113, 114, 115, \
     116, 117, 118, 119
     };
-    Array *b = array_list(5, 4, list_2);
+    Tensor *b = array_list(5, 4, list_2);
     tensor *c = merge_array(a, b, 1, 0);
     show_array(c);
 }
@@ -402,8 +402,8 @@ void test_slice_array()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
-    Array *b = slice_array(a, 2, 2, 1, 4);
+    Tensor *a = array_list(4, 4, list);
+    Tensor *b = slice_array(a, 2, 2, 1, 4);
     show_array(b);
 }
 
@@ -415,7 +415,7 @@ void test_overturn_lr()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     overturn_lr(a);
     show_array(a);
 }
@@ -428,7 +428,7 @@ void test_overturn_ud()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     overturn_ud(a);
     show_array(a);
 }
@@ -442,7 +442,7 @@ void test_overturn_diagonal()
     9 , 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, list);
+    Tensor *a = array_list(4, 4, list);
     */
 
     float list[] = {\
@@ -452,7 +452,7 @@ void test_overturn_diagonal()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     overturn_diagonal(a, 0);
     show_array(a);
 }
@@ -466,7 +466,7 @@ void test_rotate_left()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     rotate_left(a, 2);
     show_array(a);
 }
@@ -480,7 +480,7 @@ void test_rotate_right()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     rotate_right(a, 2);
     show_array(a);
 }
@@ -494,7 +494,7 @@ void test_exchange2row()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     exchange2row(a, 1, 5);
     show_array(a);
 }
@@ -508,7 +508,7 @@ void test_exchange2col()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     exchange2col(a, 1, 4);
     show_array(a);
 }
@@ -522,7 +522,7 @@ void test_transposition()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     transposition(a);
     show_array(a);
 }
@@ -533,8 +533,8 @@ void test_inverse()
     float list[] = {\
     0,1,2,1,0,3,4,-3,8
     };
-    Array *a = array_list(3,3, list);
-    Array *res = inverse(a);
+    Tensor *a = array_list(3,3, list);
+    Tensor *res = inverse(a);
     show_array(res);
 }
 void test_trace()
@@ -546,7 +546,7 @@ void test_trace()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     float f = trace(a);
     show_array(a);
     printf("矩阵的迹 %f",f);
@@ -560,9 +560,9 @@ void test_add_ar()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4 , list);
+    Tensor *a = array_list(5, 4 , list);
     show_array(a);
-    Array *res =  add_ar(a,a);
+    Tensor *res =  add_ar(a,a);
     show_array(res);
 }
 void test_array_substract()
@@ -574,10 +574,10 @@ void test_array_substract()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     show_array(a);
     printf("相减完成之后的是--\n");
-    Array *b = subtract_ar(a,a);
+    Tensor *b = subtract_ar(a,a);
     show_array(b);
 }
 void test_divide_ar()
@@ -589,9 +589,9 @@ void test_divide_ar()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(4, 5, list);
+    Tensor *a = array_list(4, 5, list);
     show_array(a);
-    Array *b = divide_ar(a,a);
+    Tensor *b = divide_ar(a,a);
     show_array(b);
 }
 void test_multiply_ar()
@@ -608,9 +608,9 @@ void test_multiply_ar()
      9, 10, 11, 12, \
     13, 14, 15, 16  \
     };
-    Array *a = array_list(4, 4, lista);
-    Array *b = array_list(4, 4, listb);
-    Array *c = multiply_ar(a, b);
+    Tensor *a = array_list(4, 4, lista);
+    Tensor *b = array_list(4, 4, listb);
+    Tensor *c = multiply_ar(a, b);
     show_array(c);
 }
 
@@ -623,7 +623,7 @@ void test_add_arx()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     add_arx(a, 1);
     show_array(a);
 }
@@ -637,7 +637,7 @@ void test_row_addx()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     row_addx(a, 1, 2);
     show_array(a);
 }
@@ -651,7 +651,7 @@ void test_col_addx()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     col_addx(a, 1, 2);
     show_array(a);
 }
@@ -665,7 +665,7 @@ void test_array_multx()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     array_multx(a, 2);
     show_array(a);
 }
@@ -679,7 +679,7 @@ void test_row_multx()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     row_multx(a, 1, 2);
     show_array(a);
 }
@@ -693,7 +693,7 @@ void test_col_multx()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     col_multx(a, 1, 2);
     show_array(a);
 }
@@ -707,7 +707,7 @@ void test_add_row2r()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     add_row2r(a, 1, 2);
     show_array(a);
 }
@@ -721,7 +721,7 @@ void test_add_col2c()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     add_col2c(a, 1, 2);
     show_array(a);
 }
@@ -735,7 +735,7 @@ void test_add_multrow2r()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     add_multrow2r(a, 1, 2, 2);
     show_array(a);
 }
@@ -749,7 +749,7 @@ void test_add_multcol2c()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     add_multcol2c(a, 1, 2 ,2);
     show_array(a);
 }
@@ -769,9 +769,9 @@ void test_gemm()
     11, 12, 13, 14,15, \
     16, 17, 18, 19,20  \
     };
-    Array *a = array_list(5, 4, list1);
-    Array *b = array_list(4, 5, list2);
-    Array *res = gemm(a, b);
+    Tensor *a = array_list(5, 4, list1);
+    Tensor *b = array_list(4, 5, list2);
+    Tensor *res = gemm(a, b);
     show_array(res);
 }
 
@@ -790,8 +790,8 @@ void test_saxpy()
     11, 12, 13, 14,15, \
     16, 17, 18, 19,20  \
     };
-    Array *a = array_list(5, 4, list1);
-    Array *b = array_list(5, 4, list2);
+    Tensor *a = array_list(5, 4, list1);
+    Tensor *b = array_list(5, 4, list2);
     saxpy(a, b, 3);
     show_array(a);
 }
@@ -805,9 +805,9 @@ void test_norm1_ar()
     13, 14, 15, 16, \
     17, 18, 19, 20  \
     };
-    Array *a = array_list(5, 4, list);
+    Tensor *a = array_list(5, 4, list);
     float res = fronorm_ar(a);
-    printf("Array 1-norm: %f\n", res);
+    printf("Tensor 1-norm: %f\n", res);
 }
 
 void test_householder()
@@ -815,9 +815,9 @@ void test_householder()
     float list[] = {\
     1, 2, 3, 4, 5 \
     };
-    Vector *v = Vector_list(5, 1, list);
+    Tensor *v = Tensor_list(5, 1, list);
     float *beta = malloc(sizeof(float));
-    Vector *hv = householder(v, beta);
+    Tensor *hv = householder(v, beta);
     printf("Beta: %f\n", beta[0]);
     show_array(hv);
 }
@@ -825,7 +825,7 @@ void test_householder()
 int main(int argc, char **argv)
 {
     // float list[] = {1,2,3,4,5,6,7,8,9};
-    // Array *a = array_list(3, 3, list);
+    // Tensor *a = array_list(3, 3, list);
     // test_get_array_index(a, 3, 3);
     test_householder();
     return 0;

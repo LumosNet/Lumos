@@ -1,9 +1,9 @@
 #include "convolution.h"
 
-Image *convolutional(Image *img, Array *channel, int pad, int stride)
+Image *convolutional(Image *img, Tensor *channel, int pad, int stride)
 {
-    Array *imgcol = im2col(img, channel->size[0], stride, pad);
-    Array *convolutional = gemm(imgcol, channel);
-    del(imgcol);
+    Tensor *imgcol = im2col(img, channel->size[0], stride, pad);
+    Tensor *convolutional = gemm(imgcol, channel);
+    free_tensor(imgcol);
     return convolutional;
 }

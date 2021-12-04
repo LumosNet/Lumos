@@ -34,7 +34,7 @@ void backward_pooling_layer(Layer *l, Network *net)
             } else {
                 net->delta[i] = backward_avg_pool(delta, l->ksize, img->size[1], img->size[0]);
             }
-            del(delta);
+            free_tensor(delta);
         }
     }
 }

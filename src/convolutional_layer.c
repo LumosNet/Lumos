@@ -21,19 +21,19 @@ void backward_convolutional_layer(Layer *l, Network *net)
         gradient_tensor(l->output[i], l->gradient);
         Tensor *delta = net->delta[i];
         Tensor *d = gemm(delta, l->output[i]);
-        Tensor *k_weights = copy(l->kernel_weights);
-        Tensor *input = copy(l->input[i]);
+        Tensor *k_weights = tensor_copy(l->kernel_weights);
+        Tensor *input = tensor_copy(l->input[i]);
         transposition(input);
         transposition(k_weights);
         net->delta[i] = col2im(gemm(d, k_weights), l->ksize, l->stride, l->pad, l->input_h, l->input_w, l->input_c);
         Tensor *d_w = gemm(d, input);
         saxpy(l->kernel_weights, d_w, rate);
         saxpy(l->bias_weights, d, rate);
-        del(delta);
-        del(d);
-        del(k_weights);
-        del(input);
-        del(d_w);
+        free_tensor(delta);
+        free_tensor(d);
+        free_tensor(k_weights);
+        free_tensor(input);
+        free_tensor(d_w);
     }
 }
 
@@ -109,7 +109,7 @@ void load_convolutional_weights(Layer *l, FILE *file)
         for (int j = 0; j < size_k[1]; ++j){
             int kernels_offset = j*l->ksize*l->ksize;
             int kerneli_offset = i % (l->ksize*l->ksize);
-            change_pixel_ar(kernel_weights, i+1, j+1, weights[kernels_offset+kerneli_offset]);
+            ts_change_pixel_ar(kernel_weights, i+1, j+1, weights[kernels_offset+kerneli_offset]);
         }
     }
 

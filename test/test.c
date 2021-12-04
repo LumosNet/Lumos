@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+int get(int *data, int index)
+{
+    return data[index];
+}
+
 int main(int argc, char *argv[])
 {
     // int x[] = {1, 0, -1};
@@ -19,9 +24,10 @@ int main(int argc, char *argv[])
     //     printf("%d ", buffer1[i]);
     // }
     // printf("\n");
-    int a = 2;
-    float b = 1 / (float)a;
-    printf("%f\n", b);
+    int a[] = {1, 2, 3};
+    int res = get(a, 1);
+    printf("%d\n", res);
+    int b = 2;
     return 0;
 }
 

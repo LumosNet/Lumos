@@ -8,7 +8,7 @@
 extern "C" {
 #endif
 
-Image *convolutional(Image *img, Array *channel, int pad, int stride);
+Image *convolutional(Image *img, Tensor *channel, int pad, int stride);
 
 #ifdef __cplusplus
 }

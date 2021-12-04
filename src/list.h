@@ -101,7 +101,7 @@ void full_list_with_long_double(long double *origin, long double x, int num, int
        index:修改数据的位置索引
  * 返回
 \*************************************************************************************************/
-void change_pixel_in_list(void *origin, void *x, DataType data_type, int index);
+void ts_change_pixel_in_list(void *origin, void *x, DataType data_type, int index);
 
 void change_char_in_list(char *origin, char x, int index);                                                             // 填充char类型数组
 void change_unsigned_char_in_list(unsigned char *origin, unsigned char x, int index);                                  // 填充unsigned char数组
@@ -132,7 +132,7 @@ void change_long_double_in_list(long double *origin, long double x, int index); 
        获取到的数据内存地址，获取到的数据存放在新申请的内存空间中
        请在使用完该数据后，将其内存进行释放
 \*************************************************************************************************/
-void *get_pixel_in_list(void *origin, DataType data_type, int index);
+void *ts_get_pixel_in_list(void *origin, DataType data_type, int index);
 
 char get_char_in_list(char *origin, int index);                                                                        // 获取char类型数组
 unsigned char get_unsigned_char_in_list(unsigned char *origin, int index);                                             // 获取unsigned char数组
@@ -263,7 +263,7 @@ long double multing_long_double_list(long double *origin, int offset, int len); 
  * 补充
        
 \*************************************************************************************************/
-int *index_ls2ts(int dim, int *size, int index);
+void index_ls2ts(int dim, int *size, int index, int *res_index);
 int index_ts2ls(int *index, int dim, int *size);
 
 #ifdef  __cplusplus

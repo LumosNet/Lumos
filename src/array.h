@@ -3,8 +3,8 @@
 
 /*************************************************************************************************\
  * 描述
-	实现对Array的基本处理（操作）
-     Array是在tensor基础上的特殊分支
+	实现对Tensor的基本处理（操作）
+     Tensor是在tensor基础上的特殊分支
      矩阵在整个框架中具有举足轻重的地位
      未来会单独编写CUDA代码来加速矩阵的运算
 
@@ -21,81 +21,80 @@
 extern "C" {
 #endif
 
-Array *array_x(int row, int col, float x);
-Array *array_list(int row, int col, float *list);
-Array *array_unit(int row, int col, float x, int flag);
-Array *array_sparse(int row, int col, int **index, float *list);
+Tensor *array(int row, int col);
+Tensor *array_x(int row, int col, float x);
+Tensor *array_list(int row, int col, float *list);
+Tensor *array_unit(int row, int col, float x, int flag);
+Tensor *array_sparse(int row, int col, int **index, float *list);
 
-float get_pixel_ar(Array *a, int row, int col);
-void change_pixel_ar(Array *a, int row, int col, float x);
-void resize_ar(Array *a, int row, int col);
+// 行列计数从0开始
+float ar_get_pixel(Tensor *a, int row, int col);
+void ar_change_pixel(Tensor *a, int row, int col, float x);
+void resize_ar(Tensor *a, int row, int col);
 
-Vector *row2Vector(Array *a, int row);
-Vector *col2Vector(Array *a, int col);
-Vector *diagonal2Vector(Array *a, int flag);
+Tensor *row2Tensor(Tensor *a, int row);
+Tensor *col2Tensor(Tensor *a, int col);
+Tensor *diagonal2Tensor(Tensor *a, int flag);
 
-void replace_rowlist(Array *a, int row, float *list);
-void replace_collist(Array *a, int col, float *list);
-void replace_diagonalist(Array *a, float *list, int flag);
+void replace_rowlist(Tensor *a, int row, float *list);
+void replace_collist(Tensor *a, int col, float *list);
+void replace_diagonalist(Tensor *a, float *list, int flag);
 
-void replace_rowx(Array *a, int row, float x);
-void replace_colx(Array *a, int col, float x);
-void replace_diagonalx(Array *a, float x, int flag);
+void replace_rowx(Tensor *a, int row, float x);
+void replace_colx(Tensor *a, int col, float x);
+void replace_diagonalx(Tensor *a, float x, int flag);
 
-void del_row(Array *a, int row);
-void del_col(Array *a, int col);
+void del_row(Tensor *a, int row);
+void del_col(Tensor *a, int col);
 
-void insert_row(Array *a, int index, float *data);
-void insert_col(Array *a, int index, float *data);
+void insert_row(Tensor *a, int index, float *data);
+void insert_col(Tensor *a, int index, float *data);
 
-void replace_part(Array *a, Array *b, int row, int col);
+void replace_part(Tensor *a, Tensor *b, int row, int col);
 
-Array *merge_array(Array *a, Array *b, int dim, int index);
-Array *slice_array(Array *a, int rowu, int rowd, int coll, int colr);
+Tensor *merge_array(Tensor *a, Tensor *b, int dim, int index);
+Tensor *slice_array(Tensor *a, int rowu, int rowd, int coll, int colr);
 
-void overturn_lr(Array *a);
-void overturn_ud(Array *a);
-void overturn_diagonal(Array *a, int flag);
+void overturn_lr(Tensor *a);
+void overturn_ud(Tensor *a);
+void overturn_diagonal(Tensor *a, int flag);
 
-void rotate_left(Array *a, int k);
-void rotate_right(Array *a, int k);
+void rotate_left(Tensor *a, int k);
+void rotate_right(Tensor *a, int k);
 
-void exchange2row(Array *a, int rowx, int rowy);
-void exchange2col(Array *a, int colx, int coly);
+void exchange2row(Tensor *a, int rowx, int rowy);
+void exchange2col(Tensor *a, int colx, int coly);
 
-void transposition(Array *a);
+void transposition(Tensor *a);
 
-Array *inverse(Array *a);
-float trace(Array *a);
-Array *add_ar(Array *a, Array *b);
-Array *subtract_ar(Array *a, Array *b);
-Array *divide_ar(Array *a, Array *b);
-Array *multiply_ar(Array *a, Array *b);
-void add_arx(Array *a, float x);
-void row_addx(Array *a, int row, float x);
-void col_addx(Array *a, int col, float x);
-void array_multx(Array *a, float x);
-void row_multx(Array *a, int row, float x);
-void col_multx(Array *a, int col, float x);
-void add_row2r(Array *a, int row1, int row2);
-void add_col2c(Array *a, int col1, int col2);
-void add_multrow2r(Array *a, int row1, int row2, float x);
-void add_multcol2c(Array *a, int col1, int col2, float x);
-Array *gemm(Array *a, Array *b);
-void saxpy(Array *ax, Array *ay, float x);
-float norm1_ar(Array *a);
-float norm2_ar(Array *a);
-float infnorm_ar(Array *a);
-float fronorm_ar(Array *a);
+Tensor *inverse(Tensor *a);
+float trace(Tensor *a);
 
-Array *householder(Vector *x, float *beta);
+void row_addx(Tensor *a, int row, float x);
+void col_addx(Tensor *a, int col, float x);
+
+void row_multx(Tensor *a, int row, float x);
+void col_multx(Tensor *a, int col, float x);
+void add_row2r(Tensor *a, int row1, int row2);
+void add_col2c(Tensor *a, int col1, int col2);
+void add_multrow2r(Tensor *a, int row1, int row2, float x);
+void add_multcol2c(Tensor *a, int col1, int col2, float x);
+
+Tensor *gemm(Tensor *a, Tensor *b);
+
+float norm1_ar(Tensor *a);
+float norm2_ar(Tensor *a);
+float infnorm_ar(Tensor *a);
+float fronorm_ar(Tensor *a);
+
+Tensor *householder(Tensor *x, float *beta);
 // 给定标量a、b，计算c=cosθ、s=sinθ
 float *givens(float a, float b);
-Array *givens_rotate(Array *a, int i, int k, float c, float s);
+Tensor *givens_rotate(Tensor *a, int i, int k, float c, float s);
 
-Vector *__householder_v(Vector *x, float *beta);
-Array *__householder_a(Vector *v, float beta);
-Array *__householder_QR(Array *a, Array *r, Array *q);
+Tensor *__householder_v(Tensor *x, float *beta);
+Tensor *__householder_a(Tensor *v, float beta);
+Tensor *__householder_QR(Tensor *a, Tensor *r, Tensor *q);
 
 #ifdef  __cplusplus
 }

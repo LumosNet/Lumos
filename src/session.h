@@ -12,24 +12,24 @@ extern "C" {
 typedef struct session{
     tensor*   (*copy)();
     void      (*tsprint)();
-    int       (*pixel_num)();
-    int       (*get_index)();
-    float     (*get_pixel)();
-    void      (*change_pixel)();
+    int       (*ts_pixel_num)();
+    int       (*ts_get_index)();
+    float     (*ts_get_pixel)();
+    void      (*ts_change_pixel)();
     void      (*resize)();
     void      (*slice)();
     void      (*merge)();
-    float     (*get_sum)();
-    float     (*get_min)();
-    float     (*get_max)();
-    float     (*get_mean)();
+    float     (*ts_sum)();
+    float     (*ts_min)();
+    float     (*ts_max)();
+    float     (*ts_mean)();
     void      (*del)();
 } session, Session;
 
 typedef struct base_arop{
-    Vector*  (*row2Vector)();
-    Vector*  (*col2Vector)();
-    Vector*  (*diagonal2Vector)();
+    Tensor*  (*row2Tensor)();
+    Tensor*  (*col2Tensor)();
+    Tensor*  (*diagonal2Tensor)();
 
     void     (*replace_rowlist)();
     void     (*replace_collist)();
@@ -47,8 +47,8 @@ typedef struct base_arop{
 
     void     (*replace_part)();
 
-    Array*   (*merge_array)();
-    Array*   (*slice_array)();
+    Tensor*   (*merge_array)();
+    Tensor*   (*slice_array)();
 
     void     (*overturn_lr)();
     void     (*overturn_ud)();
@@ -64,10 +64,10 @@ typedef struct base_arop{
 } base_arop, BaseAROp;
 
 typedef struct numeric_arop{
-    Array*   (*add_ar)();
-    Array*   (*subtract_ar)();
-    Array*   (*divide_ar)();
-    Array*   (*multiply_ar)();
+    Tensor*   (*add_ar)();
+    Tensor*   (*subtract_ar)();
+    Tensor*   (*divide_ar)();
+    Tensor*   (*multiply_ar)();
 
     void     (*add_arx)();
     void     (*row_addx)();
@@ -84,8 +84,8 @@ typedef struct numeric_arop{
 
     float    (*trace)();
 
-    Array*   (*gemm)();
-    Array*   (*inverse)();
+    Tensor*   (*gemm)();
+    Tensor*   (*inverse)();
     void     (*saxpy)();
 
     float    (*norm1_ar)();
@@ -97,8 +97,8 @@ typedef struct numeric_arop{
 typedef struct transform_arop
 {
     float*   (*givens)();
-    Array*   (*givens_rotate)();
-    Array*   (*householder)();
+    Tensor*   (*givens_rotate)();
+    Tensor*   (*householder)();
 } transform_arop, TransformAROp;
 
 typedef struct base_vtop
@@ -109,8 +109,8 @@ typedef struct base_vtop
     void      (*del_pixel)();
     void      (*insert_pixel)();
 
-    Vector*   (*merge_vt)();
-    Vector*   (*slice_vt)();
+    Tensor*   (*merge_vt)();
+    Tensor*   (*slice_vt)();
 } base_vtop, BaseVTOP;
 
 typedef struct numeric_vtop

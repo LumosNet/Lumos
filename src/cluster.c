@@ -1,7 +1,7 @@
 #include "cluster.h"
 
 // K_Means聚类算法
-ClusterPile *k_means(Array *data, ClusterPile *initial, LossFunc lossfunc)
+ClusterPile *k_means(Tensor *data, ClusterPile *initial, LossFunc lossfunc)
 {
     ClusterK *new_classes;
     ClusterPile *new_pile = initial;
@@ -22,19 +22,19 @@ ClusterPile *k_means(Array *data, ClusterPile *initial, LossFunc lossfunc)
 }
 
 // 根据聚类中心对数据重分类
-ClusterK *__classify(Array *data, ClusterPile *pile, LossFunc lossfunc)
+ClusterK *__classify(Tensor *data, ClusterPile *pile, LossFunc lossfunc)
 {
     ClusterK *clusterk = malloc(sizeof(ClusterK));
     clusterk->clusters = malloc(pile->k*sizeof(Cluster*));
     for (int i = 0; i < pile->k; ++i){
         Cluster *cluster = malloc(sizeof(Cluster));
-        Array *x = array_x(0, data->size[0], 0);
+        Tensor *x = array_x(0, data->size[0], 0);
         cluster->data = x;
         cluster->mvt = pile->pile[i];
         clusterk->clusters[i] = cluster;
     }
     for (int i = 0; i < data->size[1]; ++i){
-        Vector *x = row2Vector(data, i+1);
+        Tensor *x = row2Tensor(data, i+1);
         float loss = -1;
         int index = -1;
         for (int j = 0; j < pile->k; ++j){
@@ -46,8 +46,8 @@ ClusterK *__classify(Array *data, ClusterPile *pile, LossFunc lossfunc)
             }
         }
         Cluster *belong = clusterk->clusters[index];
-        Array *class = belong->data;
-        Vector *one = row2Vector(data, i+1);
+        Tensor *class = belong->data;
+        Tensor *one = row2Tensor(data, i+1);
         insert_row(class, class->size[1]+1, one->data);
     }
     return clusterk;
@@ -66,11 +66,11 @@ ClusterPile *__middlevt(ClusterK *pile)
         MiddelVt *ovt = cluster->mvt;
         vt->label = ovt->label;
 
-        Array *data = cluster->data;
-        Vector *x = Vector_x(data->size[0], 0, 1);
-        Vector *nvt = gemm(x, data);
+        Tensor *data = cluster->data;
+        Tensor *x = Tensor_x(data->size[0], 0, 1);
+        Tensor *nvt = gemm(x, data);
         vt->vt = nvt;
-        del(x);
+        free_tensor(x);
     }
     return clusterpile;
 }

@@ -1,28 +1,35 @@
 #include "tensor.h"
 
-tensor *tensor_x(int dim, int *size, float x)
+Tensor *tensor(int dim, int *size)
 {
-    tensor *ts = malloc(sizeof(tensor));
+    Tensor *ts = malloc(sizeof(tensor));
     int *ts_size = malloc(dim*sizeof(int));
     memcpy(ts_size, size, dim*sizeof(int));
+    ts->type = TENSOR;
     ts->dim = dim;
     ts->size = ts_size;
     ts->num = multing_int_list(size, 0, dim);
     ts->data = calloc(ts->num, sizeof(float));
+    return ts;
+}
+
+Tensor *tensor_x(int dim, int *size, float x)
+{
+    Tensor *ts = tensor(dim, size);
     if (x != 0) full_list_with_float(ts->data, x, ts->num, 0, 0);
     return ts;
 }
 
-tensor *tensor_list(int dim, int *size, float *list)
+Tensor *tensor_list(int dim, int *size, float *list)
 {
-    tensor *ts = tensor_x(dim, size, 0);
+    Tensor *ts = tensor(dim, size);
     memcpy_float_list(ts->data, list, 0, 0, ts->num);
     return ts;
 }
 
 Tensor *tensor_sparse(int dim, int *size, int **index, float *list, int n)
 {
-    tensor *ts = tensor_x(dim, size, 0);
+    Tensor *ts = tensor(dim, size);
     for (int i = 0; i < n; ++i){
         int lindex = index_ts2ls(index[i], dim, size);
         ts->data[lindex] = list[i];
@@ -30,7 +37,7 @@ Tensor *tensor_sparse(int dim, int *size, int **index, float *list, int n)
     return ts;
 }
 
-void tsprint(tensor *ts)
+void tsprint(Tensor *ts)
 {
     printf("dimenssion : %d\n", ts->dim);
     printf("instruction : ");
@@ -46,7 +53,7 @@ void tsprint(tensor *ts)
     }
 }
 
-int pixel_num(tensor *ts, float x)
+int ts_pixel_num(Tensor *ts, float x)
 {
     int num = 0;
     for (int i = 0; i < ts->num; ++i){
@@ -55,20 +62,21 @@ int pixel_num(tensor *ts, float x)
     return num;
 }
 
-tensor *copy(tensor *ts)
+Tensor *tensor_copy(Tensor *ts)
 {
-    tensor *ret_ts = tensor_list(ts->dim, ts->size, ts->data);
+    Tensor *ret_ts = tensor_list(ts->dim, ts->size, ts->data);
     return ret_ts;
 }
 
-index_list* get_index(tensor *ts, float x)
+IndexList* ts_get_index(Tensor *ts, float x)
 {
-    index_list *head = NULL;
-    index_list *node;
+    IndexList *head = NULL;
+    IndexList *node;
     for (int i = 0; i < ts->num; ++i){
         if (ts->data[i] == x){
-            int *ls2ts = index_ls2ts(ts->dim, ts->size, i);
-            index_list *index_n = malloc(sizeof(index_list));
+            int *ls2ts = malloc(ts->dim*sizeof(int));
+            index_ls2ts(ts->dim, ts->size, i, ls2ts);
+            IndexList *index_n = malloc(sizeof(IndexList));
             index_n->index = ls2ts;
             index_n->next = NULL;
             if (head == NULL) {
@@ -84,30 +92,34 @@ index_list* get_index(tensor *ts, float x)
     return head;
 }
 
-float get_pixel(tensor *ts, int *index)
+float ts_get_pixel(Tensor *ts, int *index)
 {
     int ts2ls = index_ts2ls(index, ts->dim, ts->size);
     if (ts2ls >= 0 && ts2ls < ts->num) return ts->data[ts2ls];
     return 0;
 }
 
-void change_pixel(tensor *ts, int *index, float x)
+void ts_change_pixel(Tensor *ts, int *index, float x)
 {
     int ts2ls = index_ts2ls(index, ts->dim, ts->size);
     if (ts2ls) ts->data[ts2ls] = x;
 }
 
-void resize(tensor *ts, int dim, int *size)
+void resize(Tensor *ts, int dim, int *size)
 {
     float *data = ts->data;
-    ts->data = malloc(ts->num*sizeof(float));
+    int *t_size = ts->size;
     ts->dim = dim;
-    memcpy_float_list(ts->data, data, 0, 0, multing_int_list(size, 0, dim));
-    memcpy_void_list(ts->size, size, INT, 0, 0, ts->dim);
+    ts->num = multing_int_list(size, 0, dim);
+    ts->data = malloc(ts->num*sizeof(float));
+    ts->size = malloc(ts->dim*sizeof(int));
+    memcpy_float_list(ts->data, data, 0, 0, ts->num);
+    memcpy_int_list(ts->size, size, 0, 0, dim);
     free(data);
+    free(t_size);
 }
 
-void slice(tensor *ts, float *workspace, int *dim_c, int **size_c)
+void slice(Tensor *ts, float *workspace, int *dim_c, int **size_c)
 {
     int **sections = malloc(ts->dim*sizeof(int*));
     for (int i = 0; i < dim_c[0]; ++i){
@@ -136,7 +148,7 @@ void slice(tensor *ts, float *workspace, int *dim_c, int **size_c)
     __slice(ts, sections, workspace, dim_c[0]);
 }
 
-void merge(tensor *ts, tensor *n, int dim, int index, float *workspace)
+void merge(Tensor *ts, Tensor *n, int dim, int index, float *workspace)
 {
     int **sections = malloc(ts->dim*sizeof(int*));
     for (int i = 0; i < dim-1; ++i){
@@ -183,12 +195,12 @@ void merge(tensor *ts, tensor *n, int dim, int index, float *workspace)
     free(offset);
 }
 
-float get_sum(tensor *ts)
+float ts_sum(Tensor *ts)
 {
     return sum_float_list(ts->data, 0, ts->num);
 }
 
-float get_min(tensor *ts)
+float ts_min(Tensor *ts)
 {
     float min = ts->data[0];
     for (int i = 1; i < ts->num; ++i){
@@ -197,7 +209,7 @@ float get_min(tensor *ts)
     return min;
 }
 
-float get_max(tensor *ts)
+float ts_max(Tensor *ts)
 {
     float max = ts->data[0];
     for (int i = 1; i < ts->num; ++i){
@@ -206,33 +218,68 @@ float get_max(tensor *ts)
     return max;
 }
 
-float get_mean(tensor *ts)
+float ts_mean(Tensor *ts)
 {
-    return get_sum(ts) / ts->num;
+    return ts_sum(ts) / ts->num;
 }
 
-void add_tsx(tensor *ts, float x)
+void ts_add_x(Tensor *ts, float x)
 {
     for (int i = 0; i < ts->num; ++i){
         ts->data[i] += x;
     }
 }
 
-void tensor_multx(tensor *ts, float x)
+void ts_mult_x(Tensor *ts, float x)
 {
     for (int i = 0; i < ts->num; ++i){
         ts->data[i] *= x;
     }
 }
 
-void del(tensor *ts)
+void ts_add(Tensor *ts_a, Tensor *ts_b)
+{
+    for (int i = 0; i < ts_a->num; ++i){
+        ts_a->data[i] += ts_b->data[i];
+    }
+}
+
+void ts_subtract(Tensor *ts_a, Tensor *ts_b)
+{
+    for (int i = 0; i < ts_a->num; ++i){
+        ts_a->data[i] -= ts_b->data[i];
+    }
+}
+
+void ts_multiply(Tensor *ts_a, Tensor *ts_b)
+{
+    for (int i = 0; i < ts_a->num; ++i){
+        ts_a->data[i] *= ts_b->data[i];
+    }
+}
+
+void ts_divide(Tensor *ts_a, Tensor *ts_b)
+{
+    for (int i = 0; i < ts_a->num; ++i){
+        ts_a->data[i] /= ts_b->data[i];
+    }
+}
+
+void ts_saxpy(Tensor *ts_a, Tensor *ts_b, float x)
+{
+    for (int i = 0; i < ts_a->num; ++i){
+        ts_a->data[i] += ts_b->data[i] * x;
+    }
+}
+
+void free_tensor(Tensor *ts)
 {
     free(ts->data);
     free(ts->size);
     free(ts);
 }
 
-int __ergodic(tensor *ts, int *index)
+int __ergodic(Tensor *ts, int *index)
 {
     int res = 1;
     int dim = ts->dim - 1;
@@ -248,7 +295,7 @@ int __ergodic(tensor *ts, int *index)
     return res;
 }
 
-void __slice(tensor *ts, int **sections, float *workspace, int dim)
+void __slice(Tensor *ts, int **sections, float *workspace, int dim)
 {
     int *offset = malloc(sizeof(int));
     *offset = 0;
@@ -256,7 +303,7 @@ void __slice(tensor *ts, int **sections, float *workspace, int dim)
     free(offset);
 }
 
-void __slicing(tensor *ts, int **sections, float *workspace, int dim_now, int offset_o, int *offset_a, int offset, int dim)
+void __slicing(Tensor *ts, int **sections, float *workspace, int dim_now, int offset_o, int *offset_a, int offset, int dim)
 {
     int *section = sections[dim_now-1];
     int num = section[0];
@@ -275,7 +322,7 @@ void __slicing(tensor *ts, int **sections, float *workspace, int dim_now, int of
     }
 }
 
-void __merging(tensor *ts1, tensor *ts2, int **sections, float *workspace, int dim_now, int offset_m, int *offset_n, int *offset_a, int offset, int *size, int dim)
+void __merging(Tensor *ts1, Tensor *ts2, int **sections, float *workspace, int dim_now, int offset_m, int *offset_n, int *offset_a, int offset, int *size, int dim)
 {
     int *section = sections[dim_now-1];
     int num = section[0];

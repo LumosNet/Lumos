@@ -11,7 +11,7 @@ extern "C" {
 
 typedef struct middle_vt{
     char *label;
-    Vector *vt;
+    Tensor *vt;
 } middle_vt, MiddelVt;
 
 typedef struct cluster_pile
@@ -21,7 +21,7 @@ typedef struct cluster_pile
 } cluster_pile, ClusterPile;
 
 typedef struct cluster{
-    Array *data;
+    Tensor *data;
     MiddelVt *mvt;
 } cluster, Cluster;
 
@@ -31,10 +31,10 @@ typedef struct cluster_k{
 } cluster_k, ClusterK;
 
 /* 无监督 每一行是一组数据*/
-ClusterPile *k_means(Array *data, ClusterPile *initial, LossFunc lossfunc);
+ClusterPile *k_means(Tensor *data, ClusterPile *initial, LossFunc lossfunc);
 
 
-ClusterK *__classify(Array *data, ClusterPile *pile, LossFunc lossfunc);
+ClusterK *__classify(Tensor *data, ClusterPile *pile, LossFunc lossfunc);
 ClusterPile *__middlevt(ClusterK *pile);
 
 #ifdef  __cplusplus

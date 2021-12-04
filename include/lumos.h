@@ -8,15 +8,18 @@
 extern "C" {
 #endif
 
+typedef enum {
+    TENSOR, VECTOR, ARRAY, IMAGE
+} TensorType;
+
 /* 行优先存储 */
 typedef struct tensor{
     int       dim;
     int       *size;
     int       num;
     float     *data;
+    TensorType type;
 } tensor, Tensor;
-
-typedef tensor array, Array, Vector, Vector, image, Image, matrix, Matrix;
 
 typedef float   (*activate)(float);
 typedef float   (*gradient)(float);
@@ -99,8 +102,8 @@ typedef struct layer{
     float theta;
     float gamma;
 
-    Array *kernel_weights;
-    Array *bias_weights;
+    Tensor *kernel_weights;
+    Tensor *bias_weights;
 
     Forward forward;
     Backward backward;

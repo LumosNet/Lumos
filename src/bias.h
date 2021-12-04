@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-void add_bias(Tensor *ts, Array *bias, int n, int size);
+void add_bias(Tensor *ts, Tensor *bias, int n, int size);
 
 #ifdef __cplusplus
 }

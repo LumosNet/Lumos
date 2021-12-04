@@ -18,12 +18,12 @@ Tensor *im2col(Image *img, int ksize, int stride, int pad)
                 int im_col = w_offset + w * stride;
                 int col_index = (h*width_col + w)*channels_col + c;
                 int index[] = {im_col+1-pad, im_row+1-pad, c_offset+1};
-                float val = get_pixel(img, index);
+                float val = ts_get_pixel(img, index);
                 data_col[col_index] = val;
             }
         }
     }
-    Array *colim = array_list(height_col*width_col, ksize*ksize*channels, data_col);
+    Tensor *colim = array_list(height_col*width_col, ksize*ksize*channels, data_col);
     return colim;
 }
 

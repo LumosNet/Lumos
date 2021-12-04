@@ -8,20 +8,20 @@ int *one_hot_encoding(int n, int label)
     return code;
 }
 
-float mse(Vector *yi, Vector *yh)
+float mse(Tensor *yi, Tensor *yh)
 {
-    Vector *y = subtract_ar(yi, yh);
-    Vector *x = copy(y);
+    Tensor *y = subtract_ar(yi, yh);
+    Tensor *x = tensor_copy(y);
     transposition(x);
     Tensor *ts = gemm(x, y);
     float res = ts->data[0] / yi->num;
-    del(y);
-    del(x);
-    del(ts);
+    free_tensor(y);
+    free_tensor(x);
+    free_tensor(ts);
     return res;
 }
 
-float mae(Vector *yi, Vector *yh)
+float mae(Tensor *yi, Tensor *yh)
 {
     int sum = 0;
     for (int i = 0; i < yi->num; ++i){
@@ -30,7 +30,7 @@ float mae(Vector *yi, Vector *yh)
     return sum / yi->num;
 }
 
-float huber(Vector *yi, Vector *yh, float theta)
+float huber(Tensor *yi, Tensor *yh, float theta)
 {
     float huber = 0;
     for (int i = 0; i < yi->num; ++i){
@@ -41,7 +41,7 @@ float huber(Vector *yi, Vector *yh, float theta)
     return huber / yi->num;
 }
 
-float quantile(Vector *yi, Vector *yh, float gamma)
+float quantile(Tensor *yi, Tensor *yh, float gamma)
 {
     float quant = 0;
     for (int i = 0; i < yi->num; ++i){
@@ -54,7 +54,7 @@ float quantile(Vector *yi, Vector *yh, float gamma)
     return quant / yi->num;
 }
 
-float cross_entropy(Vector *yi, Vector *yh)
+float cross_entropy(Tensor *yi, Tensor *yh)
 {
     float entropy = 0;
     for (int i = 0; i < yi->num; ++i){
@@ -63,7 +63,7 @@ float cross_entropy(Vector *yi, Vector *yh)
     return -entropy;
 }
 
-float hinge(Vector *yi, Vector *yh)
+float hinge(Tensor *yi, Tensor *yh)
 {
     float hinge = 0;
     for (int i = 0; i < yi->num; ++i){
@@ -124,7 +124,7 @@ void forward_hinge_loss(Layer *l, Network *net)
 void backward_mse_loss(Layer *l, Network *net)
 {
     for (int i = 0; i < net->batch; ++i){
-        Array *a = subtract_ar(l->input[i], net->labels[i]);
+        Tensor *a = subtract_ar(l->input[i], net->labels[i]);
         array_multx(a, 2/a->num);
         net->delta[i] = a;
     }

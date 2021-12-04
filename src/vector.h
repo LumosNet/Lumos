@@ -1,5 +1,5 @@
-#ifndef Vector_H
-#define Vector_H
+#ifndef Tensor_H
+#define Tensor_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,29 +13,29 @@
 extern "C" {
 #endif
 
-Vector *Vector_x(int num, int flag, float x);
-Vector *Vector_list(int num, int flag, float *list);
+Tensor *Tensor_x(int num, int flag, float x);
+Tensor *Tensor_list(int num, int flag, float *list);
 
-int colorrow(Vector *v);
+int colorrow(Tensor *v);
 
-float get_pixel_vt(Vector *v, int index);
-void change_pixel_vt(Vector *v, int index, float x);
-void resize_vt(Vector *v, int num);
+float ts_get_pixel_vt(Tensor *v, int index);
+void ts_change_pixel_vt(Tensor *v, int index, float x);
+void resize_vt(Tensor *v, int num);
 
-void replace_vtlist(Vector *v, float *list);
-void replace_vtx(Vector *v, float x);
+void replace_vtlist(Tensor *v, float *list);
+void replace_vtx(Tensor *v, float x);
 
-void del_pixel(Vector *v, int index);
-void insert_pixel(Vector *v, int index, float x);
+void del_pixel(Tensor *v, int index);
+void insert_pixel(Tensor *v, int index, float x);
 
-Vector *merge_vt(Vector *a, Vector *b, int index);
-Vector *slice_vt(Vector *v, int index_h, int index_t);
+Tensor *merge_vt(Tensor *a, Tensor *b, int index);
+Tensor *slice_vt(Tensor *v, int index_h, int index_t);
 
-float norm1_vt(Vector *v);
-float norm2_vt(Vector *v);
-float normp_vt(Vector *v, int p);
-float infnorm_vt(Vector *v);
-float ninfnorm_vt(Vector *v);
+float norm1_vt(Tensor *v);
+float norm2_vt(Tensor *v);
+float normp_vt(Tensor *v, int p);
+float infnorm_vt(Tensor *v);
+float ninfnorm_vt(Tensor *v);
 
 #ifdef  __cplusplus
 }
