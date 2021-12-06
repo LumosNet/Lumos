@@ -28,7 +28,7 @@ Image *load_image_data(char *img_path);
 void save_image_data(Image *img, char *savepath);
 
 // 双线性内插值
-Image *resize_im(Image *img, int width, int height);
+Image *resize_ts_im(Image *img, int width, int height);
 
 #ifdef  __cplusplus
 }

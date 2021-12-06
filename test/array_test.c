@@ -18,7 +18,7 @@ void test_array_unit(int row, int col, float x, int flag)
     show_array(a);
 }
 
-void test_get_array_index(Tensor *a, int row, int col)
+void test_get_array_index(Tensor *ts, int row, int col)
 {
     int index = get_array_lindex(a, row, col);
     printf("Index: %d\n", index);

@@ -19,7 +19,7 @@ typedef struct tensor{
     int       num;
     float     *data;
     TensorType type;
-} tensor, Tensor;
+} Tensor;
 
 typedef float   (*activate)(float);
 typedef float   (*gradient)(float);

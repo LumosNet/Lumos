@@ -1,10 +1,7 @@
-#include "image.h"
-#include "gray_process.h"
 #include "array.h"
-#include "im2col.h"
-#include "parser.h"
-#include "utils.h"
-#include "network.h"
+#include "tensor.h"
+#include "vector.h"
+#include "umath.h"
 #include "lumos.h"
 
 #include <stdio.h>
@@ -13,6 +10,5 @@
 
 int main(int argc, char **argv)
 {
-    Network *net = load_network(argv[1]);
     return 0;
 }

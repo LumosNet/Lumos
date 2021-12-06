@@ -3,7 +3,7 @@
 Tensor *array(int row, int col)
 {
     int size[] = {col, row};
-    Tensor *ret = tensor(2, size);
+    Tensor *ret = tensor_d(2, size);
     ret->type = ARRAY;
     return ret;
 }
@@ -129,10 +129,10 @@ Tensor *array_unit(int row, int col, float x, int flag)
        float
        返回索引到的元素值
 \*************************************************************************************************/
-float ts_get_pixel_ar(Tensor *a, int row, int col)
+float ar_get_pixel(Tensor *ts, int row, int col)
 {
     int index[] = {col, row};
-    return ts_get_pixel(a, index);
+    return ts_get_pixel(ts, index);
 }
 
 /*************************************************************************************************\
@@ -147,10 +147,10 @@ float ts_get_pixel_ar(Tensor *a, int row, int col)
  * 返回
        void
 \*************************************************************************************************/
-void ts_change_pixel_ar(Tensor *a, int row, int col, float x)
+void ar_change_pixel(Tensor *ts, int row, int col, float x)
 {
     int index[] = {col, row};
-    ts_change_pixel(a, index, x);
+    ts_change_pixel(ts, index, x);
 }
 
 /*************************************************************************************************\
@@ -163,76 +163,10 @@ void ts_change_pixel_ar(Tensor *a, int row, int col, float x)
  * 返回
        void
 \*************************************************************************************************/
-void resize_ar(Tensor *a, int row, int col)
+void resize_ar(Tensor *ts, int row, int col)
 {
-    int *size = malloc(2*sizeof(int));
-    size[0] = col;
-    size[1] = row;
-    resize(a, 2, size);
-    free(size);
-}
-
-/*************************************************************************************************\
- * 描述
-       获取矩阵某一行（以向量形式返回）
- * 参数
-       a:待获取矩阵
-       row:待获取的行（1开始）
- * 返回
-       Tensor*
-       获取的行数据组成的向量
-\*************************************************************************************************/
-Tensor *row2Tensor(Tensor *a, int row)
-{
-    int size = a->size[0];
-    int offset = (row-1)*size;
-    float *data = malloc(size*sizeof(float));
-    memcpy_float_list(data, a->data, 0, offset, size);
-    return Tensor_list(size, 0, data);
-}
-
-/*************************************************************************************************\
- * 描述
-       获取矩阵某一列（一向量形式返回）
- * 参数
-       a:待获取矩阵
-       col:待获取的列（1开始）
- * 返回
-       Tensor*
-       获取的列数据组成的向量
-\*************************************************************************************************/
-Tensor *col2Tensor(Tensor *a, int col)
-{
-    int x = a->size[0];
-    int y = a->size[1];
-    float *data = malloc(y*sizeof(float));
-    for (int i = 0; i < x; ++i){
-        data[i] = ts_get_pixel_ar(a, i+1, col);
-    }
-    return Tensor_list(y, 1, data);
-}
-
-/*************************************************************************************************\
- * 描述
-       获取矩阵对角线元素（以列表形式返回）
- * 参数
-       a:待获取矩阵
-       flag:1代表主对角线，0代表斜对角线
- * 返回
-       Tensor*
-       获取的对角线数据向量
-\*************************************************************************************************/
-Tensor *diagonal2Tensor(Tensor *a, int flag)
-{
-    int x = a->size[0];
-    int y = a->size[1];
-    int min = (x<y) ? x : y;
-    float *data = malloc(min*sizeof(float));
-    for (int i = 0; i < min; ++i){
-        if (flag) data[i] = ts_get_pixel_ar(a, i+1, i+1);
-        else data[i] = ts_get_pixel_ar(a, i+1, min-i);
-    }
-    return Tensor_list(min, 1, data);
+    int size[] = {col, row};
+    resize_ts(ts, 2, size);
 }
 
 /*************************************************************************************************\
@@ -245,11 +179,11 @@ Tensor *diagonal2Tensor(Tensor *a, int flag)
  * 返回
        void
 \*************************************************************************************************/
-void replace_rowlist(Tensor *a, int row, float *list)
+void replace_rowlist(Tensor *ts, int row, float *list)
 {
-    int size = a->size[0];
-    int index = (row-1)*size;
-    memcpy_float_list(a->data, list, index, 0, size);
+    int size = ts->size[0];
+    int index = row*size;
+    memcpy_float_list(ts->data, list, index, 0, size);
 }
 
 /*************************************************************************************************\
@@ -262,10 +196,10 @@ void replace_rowlist(Tensor *a, int row, float *list)
  * 返回
        void
 \*************************************************************************************************/
-void replace_collist(Tensor *a, int col, float *list)
+void replace_collist(Tensor *ts, int col, float *list)
 {
-    for (int i = 0; i < a->size[1]; ++i){
-        ts_change_pixel_ar(a, i+1, col, list[i]);
+    for (int i = 0; i < ts->size[1]; ++i){
+        ar_change_pixel(ts, i, col, list[i]);
     }
 }
 
@@ -279,12 +213,12 @@ void replace_collist(Tensor *a, int col, float *list)
  * 返回
        void
 \*************************************************************************************************/
-void replace_diagonalist(Tensor *a, float *list, int flag)
+void replace_diagonalist(Tensor *ts, float *list, int flag)
 {
-    int min = (a->size[0] < a->size[1]) ? a->size[0] : a->size[1];
+    int min = MIN(ts->size[0], ts->size[1]);
     for (int i = 0; i < min; ++i){
-        if (flag) ts_change_pixel_ar(a, i+1, i+1, list[i]);
-        else ts_change_pixel_ar(a, i+1, a->size[0]-i, list[i]);
+        if (flag) ar_change_pixel(ts, i, i, list[i]);
+        else ar_change_pixel(ts, i, ts->size[0]-i-1, list[i]);
     }
 }
 
@@ -298,10 +232,10 @@ void replace_diagonalist(Tensor *a, float *list, int flag)
  * 返回
        void
 \*************************************************************************************************/
-void replace_rowx(Tensor *a, int row, float x)
+void replace_rowx(Tensor *ts, int row, float x)
 {
-    for (int i = 0; i < a->size[0]; ++i){
-        ts_change_pixel_ar(a, row, i+1, x);
+    for (int i = 0; i < ts->size[0]; ++i){
+        ar_change_pixel(ts, row, i, x);
     }
 }
 
@@ -315,10 +249,10 @@ void replace_rowx(Tensor *a, int row, float x)
  * 返回
        void
 \*************************************************************************************************/
-void replace_colx(Tensor *a, int col, float x)
+void replace_colx(Tensor *ts, int col, float x)
 {
-    for (int i = 0; i < a->size[1]; ++i){
-        ts_change_pixel_ar(a, i+1, col, x);
+    for (int i = 0; i < ts->size[1]; ++i){
+        ar_change_pixel(ts, i, col, x);
     }
 }
 
@@ -332,12 +266,12 @@ void replace_colx(Tensor *a, int col, float x)
  * 返回
        void
 \*************************************************************************************************/
-void replace_diagonalx(Tensor *a, float x, int flag)
+void replace_diagonalx(Tensor *ts, float x, int flag)
 {
-    int min = (a->size[0] < a->size[1]) ? a->size[0] : a->size[1];
+    int min = MIN(ts->size[0], ts->size[1]);
     for (int i = 0; i < min; ++i){
-        if (flag) ts_change_pixel_ar(a, i+1, i+1, x);
-        else ts_change_pixel_ar(a, i+1, a->size[0]-i, x);
+        if (flag) ar_change_pixel(ts, i, i, x);
+        else ar_change_pixel(ts, i, ts->size[0]-i-1, x);
     }
 }
 
@@ -350,15 +284,15 @@ void replace_diagonalx(Tensor *a, float x, int flag)
  * 返回
        void
 \*************************************************************************************************/
-void del_row(Tensor *a, int row)
+void del_row(Tensor *ts, int row)
 {
-    a->num -= a->size[0];
-    float *data = malloc((a->num)*sizeof(float));
-    memcpy_float_list(data, a->data, 0, 0, (row-1)*a->size[0]);
-    memcpy_float_list(data, a->data, (row-1)*a->size[0], row*a->size[0], (a->size[1]-row)*a->size[0]);
-    free(a->data);
-    a->data = data;
-    a->size[1] -= 1;
+    ts->num -= ts->size[0];
+    float *data = malloc((ts->num)*sizeof(float));
+    memcpy_float_list(data, ts->data, 0, 0, row*ts->size[0]);
+    memcpy_float_list(data, ts->data, row*ts->size[0], (row+1)*ts->size[0], (ts->size[1]-row-1)*ts->size[0]);
+    free(ts->data);
+    ts->data = data;
+    ts->size[1] -= 1;
 }
 
 /*************************************************************************************************\
@@ -370,18 +304,18 @@ void del_row(Tensor *a, int row)
  * 返回
        void
 \*************************************************************************************************/
-void del_col(Tensor *a, int col)
+void del_col(Tensor *ts, int col)
 {
-    a->num -= a->size[1];
-    float *data = malloc((a->num)*sizeof(float));
-    for (int i = 0; i < a->size[1]; ++i){
-        int offset = i*a->size[0];
-        memcpy_float_list(data, a->data, i*(a->size[0]-1), offset, col-1);
-        memcpy_float_list(data, a->data, i*(a->size[0]-1)+col-1, offset+col, (a->size[0]-col));
+    ts->num -= ts->size[1];
+    float *data = malloc((ts->num)*sizeof(float));
+    for (int i = 0; i < ts->size[1]; ++i){
+        int offset = i*ts->size[0];
+        memcpy_float_list(data, ts->data, i*(ts->size[0]-1), offset, col);
+        memcpy_float_list(data, ts->data, i*(ts->size[0]-1)+col, offset+col+1, ts->size[0]-col-1);
     }
-    free(a->data);
-    a->data = data;
-    a->size[0] -= 1;
+    free(ts->data);
+    ts->data = data;
+    ts->size[0] -= 1;
 }
 
 /*************************************************************************************************\
@@ -409,16 +343,16 @@ void del_col(Tensor *a, int col)
             a31  a32  a33  a34                        a41  a42  a43  a44
             a41  a42  a43  a44                        x1   x2   x3   x4
 \*************************************************************************************************/
-void insert_row(Tensor *a, int index, float *data)
+void insert_row(Tensor *ts, int row, float *data)
 {
-    a->num += a->size[0];
-    float *new_data = malloc(a->num*sizeof(float));
-    memcpy_float_list(new_data, a->data, 0, 0, (index-1)*a->size[0]);
-    memcpy_float_list(new_data, data, (index-1)*a->size[0], 0, a->size[0]);
-    memcpy_float_list(new_data, a->data, index*a->size[0], (index-1)*a->size[0], (a->size[1]-index+1)*a->size[0]);
-    free(a->data);
-    a->data = new_data;
-    a->size[1] += 1;
+    ts->num += ts->size[0];
+    float *new_data = malloc(ts->num*sizeof(float));
+    memcpy_float_list(new_data, ts->data, 0, 0, row*ts->size[0]);
+    memcpy_float_list(new_data, data, row*ts->size[0], 0, ts->size[0]);
+    memcpy_float_list(new_data, ts->data, (row+1)*ts->size[0], row*ts->size[0], (ts->size[1]-row)*ts->size[0]);
+    free(ts->data);
+    ts->data = new_data;
+    ts->size[1] += 1;
 }
 
 /*************************************************************************************************\
@@ -445,127 +379,19 @@ void insert_row(Tensor *a, int index, float *data)
             x3  a31  a32  a33  a34                    a31  a32  a33  a34  x3
             x4  a41  a42  a43  a44                    a41  a42  a43  a44  x4
 \*************************************************************************************************/
-void insert_col(Tensor *a, int index, float *data)
+void insert_col(Tensor *ts, int col, float *data)
 {
-    a->num += a->size[1];
-    float *new_data = malloc((a->num)*sizeof(float));
-    for (int i = 0; i < a->size[1]; ++i){
-        int offset = i*a->size[0];
-        memcpy_float_list(new_data, a->data, i*(a->size[0]+1), offset, index-1);
-        new_data[i*(a->size[0]+1)+index-1] = data[i];
-        memcpy_float_list(new_data, a->data, i*(a->size[0]+1)+index, offset+index-1, (a->size[0]-index+1));
+    ts->num += ts->size[1];
+    float *new_data = malloc((ts->num)*sizeof(float));
+    for (int i = 0; i < ts->size[1]; ++i){
+        int offset = i*ts->size[0];
+        memcpy_float_list(new_data, ts->data, i*(ts->size[0]+1), offset, col);
+        new_data[i*(ts->size[0]+1)+col] = data[i];
+        memcpy_float_list(new_data, ts->data, i*(ts->size[0]+1)+col+1, offset+col, (ts->size[0]-col));
     }
-    free(a->data);
-    a->data = new_data;
-    a->size[0] += 1;
-}
-
-void replace_part(Tensor *a, Tensor *b, int row, int col)
-{
-    // int *index = malloc(2*sizeof(int));
-    // index[0] = col;
-    // index[1] = row;
-    // replace_part(a, b, index);
-}
-
-/*************************************************************************************************\
- * 描述
-       合并两个矩阵，支持向不同维不同位置索引进行合并
-       参数中第一个矩阵为目标矩阵，第二个矩阵向第一个矩阵中合并
-       合并时，采取前向合并
- * 参数
-       a:目标矩阵
-       b:待合并矩阵
-       dim:向dim维进行合并
-       index:合并位置索引
- * 返回
-       Tensor*
-       合并后的新矩阵
- * 补充
-       一:
-       a:                                       b:
-            a11  a12  a13                             b11  b12
-            a21  a22  a23                             b21  b22
-
-       dim:1
-       由于a、b行数相同，所以只能向列（第二维）合并
-
-       index:1                                  index:4
-            b11  b12  a11  a12  a13                   a11  a12  a13  b11  b12
-            b21  b22  a21  a22  a23                   a21  a22  a23  b21  b22
-
-       二:
-       a:                                       b:
-            a11  a12  a13                             b11  b12  b13
-            a21  a22  a23                             b21  b22  b23
-                                                      b31  b32  b33
-       dim:2
-       由于a、b列数相同，所以只能向行（第一维）合并
-
-       index:1                                  index:3
-            b11  b12  b13                             a11  a12  a13
-            b21  b22  b23                             a21  a22  a23
-            b31  b32  b33                             b11  b12  b13
-            a11  a12  a13                             b21  b22  b23
-            a21  a22  a23                             b31  b32  b33
-\*************************************************************************************************/
-Tensor *merge_array(Tensor *a, Tensor *b, int flag, int index)
-{
-    int dim = -1;
-    int size[] = {a->size[0], a->size[1]};
-    if (flag){
-        size[1] += b->size[1];
-        dim = 2;
-    }
-    else{
-        size[0] += b->size[0];
-        dim = 1;
-    }
-    Tensor *ret = array_x(size[1], size[0], 0);
-    merge(a, b, dim, index, ret->data);
-    return ret;
-}
-
-/*************************************************************************************************\
- * 描述
-       对矩阵进行切片操作，可以类比python numpy或python list的相关操作a[: ; :]
-       选取行索引范围以及列索引范围，将提取索引范围内的元素
-       提取后的元素组成一个新的矩阵
- * 参数
-       a：待切片矩阵
-       rowu：上侧行索引
-       rowd：下侧行索引
-       coll：左侧列索引
-       colr：右侧列索引
- * 返回
-       Tensor*
-       切片结果
- * 补充
-       a：
-            a11  a12  a13  a14  a15
-            a21  a22  a23  a24  a25
-            a31  a32  a33  a34  a35
-            a41  a42  a43  a44  a45
-            a51  a52  a53  a54  a55
-
-       rowu:2  rowd:4  coll:2  colr:5
-
-       结果：
-            a22  a23  a24  a25
-            a32  a33  a34  a35
-            a42  a43  a44  a45
-\*************************************************************************************************/
-Tensor *slice_array(Tensor *a, int rowu, int rowd, int coll, int colr)
-{
-    Tensor *ret = array_x(rowd-rowu+1, colr-coll+1, 0);
-    int offset_row = coll-1;
-    int size = colr-coll+1;
-    for (int i = rowu-1, n = 0; i < rowd; ++i, ++n){
-        int offset_a = i*a->size[0];
-        int offset_r = n*ret->size[0];
-        memcpy_float_list(ret->data, a->data, offset_r, offset_a+offset_row, size);
-    }
-    return ret;
+    free(ts->data);
+    ts->data = new_data;
+    ts->size[0] += 1;
 }
 
 /*************************************************************************************************\
@@ -586,19 +412,19 @@ Tensor *slice_array(Tensor *a, int rowu, int rowd, int coll, int colr)
             a23  a22  a21
             a33  a32  a31
 \*************************************************************************************************/
-void overturn_lr(Tensor *a)
+void overturn_lr(Tensor *ts)
 {
-    int x = a->size[1];
-    int y = a->size[0];
-    float *data = malloc(a->num*sizeof(float));
+    int x = ts->size[1];
+    int y = ts->size[0];
+    float *data = malloc(ts->num*sizeof(float));
     for (int i = 0; i < x; ++i){
         for (int j = 0; j < y; ++j){
             int col_index = y-1-j;
-            data[i*y+j] = a->data[i*y+col_index];
+            data[i*y+j] = ts->data[i*y+col_index];
         }
     }
-    free(a->data);
-    a->data = data;
+    free(ts->data);
+    ts->data = data;
 }
 
 /*************************************************************************************************\
@@ -619,19 +445,19 @@ void overturn_lr(Tensor *a)
             a21  a22  a23
             a11  a12  a13
 \*************************************************************************************************/
-void overturn_ud(Tensor *a)
+void overturn_ud(Tensor *ts)
 {
-    int x = a->size[1];
-    int y = a->size[0];
-    float *data = malloc(a->num*sizeof(float));
+    int x = ts->size[1];
+    int y = ts->size[0];
+    float *data = malloc(ts->num*sizeof(float));
     for (int i = 0; i < x; ++i){
         int row_index = x-1-i;
         for (int j = 0; j < y; ++j){
-            data[i*y+j] = a->data[row_index*y+j];
+            data[i*y+j] = ts->data[row_index*y+j];
         }
     }
-    free(a->data);
-    a->data = data;
+    free(ts->data);
+    ts->data = data;
 }
 
 /*************************************************************************************************\
@@ -643,20 +469,20 @@ void overturn_ud(Tensor *a)
  * 返回
        void
 \*************************************************************************************************/
-void overturn_diagonal(Tensor *a, int flag)
+void overturn_diagonal(Tensor *ts, int flag)
 {
-    float *data = malloc(a->num*sizeof(float));
-    for (int i = 0; i < a->size[1]; ++i){
-        for (int j = 0; j < a->size[0]; ++j){
-            if (flag) data[j*a->size[1]+i] = a->data[i*a->size[0]+j];
-            else data[(a->size[0]-j-1)*a->size[1]+a->size[1]-i-1] = a->data[i*a->size[0]+j];
+    float *data = malloc(ts->num*sizeof(float));
+    for (int i = 0; i < ts->size[1]; ++i){
+        for (int j = 0; j < ts->size[0]; ++j){
+            if (flag) data[j*ts->size[1]+i] = ts->data[i*ts->size[0]+j];
+            else data[(ts->size[0]-j-1)*ts->size[1]+ts->size[1]-i-1] = ts->data[i*ts->size[0]+j];
         }
     }
-    int x = a->size[0];
-    a->size[0] = a->size[1];
-    a->size[1] = x;
-    free(a->data);
-    a->data = data;
+    int x = ts->size[0];
+    ts->size[0] = ts->size[1];
+    ts->size[1] = x;
+    free(ts->data);
+    ts->data = data;
 }
 
 /*************************************************************************************************\
@@ -668,41 +494,41 @@ void overturn_diagonal(Tensor *a, int flag)
  * 返回
        void
 \*************************************************************************************************/
-void rotate_left(Tensor *a, int k)
+void rotate_left(Tensor *ts, int k)
 {
     k %= 4;
     if (k == 0) return;
     if (k == 1){
-        int x = a->size[1];
-        int y = a->size[0];
+        int x = ts->size[1];
+        int y = ts->size[0];
         float *data = malloc(x*y*sizeof(float));
         for (int i = 0; i < x; ++i){
             for (int j = 0; j < y; ++j){
-                data[(y-j-1)*x+i] = a->data[i*y+j];
+                data[(y-j-1)*x+i] = ts->data[i*y+j];
             }
         }
-        a->size[1] = y;
-        a->size[0] = x;
-        free(a->data);
-        a->data = data;
+        ts->size[1] = y;
+        ts->size[0] = x;
+        free(ts->data);
+        ts->data = data;
     }
     if (k == 2){
-        overturn_ud(a);
-        overturn_lr(a);
+        overturn_ud(ts);
+        overturn_lr(ts);
     }
     if (k == 3){
-        int x = a->size[1];
-        int y = a->size[0];
+        int x = ts->size[1];
+        int y = ts->size[0];
         float *data = malloc(x*y*sizeof(float));
         for (int i = 0; i < x; ++i){
             for (int j = 0; j < y; ++j){
-                data[j*x+x-i-1] = a->data[i*y+j];
+                data[j*x+x-i-1] = ts->data[i*y+j];
             }
         }
-        a->size[1] = y;
-        a->size[0] = x;
-        free(a->data);
-        a->data = data;
+        ts->size[1] = y;
+        ts->size[0] = x;
+        free(ts->data);
+        ts->data = data;
     }
 }
 
@@ -715,41 +541,41 @@ void rotate_left(Tensor *a, int k)
  * 返回
        void
 \*************************************************************************************************/
-void rotate_right(Tensor *a, int k)
+void rotate_right(Tensor *ts, int k)
 {
     k %= 4;
     if (k == 0) return;
     if (k == 1){
-        int x = a->size[1];
-        int y = a->size[0];
+        int x = ts->size[1];
+        int y = ts->size[0];
         float *data = malloc(x*y*sizeof(float));
         for (int i = 0; i < x; ++i){
             for (int j = 0; j < y; ++j){
-                data[j*x+x-i-1] = a->data[i*y+j];
+                data[j*x+x-i-1] = ts->data[i*y+j];
             }
         }
-        a->size[1] = y;
-        a->size[0] = x;
-        free(a->data);
-        a->data = data;
+        ts->size[1] = y;
+        ts->size[0] = x;
+        free(ts->data);
+        ts->data = data;
     }
     if (k == 2){
-        overturn_ud(a);
-        overturn_lr(a);
+        overturn_ud(ts);
+        overturn_lr(ts);
     }
     if (k == 3){
-        int x = a->size[1];
-        int y = a->size[0];
+        int x = ts->size[1];
+        int y = ts->size[0];
         float *data = malloc(x*y*sizeof(float));
         for (int i = 0; i < x; ++i){
             for (int j = 0; j < y; ++j){
-                data[(y-j-1)*x+i] = a->data[i*y+j];
+                data[(y-j-1)*x+i] = ts->data[i*y+j];
             }
         }
-        a->size[1] = y;
-        a->size[0] = x;
-        free(a->data);
-        a->data = data;
+        ts->size[1] = y;
+        ts->size[0] = x;
+        free(ts->data);
+        ts->data = data;
     }
 }
 
@@ -762,13 +588,13 @@ void rotate_right(Tensor *a, int k)
  * 返回
        void
 \*************************************************************************************************/
-void exchange2row(Tensor *a, int rowx, int rowy)
+void exchange2row(Tensor *ts, int rowx, int rowy)
 {
-    int y = a->size[0];
+    int y = ts->size[0];
     for (int i = 0; i < y; ++i){
-        int n = a->data[(rowx-1)*y+i];
-        a->data[(rowx-1)*y+i] = a->data[(rowy-1)*y+i];
-        a->data[(rowy-1)*y+i] = n;
+        int n = ts->data[rowx*y+i];
+        ts->data[rowx*y+i] = ts->data[rowy*y+i];
+        ts->data[rowy*y+i] = n;
     }
 }
 
@@ -781,14 +607,66 @@ void exchange2row(Tensor *a, int rowx, int rowy)
  * 返回
        void
 \*************************************************************************************************/
-void exchange2col(Tensor *a, int colx, int coly)
+void exchange2col(Tensor *ts, int colx, int coly)
 {
-    int x = a->size[1];
-    int y = a->size[0];
+    int x = ts->size[1];
+    int y = ts->size[0];
     for (int i = 0; i < x; ++i){
-        int n = a->data[i*y+colx-1];
-        a->data[i*y+colx-1] = a->data[i*y+coly-1];
-        a->data[i*y+coly-1] = n;
+        int n = ts->data[i*y+colx];
+        ts->data[i*y+colx] = ts->data[i*y+coly];
+        ts->data[i*y+coly] = n;
+    }
+}
+
+/*************************************************************************************************\
+ * 描述
+       获取矩阵某一行（以向量形式返回）
+ * 参数
+       a:待获取矩阵
+       row:待获取的行（1开始）
+ * 返回
+       Tensor*
+       获取的行数据组成的向量
+\*************************************************************************************************/
+void row2list(Tensor *ts, int row, float *space)
+{
+    int offset = row*ts->size[0];
+    memcpy_float_list(space, ts->data, 0, offset, ts->size[0]);
+}
+
+/*************************************************************************************************\
+ * 描述
+       获取矩阵某一列（一向量形式返回）
+ * 参数
+       a:待获取矩阵
+       col:待获取的列（1开始）
+ * 返回
+       Tensor*
+       获取的列数据组成的向量
+\*************************************************************************************************/
+void col2list(Tensor *ts, int col, float *space)
+{
+    for (int i = 0; i < ts->size[0]; ++i){
+        space[i] = ar_get_pixel(ts, i, col);
+    }
+}
+
+/*************************************************************************************************\
+ * 描述
+       获取矩阵对角线元素（以列表形式返回）
+ * 参数
+       a:待获取矩阵
+       flag:1代表主对角线，0代表斜对角线
+ * 返回
+       Tensor*
+       获取的对角线数据向量
+\*************************************************************************************************/
+void diagonal2list(Tensor *ts, int flag, float *space)
+{
+    int min = MIN(ts->size[0], ts->size[1]);
+    for (int i = 0; i < min; ++i){
+        if (flag) space[i] = ar_get_pixel(ts, i, i);
+        else space[i] = ar_get_pixel(ts, i, min-i-1);
     }
 }
 
@@ -800,9 +678,9 @@ void exchange2col(Tensor *a, int colx, int coly)
  * 返回
        void
 \*************************************************************************************************/
-void transposition(Tensor *a)
+void transposition(Tensor *ts)
 {
-    overturn_diagonal(a, 1);
+    overturn_diagonal(ts, 1);
 }
 
 /*************************************************************************************************\
@@ -814,17 +692,17 @@ void transposition(Tensor *a)
        Tensor*
        矩阵a的逆矩阵
 \*************************************************************************************************/
-Tensor *inverse(Tensor *a)
+Tensor *inverse(Tensor *ts)
 {
-    int x = a->size[1];
-    int y = a->size[0];
+    int x = ts->size[1];
+    int y = ts->size[0];
     int key = -1;
     Tensor *res = array_unit(x, x, 1, 1);
     for (int i = 0; i < x; ++i) {
-        if (a->data[i*y+i] == 0.0) {
+        if (ts->data[i*y+i] == 0.0) {
             //交换行获得一个非零的对角元素
             for (int j = i + 1; j < x; ++j) {
-                if (a->data[j*y+i] != 0.0){
+                if (ts->data[j*y+i] != 0.0){
                     key = j;
                     break;
                 }
@@ -833,20 +711,20 @@ Tensor *inverse(Tensor *a)
                 return res;
             }
             // 交换矩阵两行
-            exchange2row(a, i+1, key+1);
-            exchange2row(res, i+1, key+1);
+            exchange2row(ts, i, key);
+            exchange2row(res, i, key);
         }
-        float scalar = 1.0 / a->data[i*y+i];
-        row_multx(a, i, scalar);
-        row_multx(res, i, scalar);
+        float scalar = 1.0 / ts->data[i*y+i];
+        row_multx(ts, i-1, scalar);
+        row_multx(res, i-1, scalar);
         for (int k = 0; k < x; ++k) {
             if (i == k) {
                 continue;
             }
-            float shear_needed = -a->data[k*y+i];
+            float shear_needed = -ts->data[k*y+i];
             // 行乘以一个系数加到另一行
-            add_multrow2r(a, i, k, shear_needed);
-            add_multrow2r(res, i, k, shear_needed);
+            add_multrow2r(ts, i-1, k-1, shear_needed);
+            add_multrow2r(res, i-1, k-1, shear_needed);
         }
         key = -1;
     }
@@ -862,15 +740,12 @@ Tensor *inverse(Tensor *a)
        float
        矩阵的迹
 \*************************************************************************************************/
-float trace(Tensor *a)
+float trace(Tensor *ts)
 {
-    int x = a->size[1];
-    int y = a->size[0];
-    int min = (x < y) ? x : y;
-    float *diagonal = diagonal2Tensor(a, 1)->data;
-    float res = 0;
+    float res = (float)0;
+    int min = MIN(ts->size[0], ts->size[1]);
     for (int i = 0; i < min; ++i){
-        res += diagonal[i];
+        res += ar_get_pixel(ts, i, i);
     }
     return res;
 }
@@ -885,11 +760,11 @@ float trace(Tensor *a)
  * 返回
        void
 \*************************************************************************************************/
-void row_addx(Tensor *a, int row, float x)
+void row_addx(Tensor *ts, int row, float x)
 {
-    int y = a->size[0];
+    int y = ts->size[0];
     for (int i = 0; i < y; ++i){
-        a->data[(row-1)*y+i] += x;
+        ts->data[row*y+i] += x;
     }
 }
 
@@ -903,12 +778,12 @@ void row_addx(Tensor *a, int row, float x)
  * 返回
        void
 \*************************************************************************************************/
-void col_addx(Tensor *a, int col, float x)
+void col_addx(Tensor *ts, int col, float x)
 {
-    int m = a->size[1];
-    int n = a->size[0];
+    int m = ts->size[1];
+    int n = ts->size[0];
     for (int i = 0; i < m; ++i){
-        a->data[i*n+col-1] += x;
+        ts->data[i*n+col] += x;
     }
 }
 
@@ -923,11 +798,11 @@ void col_addx(Tensor *a, int col, float x)
  * 返回
        void
 \*************************************************************************************************/
-void row_multx(Tensor *a, int row, float x)
+void row_multx(Tensor *ts, int row, float x)
 {
-    int y = a->size[0];
+    int y = ts->size[0];
     for (int i = 0; i < y; ++i){
-        a->data[(row-1)*y+i] *= x;
+        ts->data[row*y+i] *= x;
     }
 }
 
@@ -941,12 +816,12 @@ void row_multx(Tensor *a, int row, float x)
  * 返回
        void
 \*************************************************************************************************/
-void col_multx(Tensor *a, int col, float x)
+void col_multx(Tensor *ts, int col, float x)
 {
-    int m = a->size[1];
-    int n = a->size[0];
+    int m = ts->size[1];
+    int n = ts->size[0];
     for (int i = 0; i < m; ++i){
-        a->data[i*n+col-1] *= x;
+        ts->data[i*n+col] *= x;
     }
 }
 
@@ -959,11 +834,11 @@ void col_multx(Tensor *a, int col, float x)
  * 返回
        void
 \*************************************************************************************************/
-void add_row2r(Tensor *a, int row1, int row2)
+void add_row2r(Tensor *ts, int row1, int row2)
 {
-    int y = a->size[0];
+    int y = ts->size[0];
     for (int i = 0; i < y; ++i){
-        a->data[(row2-1)*y+i] += a->data[(row1-1)*y+i];
+        ts->data[row2*y+i] += ts->data[row1*y+i];
     }
 }
 
@@ -976,12 +851,12 @@ void add_row2r(Tensor *a, int row1, int row2)
  * 返回
        void
 \*************************************************************************************************/
-void add_col2c(Tensor *a, int col1, int col2)
+void add_col2c(Tensor *ts, int col1, int col2)
 {
-    int m = a->size[1];
-    int n = a->size[0];
+    int m = ts->size[1];
+    int n = ts->size[0];
     for (int i = 0; i < m; ++i){
-        a->data[i*n+col2-1] += a->data[i*n+col1-1];
+        ts->data[i*n+col2] += ts->data[i*n+col1];
     }
 }
 
@@ -995,11 +870,11 @@ void add_col2c(Tensor *a, int col1, int col2)
  * 返回
        void
 \*************************************************************************************************/
-void add_multrow2r(Tensor *a, int row1, int row2, float x)
+void add_multrow2r(Tensor *ts, int row1, int row2, float x)
 {
-    int y = a->size[0];
+    int y = ts->size[0];
     for (int i = 0; i < y; ++i){
-        a->data[(row2-1)*y+i] += a->data[(row1-1)*y+i] * x;
+        ts->data[row2*y+i] += ts->data[row1*y+i] * x;
     }
 }
 
@@ -1013,12 +888,12 @@ void add_multrow2r(Tensor *a, int row1, int row2, float x)
  * 返回
        void
 \*************************************************************************************************/
-void add_multcol2c(Tensor *a, int col1, int col2, float x)
+void add_multcol2c(Tensor *ts, int col1, int col2, float x)
 {
-    int m = a->size[1];
-    int n = a->size[0];
+    int m = ts->size[1];
+    int n = ts->size[0];
     for (int i = 0; i < m; ++i){
-        a->data[i*n+col2-1] += a->data[i*n+col1-1] * x;
+        ts->data[i*n+col2] += ts->data[i*n+col1] * x;
     }
 }
 
@@ -1031,22 +906,20 @@ void add_multcol2c(Tensor *a, int col1, int col2, float x)
        Tensor*
        矩阵乘的结果
 \*************************************************************************************************/
-Tensor *gemm(Tensor *a, Tensor *b)
+void gemm(Tensor *ts_a, Tensor *ts_b, float *space)
 {
-    int x = a->size[1];
-    int y = a->size[0];
-    int z = b->size[0];
-    Tensor *res = array_x(x, z, 0);
+    int x = ts_a->size[1];
+    int y = ts_a->size[0];
+    int z = ts_b->size[0];
     #pragma omp parallel for
     for (int i = 0; i < x; ++i){
         for (int k = 0; k < y; ++k){
-            register float temp = a->data[i*y+k];
+            register float temp = ts_a->data[i*y+k];
             for (int j = 0; j < z; ++j){
-                res->data[i*z+j] += temp * b->data[k*z+j];
+                space[i*z+j] += temp * ts_b->data[k*z+j];
             }
         }
     }
-    return res;
 }
 
 /*************************************************************************************************\
@@ -1058,13 +931,13 @@ Tensor *gemm(Tensor *a, Tensor *b)
        float
        求得的结果
 \*************************************************************************************************/
-float norm1_ar(Tensor *a)
+float norm1_ar(Tensor *ts)
 {
     float res = -9999;
-    for (int i = 0; i < a->size[0]; ++i){
+    for (int i = 0; i < ts->size[0]; ++i){
         float sum = 0;
-        for (int j = 0; j < a->size[1]; ++j){
-            sum += ts_get_pixel_ar(a, j+1, i+1);
+        for (int j = 0; j < ts->size[1]; ++j){
+            sum += ar_get_pixel(ts, j, i);
         }
         if (res < sum){
             res = sum;
@@ -1082,7 +955,7 @@ float norm1_ar(Tensor *a)
        float
        求得的结果
 \*************************************************************************************************/
-float norm2_ar(Tensor *a)
+float norm2_ar(Tensor *ts)
 {
     return 0;
 }
@@ -1096,13 +969,13 @@ float norm2_ar(Tensor *a)
        float
        求得的结果
 \*************************************************************************************************/
-float infnorm_ar(Tensor *a)
+float infnorm_ar(Tensor *ts)
 {
     float res = -9999;
-    for (int i = 0; i < a->size[1]; ++i){
+    for (int i = 0; i < ts->size[1]; ++i){
         float sum = 0;
-        for (int j = 0; j < a->size[0]; ++j){
-            sum += ts_get_pixel_ar(a, i+1, j+1);
+        for (int j = 0; j < ts->size[0]; ++j){
+            sum += ar_get_pixel(ts, i, j);
         }
         if (res < sum){
             res = sum;
@@ -1120,16 +993,17 @@ float infnorm_ar(Tensor *a)
        float
        求得的结果
 \*************************************************************************************************/
-float fronorm_ar(Tensor *a)
+float fronorm_ar(Tensor *ts)
 {
     float res = 0;
-    for (int i = 0; i < a->num; ++i){
-        res += a->data[i] * a->data[i];
+    for (int i = 0; i < ts->num; ++i){
+        res += ts->data[i] * ts->data[i];
     }
     res = sqrt(res);
     return res;
 }
 
+#ifdef LINEAR
 /*************************************************************************************************\
  * 描述
        求householder向量
@@ -1203,7 +1077,7 @@ float *givens(float a, float b)
     return res;
 }
 
-Tensor *givens_rotate(Tensor *a, int i, int k, float c, float s)
+Tensor *givens_rotate(Tensor *ts, int i, int k, float c, float s)
 {
     Tensor *res = tensor_copy(a);
     for (int j = 0; j < res->size[0]; ++j){
@@ -1215,7 +1089,7 @@ Tensor *givens_rotate(Tensor *a, int i, int k, float c, float s)
     return res;
 }
 
-Tensor *__householder_QR(Tensor *a, Tensor *r, Tensor *q)
+Tensor *__householder_QR(Tensor *ts, Tensor *r, Tensor *q)
 {
     Tensor *res = tensor_copy(a);
     for (int i = 0; i < res->size[1]; ++i){
@@ -1237,16 +1111,106 @@ Tensor *__householder_QR(Tensor *a, Tensor *r, Tensor *q)
     }
     return res;
 }
+#endif
 
-void show_array(Tensor *a)
+#ifdef NUMPY
+/*************************************************************************************************\
+ * 描述
+       合并两个矩阵，支持向不同维不同位置索引进行合并
+       参数中第一个矩阵为目标矩阵，第二个矩阵向第一个矩阵中合并
+       合并时，采取前向合并
+ * 参数
+       a:目标矩阵
+       b:待合并矩阵
+       dim:向dim维进行合并
+       index:合并位置索引
+ * 返回
+       Tensor*
+       合并后的新矩阵
+ * 补充
+       一:
+       a:                                       b:
+            a11  a12  a13                             b11  b12
+            a21  a22  a23                             b21  b22
+
+       dim:1
+       由于a、b行数相同，所以只能向列（第二维）合并
+
+       index:1                                  index:4
+            b11  b12  a11  a12  a13                   a11  a12  a13  b11  b12
+            b21  b22  a21  a22  a23                   a21  a22  a23  b21  b22
+
+       二:
+       a:                                       b:
+            a11  a12  a13                             b11  b12  b13
+            a21  a22  a23                             b21  b22  b23
+                                                      b31  b32  b33
+       dim:2
+       由于a、b列数相同，所以只能向行（第一维）合并
+
+       index:1                                  index:3
+            b11  b12  b13                             a11  a12  a13
+            b21  b22  b23                             a21  a22  a23
+            b31  b32  b33                             b11  b12  b13
+            a11  a12  a13                             b21  b22  b23
+            a21  a22  a23                             b31  b32  b33
+\*************************************************************************************************/
+Tensor *merge_array(Tensor *ts, Tensor *b, int flag, int index)
 {
-    printf("Tensor dimension: %d\n", a->dim);
-    printf("Tensor data num: %d\n", a->num);
-    printf("Tensor size: %d x %d\n", a->size[1], a->size[0]);
-    for (int i = 0; i < a->size[1]; ++i){
-        for (int j = 0; j < a->size[0]; ++j){
-            printf("%f ", a->data[i*a->size[0]+j]);
-        }
-        printf("\n");
+    int dim = -1;
+    int size[] = {a->size[0], a->size[1]};
+    if (flag){
+        size[1] += b->size[1];
+        dim = 2;
     }
+    else{
+        size[0] += b->size[0];
+        dim = 1;
+    }
+    Tensor *ret = array_x(size[1], size[0], 0);
+    merge(a, b, dim, index, ret->data);
+    return ret;
 }
+
+/*************************************************************************************************\
+ * 描述
+       对矩阵进行切片操作，可以类比python numpy或python list的相关操作a[: ; :]
+       选取行索引范围以及列索引范围，将提取索引范围内的元素
+       提取后的元素组成一个新的矩阵
+ * 参数
+       a：待切片矩阵
+       rowu：上侧行索引
+       rowd：下侧行索引
+       coll：左侧列索引
+       colr：右侧列索引
+ * 返回
+       Tensor*
+       切片结果
+ * 补充
+       a：
+            a11  a12  a13  a14  a15
+            a21  a22  a23  a24  a25
+            a31  a32  a33  a34  a35
+            a41  a42  a43  a44  a45
+            a51  a52  a53  a54  a55
+
+       rowu:2  rowd:4  coll:2  colr:5
+
+       结果：
+            a22  a23  a24  a25
+            a32  a33  a34  a35
+            a42  a43  a44  a45
+\*************************************************************************************************/
+Tensor *slice_array(Tensor *ts, int rowu, int rowd, int coll, int colr)
+{
+    Tensor *ret = array_x(rowd-rowu+1, colr-coll+1, 0);
+    int offset_row = coll-1;
+    int size = colr-coll+1;
+    for (int i = rowu-1, n = 0; i < rowd; ++i, ++n){
+        int offset_a = i*a->size[0];
+        int offset_r = n*ret->size[0];
+        memcpy_float_list(ret->data, a->data, offset_r, offset_a+offset_row, size);
+    }
+    return ret;
+}
+#endif

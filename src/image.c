@@ -74,9 +74,9 @@ void save_image_data(Image *img, char *savepath)
     free(data);
 }
 
-Image *resize_im(Image *img, int width, int height)
+Image *resize_ts_im(Image *img, int width, int height)
 {
-    Image *resized = create_image(width, height, img->size[2]);
+    Image *resize_tsd = create_image(width, height, img->size[2]);
     Image *part = create_image(width, img->size[1], img->size[2]);
     int r, c, k;
     float w_scale = (float)(img->size[0] - 1) / (width - 1);
@@ -110,18 +110,18 @@ Image *resize_im(Image *img, int width, int height)
                 int index[] = {c+1, iy+1, k+1};
                 int index1[] = {c+1, r+1, k+1};
                 float val = (1-dy) * ts_get_pixel(part, index);
-                ts_change_pixel(resized, index1, val);
+                ts_change_pixel(resize_tsd, index1, val);
             }
             if(r == height-1 || img->size[1] == 1) continue;
             for(c = 0; c < width; ++c){
                 int index[] = {c+1, iy+2, k+1};
                 int index1[] = {c+1, r+1, k+1};
                 float val = dy * ts_get_pixel(part, index);
-                int lindex = index_ts2ls(index1, resized->dim, resized->size);
-                if (lindex) resized->data[lindex] += val;
+                int lindex = index_ts2ls(index1, resize_tsd->dim, resize_tsd->size);
+                if (lindex) resize_tsd->data[lindex] += val;
             }
         }
     }
     free_tensor(part);
-    return resized;
+    return resize_tsd;
 }

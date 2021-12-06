@@ -21,7 +21,7 @@ struct index_list
 
 typedef struct index_list IndexList;
 
-Tensor *tensor(int dim, int *size);
+Tensor *tensor_d(int dim, int *size);
 Tensor *tensor_x(int dim, int *size, float x);
 Tensor *tensor_list(int dim, int *size, float *list);
 Tensor *tensor_sparse(int dim, int *size, int **index, float *list, int n);
@@ -33,7 +33,7 @@ int ts_pixel_num(Tensor *ts, float x);
 IndexList *ts_get_index(Tensor *ts, float x);
 float ts_get_pixel(Tensor *ts, int *index);
 void ts_change_pixel(Tensor *ts, int *index, float x);
-void resize(Tensor *ts, int dim, int *size);
+void resize_ts(Tensor *ts, int dim, int *size);
 
 float ts_sum(Tensor *ts);
 float ts_min(Tensor *ts);

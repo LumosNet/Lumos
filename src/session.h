@@ -16,7 +16,7 @@ typedef struct session{
     int       (*ts_get_index)();
     float     (*ts_get_pixel)();
     void      (*ts_change_pixel)();
-    void      (*resize)();
+    void      (*resize_ts)();
     void      (*slice)();
     void      (*merge)();
     float     (*ts_sum)();

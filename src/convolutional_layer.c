@@ -10,7 +10,7 @@ void forward_convolutional_layer(Layer *l, Network *net)
         activate_tensor(l->output[i], l->active);
         transposition(l->output[i]);
         int size[] = {l->output_h, l->output_w, l->output_c};
-        resize(l->input[i], 3, size);
+        resize_ts(l->input[i], 3, size);
     }
 }
 
