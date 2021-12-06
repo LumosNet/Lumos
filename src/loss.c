@@ -10,14 +10,16 @@ int *one_hot_encoding(int n, int label)
 
 float mse(Tensor *yi, Tensor *yh)
 {
-    Tensor *y = subtract_ar(yi, yh);
+    Tensor *y = tensor_copy(yi);
+    ts_subtract(y, yh);
     Tensor *x = tensor_copy(y);
     transposition(x);
-    Tensor *ts = gemm(x, y);
-    float res = ts->data[0] / yi->num;
+    float *space = calloc(x->size[1]*y->size[0], sizeof(float));
+    gemm(x, y, space);
+    float res = space[0] / yi->num;
     free_tensor(y);
     free_tensor(x);
-    free_tensor(ts);
+    free(space);
     return res;
 }
 
@@ -124,9 +126,11 @@ void forward_hinge_loss(Layer *l, Network *net)
 void backward_mse_loss(Layer *l, Network *net)
 {
     for (int i = 0; i < net->batch; ++i){
-        Tensor *a = subtract_ar(l->input[i], net->labels[i]);
-        array_multx(a, 2/a->num);
-        net->delta[i] = a;
+        Tensor *delta = net->delta[i];
+        Tensor *input = l->input[i];
+        memcpy_float_list(delta->data, input->data, 0, 0, delta->num);
+        ts_subtract(delta, net->labels[i]);
+        ts_mult_x(delta, 2/delta->num);
     }
 }
 

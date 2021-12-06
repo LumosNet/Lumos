@@ -15,20 +15,20 @@ extern "C"{
 typedef Tensor Image;
 typedef Tensor Kernel;
 
-Image *create_image(int w, int h, int c);
+Tensor *create_image(int w, int h, int c);
 
 // 统计图像中不同灰度等级的像素点数量
-int *census_image_pixel(Image *img);
+int *census_image_pixel(Tensor *img);
 // 统计通道中不同灰度等级的像素点数量
-int *census_channel_pixel(Image *img, int c);
+int *census_channel_pixel(Tensor *img, int c);
 // 获取图像通道数
-int get_channels(Image *img);
+int get_channels(Tensor *img);
 
-Image *load_image_data(char *img_path);
-void save_image_data(Image *img, char *savepath);
+Tensor *load_image_data(char *img_path);
+void save_image_data(Tensor *img, char *savepath);
 
 // 双线性内插值
-Image *resize_ts_im(Image *img, int width, int height);
+Tensor *resize_ts_im(Tensor *img, int width, int height);
 
 #ifdef  __cplusplus
 }

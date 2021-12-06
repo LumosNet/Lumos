@@ -11,8 +11,8 @@
 extern "C"{
 #endif
 
-Tensor *im2col(Image *img, int ksize, int stride, int pad);
-Tensor *col2im(Image *img, int ksize, int stride, int pad, int out_h, int out_w, int out_c);
+void im2col(Tensor *img, int ksize, int stride, int pad, float *space);
+void col2im(Tensor *img, int ksize, int stride, int pad, int out_h, int out_w, int out_c, float *space);
 
 #ifdef __cplusplus
 }

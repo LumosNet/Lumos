@@ -5,18 +5,18 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Image *create_image(int w, int h, int c)
+Tensor *create_image(int w, int h, int c)
 {
     int *size = malloc(3*sizeof(int));
     size[0] = w;
     size[1] = h;
     size[2] = c;
-    Image *image = tensor_x(3, size, 0);
+    Tensor *image = tensor_x(3, size, 0);
     free(size);
     return image;
 }
 
-int *census_image_pixel(Image *img)
+int *census_image_pixel(Tensor *img)
 {
     int *num = calloc(256, sizeof(int));
     for (int i = 0; i < img->num; ++i){
@@ -25,7 +25,7 @@ int *census_image_pixel(Image *img)
     return num;
 }
 
-int *census_channel_pixel(Image *img, int c)
+int *census_channel_pixel(Tensor *img, int c)
 {
     int *num = calloc(256, sizeof(int));
     int offset = (c - 1) * img->size[0] * img->size[1];
@@ -35,18 +35,18 @@ int *census_channel_pixel(Image *img, int c)
     return num;
 }
 
-int get_channels(Image *img)
+int get_channels(Tensor *img)
 {
     if (img->dim == 2) return 1;
     else if (img->dim) return img->size[2];
     return 0;
 }
 
-Image *load_image_data(char *img_path)
+Tensor *load_image_data(char *img_path)
 {
     int w, h, c;
     unsigned char *data = stbi_load(img_path, &w, &h, &c, 0);
-    Image *im_new = create_image(w, h, c);
+    Tensor *im_new = create_image(w, h, c);
     int i, j, k;
     for(k = 0; k < c; ++k){
         for(j = 0; j < h; ++j){
@@ -61,7 +61,7 @@ Image *load_image_data(char *img_path)
     return im_new;
 }
 
-void save_image_data(Image *img, char *savepath)
+void save_image_data(Tensor *img, char *savepath)
 {
     int i, k;
     unsigned char *data = malloc(img->num*sizeof(char));
@@ -74,10 +74,10 @@ void save_image_data(Image *img, char *savepath)
     free(data);
 }
 
-Image *resize_ts_im(Image *img, int width, int height)
+Tensor *resize_ts_im(Tensor *img, int width, int height)
 {
-    Image *resize_tsd = create_image(width, height, img->size[2]);
-    Image *part = create_image(width, img->size[1], img->size[2]);
+    Tensor *resize_tsd = create_image(width, height, img->size[2]);
+    Tensor *part = create_image(width, img->size[1], img->size[2]);
     int r, c, k;
     float w_scale = (float)(img->size[0] - 1) / (width - 1);
     float h_scale = (float)(img->size[1] - 1) / (height - 1);

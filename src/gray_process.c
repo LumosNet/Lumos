@@ -2,45 +2,45 @@
 
 #ifdef GRAY
 
-Image *img_reversal(Image *img)
+Tensor *img_reversal(Tensor *img)
 {
-    Image *new_img = copy_image(img);
+    Tensor *new_img = copy_image(img);
     for (int i = 0; i < img->num; ++i){
         new_img->data[i] = 1 - new_img->data[i];
     }
     return new_img;
 }
 
-Image *Log_transfer(Image *img, float c)
+Tensor *Log_transfer(Tensor *img, float c)
 {
-    Image *new_img = copy_image(img);
+    Tensor *new_img = copy_image(img);
     for (int i = 0; i < img->num; ++i){
         new_img->data[i] = c * log(new_img->data[i]+1/255.);
     }
     return new_img;
 }
 
-Image *power_law(Image *img, float c, float gamma, float varepsilon)
+Tensor *power_law(Tensor *img, float c, float gamma, float varepsilon)
 {
-    Image *new_img = copy_image(img);
+    Tensor *new_img = copy_image(img);
     for (int i = 0; i < img->num; ++i){
         new_img->data[i] = c * pow((new_img->data[i] + varepsilon), gamma);
     }
     return new_img;
 }
 
-Image *contrast_stretch(Image *img, float r_max, float r_min, float s_max, float s_min)
+Tensor *contrast_stretch(Tensor *img, float r_max, float r_min, float s_max, float s_min)
 {
-    Image *new_img = copy_image(img);
+    Tensor *new_img = copy_image(img);
     for (int i = 0; i < img->num; ++i){
         new_img->data[i] = (new_img->data[i] - r_min) / (r_max - r_min) * (s_max - s_min) + s_min;
     }
     return new_img;
 }
 
-Image *gray_slice_1(Image *img, float slice, float focus, float no_focus)
+Tensor *gray_slice_1(Tensor *img, float slice, float focus, float no_focus)
 {
-    Image *new_img = copy_image(img);
+    Tensor *new_img = copy_image(img);
     for (int i = 0; i < img->num; ++i){
         if (new_img->data[i] >= slice) new_img->data[i] = focus;
         else new_img->data[i] = no_focus;
@@ -48,9 +48,9 @@ Image *gray_slice_1(Image *img, float slice, float focus, float no_focus)
     return new_img;
 }
 
-Image *gray_slice_2(Image *img, float slice, int flag, float focus)
+Tensor *gray_slice_2(Tensor *img, float slice, int flag, float focus)
 {
-    Image *new_img = copy_image(img);
+    Tensor *new_img = copy_image(img);
     for (int i = 0; i < img->num; ++i){
         if (flag){
             if (new_img->data[i] >= slice) new_img->data[i] = focus;
@@ -62,9 +62,9 @@ Image *gray_slice_2(Image *img, float slice, int flag, float focus)
     return new_img;
 }
 
-Image **bit8_slice(Image *img)
+Tensor **bit8_slice(Tensor *img)
 {
-    Image **new_imgs = malloc(8*sizeof(Image*));
+    Tensor **new_imgs = malloc(8*sizeof(Image*));
     for (int i = 0; i < 8; ++i){
         new_imgs[i] = create_image(img->size[0], img->size[1], img->size[2]);
     }
@@ -82,11 +82,11 @@ Image **bit8_slice(Image *img)
     return new_imgs;
 }
 
-Image *bit_restructure(Image **imgs, int *bit_index, int len)
+Tensor *bit_restructure(Tensor **imgs, int *bit_index, int len)
 {
-    Image *img = create_image(imgs[0]->size[0], imgs[0]->size[1], imgs[0]->size[2]);
+    Tensor *img = create_image(imgs[0]->size[0], imgs[0]->size[1], imgs[0]->size[2]);
     for (int i = 0; i < len; ++i){
-        Image *bit_img = imgs[i];
+        Tensor *bit_img = imgs[i];
         for (int j = 0; j < img->num; ++j){
             img->data[j] += pow(2, bit_index[i]) * bit_img->data[j] / 255.;
         }
@@ -94,16 +94,16 @@ Image *bit_restructure(Image **imgs, int *bit_index, int len)
     return img;
 }
 
-Image *histogram_equalization(Image *img)
+Tensor *histogram_equalization(Tensor *img)
 {
-    Image *new_img = create_image(img->size[0], img->size[1], img->size[2]);
+    Tensor *new_img = create_image(img->size[0], img->size[1], img->size[2]);
     for (int i = 0; i < img->size[2]; ++i){
         __histogram_equalization_channel(img, new_img, i+1);
     }
     return new_img;
 }
 
-void __histogram_equalization_channel(Image *o_img, Image *a_img, int c)
+void __histogram_equalization_channel(Tensor *o_img, Tensor *a_img, int c)
 {
     int p_num = o_img->size[0] * o_img->size[1];
     int *num = census_channel_pixel(o_img, c);

@@ -10,7 +10,7 @@ extern "C" {
 #endif
 
 typedef struct session{
-    tensor*   (*copy)();
+    Tensor*   (*copy)();
     void      (*tsprint)();
     int       (*ts_pixel_num)();
     int       (*ts_get_index)();

@@ -3,38 +3,45 @@
 void forward_convolutional_layer(Layer *l, Network *net)
 {
     for (int i = 0; i < net->batch; ++i){
-        l->output[i] = convolutional(l->input[i], l->kernel_weights, l->pad, l->stride);
+        Tensor *output = l->output[i];
+        Tensor *kernel = l->kernel_weights;
+        Tensor *colimg = l->colimg;
+        im2col(l->input[i], kernel->size[0], l->stride, l->pad, colimg->data);
+        gemm(colimg, kernel, output->data);
         if (l->bias){
-            add_bias(l->output[i], l->bias_weights, l->filters, l->output_h*l->output_w);
+            add_bias(output, l->bias_weights, l->filters, l->output_h*l->output_w);
         }
-        activate_tensor(l->output[i], l->active);
-        transposition(l->output[i]);
-        int size[] = {l->output_h, l->output_w, l->output_c};
-        resize_ts(l->input[i], 3, size);
+        activate_tensor(output, l->active);
+        transposition(output);
+        int size[] = {l->output_w, l->output_h, l->output_c};
+        resize_ts(output, 3, size);
     }
 }
 
 void backward_convolutional_layer(Layer *l, Network *net)
 {
     float rate = net->learning_rate / (float)net->batch;
+    Tensor *delta_i = l->delta_i;
+    Tensor *derivative = l->derivative;
+    Tensor *gradient = l->gradient_w;
+    Tensor *k_weights = tensor_copy(l->kernel_weights);
+    transposition(k_weights);
     for (int i = 0; i < net->batch; ++i){
-        gradient_tensor(l->output[i], l->gradient);
-        Tensor *delta = net->delta[i];
-        Tensor *d = gemm(delta, l->output[i]);
-        Tensor *k_weights = tensor_copy(l->kernel_weights);
+        Tensor *output = l->output[i];
+        Tensor *delta_k = net->delta[i];
+        Tensor *delta = l->delta[i];
+        gradient_tensor(output, l->gradient);
+        gemm(delta, l->output[i], derivative->data);
         Tensor *input = tensor_copy(l->input[i]);
         transposition(input);
-        transposition(k_weights);
-        net->delta[i] = col2im(gemm(d, k_weights), l->ksize, l->stride, l->pad, l->input_h, l->input_w, l->input_c);
-        Tensor *d_w = gemm(d, input);
-        saxpy(l->kernel_weights, d_w, rate);
-        saxpy(l->bias_weights, d, rate);
-        free_tensor(delta);
-        free_tensor(d);
-        free_tensor(k_weights);
+        gemm(derivative, k_weights, delta_i->data);
+        col2im(delta_i, l->ksize, l->stride, l->pad, l->input_h, l->input_w, l->input_c, delta->data);
+        gemm(derivative, input, gradient->data);
+        ts_saxpy(l->kernel_weights, gradient, rate);
+        ts_saxpy(l->bias_weights, derivative, rate);
         free_tensor(input);
-        free_tensor(d_w);
     }
+    free_tensor(k_weights);
 }
 
 Layer *make_convolutional_layer(Network *net, LayerParams *p, int h, int w, int c)
@@ -73,6 +80,20 @@ Layer *make_convolutional_layer(Network *net, LayerParams *p, int h, int w, int 
         l->output_c = l->filters;
         l->forward = forward_convolutional_layer;
         l->backward = backward_convolutional_layer;
+        l->input = malloc(net->batch*sizeof(Tensor *));
+        l->output = malloc(net->batch*sizeof(Tensor *));
+        l->delta = malloc(net->batch*sizeof(Tensor *));
+        for (int i = 0; i < net->batch; ++i){
+            int out[] = {l->output_w, l->output_h, l->output_c};
+            int delta[] = {l->input_w, l->input_h, l->input_c};
+            l->output[i] = tensor_x(3, out, 0);
+            l->delta[i] = tensor_x(3, delta, 0);
+        }
+        int im2col[] = {l->ksize*l->ksize*l->input_c, l->output_w*l->output_h};
+        int col2im[] = {l->input_w, l->input_h, l->input_c};
+        l->colimg = tensor_x(2, im2col, 0);
+        l->imgcol = tensor_x(3, col2im, 0);
+        l->derivative = tensor_x(l->input_h, l->output_w);
         layer = l;
     }
     fprintf(stderr, "  conv  %5d     %2d x%2d /%2d  %4d x%4d x%4d   ->  %4d x%4d x%4d\n", \

@@ -89,6 +89,12 @@ typedef struct layer{
     Tensor **output;
     Tensor **delta;
 
+    Tensor *colimg;
+    Tensor *imgcol;
+    Tensor *derivative;
+    Tensor *gradient_w;
+    Tensor *delta_i;
+
     int filters;
     int ksize;
     int stride;

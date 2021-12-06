@@ -9,11 +9,11 @@
 extern "C" {
 #endif
 
-Image *forward_avg_pool(Image *img, int ksize);
-Image *forward_max_pool(Image *img, int ksize, int *index);
+Tensor *forward_avg_pool(Tensor *img, int ksize);
+Tensor *forward_max_pool(Tensor *img, int ksize, int *index);
 
-Image *backward_avg_pool(Image *img, int ksize, int height, int width);
-Image *backward_max_pool(Image *img, int ksize, int height, int width, int *index);
+Tensor *backward_avg_pool(Tensor *img, int ksize, int height, int width);
+Tensor *backward_max_pool(Tensor *img, int ksize, int height, int width, int *index);
 
 #ifdef __cplusplus
 }

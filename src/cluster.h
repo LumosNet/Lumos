@@ -30,12 +30,14 @@ typedef struct cluster_k{
     Cluster **clusters;
 } cluster_k, ClusterK;
 
+#ifdef NUMPY
 /* 无监督 每一行是一组数据*/
 ClusterPile *k_means(Tensor *data, ClusterPile *initial, LossFunc lossfunc);
 
 
 ClusterK *__classify(Tensor *data, ClusterPile *pile, LossFunc lossfunc);
 ClusterPile *__middlevt(ClusterK *pile);
+#endif
 
 #ifdef  __cplusplus
 }

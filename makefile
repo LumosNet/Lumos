@@ -1,5 +1,5 @@
-LINUX=0
-GPU=0
+LINUX=1
+GPU=1
 DEBUG=0
 
 ARCH= 	-gencode arch=compute_35,code=sm_35 \
@@ -17,10 +17,6 @@ CC=gcc
 CPP=g++
 NVCC=nvcc
 
-#session.o active.o cluster.o loss.o gray_process.o image.o \
-im2col.o convolution.o pooling.o network.o convolutional_layer.o pooling_layer.o activation_layer.o \
-umath.o parser.o bias.o softmax_layer.o connect_layer.o utils.o weights.o
-
 LDFLAGS= -lm -pthread
 COMMON= -Iinclude/ -Isrc -std=c99 -fopenmp
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
@@ -31,7 +27,9 @@ CFLAGS+= -DGPU
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 endif
 
-OBJ=array.o list.o tensor.o vector.o umath.o
+OBJ=array.o list.o tensor.o vector.o umath.o session.o active.o cluster.o loss.o gray_process.o image.o \
+	im2col.o pooling.o network.o convolutional_layer.o pooling_layer.o activation_layer.o \
+	umath.o parser.o bias.o softmax_layer.o connect_layer.o utils.o weights.o
 EXECOBJA=tensor_test.o
 
 ifeq ($(GPU), 1)

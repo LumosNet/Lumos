@@ -1,5 +1,6 @@
 #include "cluster.h"
 
+#ifdef NUMPY
 // K_Means聚类算法
 ClusterPile *k_means(Tensor *data, ClusterPile *initial, LossFunc lossfunc)
 {
@@ -74,3 +75,4 @@ ClusterPile *__middlevt(ClusterK *pile)
     }
     return clusterpile;
 }
+#endif
