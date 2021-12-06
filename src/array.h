@@ -22,11 +22,11 @@
 extern "C" {
 #endif
 
-Tensor *array(int row, int col);
+Tensor *array_d(int row, int col);
 Tensor *array_x(int row, int col, float x);
 Tensor *array_list(int row, int col, float *list);
 Tensor *array_unit(int row, int col, float x, int flag);
-Tensor *array_sparse(int row, int col, int **index, float *list);
+Tensor *array_sparse(int row, int col, int **index, float *list, int n);
 
 // 行列计数从0开始
 float ar_get_pixel(Tensor *ts, int row, int col);

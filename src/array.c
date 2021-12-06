@@ -1,6 +1,6 @@
 #include "array.h"
 
-Tensor *array(int row, int col)
+Tensor *array_d(int row, int col)
 {
     int size[] = {col, row};
     Tensor *ret = tensor_d(2, size);
@@ -108,13 +108,20 @@ Tensor *array_list(int row, int col, float *list)
 \*************************************************************************************************/
 Tensor *array_unit(int row, int col, float x, int flag)
 {
-    Tensor *ret = array(row, col);
+    Tensor *ret = array_d(row, col);
     int min_row_col = (row <= col) ? row : col;
     for (int i = 0; i < min_row_col; ++i){
         if (flag) change_float_in_list(ret->data, x, i*col+i);
         else change_float_in_list(ret->data, x, i*col+(col-i-1));
     }
     ret->type = ARRAY;
+    return ret;
+}
+
+Tensor *array_sparse(int row, int col, int **index, float *list, int n)
+{
+    int size[] = {col, row};
+    Tensor *ret = tensor_sparse(2, size, index, list, n);
     return ret;
 }
 
