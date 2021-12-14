@@ -28,7 +28,7 @@ Tensor *load_image_data(char *img_path);
 void save_image_data(Tensor *img, char *savepath);
 
 // 双线性内插值
-Tensor *resize_ts_im(Tensor *img, int width, int height);
+void resize_im(float *img, int height, int width, int channel, int row, int col, float *space);
 
 #ifdef  __cplusplus
 }

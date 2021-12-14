@@ -7,12 +7,8 @@
 
 Tensor *create_image(int w, int h, int c)
 {
-    int *size = malloc(3*sizeof(int));
-    size[0] = w;
-    size[1] = h;
-    size[2] = c;
+    int size[] = {w, h, c};
     Tensor *image = tensor_x(3, size, 0);
-    free(size);
     return image;
 }
 
@@ -74,54 +70,43 @@ void save_image_data(Tensor *img, char *savepath)
     free(data);
 }
 
-Tensor *resize_ts_im(Tensor *img, int width, int height)
+void resize_im(float *img, int height, int width, int channel, int row, int col, float *space)
 {
-    Tensor *resize_tsd = create_image(width, height, img->size[2]);
-    Tensor *part = create_image(width, img->size[1], img->size[2]);
+    float *part = calloc(col*height*channel, sizeof(float));
     int r, c, k;
-    float w_scale = (float)(img->size[0] - 1) / (width - 1);
-    float h_scale = (float)(img->size[1] - 1) / (height - 1);
-    for(k = 0; k < img->size[2]; ++k){
-        for(r = 0; r < img->size[1]; ++r){
-            for(c = 0; c < width; ++c){
+    float w_scale = (float)(width - 1) / (col - 1);
+    float h_scale = (float)(height - 1) / (row - 1);
+    for(k = 0; k < channel; ++k){
+        for(r = 0; r < height; ++r){
+            for(c = 0; c < col; ++c){
                 float val = 0;
-                if(c == width-1 || img->size[0] == 1){
-                    int index[] = {img->size[0], r+1, k+1};
-                    val = ts_get_pixel(img, index);
+                if(c == col-1 || width == 1){
+                    val = img[(width*height)*k + r*width + width-1];
                 } else {
                     float sx = c*w_scale;
                     int ix = (int) sx;
                     float dx = sx - ix;
-                    int index1[] = {ix+1, r+1, k+1};
-                    int index2[] = {ix+2, r+1, k+1};
-                    val = (1 - dx) * ts_get_pixel(img, index1) + dx * ts_get_pixel(img, index2);
+                    val = (1 - dx) * img[(width*height)*k + r*width + ix] + dx * img[(width*height)*k + r*width + ix + 1];
                 }
-                int index[] = {c+1, r+1, k+1};
-                ts_change_pixel(part, index, val);
+                part[(col*height)*k + r*col + c] = val;
             }
         }
     }
-    for(k = 0; k < img->size[2]; ++k){
-        for(r = 0; r < height; ++r){
+    for(k = 0; k < channel; ++k){
+        for(r = 0; r < row; ++r){
             float sy = r*h_scale;
             int iy = (int) sy;
             float dy = sy - iy;
-            for(c = 0; c < width; ++c){
-                int index[] = {c+1, iy+1, k+1};
-                int index1[] = {c+1, r+1, k+1};
-                float val = (1-dy) * ts_get_pixel(part, index);
-                ts_change_pixel(resize_tsd, index1, val);
+            for(c = 0; c < col; ++c){
+                space[(row*col)*k + col*r + c] = (1-dy) * part[(col*height)*k + col*iy + c];
             }
-            if(r == height-1 || img->size[1] == 1) continue;
-            for(c = 0; c < width; ++c){
-                int index[] = {c+1, iy+2, k+1};
-                int index1[] = {c+1, r+1, k+1};
-                float val = dy * ts_get_pixel(part, index);
-                int lindex = index_ts2ls(index1, resize_tsd->dim, resize_tsd->size);
-                if (lindex) resize_tsd->data[lindex] += val;
+            if(r == row-1 || height == 1) continue;
+            for(c = 0; c < col; ++c){
+                if (c < col && r < row && k < channel){
+                    space[(col*row)*k + col*r + c] += dy * part[(col*height)*k + col*(iy+1) + c];
+                }
             }
         }
     }
-    free_tensor(part);
-    return resize_tsd;
+    free(part);
 }

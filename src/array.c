@@ -1,5 +1,6 @@
 #include "array.h"
 
+#ifdef ARRAY
 Tensor *array_d(int row, int col)
 {
     int size[] = {col, row};
@@ -123,57 +124,6 @@ Tensor *array_sparse(int row, int col, int **index, float *list, int n)
     int size[] = {col, row};
     Tensor *ret = tensor_sparse(2, size, index, list, n);
     return ret;
-}
-
-/*************************************************************************************************\
- * 描述
-       以二维索引方式，索引矩阵元素
- * 参数
-       a:待索引矩阵
-       row:行索引
-       col:列索引
- * 返回
-       float
-       返回索引到的元素值
-\*************************************************************************************************/
-float ar_get_pixel(Tensor *ts, int row, int col)
-{
-    int index[] = {col, row};
-    return ts_get_pixel(ts, index);
-}
-
-/*************************************************************************************************\
- * 描述
-       修改矩阵中某元素值
-       以二维索引方式
- * 参数
-       a:待操作矩阵对象
-       row:行索引
-       col:列索引
-       x:指定修改值
- * 返回
-       void
-\*************************************************************************************************/
-void ar_change_pixel(Tensor *ts, int row, int col, float x)
-{
-    int index[] = {col, row};
-    ts_change_pixel(ts, index, x);
-}
-
-/*************************************************************************************************\
- * 描述
-       重置矩阵大小
- * 参数
-       a:待转换矩阵
-       row:新矩阵大小（行数）
-       col:新矩阵大小（列数）
- * 返回
-       void
-\*************************************************************************************************/
-void resize_ar(Tensor *ts, int row, int col)
-{
-    int size[] = {col, row};
-    resize_ts(ts, 2, size);
 }
 
 /*************************************************************************************************\
@@ -906,31 +856,6 @@ void add_multcol2c(Tensor *ts, int col1, int col2, float x)
 
 /*************************************************************************************************\
  * 描述
-       实现矩阵之间的乘法
- * 参数
-       a，b：矩阵乘的矩阵
- * 返回
-       Tensor*
-       矩阵乘的结果
-\*************************************************************************************************/
-void gemm(Tensor *ts_a, Tensor *ts_b, float *space)
-{
-    int x = ts_a->size[1];
-    int y = ts_a->size[0];
-    int z = ts_b->size[0];
-    #pragma omp parallel for
-    for (int i = 0; i < x; ++i){
-        for (int k = 0; k < y; ++k){
-            register float temp = ts_a->data[i*y+k];
-            for (int j = 0; j < z; ++j){
-                space[i*z+j] += temp * ts_b->data[k*z+j];
-            }
-        }
-    }
-}
-
-/*************************************************************************************************\
- * 描述
        矩阵1-范数，列和范数
  * 参数
        a：待求对象
@@ -1220,4 +1145,5 @@ Tensor *slice_array(Tensor *ts, int rowu, int rowd, int coll, int colr)
     }
     return ret;
 }
+#endif
 #endif

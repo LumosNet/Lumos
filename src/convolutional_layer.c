@@ -44,62 +44,54 @@ void backward_convolutional_layer(Layer *l, Network *net)
     free_tensor(k_weights);
 }
 
-Layer *make_convolutional_layer(Network *net, LayerParams *p, int h, int w, int c)
+Layer make_convolutional_layer(LayerParams *p, int batch, int h, int w, int c)
 {
-    Layer *layer = NULL;
-    if (0 == strcmp(p->type, "convolutional")){
-        Layer *l = malloc(sizeof(Layer));
-        l->type = CONVOLUTIONAL;
-        l->input_h = h;
-        l->input_w = w;
-        l->input_c = c;
-        Node *n = p->head;
-        while (n){
-            Params *param = n->val;
-            if (0 == strcmp(param->key, "filters")){
-                l->filters = atoi(param->val);
-            } else if (0 == strcmp(param->key, "ksize")){
-                l->ksize = atoi(param->val);
-            } else if (0 == strcmp(param->key, "stride")){
-                l->stride = atoi(param->val);
-            } else if (0 == strcmp(param->key, "pad")){
-                l->pad = atoi(param->val);
-            } else if (0 == strcmp(param->key, "bias")){
-                l->bias = atoi(param->val);
-            } else if (0 == strcmp(param->key, "normalization")){
-                l->batchnorm = atoi(param->val);
-            } else if (0 == strcmp(param->key, "active")){
-                Activation type = load_activate_type(param->val);
-                l->active = load_activate(type);
-                l->gradient = load_gradient(type);
-            }
-            n = n->next;
+    Layer l = {0};
+    l.type = CONVOLUTIONAL;
+    l.input_h = h;
+    l.input_w = w;
+    l.input_c = c;
+    Node *n = p->head;
+    while (n){
+        Params *param = n->val;
+        if (0 == strcmp(param->key, "filters")){
+            l.filters = atoi(param->val);
+        } else if (0 == strcmp(param->key, "ksize")){
+            l.ksize = atoi(param->val);
+        } else if (0 == strcmp(param->key, "stride")){
+            l.stride = atoi(param->val);
+        } else if (0 == strcmp(param->key, "pad")){
+            l.pad = atoi(param->val);
+        } else if (0 == strcmp(param->key, "bias")){
+            l.bias = atoi(param->val);
+        } else if (0 == strcmp(param->key, "normalization")){
+            l.batchnorm = atoi(param->val);
+        } else if (0 == strcmp(param->key, "active")){
+            Activation type = load_activate_type(param->val);
+            l.active = load_activate(type);
+            l.gradient = load_gradient(type);
         }
-        l->output_h = (l->input_h + 2*l->pad - l->ksize) / l->stride + 1;
-        l->output_w = (l->input_w + 2*l->pad - l->ksize) / l->stride + 1;
-        l->output_c = l->filters;
-        l->forward = forward_convolutional_layer;
-        l->backward = backward_convolutional_layer;
-        l->input = malloc(net->batch*sizeof(Tensor *));
-        l->output = malloc(net->batch*sizeof(Tensor *));
-        l->delta = malloc(net->batch*sizeof(Tensor *));
-        for (int i = 0; i < net->batch; ++i){
-            int out[] = {l->output_w, l->output_h, l->output_c};
-            int delta[] = {l->input_w, l->input_h, l->input_c};
-            l->output[i] = tensor_x(3, out, 0);
-            l->delta[i] = tensor_x(3, delta, 0);
-        }
-        int im2col[] = {l->ksize*l->ksize*l->input_c, l->output_w*l->output_h};
-        int col2im[] = {l->input_w, l->input_h, l->input_c};
-        l->colimg = tensor_x(2, im2col, 0);
-        l->imgcol = tensor_x(3, col2im, 0);
-        l->derivative = tensor_x(l->input_h, l->output_w);
-        layer = l;
+        n = n->next;
+    }
+    l.output_h = (l.input_h + 2*l.pad - l.ksize) / l.stride + 1;
+    l.output_w = (l.input_w + 2*l.pad - l.ksize) / l.stride + 1;
+    l.output_c = l.filters;
+
+    l.forward = forward_convolutional_layer;
+    l.backward = backward_convolutional_layer;
+
+    int size_o[] = {l.output_w, l.output_h, l.output_c};
+    int size_d[] = {l.input_w, l.input_h, l.input_c};
+    l.output = malloc(batch*sizeof(Tensor *));
+    l.delta = malloc(batch*sizeof(Tensor *));
+    for (int i = 0; i < batch; ++i){
+        l.output[i] = tensor_x(3, size_o, 0);
+        l.delta[i] = tensor_x(3, size_d, 0);
     }
     fprintf(stderr, "  conv  %5d     %2d x%2d /%2d  %4d x%4d x%4d   ->  %4d x%4d x%4d\n", \
-            layer->filters, layer->ksize, layer->ksize, layer->stride, layer->input_h, \
-            layer->input_w, layer->input_c, layer->output_h, layer->output_w, layer->output_c);
-    return layer;
+            l.filters, l.ksize, l.ksize, l.stride, l.input_h, \
+            l.input_w, l.input_c, l.output_h, l.output_w, l.output_c);
+    return l;
 }
 
 void save_convolutional_weights(Layer *l, FILE *file)

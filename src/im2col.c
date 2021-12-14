@@ -1,13 +1,22 @@
 #include "im2col.h"
 
-void im2col(Tensor *img, int ksize, int stride, int pad, float *space)
+float im2col_get_pixel(float *img, int h, int w, int row, int col, int channel, int pad)
 {
-    int channels = get_channels(img);
-    int height_col = (img->size[1] + 2*pad - ksize) / stride + 1;
-    int width_col = (img->size[0] + 2*pad - ksize) / stride + 1;
+    row -= pad;
+    col -= pad;
 
-    int channels_col = channels * ksize * ksize;
-    for (int c = 0; c < channels_col; ++c){
+    if (row < 0 || col < 0 ||
+        row >= h || col >= w) return 0;
+    return img[col + w*(row + h*channel)];
+}
+
+void im2col(float *img, int h, int w, int c, int ksize, int stride, int pad, float *space)
+{
+    int height_col = (h + 2*pad - ksize) / stride + 1;
+    int width_col = (w + 2*pad - ksize) / stride + 1;
+
+    int channels = c * ksize * ksize;
+    for (int c = 0; c < channels; ++c){
         int w_offset = c % ksize;
         int h_offset = (c / ksize) % ksize;
         int c_offset = c / ksize / ksize;
@@ -15,16 +24,14 @@ void im2col(Tensor *img, int ksize, int stride, int pad, float *space)
             for (int w = 0; w < width_col; ++w){
                 int im_row = h_offset + h * stride;
                 int im_col = w_offset + w * stride;
-                int col_index = (h*width_col + w)*channels_col + c;
-                int index[] = {im_col+1-pad, im_row+1-pad, c_offset+1};
-                float val = ts_get_pixel(img, index);
-                space[col_index] = val;
+                int col_index = (h*width_col + w)*channels + c;
+                space[col_index] = im2col_get_pixel(img, h, w, im_col, im_row, c_offset, pad);
             }
         }
     }
 }
 
-void col2im(Tensor *img, int ksize, int stride, int pad, int out_h, int out_w, int out_c, float *space)
+void col2im(float *img, int ksize, int stride, int pad, int out_h, int out_w, int out_c, float *space)
 {
     for (int c = 0; c < out_c; ++c){
         for (int i = 0; i < out_h; ++i){
@@ -43,7 +50,7 @@ void col2im(Tensor *img, int ksize, int stride, int pad, int out_h, int out_w, i
                     else {
                         int index_h = kernel_h_index*out_w + kernel_w_index;
                         int index_w = c*ksize*ksize + h_index*ksize + w_index;
-                        space[c*out_h*out_w + i*out_w + j] = img->data[index_h*ksize*ksize*out_c + index_w];
+                        space[c*out_h*out_w + i*out_w + j] = img[index_h*ksize*ksize*out_c + index_w];
                     }
                 }
             }

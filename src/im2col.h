@@ -4,15 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "image.h"
-#include "array.h"
-
 #ifdef __cplusplus
 extern "C"{
 #endif
 
-void im2col(Tensor *img, int ksize, int stride, int pad, float *space);
-void col2im(Tensor *img, int ksize, int stride, int pad, int out_h, int out_w, int out_c, float *space);
+float im2col_get_pixel(float *img, int h, int w, int row, int col, int channel, int pad);
+
+void im2col(float *img, int h, int w, int c, int ksize, int stride, int pad, float *space);
+void col2im(float *img, int ksize, int stride, int pad, int out_h, int out_w, int out_c, float *space);
 
 #ifdef __cplusplus
 }

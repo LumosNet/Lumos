@@ -27,10 +27,13 @@ CFLAGS+= -DGPU
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 endif
 
-OBJ=array.o list.o tensor.o vector.o umath.o session.o active.o cluster.o loss.o gray_process.o image.o \
+#array.o list.o tensor.o vector.o umath.o session.o active.o cluster.o loss.o gray_process.o image.o \
 	im2col.o pooling.o network.o convolutional_layer.o pooling_layer.o activation_layer.o \
 	umath.o parser.o bias.o softmax_layer.o connect_layer.o utils.o weights.o
-EXECOBJA=tensor_test.o
+
+OBJ=array.o list.o tensor.o vector.o umath.o gemm.o active.o cluster.o gray_process.o image.o \
+	im2col.o parser.o bias.o utils.o weights.o
+EXECOBJA=main.o
 
 ifeq ($(GPU), 1)
 LDFLAGS+= -lstdc++

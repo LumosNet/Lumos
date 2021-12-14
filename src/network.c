@@ -50,7 +50,7 @@ Network *create_network(LayerParams *p, int size)
     return net;
 }
 
-Layer *create_layer(Network*net, LayerParams *p, int h, int w, int c)
+Layer *create_layer(Network *net, LayerParams *p, int h, int w, int c)
 {
     Layer *layer;
     if (0 == strcmp(p->type, "convolutional")){

@@ -13,11 +13,13 @@
 extern "C" {
 #endif
 
+#ifdef VECTOR
 float norm1_vt(Tensor *ts);
 float norm2_vt(Tensor *ts);
 float normp_vt(Tensor *ts, int p);
 float infnorm_vt(Tensor *ts);
 float ninfnorm_vt(Tensor *ts);
+#endif
 
 #ifdef  __cplusplus
 }

@@ -39,39 +39,45 @@ void backward_pooling_layer(Layer *l, Network *net)
     }
 }
 
-Layer *make_pooling_layer(Network *net, LayerParams *p, int h, int w, int c)
+Layer make_pooling_layer(LayerParams *p, int batch, int h, int w, int c)
 {
-    Layer *layer = NULL;
-    if (0 == strcmp(p->type, "pooling")){
-        Layer *l = malloc(sizeof(Layer));
-        l->type = POOLING;
-        l->input_h = h;
-        l->input_w = w;
-        l->input_c = c;
-        Node *n = p->head;
-        while (n){
-            Params *param = n->val;
-            if (0 == strcmp(param->key, "type")){
-                if (0 == strcmp(param->val, "avg")) l->pool = AVG;
-                else l->pool = MAX;
-            } else if (0 == strcmp(param->key, "ksize")){
-                l->ksize = atoi(param->val);
-                l->stride = l->ksize;
-            }
-            n = n->next;
+    Layer l = {0};
+    l.type = POOLING;
+    l.input_h = h;
+    l.input_w = w;
+    l.input_c = c;
+    Node *n = p->head;
+    while (n){
+        Params *param = n->val;
+        if (0 == strcmp(param->key, "type")){
+            if (0 == strcmp(param->val, "avg")) l.pool = AVG;
+            else l.pool = MAX;
+        } else if (0 == strcmp(param->key, "ksize")){
+            l.ksize = atoi(param->val);
+            l.stride = l.ksize;
         }
-        l->output_h = (l->input_h - l->ksize) / l->ksize + 1;
-        l->output_w = (l->input_w - l->ksize) / l->ksize + 1;
-        l->output_c = l->input_c;
-        l->forward = forward_pooling_layer;
-        l->backward = backward_pooling_layer;
-        layer = l;
+        n = n->next;
     }
+    l.output_h = (l.input_h - l.ksize) / l.ksize + 1;
+    l.output_w = (l.input_w - l.ksize) / l.ksize + 1;
+    l.output_c = l.input_c;
+    l.forward = forward_pooling_layer;
+    l.backward = backward_pooling_layer;
+
+    int size_o[] = {l.output_w, l.output_h, l.output_c};
+    int size_d[] = {l.input_w, l.input_h, l.input_c};
+    l.output = malloc(batch*sizeof(Tensor *));
+    l.delta = malloc(batch*sizeof(Tensor *));
+    for (int i = 0; i < batch; ++i){
+        l.output[i] = tensor_x(3, size_o, 0);
+        l.delta[i] = tensor_x(3, size_d, 0);
+    }
+
     char *type;
-    if (layer->pool == AVG) type = "avg";
+    if (l.pool == AVG) type = "avg";
     else type = "max";
     fprintf(stderr, "  %s              %d x %d / %d  %4d x%4d x%4d   ->  %4d x%4d x%4d\n", \
-            type, layer->ksize, layer->ksize, layer->ksize, layer->input_h, layer->input_w, layer->input_c, \
-            layer->output_h, layer->output_w, layer->output_c);
-    return layer;
+            type, l.ksize, l.ksize, l.ksize, l.input_h, l.input_w, l.input_c, \
+            l.output_h, l.output_w, l.output_c);
+    return l;
 }

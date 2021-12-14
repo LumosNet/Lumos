@@ -1,5 +1,6 @@
 #include "vector.h"
 
+#ifdef VECTOR
 float norm1_vt(Tensor *ts)
 {
     float res = 0;
@@ -40,3 +41,4 @@ float ninfnorm_vt(Tensor *ts)
     float res = ts_min(ts);
     return res;
 }
+#endif

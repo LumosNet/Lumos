@@ -34,38 +34,44 @@ void backward_connect_layer(Layer *l, Network *net)
     }
 }
 
-Layer *make_connect_layer(Network *net, LayerParams *p, int h, int w, int c)
+Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
 {
-    Layer *layer = NULL;
-    if (0 == strcmp(p->type, "connect")){
-        Layer *l = malloc(sizeof(Layer));
-        l->type = CONNECT;
-        l->input_h = h;
-        l->input_w = w;
-        l->input_c = c;
-        Node *n = p->head;
-        while (n){
-            Params *param = n->val;
-            if (0 == strcmp(param->key, "output")){
-                l->ksize = atoi(param->val);
-            } else if (0 == strcmp(param->key, "active")){
-                Activation type = load_activate_type(param->val);
-                l->active = load_activate(type);
-                l->gradient = load_gradient(type);
-            }
-            n = n->next;
+    Layer l = {0};
+    l.type = CONNECT;
+    l.input_h = h;
+    l.input_w = w;
+    l.input_c = c;
+    Node *n = p->head;
+    while (n){
+        Params *param = n->val;
+        if (0 == strcmp(param->key, "output")){
+            l.ksize = atoi(param->val);
+        } else if (0 == strcmp(param->key, "active")){
+            Activation type = load_activate_type(param->val);
+            l.active = load_activate(type);
+            l.gradient = load_gradient(type);
         }
-        l->output_h = 1;
-        l->output_w = l->ksize;
-        l->output_c = 1;
-
-        l->forward = forward_connect_layer;
-        l->backward = backward_connect_layer;
-        layer = l;
+        n = n->next;
     }
+    l.output_h = l.ksize;
+    l.output_w = 1;
+    l.output_c = 1;
+
+    l.forward = forward_connect_layer;
+    l.backward = backward_connect_layer;
+
+    int size_o[] = {l.output_w, l.output_h, l.output_c};
+    int size_d[] = {l.input_w, l.input_h, l.input_c};
+    l.output = malloc(batch*sizeof(struct Tensor *));
+    l.delta = malloc(batch*sizeof(struct Tensor *));
+    for (int i = 0; i < batch; ++i){
+        l.output[i] = tensor_x(3, size_o, 0);
+        l.delta[i] = tensor_x(3, size_d, 0);
+    }
+
     fprintf(stderr, "  connect             %2d      %4d x%4d         ->  %4d x%4d\n", \
-            layer->ksize, 1, h*w*c, layer->output_h, layer->output_w);
-    return layer;
+            l.ksize, 1, h*w*c, l.output_h, l.output_w);
+    return l;
 }
 
 void save_connect_weights(Layer *l, FILE *file)

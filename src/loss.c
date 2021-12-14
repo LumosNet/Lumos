@@ -75,132 +75,135 @@ float hinge(Tensor *yi, Tensor *yh)
     return hinge;
 }
 
-void forward_mse_loss(Layer *l, Network *net)
+void forward_mse_loss(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        Tensor *output = l->output[i];
-        output->data[0] = mse(net->labels[i], l->input[i]);
+    for (int i = 0; i < net.batch; ++i){
+        Tensor *output = l.output[i];
+        output->data[0] = mse(net.labels[i], l.input[i]);
     }
 }
 
-void forward_mae_loss(Layer *l, Network *net)
+void forward_mae_loss(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        Tensor *output = l->output[i];
-        output->data[0] = mae(net->labels[i], l->input[i]);
+    for (int i = 0; i < net.batch; ++i){
+        Tensor *output = l.output[i];
+        output->data[0] = mae(net.labels[i], l.input[i]);
     }
 }
 
-void forward_huber_loss(Layer *l, Network *net)
+void forward_huber_loss(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        Tensor *output = l->output[i];
-        output->data[0] = huber(net->labels[i], l->input[i], l->theta);
+    for (int i = 0; i < net.batch; ++i){
+        Tensor *output = l.output[i];
+        output->data[0] = huber(net.labels[i], l.input[i], l.theta);
     }
 }
 
-void forward_quantile_loss(Layer *l, Network *net)
+void forward_quantile_loss(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        Tensor *output = l->output[i];
-        output->data[0] = quantile(net->labels[i], l->input[i], l->gamma);
+    for (int i = 0; i < net.batch; ++i){
+        Tensor *output = l.output[i];
+        output->data[0] = quantile(net.labels[i], l.input[i], l.gamma);
     }
 }
 
-void forward_cross_entropy_loss(Layer *l, Network *net)
+void forward_cross_entropy_loss(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        Tensor *output = l->output[i];
-        output->data[0] = cross_entropy(net->labels[i], l->input[i]);
+    for (int i = 0; i < net.batch; ++i){
+        Tensor *output = l.output[i];
+        output->data[0] = cross_entropy(net.labels[i], l.input[i]);
     }
 }
 
-void forward_hinge_loss(Layer *l, Network *net)
+void forward_hinge_loss(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        Tensor *output = l->output[i];
-        output->data[0] = hinge(net->labels[i], l->input[i]);
+    for (int i = 0; i < net.batch; ++i){
+        Tensor *output = l.output[i];
+        output->data[0] = hinge(net.labels[i], l.input[i]);
     }
 }
 
-void backward_mse_loss(Layer *l, Network *net)
+void backward_mse_loss(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        Tensor *delta = net->delta[i];
-        Tensor *input = l->input[i];
+    for (int i = 0; i < net.batch; ++i){
+        Tensor *delta = delta[i];
+        Tensor *input = l.input[i];
         memcpy_float_list(delta->data, input->data, 0, 0, delta->num);
-        ts_subtract(delta, net->labels[i]);
+        ts_subtract(delta, net.labels[i]);
         ts_mult_x(delta, 2/delta->num);
     }
 }
 
-void backward_mae_loss(Layer *l, Network *net)
+void backward_mae_loss(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        Tensor *delta = net->delta[i];
-        Tensor *input = l->input[i];
-        Tensor *label = net->labels[i];
-        for (int j = 0; j < delta->num; ++j){
-            delta->data[j] = 1/delta->num;
-            if (label->data[j] - input->data[j] >= 0) delta->data[j] *= -1;
+    for (int i = 0; i < net.batch; ++i){
+        Tensor *gradient = l.gradient;
+        Tensor *input = l.input[i];
+        Tensor *label = net.labels[i];
+        for (int j = 0; j < gradient->num; ++j){
+            gradient->data[j] = 1/gradient->num;
+            if (label->data[j] - input->data[j] >= 0) gradient->data[j] *= -1;
+        }
+        if (net.delta){
+            gemm(net.delta[i], gradient, l.delta[i]->data);
         }
     }
 }
 
-void backward_huber_loss(Layer *l, Network *net)
+void backward_huber_loss(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        Tensor *delta = net->delta[i];
-        Tensor *input = l->input[i];
-        Tensor *label = net->labels[i];
+    for (int i = 0; i < net.batch; ++i){
+        Tensor *delta = delta[i];
+        Tensor *input = l.input[i];
+        Tensor *label = net.labels[i];
         for (int j = 0; j < delta->num; ++j){
-            float differ = fabs(label->data[j] - input->data[j]);
-            if (differ <= l->theta) delta->data[j] = -differ;
+            float differ = fabs(label.data[j] - input->data[j]);
+            if (differ <= l.theta) delta->data[j] = -differ;
             else {
-                if (label->data[j] - input->data[j] >= 0) delta->data[j] = -l->theta;
-                else delta->data[j] = l->theta;
+                if (label.data[j] - input->data[j] >= 0) delta->data[j] = -l.theta;
+                else delta->data[j] = l.theta;
             }
         }
     }
 }
 
-void backward_quantile_loss(Layer *l, Network *net)
+void backward_quantile_loss(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        Tensor *delta = net->delta[i];
-        Tensor *input = l->input[i];
-        Tensor *label = net->labels[i];
+    for (int i = 0; i < net.batch; ++i){
+        Tensor *delta = delta[i];
+        Tensor *input = l.input[i];
+        Tensor *label = net.labels[i];
         for (int j = 0; j < delta->num; ++j){
-            float differ = label->data[j] - input->data[j];
-            if (differ < 0) delta->data[j] = 1-l->gamma;
-            else delta->data[j] = -l->gamma;
+            float differ = label.data[j] - input->data[j];
+            if (differ < 0) delta->data[j] = 1-l.gamma;
+            else delta->data[j] = -l.gamma;
         }
     }
 }
 
-void backward_cross_entropy_loss(Layer *l, Network *net)
+void backward_cross_entropy_loss(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        Tensor *delta = net->delta[i];
-        Tensor *input = l->input[i];
-        Tensor *label = net->labels[i];
+    for (int i = 0; i < net.batch; ++i){
+        Tensor *delta = delta[i];
+        Tensor *input = l.input[i];
+        Tensor *label = net.labels[i];
         for (int j = 0; j < delta->num; ++j){
-            if (label->data[j] == 0) delta->data[j] = 0;
-            else delta->data[j] = -label->data[j] / (input->data[j] + .00000001);
+            if (label.data[j] == 0) delta->data[j] = 0;
+            else delta->data[j] = -label.data[j] / (input->data[j] + .00000001);
         }
     }
 }
 
-void backward_hinge_loss(Layer *l, Network *net)
+void backward_hinge_loss(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        Tensor *delta = net->delta[i];
-        Tensor *input = l->input[i];
-        Tensor *label = net->labels[i];
+    for (int i = 0; i < net.batch; ++i){
+        Tensor *delta = delta[i];
+        Tensor *input = l.input[i];
+        Tensor *label = net.labels[i];
         for (int j = 0; j < delta->num; ++j){
-            float differ = input->data[j] * label->data[j];
+            float differ = input->data[j] * label.data[j];
             if (differ >= 1) delta->data[j] = 0;
-            else delta->data[j] = -label->data[j];
+            else delta->data[j] = -label.data[j];
         }
     }
 }

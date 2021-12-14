@@ -22,16 +22,12 @@
 extern "C" {
 #endif
 
+#ifdef ARRAY
 Tensor *array_d(int row, int col);
 Tensor *array_x(int row, int col, float x);
 Tensor *array_list(int row, int col, float *list);
 Tensor *array_unit(int row, int col, float x, int flag);
 Tensor *array_sparse(int row, int col, int **index, float *list, int n);
-
-// 行列计数从0开始
-float ar_get_pixel(Tensor *ts, int row, int col);
-void ar_change_pixel(Tensor *ts, int row, int col, float x);
-void resize_ar(Tensor *ts, int row, int col);
 
 void replace_rowlist(Tensor *ts, int row, float *list);
 void replace_collist(Tensor *ts, int col, float *list);
@@ -77,12 +73,11 @@ void add_col2c(Tensor *ts, int col1, int col2);
 void add_multrow2r(Tensor *ts, int row1, int row2, float x);
 void add_multcol2c(Tensor *ts, int col1, int col2, float x);
 
-void gemm(Tensor *ts_a, Tensor *ts_b, float *space);
-
 float norm1_ar(Tensor *ts);
 float norm2_ar(Tensor *ts);
 float infnorm_ar(Tensor *ts);
 float fronorm_ar(Tensor *ts);
+#endif
 
 #ifdef LINEAR
 Tensor *householder(Tensor *x, float *beta);

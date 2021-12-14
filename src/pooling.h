@@ -3,17 +3,16 @@
 
 #include "lumos.h"
 #include "image.h"
-#include "convolution.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-Tensor *forward_avg_pool(Tensor *img, int ksize);
-Tensor *forward_max_pool(Tensor *img, int ksize, int *index);
+void forward_avg_pool(float *img, int h, int w, int c, int ksize);
+void forward_max_pool(float *img, int h, int w, int c, int ksize, int *index);
 
-Tensor *backward_avg_pool(Tensor *img, int ksize, int height, int width);
-Tensor *backward_max_pool(Tensor *img, int ksize, int height, int width, int *index);
+void backward_avg_pool(Tensor *img, int ksize, int height, int width);
+void backward_max_pool(Tensor *img, int ksize, int height, int width, int *index);
 
 #ifdef __cplusplus
 }

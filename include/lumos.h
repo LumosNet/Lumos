@@ -62,14 +62,14 @@ typedef struct network network;
 struct layer;
 typedef struct layer layer;
 
-typedef void (*forward)  (struct layer * , struct network *);
-typedef void (*backward) (struct layer * , struct network *);
+typedef void (*forward)  (struct layer, struct network);
+typedef void (*backward) (struct layer, struct network);
 
 typedef forward Forward;
 typedef backward Backward;
 
-typedef void (*saveweight) (struct layer *, FILE *);
-typedef void (*loadweight) (struct layer *, FILE *);
+typedef void (*saveweight) (struct layer, FILE *);
+typedef void (*loadweight) (struct layer, FILE *);
 
 typedef saveweight SaveWeight;
 typedef loadweight LoadWeight;
@@ -89,11 +89,7 @@ typedef struct layer{
     Tensor **output;
     Tensor **delta;
 
-    Tensor *colimg;
-    Tensor *imgcol;
-    Tensor *derivative;
-    Tensor *gradient_w;
-    Tensor *delta_i;
+    Tensor *gradient_l;
 
     int filters;
     int ksize;

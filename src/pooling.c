@@ -1,10 +1,12 @@
 #include "pooling.h"
 
-Tensor *forward_avg_pool(Tensor *img, int ksize)
+void forward_avg_pool(float *img, int h, int w, int c, int ksize)
 {
+    im2col()
+    float *channel = 
     Tensor *channel = array_x(ksize, ksize, (float)1/(ksize*ksize));
-    int height_col = (img->size[1] - ksize) / ksize + 1;
-    int width_col = (img->size[0] - ksize) / ksize + 1;
+    int height_col = (h - ksize) / ksize + 1;
+    int width_col = (w - ksize) / ksize + 1;
     float *data = malloc((height_col*width_col*img->size[2])*sizeof(float));
     for (int i = 0; i < img->size[2]; ++i){
         int size[] = {img->size[0], img->size[1], 1};
@@ -18,10 +20,9 @@ Tensor *forward_avg_pool(Tensor *img, int ksize)
     int res_size[] = {width_col, height_col, img->size[2]};
     Tensor *res = tensor_list(3, res_size, data);
     free_tensor(channel);
-    return res;
 }
 
-Tensor *forward_max_pool(Tensor *img, int ksize, int *index)
+void forward_max_pool(float *img, int h, int w, int c, int ksize, int *index)
 {
     Tensor *channel = array_x(ksize, ksize, (float)1/(ksize*ksize));
     int height_col = (img->size[1] - ksize) / ksize + 1;
@@ -51,7 +52,6 @@ Tensor *forward_max_pool(Tensor *img, int ksize, int *index)
     int res_size[] = {width_col, height_col, img->size[2]};
     Tensor *res = tensor_list(3, res_size, data);
     free_tensor(channel);
-    return res;
 }
 
 Tensor *backward_avg_pool(Tensor *img, int ksize, int height, int width)

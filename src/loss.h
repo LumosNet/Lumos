@@ -35,19 +35,19 @@ float cross_entropy(Tensor *yi, Tensor *yh);
 
 float hinge(Tensor *yi, Tensor *yh);
 
-void forward_mse_loss(Layer *l, Network *net);
-void forward_mae_loss(Layer *l, Network *net);
-void forward_huber_loss(Layer *l, Network *net);
-void forward_quantile_loss(Layer *l, Network *net);
-void forward_cross_entropy_loss(Layer *l, Network *net);
-void forward_hinge_loss(Layer *l, Network *net);
+void forward_mse_loss(Layer l, Network net);
+void forward_mae_loss(Layer l, Network net);
+void forward_huber_loss(Layer l, Network net);
+void forward_quantile_loss(Layer l, Network net);
+void forward_cross_entropy_loss(Layer l, Network net);
+void forward_hinge_loss(Layer l, Network net);
 
-void backward_mse_loss(Layer *l, Network *net);
-void backward_mae_loss(Layer *l, Network *net);
-void backward_huber_loss(Layer *l, Network *net);
-void backward_quantile_loss(Layer *l, Network *net);
-void backward_cross_entropy_loss(Layer *l, Network *net);
-void backward_hinge_loss(Layer *l, Network *net);
+void backward_mse_loss(Layer l, Network net);
+void backward_mae_loss(Layer l, Network net);
+void backward_huber_loss(Layer l, Network net);
+void backward_quantile_loss(Layer l, Network net);
+void backward_cross_entropy_loss(Layer l, Network net);
+void backward_hinge_loss(Layer l, Network net);
 
 LossType load_loss_type(char *loss);
 

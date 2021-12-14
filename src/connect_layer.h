@@ -14,7 +14,7 @@ extern "C" {
 void forward_connect_layer(Layer *l, Network *net);
 void backward_connect_layer(Layer *l, Network *net);
 
-Layer *make_connect_layer(Network *net, LayerParams *p, int h, int w, int c);
+Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c);
 
 void save_connect_weights(Layer *l, FILE *file);
 void load_connect_weights(Layer *l, FILE *file);
