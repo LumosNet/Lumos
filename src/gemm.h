@@ -2,7 +2,7 @@
 #define GEMM_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"{
 #endif
 
 void gemm(int TA, int TB, int AM, int AN, int BM, int BN, float ALPHA, 

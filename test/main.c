@@ -1,26 +1,40 @@
-#include "array.h"
-#include "tensor.h"
-#include "vector.h"
-#include "umath.h"
-#include "lumos.h"
-#include "gemm.h"
-#include "image.h"
+#include "im2col.h"
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 int main(int argc, char **argv)
 {
-    float *A = calloc(16, sizeof(float));
-    for (int i = 0; i < 16; ++i){
+    int h = 4;
+    int w = 4;
+    int c = 3;
+    float *A = calloc(h*w*c, sizeof(float));
+    float *C = calloc(h*w*c, sizeof(float));
+    for (int i = 0; i < h*w; ++i){
         A[i] = i+1;
+        A[h*w+i] = i+1;
+        A[2*h*w+i] = i+1;
     }
-    float *B = malloc(9*sizeof(float));
-    im2col(A, 4, 4, 1, 3, 1, 0, B);
-    for (int i = 0; i < 9; ++i){
-        printf("%f ", B[i]);
+    int stride = 4;
+    int pad = 1;
+    int ksize = 3;
+    int height_col = (h + 2*pad - ksize) / stride + 1;
+    int width_col = (w + 2*pad - ksize) / stride + 1;
+    float *B = calloc(height_col*width_col*ksize*ksize*c, sizeof(float));
+    im2col(A, h, w, c, ksize, stride, pad, B);
+    for (int i = 0; i < height_col*width_col; ++i){
+        for (int j = 0; j < ksize*ksize*c; ++j){
+            printf("%f ", B[i*ksize*ksize*c+j]);
+        }
+        printf("\n");
     }
     printf("\n");
+    col2im(B, ksize, stride, pad, h, w, c, C);
+    for (int i = 0; i < c; ++i){
+        for (int j = 0; j < h*w; ++j){
+            printf("%f ", C[i*h*w+j]);
+        }
+        printf("\n");
+    }
     return 0;
 }
