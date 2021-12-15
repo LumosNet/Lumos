@@ -40,19 +40,19 @@ void full_list_with_x(void *origin, void *x, DataType data_type, int num, int st
     }
 }
 
-void full_list_with_char(char *origin, char x, int num, int stride, int flag)                               {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
-void full_list_with_unsigned_char(unsigned char *origin, unsigned char x, int num, int stride, int flag)    {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
-void full_list_with_short(short *origin, short x, int num, int stride, int flag)                            {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
-void full_list_with_unsigned_short(unsigned short *origin, unsigned short x, int num, int stride, int flag) {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
-void full_list_with_int(int *origin, int x, int num, int stride, int flag)                                  {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
-void full_list_with_unsigned_int(unsigned int *origin, unsigned int x, int num, int stride, int flag)       {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
-void full_list_with_long(long *origin, long x, int num, int stride, int flag)                               {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
-void full_list_with_unsigned_long(unsigned long *origin, unsigned long x, int num, int stride, int flag)    {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
-void full_list_with_float(float *origin, float x, int num, int stride, int flag)                            {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
-void full_list_with_double(double *origin, double x, int num, int stride, int flag)                         {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
-void full_list_with_long_int(long int *origin, long int x, int num, int stride, int flag)                   {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
-void full_list_with_long_long(long long *origin, long long x, int num, int stride, int flag)                {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
-void full_list_with_long_double(long double *origin, long double x, int num, int stride, int flag)          {int i = 0; if(flag) i = stride; for(; i<num; i+=stride+1){origin[i] = x;}}
+void full_list_with_char(char *origin, char x, int num, int stride, int flag)                               {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
+void full_list_with_unsigned_char(unsigned char *origin, unsigned char x, int num, int stride, int flag)    {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
+void full_list_with_short(short *origin, short x, int num, int stride, int flag)                            {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
+void full_list_with_unsigned_short(unsigned short *origin, unsigned short x, int num, int stride, int flag) {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
+void full_list_with_int(int *origin, int x, int num, int stride, int flag)                                  {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
+void full_list_with_unsigned_int(unsigned int *origin, unsigned int x, int num, int stride, int flag)       {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
+void full_list_with_long(long *origin, long x, int num, int stride, int flag)                               {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
+void full_list_with_unsigned_long(unsigned long *origin, unsigned long x, int num, int stride, int flag)    {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
+void full_list_with_float(float *origin, float x, int num, int stride, int flag)                            {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
+void full_list_with_double(double *origin, double x, int num, int stride, int flag)                         {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
+void full_list_with_long_int(long int *origin, long int x, int num, int stride, int flag)                   {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
+void full_list_with_long_long(long long *origin, long long x, int num, int stride, int flag)                {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
+void full_list_with_long_double(long double *origin, long double x, int num, int stride, int flag)          {int i = 0; if(flag) i = stride; for(; i<num; i+=stride){origin[i] = x;}}
 
 void ts_change_pixel_in_list(void *origin, void *x, DataType data_type, int index)
 {

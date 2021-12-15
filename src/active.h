@@ -83,8 +83,8 @@ Activation load_activate_type(char *activate);
 Activate load_activate(Activation TYPE);
 Gradient load_gradient(Activation TYPE);
 
-void activate_tensor(Tensor *ts, Activate a);
-void gradient_tensor(Tensor *ts, Gradient g);
+void activate_list(float *origin, int num, Activate a);
+void gradient_list(float *origin, int num, Gradient g);
 
 #ifdef  __cplusplus
 }

@@ -5,4 +5,5 @@
 *.exe
 main
 .vscode
+.test
 data

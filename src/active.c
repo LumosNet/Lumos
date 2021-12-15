@@ -59,16 +59,16 @@ Gradient load_gradient(Activation TYPE)
     return func;
 }
 
-void activate_tensor(Tensor *ts, Activate a)
+void activate_list(float *origin, int num, Activate a)
 {
-    for (int i = 0; i < ts->num; ++i){
-        ts->data[i] = a(ts->data[i]);
+    for (int i = 0; i < num; ++i){
+        origin[i] = a(origin[i]);
     }
 }
 
-void gradient_tensor(Tensor *ts, Gradient g)
+void gradient_list(float *origin, int num, Gradient g)
 {
-    for (int i = 0; i < ts->num; ++i){
-        ts->data[i] = g(ts->data[i]);
+    for (int i = 0; i < num; ++i){
+        origin[i] = g(origin[i]);
     }
 }

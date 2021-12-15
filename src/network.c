@@ -13,14 +13,15 @@ Network *load_network(char *cfg)
     while (n){
         LayerParams *l = n->val;
         fprintf(stderr, "  %d  ", index+1);
-        Layer *layer = create_layer(net, l, h, w, c);
-        h = layer->output_h;
-        w = layer->output_w;
-        c = layer->output_c;
+        Layer layer = create_layer(net, l, h, w, c);
+        h = layer.output_h;
+        w = layer.output_w;
+        c = layer.output_c;
         net->layers[index] = layer;
         index += 1;
         n = n->next;
     }
+    net->workspace = calloc(net->workspace_size, sizeof(float));
     return net;
 }
 
@@ -45,25 +46,27 @@ Network *create_network(LayerParams *p, int size)
         n = n->next;
     }
     net->n = size;
+    net->workspace_size = 0;
     net->layers = malloc(size*sizeof(struct Layer*));
     fprintf(stderr, "index  type   filters   ksize        input                  output\n");
     return net;
 }
 
-Layer *create_layer(Network *net, LayerParams *p, int h, int w, int c)
+Layer create_layer(Network *net, LayerParams *p, int h, int w, int c)
 {
-    Layer *layer;
+    Layer layer;
     if (0 == strcmp(p->type, "convolutional")){
-        layer = make_convolutional_layer(net, p, h, w, c);
+        layer = make_convolutional_layer(p, net->batch, h, w, c);
     } else if (0 == strcmp(p->type, "pooling")){
-        layer = make_pooling_layer(net, p, h, w, c);
+        layer = make_pooling_layer(p, net->batch, h, w, c);
     } else if (0 == strcmp(p->type, "softmax")){
-        layer = make_softmax_layer(net, p, h, w, c);
+        layer = make_softmax_layer(p, net->batch, h, w, c);
     } else if (0 == strcmp(p->type, "connect")){
-        layer = make_connect_layer(net, p, h, w, c);
+        layer = make_connect_layer(p, net->batch, h, w, c);
     } else if (0 == strcmp(p->type, "activation")){
-        layer = make_activation_layer(net, p, h, w, c);
+        layer = make_activation_layer(p, net->batch, h, w, c);
     }
+    if (layer.workspace_size > net->workspace_size) net->workspace_size = layer.workspace_size;
     return layer;
 }
 

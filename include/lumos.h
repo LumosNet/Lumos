@@ -74,17 +74,22 @@ typedef void (*loadweight) (struct layer, FILE *);
 typedef saveweight SaveWeight;
 typedef loadweight LoadWeight;
 
+typedef void (*update) (struct layer, struct network);
+
+typedef update Update;
+
 typedef struct layer{
     LayerType type;
     PoolingType pool;
     LossType loss;
-    int *index;
+    int **index;
     int input_h;
     int input_w;
     int input_c;
     int output_h;
     int output_w;
     int output_c;
+    size_t workspace_size;
     Tensor **input;
     Tensor **output;
     Tensor **delta;
@@ -115,6 +120,8 @@ typedef struct layer{
 
     SaveWeight sweights;
     LoadWeight lweights;
+
+    Update update;
 } layer, Layer;
 
 typedef struct network{
@@ -124,8 +131,10 @@ typedef struct network{
     int height;
     int channel;
     float learning_rate;
+    size_t workspace_size;
+    float *workspace;
     Tensor **delta;
-    Layer **layers;
+    Layer *layers;
 
     Tensor **labels;
 } network, Network, NetWork;

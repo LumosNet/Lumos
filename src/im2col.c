@@ -24,7 +24,7 @@ void im2col(float *img, int height, int width, int channel, int ksize, int strid
             for (int w = 0; w < width_col; ++w){
                 int im_row = h_offset + h * stride;
                 int im_col = w_offset + w * stride;
-                int col_index = (h*width_col + w)*channels_col + c;
+                int col_index = (height_col*width_col)*c + h*width_col + w;
                 space[col_index] = im2col_get_pixel(img, height, width, im_row, im_col, c_offset, pad);
             }
         }
@@ -56,9 +56,9 @@ void col2im(float *img, int ksize, int stride, int pad, int out_h, int out_w, in
                     }
                     if (w_index+1 > ksize) space[c*out_h*out_w + i*out_w + j] = 0;
                     else {
-                        int index_h = kernel_h_index*width_col + kernel_w_index;
-                        int index_w = c*ksize*ksize + h_index*ksize + w_index;
-                        space[c*out_h*out_w + i*out_w + j] = img[index_h*ksize*ksize*out_c + index_w];
+                        int index_w = kernel_h_index*width_col + kernel_w_index;
+                        int index_h = c*ksize*ksize + h_index*ksize + w_index;
+                        space[c*out_h*out_w + i*out_w + j] = img[index_h*height_col*width_col + index_w];
                     }
                 }
             }

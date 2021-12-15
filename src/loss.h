@@ -6,16 +6,14 @@
 #include "tensor.h"
 #include "array.h"
 #include "vector.h"
-
+#include "gemm.h"
 #include "umath.h"
 
 #ifdef  __cplusplus
 extern "C" {
 #endif
 
-int *one_hot_encoding(int n, int label);
-
-typedef float (*LossFunc)();
+float *one_hot_encoding(int n, int label);
 
 /*
     yi为原标签
@@ -23,17 +21,17 @@ typedef float (*LossFunc)();
 */
 
 // 均方误差
-float mse(Tensor *yi, Tensor *yh);
+float mse(float *yi, float *yh, int n, float *space);
 // 平均绝对值误差
-float mae(Tensor *yi, Tensor *yh);
+float mae(float *yi, float *yh, int n);
 // 平滑平均绝对误差
-float huber(Tensor *yi, Tensor *yh, float theta);
+float huber(float *yi, float *yh, int n, float theta);
 // 分位数损失
-float quantile(Tensor *yi, Tensor *yh, float gamma);
+float quantile(float *yi, float *yh, int n, float gamma);
 // 交叉熵损失
-float cross_entropy(Tensor *yi, Tensor *yh);
+float cross_entropy(float *yi, float *yh, int n);
 
-float hinge(Tensor *yi, Tensor *yh);
+float hinge(float *yi, float *yh, int n);
 
 void forward_mse_loss(Layer l, Network net);
 void forward_mae_loss(Layer l, Network net);

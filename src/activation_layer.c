@@ -28,6 +28,9 @@ Layer make_activation_layer(LayerParams *p, int batch, int h, int w, int c)
     l.output_w = 1;
     l.output_c = 1;
 
+    if (l.loss == MSE) l.workspace_size = l.input_c*l.input_h*l.input_w + 1;
+    else l.workspace_size = 0;
+
     int size_o[] = {l.output_w, l.output_h, l.output_c};
     int size_d[] = {l.input_w, l.input_h, l.input_c};
     l.output = malloc(batch*sizeof(struct Tensor *));

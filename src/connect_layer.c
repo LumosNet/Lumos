@@ -1,37 +1,28 @@
 #include "connect_layer.h"
 
-void forward_connect_layer(Layer *l, Network *net)
+void forward_connect_layer(Layer l, Network net)
 {
-    for (int i = 0; i < net->batch; ++i){
-        l->output[i] = gemm(l->kernel_weights, l->input[i]);
-        if (l->bias){
-            add_bias(l->output[i], l->bias_weights, l->ksize, 1);
+    for (int i = 0; i < net.batch; ++i){
+        gemm(0, 0, l.kernel_weights->size[1], l.kernel_weights->size[0], 
+            l.input[i]->size[1], l.input[i]->size[0], 
+            1, l.kernel_weights->data, l.input[i]->data, l.output[i]->data);
+        if (l.bias){
+            add_bias(l.output[i]->data, l.bias_weights->data, l.ksize, 1);
         }
-        activate_tensor(l->output[i], l->active);
+        activate_list(l.output[i]->data, l.output[i]->num, l.active);
     }
 }
 
-void backward_connect_layer(Layer *l, Network *net)
+void backward_connect_layer(Layer l, Network net)
 {
-    float rate = net->learning_rate / (float)net->batch;
-    for (int i = 0; i < net->batch; ++i){
-        gradient_tensor(l->output[i], l->gradient);
-        Tensor *delta = net->delta[i];
-        Tensor *d = gemm(delta, l->output[i]);
-        Tensor *k_weights = tensor_copy(l->kernel_weights);
-        Tensor *input = tensor_copy(l->input[i]);
-        transposition(input);
-        transposition(k_weights);
-        net->delta[i] = gemm(d, k_weights);
-        Tensor *d_w = gemm(d, input);
-        saxpy(l->kernel_weights, d_w, rate);
-        saxpy(l->bias_weights, d, rate);
-        free_tensor(delta);
-        free_tensor(d);
-        free_tensor(k_weights);
-        free_tensor(input);
-        free_tensor(d_w);
+    for (int i = 0; i < net.batch; ++i){
+        gradient_list(l.output[i]->data, l.output[i]->num, l.gradient);
+        multiply(net.delta[i]->data, l.output[i]->data, l.output[i]->num, net.delta[i]->data);
+        gemm(1, 0, l.kernel_weights->size[1], l.kernel_weights->size[0], 
+            net.delta[i]->size[1], net.delta[i]->size[0], 1, 
+            l.kernel_weights->data, net.delta[i]->data, l.delta[i]->data);
     }
+    l.update(l, net);
 }
 
 Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
@@ -41,6 +32,7 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
     l.input_h = h;
     l.input_w = w;
     l.input_c = c;
+    l.bias = 1;
     Node *n = p->head;
     while (n){
         Params *param = n->val;
@@ -50,6 +42,8 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
             Activation type = load_activate_type(param->val);
             l.active = load_activate(type);
             l.gradient = load_gradient(type);
+        } else if (0 == strcmp(param->key, "bias")){
+            l.bias = atoi(param->val);
         }
         n = n->next;
     }
@@ -59,6 +53,9 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
 
     l.forward = forward_connect_layer;
     l.backward = backward_connect_layer;
+    l.update = update_connect_layer;
+
+    l.workspace_size = l.input_c*l.input_h*l.input_w*l.output_c*l.output_h*l.output_w;
 
     int size_o[] = {l.output_w, l.output_h, l.output_c};
     int size_d[] = {l.input_w, l.input_h, l.input_c};
@@ -74,22 +71,36 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
     return l;
 }
 
-void save_connect_weights(Layer *l, FILE *file)
+void update_connect_layer(Layer l, Network net)
 {
-    Tensor *kernel_weights = l->kernel_weights;
-    Tensor *bias_weights = l->bias_weights;
-    fwrite(kernel_weights->data, sizeof(float), kernel_weights->num, file);
-    fwrite(bias_weights, sizeof(float), bias_weights->num, file);
+    float rate = net.learning_rate / (float)net.batch;
+    for (int i = 0; i < net.batch; ++i){
+        gemm(0, 0, net.delta[i]->size[1], net.delta[i]->size[0], \
+            l.input[i]->size[1], l.input[i]->size[0], 1, \
+            net.delta[i]->data, l.input[i]->data, net.workspace);
+        saxpy(l.kernel_weights->data, net.workspace, l.kernel_weights->num, rate, l.kernel_weights->data);
+        if (l.bias){
+            saxpy(l.bias_weights->data, net.delta[i]->data, l.bias_weights->num, rate, l.bias_weights->data);
+        }
+    }
 }
 
-void load_connect_weights(Layer *l, FILE *file)
-{
-    int size_k[] = {l->input_w, l->output_w};
-    int size_b[] = {1, l->output_w};
-    Tensor *kernel_weights = tensor_x(2, size_k, 0);
-    Tensor *bias_weights = tensor_x(2, size_b, 0);
-    fread(kernel_weights->data, sizeof(float), kernel_weights->num, file);
-    fread(bias_weights->data, sizeof(float), bias_weights->num, file);
-    l->kernel_weights = kernel_weights;
-    l->bias_weights = bias_weights;
-}
+// void save_connect_weights(Layer *l, FILE *file)
+// {
+//     Tensor *kernel_weights = l->kernel_weights;
+//     Tensor *bias_weights = l->bias_weights;
+//     fwrite(kernel_weights->data, sizeof(float), kernel_weights->num, file);
+//     fwrite(bias_weights, sizeof(float), bias_weights->num, file);
+// }
+
+// void load_connect_weights(Layer *l, FILE *file)
+// {
+//     int size_k[] = {l->input_w, l->output_w};
+//     int size_b[] = {1, l->output_w};
+//     Tensor *kernel_weights = tensor_x(2, size_k, 0);
+//     Tensor *bias_weights = tensor_x(2, size_b, 0);
+//     fread(kernel_weights->data, sizeof(float), kernel_weights->num, file);
+//     fread(bias_weights->data, sizeof(float), bias_weights->num, file);
+//     l->kernel_weights = kernel_weights;
+//     l->bias_weights = bias_weights;
+// }
