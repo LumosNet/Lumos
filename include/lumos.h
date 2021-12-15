@@ -133,6 +133,7 @@ typedef struct network{
     float learning_rate;
     size_t workspace_size;
     float *workspace;
+    Tensor **input;
     Tensor **delta;
     Layer *layers;
 

@@ -70,8 +70,6 @@ Layer create_layer(Network *net, LayerParams *p, int h, int w, int c)
     return layer;
 }
 
-void add_layer2net(Network *net, Layer *l);
-
 void forward_network(Network *net)
 {
 

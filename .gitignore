@@ -5,5 +5,7 @@
 *.exe
 main
 .vscode
-.test
+test
 data
+scripts
+mnist

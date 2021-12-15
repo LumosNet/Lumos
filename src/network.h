@@ -24,7 +24,6 @@ void backward_network(Network *net);
 
 Network *create_network(LayerParams *p, int size);
 Layer create_layer(Network *net, LayerParams *p, int h, int w, int c);
-void add_layer2net(Network *net, Layer *l);
 
 #ifdef __cplusplus
 }
