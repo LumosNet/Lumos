@@ -28,7 +28,7 @@ LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 endif
 
 OBJ=activation_layer.o active.o array.o avgpool_layer.o bias.o cluster.o connect_layer.o \
-	convolutional_layer.o gemm.o gray_process.o im2col.o image.o list.o loss.o maxpool_layer.o \
+	convolutional_layer.o data.o gemm.o gray_process.o im2col.o image.o list.o loss.o maxpool_layer.o \
 	network.o parser.o pooling_layer.o softmax_layer.o tensor.o umath.o utils.o vector.o \
 	weights.o
 EXECOBJA=main.o

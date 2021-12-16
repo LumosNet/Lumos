@@ -12,6 +12,7 @@ void forward_softmax_layer(Layer l, Network net)
             l.output[i]->data[j] = net.workspace[j] / sum;
         }
     }
+    printf("softmax\n");
 }
 
 void backward_softmax_layer(Layer l, Network net)

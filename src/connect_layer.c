@@ -2,6 +2,7 @@
 
 void forward_connect_layer(Layer l, Network net)
 {
+    printf("connect\n");
     for (int i = 0; i < net.batch; ++i){
         gemm(0, 0, l.kernel_weights->size[1], l.kernel_weights->size[0], 
             l.input[i]->size[1], l.input[i]->size[0], 
@@ -11,6 +12,7 @@ void forward_connect_layer(Layer l, Network net)
         }
         activate_list(l.output[i]->data, l.output[i]->num, l.active);
     }
+    printf("connect\n");
 }
 
 void backward_connect_layer(Layer l, Network net)
@@ -57,6 +59,11 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
 
     l.workspace_size = l.input_c*l.input_h*l.input_w*l.output_c*l.output_h*l.output_w;
 
+    int size_k[] = {l.output_h, l.input_h};
+    int size_b[] = {1, l.output_h};
+    l.kernel_weights = tensor_x(2, size_k, 0);
+    l.bias_weights = tensor_x(2, size_b, 0);
+
     int size_o[] = {l.output_w, l.output_h, l.output_c};
     int size_d[] = {l.input_w, l.input_h, l.input_c};
     l.output = malloc(batch*sizeof(struct Tensor *));
@@ -85,22 +92,23 @@ void update_connect_layer(Layer l, Network net)
     }
 }
 
-// void save_connect_weights(Layer *l, FILE *file)
-// {
-//     Tensor *kernel_weights = l->kernel_weights;
-//     Tensor *bias_weights = l->bias_weights;
-//     fwrite(kernel_weights->data, sizeof(float), kernel_weights->num, file);
-//     fwrite(bias_weights, sizeof(float), bias_weights->num, file);
-// }
+void save_connect_weights(Layer l, FILE *file)
+{
+    fwrite(l.kernel_weights->data, sizeof(float), l.kernel_weights->num, file);
+    fwrite(l.bias_weights->data, sizeof(float), l.bias_weights->num, file);
+}
 
-// void load_connect_weights(Layer *l, FILE *file)
-// {
-//     int size_k[] = {l->input_w, l->output_w};
-//     int size_b[] = {1, l->output_w};
-//     Tensor *kernel_weights = tensor_x(2, size_k, 0);
-//     Tensor *bias_weights = tensor_x(2, size_b, 0);
-//     fread(kernel_weights->data, sizeof(float), kernel_weights->num, file);
-//     fread(bias_weights->data, sizeof(float), bias_weights->num, file);
-//     l->kernel_weights = kernel_weights;
-//     l->bias_weights = bias_weights;
-// }
+void load_connect_weights(Layer l, FILE *file)
+{
+    if (file){
+        fread(l.kernel_weights->data, sizeof(float), l.kernel_weights->num, file);
+        fread(l.bias_weights->data, sizeof(float), l.bias_weights->num, file);
+    } else{
+        for (int i = 0; i < l.output_h*l.input_h; ++i){
+            l.kernel_weights->data[i] = rand()*0.001;
+        }
+        for (int i = 0; i < l.output_h; ++i){
+            l.bias_weights->data[i] = rand()*0.001;
+        }
+    }
+}

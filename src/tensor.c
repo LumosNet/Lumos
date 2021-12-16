@@ -166,3 +166,10 @@ void saxpy(float *data_a, float *data_b, int num, float x, float *space)
         space[i] = data_a[i] + data_b[i]*x;
     }
 }
+
+void free_tensor(Tensor *ts)
+{
+    free(ts->data);
+    free(ts->size);
+    free(ts);
+}

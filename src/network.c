@@ -45,9 +45,11 @@ Network *create_network(LayerParams *p, int size)
         }
         n = n->next;
     }
-    net->n = size;
+    net->n = size-1;
     net->workspace_size = 0;
     net->layers = malloc(size*sizeof(struct Layer*));
+    net->input = malloc(net->batch*sizeof(Tensor *));
+    net->labels = malloc(net->batch*sizeof(Label *));
     fprintf(stderr, "index  type   filters   ksize        input                  output\n");
     return net;
 }
@@ -70,12 +72,60 @@ Layer create_layer(Network *net, LayerParams *p, int h, int w, int c)
     return layer;
 }
 
-void forward_network(Network *net)
+void train(Network *net)
 {
-
+    int offset = 0;
+    int n = 0;
+    while (1){
+        load_train_data(net, offset);
+        forward_network(net[0]);
+        printf("ok\n");
+        backward_network(net[0]);
+        offset += net->batch;
+        if (offset >= net->num) offset -= net->num;
+        n += 1;
+    }
 }
 
-void backward_network(Network *net)
+void init_network(Network *net, char *data_file, char *weight_file)
 {
+    int *ln = malloc(sizeof(int));
+    int *pn = malloc(sizeof(int));
+    char **datas = read_lines(data_file, ln);
+    char *data_path;
+    char *label_path;
+    for (int i = 0; i < ln[0]; ++i){
+        char *line = datas[i];
+        char **params = split(line, '=', pn);
+        if (0 == strcmp(params[0], "classes")){
+            net->kinds = atoi(params[1]);
+        } else if(0 == strcmp(params[0], "data")){
+            data_path = params[1];
+        } else if(0 == strcmp(params[0], "label")){
+            label_path = params[1];
+        }
+    }
+    load_train_path(net, data_path, label_path);
+    load_weights(net, weight_file);
+}
 
+void forward_network(Network net)
+{
+    for (int i = 0; i < net.n; ++i){
+        Layer l = net.layers[i];
+        l.input = net.output;
+        printf("gan\n");
+        if (l.type == CONVOLUTIONAL) printf("con\n");
+        l.forward(l, net);
+        net.output = l.output;
+    }
+}
+
+void backward_network(Network net)
+{
+    for (int i = net.n-1; i >= 0; --i){
+        Layer l = net.layers[i];
+        l.backward(l, net);
+        net.delta = l.delta;
+    }
 }

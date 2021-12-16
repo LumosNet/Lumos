@@ -2,7 +2,9 @@
 
 void forward_convolutional_layer(Layer l, Network net)
 {
+    printf("convolutional\n");
     for (int i = 0; i < net.batch; ++i){
+        printf("f: %d", i);
         im2col(l.input[i]->data, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, net.workspace);
         gemm(0, 0, l.filters, l.ksize*l.ksize*l.input_c, l.ksize*l.ksize*l.input_c, l.output_h*l.output_w, 1, 
             l.kernel_weights->data, net.workspace, l.output[i]->data);
@@ -11,10 +13,12 @@ void forward_convolutional_layer(Layer l, Network net)
         }
         activate_list(l.output[i]->data, l.output[i]->num, l.active);
     }
+    printf("convolutional\n");
 }
 
 void backward_convolutional_layer(Layer l, Network net)
 {
+    printf("batc\n");
     for (int i = 0; i < net.batch; ++i){
         gradient_list(l.output[i]->data, l.output[i]->num, l.gradient);
         multiply(net.delta[i]->data, l.output[i]->data, l.output[i]->num, net.delta[i]->data);
@@ -65,6 +69,11 @@ Layer make_convolutional_layer(LayerParams *p, int batch, int h, int w, int c)
 
     l.workspace_size = l.ksize*l.ksize*l.input_c*l.output_h*l.output_w;
 
+    int size_k[] = {l.filters, l.ksize*l.ksize*l.input_c};
+    int size_b[] = {l.filters, 1};
+    l.kernel_weights = tensor_x(2, size_k, 0);
+    l.bias_weights = tensor_x(2, size_b, 0);
+
     int size_o[] = {l.output_w, l.output_h, l.output_c};
     int size_d[] = {l.input_w, l.input_h, l.input_c};
     l.output = malloc(batch*sizeof(Tensor *));
@@ -93,39 +102,45 @@ void update_convolutional_layer(Layer l, Network net)
     }
 }
 
-// void save_convolutional_weights(Layer *l, FILE *file)
-// {
-//     for (int i = 0; i < l->filters; ++i){
-//         for (int j = 0; j < l->ksize*l->ksize; ++j){
-//             Tensor *kernel_weights = l->kernel_weights;
-//             int index[] = {j+1, i+1};
-//             int offset = index_ts2ls(index, 2, kernel_weights->size);
-//             fread(kernel_weights+offset, sizeof(float), 1, file);
-//         }
-//     }
-//     Tensor *bias_weights = l->bias_weights;
-//     fread(bias_weights, sizeof(float), bias_weights->num, file);
-// }
+void save_convolutional_weights(Layer l, FILE *file)
+{
+    for (int i = 0; i < l.filters; ++i){
+        for (int j = 0; j < l.ksize*l.ksize; ++j){
+            int offset = i*l.ksize*l.ksize*l.input_c + j;
+            fwrite(l.kernel_weights->data+offset, sizeof(float), 1, file);
+        }
+    }
+    fwrite(l.bias_weights->data, sizeof(float), l.bias_weights->num, file);
+}
 
-// void load_convolutional_weights(Layer *l, FILE *file)
-// {
-//     int size_k[] = {l->ksize*l->ksize*l->input_c, l->filters};
-//     int size_b[] = {1, l->filters};
-//     Tensor *kernel_weights = tensor_x(2, size_k, 0);
-
-//     int weights_num = l->ksize*l->ksize*l->filters + l->filters;
-//     float *weights = malloc(weights_num*sizeof(float));
-//     fread(weights, sizeof(float), weights_num, file);
-
-//     for (int i = 0; i < size_k[0]; ++i){
-//         for (int j = 0; j < size_k[1]; ++j){
-//             int kernels_offset = j*l->ksize*l->ksize;
-//             int kerneli_offset = i % (l->ksize*l->ksize);
-//             ts_change_pixel_ar(kernel_weights, i+1, j+1, weights[kernels_offset+kerneli_offset]);
-//         }
-//     }
-
-//     Tensor *bias_weights = tensor_list(2, size_b, weights+l->ksize*l->ksize*l->filters);
-//     l->kernel_weights = kernel_weights;
-//     l->bias_weights = bias_weights;
-// }
+void load_convolutional_weights(Layer l, FILE *file)
+{
+    if (file){
+        float *weights = malloc(l.ksize*l.ksize*l.filters*sizeof(float));
+        fread(weights, sizeof(float), l.ksize*l.ksize*l.filters, file);
+        for (int i = 0; i < l.filters; ++i){
+            for (int j = 0; j < l.input_c; ++j){
+                for (int k = 0; k < l.ksize*l.ksize; ++k){
+                    l.kernel_weights->data[i*l.ksize*l.ksize*l.input_c + j*l.ksize*l.ksize + k] = weights[i*l.ksize*l.ksize + k];
+                }
+            }
+        }
+        fread(l.bias_weights->data, sizeof(float), l.filters, file);
+        free(weights);
+    } else{
+        float *weights = malloc(l.ksize*l.ksize*l.filters*sizeof(float));
+        for (int i = 0; i < l.ksize*l.ksize*l.filters; ++i){
+            weights[i] = rand()*0.01;
+        }
+        for (int i = 0; i < l.filters; ++i){
+            for (int j = 0; j < l.input_c; ++j){
+                for (int k = 0; k < l.ksize*l.ksize; ++k){
+                    l.kernel_weights->data[i*l.ksize*l.ksize*l.input_c + j*l.ksize*l.ksize + k] = weights[i*l.ksize*l.ksize + k];
+                }
+            }
+        }
+        for (int i = 0; i < l.filters; ++i){
+            l.bias_weights->data[i] = rand()*0.01;
+        }
+    }
+}

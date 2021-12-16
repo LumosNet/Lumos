@@ -37,6 +37,7 @@ void divide(float *data_a, float *data_b, int num, float *space);
 
 void saxpy(float *data_a, float *data_b, int num, float x, float *space);
 
+void free_tensor(Tensor *ts);
 #ifdef  __cplusplus
 }
 #endif

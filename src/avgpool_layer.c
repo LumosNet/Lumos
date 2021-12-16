@@ -2,6 +2,7 @@
 
 void forward_avgpool_layer(Layer l, Network net)
 {
+    printf("avgpool\n");
     for (int i = 0; i < net.batch; ++i){
         im2col(l.input[i]->data, l.input_h, l.input_w, l.input_c, 
             l.ksize, l.stride, l.pad, net.workspace);
@@ -16,6 +17,7 @@ void forward_avgpool_layer(Layer l, Network net)
             }
         }
     }
+    printf("pooling\n");
 }
 
 void backward_avgpool_layer(Layer l, Network net)

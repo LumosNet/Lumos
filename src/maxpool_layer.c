@@ -2,6 +2,7 @@
 
 void forward_maxpool_layer(Layer l, Network net)
 {
+    printf("pooling\n");
     for (int i = 0; i < net.batch; ++i){
         im2col(l.input[i]->data, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, net.workspace);
         for (int c = 0; c < l.input_c; ++c){
@@ -20,6 +21,7 @@ void forward_maxpool_layer(Layer l, Network net)
             }
         }
     }
+    printf("pooling\n");
 }
 
 void backward_maxpool_layer(Layer l, Network net)

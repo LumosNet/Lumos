@@ -105,3 +105,24 @@ Node *make_node_param(char *line)
     n->val = p;
     return n;
 }
+
+char **read_lines(char *path, int *num)
+{
+    FILE *fp = fopen(path, "r");
+    char *line;
+    num[0] = 0;
+    while ((line = fgetl(fp)) != 0){
+        if (line[0] == '\0') continue;
+        num[0] += 1;
+    }
+    char **res = malloc(num[0]*sizeof(char *));
+    fclose(fp);
+    num[0] = 0;
+    fp = fopen(path, "r");
+    while ((line = fgetl(fp)) != 0){
+        if (line[0] == '\0') continue;
+        res[num[0]] = line;
+        num[0] += 1;
+    }
+    return res;
+}

@@ -71,50 +71,57 @@ float hinge(float *yi, float *yh, int n)
 void forward_mse_loss(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
-        l.output[i]->data[0] = mse(net.labels[i]->data, l.input[i]->data, net.labels[i]->num, net.workspace);
+        float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
+        l.output[i]->data[0] = mse(yi, l.input[i]->data, net.kinds, net.workspace);
     }
 }
 
 void forward_mae_loss(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
-        l.output[i]->data[0] = mae(net.labels[i]->data, l.input[i]->data, net.labels[i]->num);
+        float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
+        l.output[i]->data[0] = mae(yi, l.input[i]->data, net.kinds);
     }
 }
 
 void forward_huber_loss(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
-        l.output[i]->data[0] = huber(net.labels[i]->data, l.input[i]->data, net.labels[i]->num, l.theta);
+        float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
+        l.output[i]->data[0] = huber(yi, l.input[i]->data, net.kinds, l.theta);
     }
 }
 
 void forward_quantile_loss(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
-        l.output[i]->data[0] = quantile(net.labels[i]->data, l.input[i]->data, net.labels[i]->num, l.gamma);
+        float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
+        l.output[i]->data[0] = quantile(yi, l.input[i]->data, net.kinds, l.gamma);
     }
 }
 
 void forward_cross_entropy_loss(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
-        l.output[i]->data[0] = cross_entropy(net.labels[i]->data, l.input[i]->data, net.labels[i]->num);
+        float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
+        l.output[i]->data[0] = cross_entropy(yi, l.input[i]->data, net.kinds);
     }
 }
 
 void forward_hinge_loss(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
-        l.output[i]->data[0] = hinge(net.labels[i]->data, l.input[i]->data, net.labels[i]->num);
+        float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
+        l.output[i]->data[0] = hinge(yi, l.input[i]->data, net.kinds);
     }
 }
 
 void backward_mse_loss(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
+        float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
         memcpy_float_list(l.delta[i]->data, l.input[i]->data, 0, 0, l.delta[i]->num);
-        subtract(l.delta[i]->data, net.labels[i]->data, l.delta[i]->num, l.delta[i]->data);
+        subtract(l.delta[i]->data, yi, l.delta[i]->num, l.delta[i]->data);
         mult_x(l.delta[i]->data, l.delta[i]->num, 2/(float)l.delta[i]->num);
     }
 }
@@ -122,9 +129,10 @@ void backward_mse_loss(Layer l, Network net)
 void backward_mae_loss(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
+        float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
         for (int j = 0; j < l.delta[i]->num; ++j){
             l.delta[i]->data[j] = 1/l.delta[i]->num;
-            if (net.labels[i]->data[j] > l.input[i]->data[j]) l.delta[i]->data[j] *= -1;
+            if (yi[j] > l.input[i]->data[j]) l.delta[i]->data[j] *= -1;
         }
     }
 }
@@ -132,11 +140,12 @@ void backward_mae_loss(Layer l, Network net)
 void backward_huber_loss(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
+        float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
         for (int j = 0; j < l.delta[i]->num; ++j){
-            float differ = fabs(net.labels[i]->data[j] - l.input[i]->data[j]);
+            float differ = fabs(yi[j] - l.input[i]->data[j]);
             if (differ <= l.theta) l.delta[i]->data[j] = -differ;
             else {
-                if (net.labels[i]->data[j] - l.input[i]->data[j] >= 0) l.delta[i]->data[j] = -l.theta;
+                if (yi[j] - l.input[i]->data[j] >= 0) l.delta[i]->data[j] = -l.theta;
                 else l.delta[i]->data[j] = l.theta;
             }
         }
@@ -146,8 +155,9 @@ void backward_huber_loss(Layer l, Network net)
 void backward_quantile_loss(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
+        float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
         for (int j = 0; j < l.delta[i]->num; ++j){
-            float differ = net.labels[i]->data[j] - l.input[i]->data[j];
+            float differ = yi[j] - l.input[i]->data[j];
             if (differ < 0) l.delta[i]->data[j] = 1-l.gamma;
             else l.delta[i]->data[j] = -l.gamma;
         }
@@ -157,9 +167,10 @@ void backward_quantile_loss(Layer l, Network net)
 void backward_cross_entropy_loss(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
+        float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
         for (int j = 0; j < l.delta[i]->num; ++j){
-            if (net.labels[i]->data[j] == 0) l.delta[i]->data[j] = 0;
-            else l.delta[i]->data[j] = -net.labels[i]->data[j] / (l.input[i]->data[j] + .00000001);
+            if (yi[j] == 0) l.delta[i]->data[j] = 0;
+            else l.delta[i]->data[j] = -yi[j] / (l.input[i]->data[j] + .00000001);
         }
     }
 }
@@ -167,10 +178,11 @@ void backward_cross_entropy_loss(Layer l, Network net)
 void backward_hinge_loss(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
+        float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
         for (int j = 0; j < l.delta[i]->num; ++j){
-            float differ = l.input[i]->data[j] * net.labels[i]->data[j];
+            float differ = l.input[i]->data[j] * yi[j];
             if (differ >= 1) l.delta[i]->data[j] = 0;
-            else l.delta[i]->data[j] = -net.labels[i]->data[j];
+            else l.delta[i]->data[j] = -yi[j];
         }
     }
 }

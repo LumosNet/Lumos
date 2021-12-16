@@ -124,6 +124,15 @@ typedef struct layer{
     Update update;
 } layer, Layer;
 
+struct label;
+typedef struct label label;
+
+typedef struct label{
+    float *data;
+    int num;
+    struct label *next;
+} Label;
+
 typedef struct network{
     int n;
     int batch;
@@ -134,10 +143,16 @@ typedef struct network{
     size_t workspace_size;
     float *workspace;
     Tensor **input;
+    Tensor **output;
     Tensor **delta;
     Layer *layers;
 
-    Tensor **labels;
+    int kinds;
+    char **label;
+    Label *labels;
+
+    int num;
+    char **data;
 } network, Network, NetWork;
 
 #ifdef __cplusplus

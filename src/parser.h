@@ -45,6 +45,7 @@ NetParams *make_net_params();
 void insert_net_params(NetParams *NP, LayerParams *LP);
 void insert_layer_params(LayerParams *LP, char *line);
 Node *make_node_param(char *line);
+char **read_lines(char *path, int *num);
 
 #ifdef __cplusplus
 }
