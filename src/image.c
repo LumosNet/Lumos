@@ -5,51 +5,36 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-Tensor *create_image(int w, int h, int c)
-{
-    int size[] = {w, h, c};
-    Tensor *image = tensor_x(3, size, 0);
-    return image;
-}
-
-int *census_image_pixel(Tensor *img)
+int *census_image_pixel(float *img, int w, int h, int c)
 {
     int *num = calloc(256, sizeof(int));
-    for (int i = 0; i < img->num; ++i){
-        num[(int)(img->data[i]*255)] += 1;
+    for (int i = 0; i < w*h*c; ++i){
+        num[(int)(img[i]*255)] += 1;
     }
     return num;
 }
 
-int *census_channel_pixel(Tensor *img, int c)
+int *census_channel_pixel(float *img, int w, int h, int c, int index_c)
 {
     int *num = calloc(256, sizeof(int));
-    int offset = (c - 1) * img->size[0] * img->size[1];
-    for (int i = 0; i < img->size[0]*img->size[1]; ++i){
-        num[(int)(img->data[i+offset]*255)] += 1;
+    int offset = (index_c - 1) * w * h;
+    for (int i = 0; i < w*h; ++i){
+        num[(int)(img[i+offset]*255)] += 1;
     }
     return num;
 }
 
-int get_channels(Tensor *img)
+float *load_image_data(char *img_path, int *w, int *h, int *c)
 {
-    if (img->dim == 2) return 1;
-    else if (img->dim) return img->size[2];
-    return 0;
-}
-
-Tensor *load_image_data(char *img_path)
-{
-    int w, h, c;
-    unsigned char *data = stbi_load(img_path, &w, &h, &c, 0);
-    Tensor *im_new = create_image(w, h, c);
+    unsigned char *data = stbi_load(img_path, w, h, c, 0);
+    float *im_new = malloc((w[0]*h[0]*c[0])*sizeof(float));
     int i, j, k;
-    for(k = 0; k < c; ++k){
-        for(j = 0; j < h; ++j){
-            for(i = 0; i < w; ++i){
-                int dst_index = i + w*j + w*h*k;
-                int src_index = k + c*i + c*w*j;
-                im_new->data[dst_index] = (float)data[src_index]/255.;
+    for(k = 0; k < c[0]; ++k){
+        for(j = 0; j < h[0]; ++j){
+            for(i = 0; i < w[0]; ++i){
+                int dst_index = i + w[0]*j + w[0]*h[0]*k;
+                int src_index = k + c[0]*i + c[0]*w[0]*j;
+                im_new[dst_index] = (float)data[src_index]/255.;
             }
         }
     }
@@ -57,16 +42,16 @@ Tensor *load_image_data(char *img_path)
     return im_new;
 }
 
-void save_image_data(Tensor *img, char *savepath)
+void save_image_data(float *img, int w, int h, int c, char *savepath)
 {
     int i, k;
-    unsigned char *data = malloc(img->num*sizeof(char));
-    for(k = 0; k < img->size[2]; ++k){
-        for(i = 0; i < img->size[0]*img->size[1]; ++i){
-            data[i*img->size[2]+k] = (unsigned char) (255*img->data[i + k*img->size[0]*img->size[1]]);
+    unsigned char *data = malloc((w*h*c)*sizeof(char));
+    for(k = 0; k < c; ++k){
+        for(i = 0; i < w*h; ++i){
+            data[i*c+k] = (unsigned char) (255*img[i + k*w*h]);
         }
     }
-    stbi_write_png(savepath, img->size[0], img->size[1], img->size[2], data, img->size[0] * img->size[2]);
+    stbi_write_png(savepath, w, h, c, data, w * c);
     free(data);
 }
 

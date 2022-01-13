@@ -4,7 +4,10 @@ void forward_maxpool_layer(Layer l, Network net)
 {
     printf("pooling\n");
     for (int i = 0; i < net.batch; ++i){
-        im2col(l.input[i]->data, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, net.workspace);
+        int offset_i = i*l.input_h*l.input_w*l.input_c;
+        int offset_o = i*l.output_h*l.output_w*l.output_c;
+        float *output = l.output+offset_o;
+        im2col(l.input+offset_i, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, net.workspace);
         for (int c = 0; c < l.input_c; ++c){
             for (int h = 0; h < l.output_h*l.output_w; h++){
                 float max = -999;
@@ -16,7 +19,7 @@ void forward_maxpool_layer(Layer l, Network net)
                         max_index = (c*l.input_h*l.input_w)+(h/l.output_w*l.ksize+w/l.ksize)*l.input_w+(h%l.output_w*l.ksize+w%l.ksize);
                     }
                 }
-                l.output[i]->data[l.output_h*l.output_w*c + h] = max;
+                output[l.output_h*l.output_w*c + h] = max;
                 l.index[i][l.output_h*l.output_w*c + h] = max_index;
             }
         }
@@ -27,8 +30,12 @@ void forward_maxpool_layer(Layer l, Network net)
 void backward_maxpool_layer(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
+        int offset_i = i*l.input_h*l.input_w*l.input_c;
+        int offset_o = i*l.output_h*l.output_w*l.output_c;
+        float *l_delta = l.delta+offset_i;
+        float *n_delta = net.delta+offset_o;
         for (int j = 0; j < l.output_h*l.output_w*l.output_c; ++j){
-            l.delta[i]->data[l.index[i][j]] = net.delta[i]->data[j];
+            l_delta[l.index[i][j]] = n_delta[j];
         }
     }
 }

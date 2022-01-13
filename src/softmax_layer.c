@@ -2,14 +2,19 @@
 
 void forward_softmax_layer(Layer l, Network net)
 {
+    printf("softmax\n");
     for (int i = 0; i < net.batch; ++i){
+        int offset_i = i*l.input_h*l.input_w*l.input_c;
+        int offset_o = i*l.output_h*l.output_w*l.output_c;
+        float *output = l.output+offset_o;
+        float *input = l.input+offset_i;
         float sum = 0;
         for (int j = 0; j < l.group; ++j){
-            net.workspace[j] += pow(M_E, l.input[i]->data[j]);
+            net.workspace[j] += pow(M_E, input[j]);
             sum += net.workspace[j];
         }
         for (int j = 0; j < l.group; ++j){
-            l.output[i]->data[j] = net.workspace[j] / sum;
+            output[j] = net.workspace[j] / sum;
         }
     }
     printf("softmax\n");
@@ -18,9 +23,12 @@ void forward_softmax_layer(Layer l, Network net)
 void backward_softmax_layer(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
+        int offset_i = i*l.input_h*l.input_w*l.input_c;
+        int offset_o = i*l.output_h*l.output_w*l.output_c;
+        float *input = l.input + offset_i;
         float sum = 0;
         for (int j = 0; j < l.group; ++j){
-            net.workspace[j] = pow(M_E, l.input[i]->data[j]);
+            net.workspace[j] = pow(M_E, input[j]);
             sum += net.workspace[j];
         }
         for (int j = 0; j < l.group; ++j){
@@ -32,7 +40,7 @@ void backward_softmax_layer(Layer l, Network net)
                 }
             }
         }
-        gemm(0, 0, net.delta[i]->size[1], net.delta[i]->size[0], l.group, l.group, 1, net.delta[i]->data, net.workspace, l.delta[i]->data);
+        gemm(0, 0, l.output_h, l.output_w, l.group, l.group, 1, net.delta+offset_o, net.workspace, l.delta+offset_i);
     }
 }
 
@@ -59,14 +67,10 @@ Layer make_softmax_layer(LayerParams *p, int batch, int h, int w, int c)
 
     l.workspace_size = l.group*l.group;
 
-    int size_o[] = {l.output_w, l.output_h, l.output_c};
-    int size_d[] = {l.input_w, l.input_h, l.input_c};
-    l.output = malloc(batch*sizeof(Tensor *));
-    l.delta = malloc(batch*sizeof(Tensor *));
-    for (int i = 0; i < batch; ++i){
-        l.output[i] = tensor_x(3, size_o, 0);
-        l.delta[i] = tensor_x(3, size_d, 0);
-    }
+    int size_o = l.output_w * l.output_h * l.output_c;
+    int size_d = l.input_w * l.input_h * l.input_c;
+    l.output = calloc(batch*size_o, sizeof(float));
+    l.delta = calloc(batch*size_d, sizeof(float));
 
     fprintf(stderr, "  softmax          %5d      %4d x%4d         ->  %4d x%4d\n", \
             l.group, l.input_h, l.input_w, l.output_h, l.output_w);

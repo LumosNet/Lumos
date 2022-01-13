@@ -47,9 +47,9 @@ Network *create_network(LayerParams *p, int size)
     }
     net->n = size-1;
     net->workspace_size = 0;
-    net->layers = malloc(size*sizeof(struct Layer*));
-    net->input = malloc(net->batch*sizeof(Tensor *));
-    net->labels = malloc(net->batch*sizeof(Label *));
+    net->layers = calloc(size, sizeof(Layer));
+    net->input = malloc((net->batch*net->width*net->height*net->channel)*sizeof(float));
+    net->labels = calloc(net->batch, sizeof(Label));
     fprintf(stderr, "index  type   filters   ksize        input                  output\n");
     return net;
 }

@@ -12,6 +12,9 @@ typedef enum {
     TENSOR, VECTOR, ARRAY, IMAGE
 } TensorType;
 
+struct tensor;
+typedef struct tensor tensor;
+
 /* 行优先存储 */
 typedef struct tensor{
     int       dim;
@@ -90,11 +93,11 @@ typedef struct layer{
     int output_w;
     int output_c;
     size_t workspace_size;
-    Tensor **input;
-    Tensor **output;
-    Tensor **delta;
+    float *input;
+    float *output;
+    float *delta;
 
-    Tensor *gradient_l;
+    // Tensor *gradient_l;
 
     int filters;
     int ksize;
@@ -109,8 +112,8 @@ typedef struct layer{
     float theta;
     float gamma;
 
-    Tensor *kernel_weights;
-    Tensor *bias_weights;
+    float *kernel_weights;
+    float *bias_weights;
 
     Forward forward;
     Backward backward;
@@ -142,9 +145,9 @@ typedef struct network{
     float learning_rate;
     size_t workspace_size;
     float *workspace;
-    Tensor **input;
-    Tensor **output;
-    Tensor **delta;
+    float *input;
+    float *output;
+    float *delta;
     Layer *layers;
 
     int kinds;

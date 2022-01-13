@@ -42,14 +42,12 @@ Layer make_pooling_layer(LayerParams *p, int batch, int h, int w, int c)
 
     l.workspace_size = l.output_h*l.output_w*l.ksize*l.ksize*l.output_c;
 
-    int size_o[] = {l.output_w, l.output_h, l.output_c};
-    int size_d[] = {l.input_w, l.input_h, l.input_c};
-    l.output = malloc(batch*sizeof(Tensor *));
-    l.delta = malloc(batch*sizeof(Tensor *));
+    int size_o = l.output_w * l.output_h * l.output_c;
+    int size_d = l.input_w * l.input_h * l.input_c;
+    l.output = calloc(batch*size_o, sizeof(float));
+    l.delta = calloc(batch*size_d, sizeof(float));
     if (l.pool == MAX) l.index = malloc(batch*sizeof(int *));
     for (int i = 0; i < batch; ++i){
-        l.output[i] = tensor_x(3, size_o, 0);
-        l.delta[i] = tensor_x(3, size_d, 0);
         if (l.pool == MAX) l.index[i] = calloc(l.output_h*l.output_w*l.output_c, sizeof(int));
     }
 
