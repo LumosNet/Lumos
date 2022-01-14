@@ -2,18 +2,20 @@
 
 void forward_connect_layer(Layer l, Network net)
 {
-    printf("connect\n");
+    printf("---------------------------\n");
+    printf("%d %d\n", l.output_h, l.input_h);
+    printf("%d %d\n", l.input_h, l.input_w);
+    printf("---------------------------\n");
     for (int i = 0; i < net.batch; ++i){
-        int offset_i = i*l.input_h*l.input_h*l.input_c;
-        int offset_o = i*l.output_w*l.output_h*l.output_c;
-        gemm(0, 0, l.input_h, l.output_h, l.input_h, l.input_w, 
+        int offset_i = i*l.input_h*l.input_w*l.input_c;
+        int offset_o = i*l.output_h*l.output_w*l.output_c;
+        gemm(0, 0, l.output_h, l.input_h, l.input_h, l.input_w, 
             1, l.kernel_weights, l.input+offset_i, l.output+offset_o);
         if (l.bias){
             add_bias(l.output+offset_o, l.bias_weights, l.ksize, 1);
         }
         activate_list(l.output+offset_o, l.output_w*l.output_h*l.output_c, l.active);
     }
-    printf("connect\n");
 }
 
 void backward_connect_layer(Layer l, Network net)
@@ -23,6 +25,16 @@ void backward_connect_layer(Layer l, Network net)
         int offset_d = i*l.input_h*l.input_w*l.input_c;
         gradient_list(l.output+offset_o, l.output_h*l.output_w*l.output_c, l.gradient);
         multiply(net.delta+offset_o, l.output+offset_o, l.output_h*l.output_w*l.output_c, net.delta+offset_o);
+        float *delta = net.delta+offset_o;
+        for (int k = 0; k < l.input_c; ++k){
+            for (int i = 0; i < l.input_h; ++i){
+                for (int j = 0; j < l.input_w; ++j){
+                    printf("%f ", delta[k*l.input_h*l.input_w+i*l.input_w+j]);
+                }
+                printf("\n");
+            }
+            printf("\n\n");
+        }
         gemm(1, 0, l.input_h, l.output_h, l.output_h, l.output_w, 1, 
             l.kernel_weights, net.delta+offset_o, l.delta+offset_d);
     }
@@ -37,6 +49,7 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
     l.input_w = w;
     l.input_c = c;
     l.bias = 1;
+    l.filters = 1;
     Node *n = p->head;
     while (n){
         Params *param = n->val;
@@ -57,6 +70,8 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
 
     l.forward = forward_connect_layer;
     l.backward = backward_connect_layer;
+    l.lweights = load_connect_weights;
+    l.sweights = save_connect_weights;
     l.update = update_connect_layer;
 
     l.workspace_size = l.input_c*l.input_h*l.input_w*l.output_c*l.output_h*l.output_w;
@@ -105,10 +120,10 @@ void load_connect_weights(Layer l, FILE *file)
         fread(l.bias_weights, sizeof(float), l.output_h, file);
     } else{
         for (int i = 0; i < l.output_h*l.input_h; ++i){
-            l.kernel_weights[i] = rand()*0.001;
+            l.kernel_weights[i] = rand()/(RAND_MAX+1.0);
         }
         for (int i = 0; i < l.output_h; ++i){
-            l.bias_weights[i] = rand()*0.001;
+            l.bias_weights[i] = rand()/(RAND_MAX+1.0);
         }
     }
 }

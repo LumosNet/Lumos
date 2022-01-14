@@ -39,7 +39,7 @@ Network *create_network(LayerParams *p, int size)
         } else if (0 == strcmp(pa->key, "height")){
             net->height = atoi(pa->val);
         } else if (0 == strcmp(pa->key, "channel")){
-            net->channel = atoi(pa->key);
+            net->channel = atoi(pa->val);
         } else if (0 == strcmp(pa->key, "learning_rate")){
             net->learning_rate = atof(pa->val);
         }
@@ -67,6 +67,8 @@ Layer create_layer(Network *net, LayerParams *p, int h, int w, int c)
         layer = make_connect_layer(p, net->batch, h, w, c);
     } else if (0 == strcmp(p->type, "activation")){
         layer = make_activation_layer(p, net->batch, h, w, c);
+    } else if (0 == strcmp(p->type, "im2col")){
+        layer = make_im2col_layer(p, net->batch, h, w, c);
     }
     if (layer.workspace_size > net->workspace_size) net->workspace_size = layer.workspace_size;
     return layer;
@@ -79,11 +81,11 @@ void train(Network *net)
     while (1){
         load_train_data(net, offset);
         forward_network(net[0]);
-        printf("ok\n");
         backward_network(net[0]);
         offset += net->batch;
         if (offset >= net->num) offset -= net->num;
         n += 1;
+        if (n == 2) break;
     }
 }
 
@@ -112,20 +114,20 @@ void init_network(Network *net, char *data_file, char *weight_file)
 void forward_network(Network net)
 {
     for (int i = 0; i < net.n; ++i){
-        Layer l = net.layers[i];
-        l.input = net.output;
-        printf("gan\n");
-        if (l.type == CONVOLUTIONAL) printf("con\n");
-        l.forward(l, net);
-        net.output = l.output;
+        Layer *l = &net.layers[i];
+        if (l->type == IM2COL) continue;
+        l->input = net.output;
+        l->forward(l[0], net);
+        net.output = l->output;
     }
 }
 
 void backward_network(Network net)
 {
     for (int i = net.n-1; i >= 0; --i){
-        Layer l = net.layers[i];
-        l.backward(l, net);
-        net.delta = l.delta;
+        Layer *l = &net.layers[i];
+        if (l->type == IM2COL) continue;
+        l->backward(l[0], net);
+        net.delta = l->delta;
     }
 }

@@ -2,7 +2,6 @@
 
 void forward_convolutional_layer(Layer l, Network net)
 {
-    printf("convolutional\n");
     for (int i = 0; i < net.batch; ++i){
         int offset_i = i*l.input_h*l.input_w*l.input_c;
         int offset_o = i*l.output_h*l.output_w*l.output_c;
@@ -18,7 +17,6 @@ void forward_convolutional_layer(Layer l, Network net)
 
 void backward_convolutional_layer(Layer l, Network net)
 {
-    printf("batc\n");
     for (int i = 0; i < net.batch; ++i){
         int offset_o = i*l.output_h*l.output_w*l.output_c;
         int offset_d = i*l.input_h*l.input_w*l.input_c;
@@ -67,6 +65,8 @@ Layer make_convolutional_layer(LayerParams *p, int batch, int h, int w, int c)
 
     l.forward = forward_convolutional_layer;
     l.backward = backward_convolutional_layer;
+    l.lweights = load_convolutional_weights;
+    l.sweights = save_convolutional_weights;
     l.update = update_convolutional_layer;
 
     l.workspace_size = l.ksize*l.ksize*l.input_c*l.output_h*l.output_w;
@@ -117,6 +117,7 @@ void save_convolutional_weights(Layer l, FILE *file)
 void load_convolutional_weights(Layer l, FILE *file)
 {
     if (file){
+        printf("ye\n");
         float *weights = malloc(l.ksize*l.ksize*l.filters*sizeof(float));
         fread(weights, sizeof(float), l.ksize*l.ksize*l.filters, file);
         for (int i = 0; i < l.filters; ++i){
@@ -131,7 +132,7 @@ void load_convolutional_weights(Layer l, FILE *file)
     } else{
         float *weights = malloc(l.ksize*l.ksize*l.filters*sizeof(float));
         for (int i = 0; i < l.ksize*l.ksize*l.filters; ++i){
-            weights[i] = rand()*0.01;
+            weights[i] = rand()/(RAND_MAX+1.0);
         }
         for (int i = 0; i < l.filters; ++i){
             for (int j = 0; j < l.input_c; ++j){
@@ -141,7 +142,7 @@ void load_convolutional_weights(Layer l, FILE *file)
             }
         }
         for (int i = 0; i < l.filters; ++i){
-            l.bias_weights[i] = rand()*0.01;
+            l.bias_weights[i] = rand()/(RAND_MAX+1.0);
         }
     }
 }

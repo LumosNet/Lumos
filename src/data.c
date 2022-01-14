@@ -41,7 +41,6 @@ void load_train_data(Network *net, int offset)
         net->labels[i] = head[0];
     }
     net->output = net->input;
-    printf("train data ready\n");
 }
 
 void load_train_path(Network *net, char *data_path, char *label_path)

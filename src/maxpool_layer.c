@@ -2,7 +2,6 @@
 
 void forward_maxpool_layer(Layer l, Network net)
 {
-    printf("pooling\n");
     for (int i = 0; i < net.batch; ++i){
         int offset_i = i*l.input_h*l.input_w*l.input_c;
         int offset_o = i*l.output_h*l.output_w*l.output_c;
@@ -24,7 +23,6 @@ void forward_maxpool_layer(Layer l, Network net)
             }
         }
     }
-    printf("pooling\n");
 }
 
 void backward_maxpool_layer(Layer l, Network net)

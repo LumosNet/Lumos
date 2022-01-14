@@ -114,15 +114,18 @@ void forward_quantile_loss(Layer l, Network net)
 
 void forward_cross_entropy_loss(Layer l, Network net)
 {
-    printf("loss loss loss \n");
     for (int i = 0; i < net.batch; ++i){
         int offset_i = i*l.input_h*l.input_w*l.input_c;
         int offset_o = i*l.output_h*l.output_w*l.output_c;
         float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
         float *loss = l.output+offset_o;
         loss[0] = cross_entropy(yi, l.input+offset_i, net.kinds);
+        // printf("%f\n", loss[0]);
+        // for (int j = 0; j < l.input_w*l.input_h*l.input_c; ++j){
+        //     printf("%f %f\n", yi[j], l.input[j]);
+        // }
+        // printf("\n");
     }
-    printf("loss loss loss \n");
 }
 
 void forward_hinge_loss(Layer l, Network net)
@@ -204,7 +207,9 @@ void backward_cross_entropy_loss(Layer l, Network net)
         for (int j = 0; j < l.input_h*l.input_w*l.input_c; ++j){
             if (yi[j] == 0) delta[j] = 0;
             else delta[j] = -yi[j] / (input[j] + .00000001);
+            // printf("%f %f yes\n", yi[j], input[j]);
         }
+        // printf("\n");
     }
 }
 
@@ -225,7 +230,6 @@ void backward_hinge_loss(Layer l, Network net)
 
 LossType load_loss_type(char *loss)
 {
-    printf("--%s--\n\n\n", loss);
     if (0 == strcmp(loss, "mse"))                   return MSE;
     else if (0 == strcmp(loss, "mae"))              return MAE;
     else if (0 == strcmp(loss, "huber"))            return HUBER;

@@ -2,7 +2,6 @@
 
 void forward_softmax_layer(Layer l, Network net)
 {
-    printf("softmax\n");
     for (int i = 0; i < net.batch; ++i){
         int offset_i = i*l.input_h*l.input_w*l.input_c;
         int offset_o = i*l.output_h*l.output_w*l.output_c;
@@ -10,14 +9,15 @@ void forward_softmax_layer(Layer l, Network net)
         float *input = l.input+offset_i;
         float sum = 0;
         for (int j = 0; j < l.group; ++j){
-            net.workspace[j] += pow(M_E, input[j]);
+            net.workspace[j] = pow(M_E, input[j]);
             sum += net.workspace[j];
         }
+        printf("%f\n", sum);
         for (int j = 0; j < l.group; ++j){
             output[j] = net.workspace[j] / sum;
         }
     }
-    printf("softmax\n");
+    printf("\n");
 }
 
 void backward_softmax_layer(Layer l, Network net)
@@ -31,17 +31,21 @@ void backward_softmax_layer(Layer l, Network net)
             net.workspace[j] = pow(M_E, input[j]);
             sum += net.workspace[j];
         }
+        printf("%f\n", sum);
         for (int j = 0; j < l.group; ++j){
             for (int k = 0; k < l.group; ++k){
                 if (j == k){
-                    net.workspace[j*l.group + k] = net.workspace[j]/sum - net.workspace[j]*net.workspace[j];
+                    // printf("%f\n", sum);
+                    net.workspace[j*l.group + k] = net.workspace[j]/sum - 1./net.workspace[j];
                 } else{
                     net.workspace[j*l.group + k] = -(net.workspace[j]*net.workspace[k]);
                 }
+                // printf("%f\n", net.workspace[j*l.group + k]);
             }
         }
         gemm(0, 0, l.output_h, l.output_w, l.group, l.group, 1, net.delta+offset_o, net.workspace, l.delta+offset_i);
     }
+    printf("\n");
 }
 
 Layer make_softmax_layer(LayerParams *p, int batch, int h, int w, int c)

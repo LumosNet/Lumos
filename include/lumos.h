@@ -48,7 +48,7 @@ typedef enum {
 } Activation;
 
 typedef enum {
-    CONVOLUTIONAL, POOLING, ACTIVATION, CONNECT, SOFTMAX
+    CONVOLUTIONAL, POOLING, ACTIVATION, CONNECT, SOFTMAX, IM2COL
 } LayerType;
 
 typedef enum {
