@@ -13,6 +13,8 @@ int main(int argc, char **argv)
     init_network(net, "./mnist/mnist.data", NULL);
     load_train_data(net, 0);
 
+    // train(net);
+
     // for (int bt = 0; bt < net->batch; ++bt){
     //     for (int k = 0; k < net->channel; ++k){
     //         for (int i = 0; i < net->height; ++i){
@@ -80,6 +82,34 @@ int main(int argc, char **argv)
     l = &net->layers[8];
     l->backward(l[0], net[0]);
     net->delta = l->delta;
+
+    l = &net->layers[7];
+    l->backward(l[0], net[0]);
+    net->delta = l->delta;
+
+    l = &net->layers[6];
+    l->backward(l[0], net[0]);
+    net->delta = l->delta;
+
+    l = &net->layers[4];
+    l->backward(l[0], net[0]);
+    net->delta = l->delta;
+
+    // l = &net->layers[3];
+    // l->backward(l[0], net[0]);
+    // net->delta = l->delta;
+
+    // l = &net->layers[2];
+    // l->backward(l[0], net[0]);
+    // net->delta = l->delta;
+
+    // l = &net->layers[1];
+    // l->backward(l[0], net[0]);
+    // net->delta = l->delta;
+
+    // l = &net->layers[0];
+    // l->backward(l[0], net[0]);
+    // net->delta = l->delta;
 
     // for (int b = 0; b < net->batch; ++b){
     //     for (int k = 0; k < l->input_c; ++k){

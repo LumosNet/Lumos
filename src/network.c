@@ -85,7 +85,7 @@ void train(Network *net)
         offset += net->batch;
         if (offset >= net->num) offset -= net->num;
         n += 1;
-        if (n == 2) break;
+        if (n == 1) break;
     }
 }
 

@@ -2,10 +2,6 @@
 
 void forward_connect_layer(Layer l, Network net)
 {
-    printf("---------------------------\n");
-    printf("%d %d\n", l.output_h, l.input_h);
-    printf("%d %d\n", l.input_h, l.input_w);
-    printf("---------------------------\n");
     for (int i = 0; i < net.batch; ++i){
         int offset_i = i*l.input_h*l.input_w*l.input_c;
         int offset_o = i*l.output_h*l.output_w*l.output_c;
@@ -25,17 +21,7 @@ void backward_connect_layer(Layer l, Network net)
         int offset_d = i*l.input_h*l.input_w*l.input_c;
         gradient_list(l.output+offset_o, l.output_h*l.output_w*l.output_c, l.gradient);
         multiply(net.delta+offset_o, l.output+offset_o, l.output_h*l.output_w*l.output_c, net.delta+offset_o);
-        float *delta = net.delta+offset_o;
-        for (int k = 0; k < l.input_c; ++k){
-            for (int i = 0; i < l.input_h; ++i){
-                for (int j = 0; j < l.input_w; ++j){
-                    printf("%f ", delta[k*l.input_h*l.input_w+i*l.input_w+j]);
-                }
-                printf("\n");
-            }
-            printf("\n\n");
-        }
-        gemm(1, 0, l.input_h, l.output_h, l.output_h, l.output_w, 1, 
+        gemm(1, 0, l.output_h, l.input_h, l.output_h, l.output_w, 1, 
             l.kernel_weights, net.delta+offset_o, l.delta+offset_d);
     }
     l.update(l, net);
@@ -76,7 +62,7 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
 
     l.workspace_size = l.input_c*l.input_h*l.input_w*l.output_c*l.output_h*l.output_w;
 
-    int size_k = l.output_h * l.input_h;
+    int size_k = l.input_h * l.output_h;
     int size_b = l.output_h;
     l.kernel_weights = calloc(size_k, sizeof(float));
     l.bias_weights = calloc(size_b, sizeof(float));
@@ -87,7 +73,7 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
     l.delta = calloc(batch*size_d, sizeof(float));
 
     fprintf(stderr, "  connect             %2d      %4d x%4d         ->  %4d x%4d\n", \
-            l.ksize, 1, h*w*c, l.output_h, l.output_w);
+            l.ksize, 1, h*w*c, l.output_w, l.output_h);
     return l;
 }
 

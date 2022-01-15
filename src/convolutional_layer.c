@@ -117,7 +117,6 @@ void save_convolutional_weights(Layer l, FILE *file)
 void load_convolutional_weights(Layer l, FILE *file)
 {
     if (file){
-        printf("ye\n");
         float *weights = malloc(l.ksize*l.ksize*l.filters*sizeof(float));
         fread(weights, sizeof(float), l.ksize*l.ksize*l.filters, file);
         for (int i = 0; i < l.filters; ++i){
