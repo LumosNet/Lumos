@@ -7,7 +7,7 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
       	-gencode arch=compute_52,code=[sm_52,compute_52] \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
 
-VPATH=./src/:./test
+VPATH=./src/:./test/:./scripts
 EXEC=main.exe
 OBJDIR=./obj/
 
@@ -18,7 +18,7 @@ CPP=g++
 NVCC=nvcc
 
 LDFLAGS= -lm -pthread
-COMMON= -Iinclude/ -Isrc -std=c99 -fopenmp
+COMMON= -Iinclude/ -Isrc -Iscripts -std=c99 -fopenmp
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 
 ifeq ($(GPU), 1)
@@ -30,7 +30,7 @@ endif
 OBJ=activation_layer.o active.o array.o avgpool_layer.o bias.o cluster.o connect_layer.o \
 	convolutional_layer.o data.o gemm.o gray_process.o im2col.o image.o list.o loss.o maxpool_layer.o \
 	network.o parser.o pooling_layer.o softmax_layer.o tensor.o umath.o utils.o vector.o \
-	weights.o im2col_layer.o
+	weights.o im2col_layer.o debug.o
 EXECOBJA=main.o
 
 ifeq ($(GPU), 1)
