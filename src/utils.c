@@ -141,11 +141,23 @@ char **split(char *line, char c, int *num)
 
 char *int2str(int x)
 {
-    while ()
+    int a = x;
+    int b;
+    int n = 0;
+    while (1)
     {
-        /* code */
+        if (a != 0) n += 1;
+        else break;
+        a = a / 10;
     }
-    
+    char *res = malloc(n*sizeof(char));
+    a = x;
+    for (int i = 0; i < n; ++i){
+        b = a % 10;
+        a = a / 10;
+        res[i] = inten2str(b);
+    }
+    return res;
 }
 
 char *link_str(char *a, char *b)

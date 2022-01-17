@@ -5,7 +5,3 @@
 *.exe
 main
 .vscode
-test
-data
-scripts
-mnist

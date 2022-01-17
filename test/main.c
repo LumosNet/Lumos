@@ -4,19 +4,19 @@
 #include "data.h"
 #include "utils.h"
 
-#include "debug.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 int main(int argc, char **argv)
 {
-    Network *net = load_network("./cfg/lumos.cfg");
-    init_network(net, "./mnist/mnist.data", NULL);
-    load_train_data(net, 0);
-    itoa();
+    // Network *net = load_network("./cfg/lumos.cfg");
+    // init_network(net, "./mnist/mnist.data", NULL);
+    // load_train_data(net, 0);
     // train(net);
+
+    char *res = int2str(5689);
+    printf("%s\n", res);
 
     // for (int bt = 0; bt < net->batch; ++bt){
     //     for (int k = 0; k < net->channel; ++k){
