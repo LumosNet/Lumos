@@ -1,4 +1,5 @@
 #include "convolutional_layer.h"
+#include "debug.h"
 
 void forward_convolutional_layer(Layer l, Network net)
 {
@@ -145,4 +146,5 @@ void load_convolutional_weights(Layer l, FILE *file)
             l.bias_weights[i] = rand()/(RAND_MAX+1.0);
         }
     }
+    save_data(l.kernel_weights, l.filters, l.ksize, l.ksize, 1, "./data/weights.txt");
 }

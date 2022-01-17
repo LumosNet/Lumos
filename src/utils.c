@@ -138,3 +138,38 @@ char **split(char *line, char c, int *num)
     }
     return res;
 }
+
+char *int2str(int x)
+{
+    while ()
+    {
+        /* code */
+    }
+    
+}
+
+char *link_str(char *a, char *b)
+{
+    int len_a = strlen(a);
+    int len_b = strlen(b);
+    char *res = malloc((len_a+len_b)*sizeof(char));
+    memcpy(res, a, len_a*sizeof(char));
+    memcpy(res+len_a, b, len_b*sizeof(char));
+    return res;
+}
+
+char *inten2str(int x)
+{
+    char *res = malloc(sizeof(char));
+    if (x == 0) res[0] = '0';
+    else if (x == 1) res[0] = '1';
+    else if (x == 1) res[0] = '2';
+    else if (x == 1) res[0] = '3';
+    else if (x == 1) res[0] = '4';
+    else if (x == 1) res[0] = '5';
+    else if (x == 1) res[0] = '6';
+    else if (x == 1) res[0] = '7';
+    else if (x == 1) res[0] = '8';
+    else if (x == 1) res[0] = '9';
+    return res;
+}

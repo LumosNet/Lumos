@@ -17,6 +17,7 @@ Network *load_network(char *cfg)
         h = layer.output_h;
         w = layer.output_w;
         c = layer.output_c;
+        layer.i = index;
         net->layers[index] = layer;
         index += 1;
         n = n->next;

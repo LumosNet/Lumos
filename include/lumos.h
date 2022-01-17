@@ -108,6 +108,9 @@ typedef struct layer{
     int bias;
     int batchnorm;
 
+    // 在网中的位置，0开始
+    int i;
+
     // 损失计算参数
     float theta;
     float gamma;

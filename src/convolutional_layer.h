@@ -8,6 +8,8 @@
 #include "bias.h"
 #include "gemm.h"
 
+#include "debug.h"
+
 #ifdef __cplusplus
 extern "C"{
 #endif
