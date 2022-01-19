@@ -4,19 +4,21 @@
 #include "data.h"
 #include "utils.h"
 
+#include "debug.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 int main(int argc, char **argv)
 {
-    // Network *net = load_network("./cfg/lumos.cfg");
+    Network *net = load_network("./cfg/test.cfg");
     // init_network(net, "./mnist/mnist.data", NULL);
     // load_train_data(net, 0);
     // train(net);
 
-    char *res = int2str(5689);
-    printf("%s\n", res);
+    // char *res = int2str(50);
+    // printf("%s\n", res);
 
     // for (int bt = 0; bt < net->batch; ++bt){
     //     for (int k = 0; k < net->channel; ++k){
@@ -36,67 +38,46 @@ int main(int argc, char **argv)
     // l->input = net->output;
     // l->forward(l[0], net[0]);
     // net->output = l->output;
-    // save_data(l->input, l->input_c, l->input_h, l->input_w, net->batch, "./data/input.txt");
-    // save_data(l->kernel_weights, 1, l->ksize*l->ksize*l->input_c, l->filters, 1, "./data/kernel.txt");
-    // save_data(l->bias_weights, 1, 1, l->filters, 1, "./data/bias.txt");
-    // save_data(l->output, l->output_c, l->output_h, l->output_w, net->batch, "./data/out.txt");
 
     // l = &net->layers[1];
     // l->input = net->output;
     // l->forward(l[0], net[0]);
     // net->output = l->output;
-    // save_data(l->input, l->input_c, l->input_h, l->input_w, net->batch, "./data/convoltion1.txt");
 
     // l = &net->layers[2];
     // l->input = net->output;
     // l->forward(l[0], net[0]);
     // net->output = l->output;
-    // save_data(l->input, l->input_c, l->input_h, l->input_w, net->batch, "./data/pool1.txt");
-    // save_data(l->kernel_weights, 1, l->ksize*l->ksize*l->input_c, l->filters, 1, "./data/cvkw2.txt");
-    // save_data(l->bias_weights, 1, 1, l->filters, 1, "./data/cvbw2.txt");
 
     // l = &net->layers[3];
     // l->input = net->output;
     // l->forward(l[0], net[0]);
     // net->output = l->output;
-    // save_data(l->input, l->input_c, l->input_h, l->input_w, net->batch, "./data/convolution2.txt");
 
     // l = &net->layers[4];
     // l->input = net->output;
     // l->forward(l[0], net[0]);
     // net->output = l->output;
-    // save_data(l->input, l->input_c, l->input_h, l->input_w, net->batch, "./data/pool2.txt");
-    // save_data(l->kernel_weights, 1, l->ksize*l->ksize*l->input_c, l->filters, 1, "./data/cvkw3.txt");
-    // save_data(l->bias_weights, 1, 1, l->filters, 1, "./data/cvbw3.txt");
 
     // l = &net->layers[6];
     // l->input = net->output;
     // l->forward(l[0], net[0]);
     // net->output = l->output;
-    // save_data(l->input, l->input_c, l->input_h, l->input_w, net->batch, "./data/convolution3.txt");
-    // save_data(l->kernel_weights, 1, l->output_h, l->input_h, 1, "./data/cnkw1.txt");
-    // save_data(l->bias_weights, 1, 1, l->output_h, 1, "./data/cnbw1.txt");
 
     // l = &net->layers[7];
     // l->input = net->output;
     // l->forward(l[0], net[0]);
     // net->output = l->output;
-    // save_data(l->input, l->input_c, l->input_h, l->input_w, net->batch, "./data/connect1.txt");
-    // save_data(l->kernel_weights, 1, l->output_h, l->input_h, 1, "./data/cnkw2.txt");
-    // save_data(l->bias_weights, 1, 1, l->output_h, 1, "./data/cnbw2.txt");
 
     // l = &net->layers[8];
     // l->input = net->output;
     // l->forward(l[0], net[0]);
     // net->output = l->output;
-    // save_data(l->input, l->input_c, l->input_h, l->input_w, net->batch, "./data/connect2.txt");
 
     // l = &net->layers[9];
     // l->input = net->output;
     // l->forward(l[0], net[0]);
     // net->output = l->output;
-    // save_data(l->input, l->input_c, l->input_h, l->input_w, net->batch, "./data/softmax.txt");
-    // // save_data(l->output, l->output_c, l->output_h, l->output_w, net->batch, "/data/loss.txt");
 
     // l = &net->layers[9];
     // l->backward(l[0], net[0]);

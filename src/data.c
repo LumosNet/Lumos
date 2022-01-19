@@ -9,6 +9,7 @@ void load_train_data(Network *net, int offset)
         int *h = malloc(sizeof(int));
         int *c = malloc(sizeof(int));
         float *im = load_image_data(net->data[index], w, h, c);
+        printf("load data\n");
         if (w[0] != net->width || h[0] != net->height){
             float *new = calloc(net->height*net->width*c[0], sizeof(float));
             resize_im(im, h[0], w[0], c[0], net->height, net->width, new);
@@ -22,6 +23,7 @@ void load_train_data(Network *net, int offset)
         char **lines = read_lines(net->label[index], num);
         Label *head = NULL;
         Label *tail = NULL;
+        printf("load label\n");
         for (int j = 0; j < num[0]; ++j){
             Label *A = malloc(sizeof(Label *));
             if (tail) tail->next = A;

@@ -3,13 +3,14 @@
 
 void forward_avgpool_layer(Layer l, Network net)
 {
+    char ip[] = "./data/input";
+    char op[] = "./data/output";
+    char *inp = link_str(ip, int2str(l.i));
+    char *oup = link_str(op, int2str(l.i));
+    save_data(l.input, l.input_c, l.input_h, l.input_w, net.batch, inp);
     for (int i = 0; i < net.batch; ++i){
         int offset_i = i*l.input_h*l.input_w*l.input_c;
         int offset_o = i*l.output_h*l.output_w*l.output_c;
-
-        // char *layer_i = "./data/layer"
-        // save_data(l.input+offset_i, l.input_c, l.input_h, l.input_w, 1, );
-
         im2col(l.input+offset_i, l.input_h, l.input_w, l.input_c, 
             l.ksize, l.stride, l.pad, net.workspace);
         for (int c = 0; c < l.output_c; ++c){
@@ -23,6 +24,7 @@ void forward_avgpool_layer(Layer l, Network net)
             }
         }
     }
+    save_data(l.output, l.output_c, l.output_h, l.output_w, net.batch, oup);
 }
 
 void backward_avgpool_layer(Layer l, Network net)
