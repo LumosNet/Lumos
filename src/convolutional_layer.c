@@ -3,11 +3,6 @@
 
 void forward_convolutional_layer(Layer l, Network net)
 {
-    char ip[] = "./data/input";
-    char op[] = "./data/output";
-    char *inp = link_str(ip, int2str(l.i));
-    char *oup = link_str(op, int2str(l.i));
-    save_data(l.input, l.input_c, l.input_h, l.input_w, net.batch, inp);
     for (int i = 0; i < net.batch; ++i){
         int offset_i = i*l.input_h*l.input_w*l.input_c;
         int offset_o = i*l.output_h*l.output_w*l.output_c;
@@ -19,7 +14,6 @@ void forward_convolutional_layer(Layer l, Network net)
         }
         activate_list(l.output+offset_o, l.output_h*l.output_w*l.output_c, l.active);
     }
-    save_data(l.output, l.output_c, l.output_h, l.output_w, net.batch, oup);
 }
 
 void backward_convolutional_layer(Layer l, Network net)
@@ -96,7 +90,7 @@ Layer make_convolutional_layer(LayerParams *p, int batch, int h, int w, int c)
 
 void update_convolutional_layer(Layer l, Network net)
 {
-    float rate = net.learning_rate / (float)net.batch;
+    float rate = -net.learning_rate / (float)net.batch;
     for (int i = 0; i < net.batch; ++i){
         int offset_o = i*l.output_h*l.output_w*l.output_c;
         int offset_i = i*l.input_h*l.input_w*l.input_c;
@@ -139,17 +133,8 @@ void load_convolutional_weights(Layer l, FILE *file)
     } else{
         float *weights = malloc(l.ksize*l.ksize*l.filters*sizeof(float));
         for (int i = 0; i < l.ksize*l.ksize*l.filters; ++i){
-            weights[i] = rand()/(RAND_MAX+1.0);
+            weights[i] = 2.0*rand()/RAND_MAX-1;
         }
-        char w_path[] = "./data/con_weights";
-        char k_path[] = "./data/con_kernels";
-        char b_path[] = "./data/con_bias";
-        char *wp = link_str(w_path, int2str(l.i));
-        char *kp = link_str(k_path, int2str(l.i));
-        char *bp = link_str(b_path, int2str(l.i));
-
-        save_data(weights, l.filters, l.ksize, l.ksize, 1, wp);
-        
         for (int i = 0; i < l.filters; ++i){
             for (int j = 0; j < l.input_c; ++j){
                 for (int k = 0; k < l.ksize*l.ksize; ++k){
@@ -157,11 +142,8 @@ void load_convolutional_weights(Layer l, FILE *file)
                 }
             }
         }
-
-        save_data(l.kernel_weights, 1, l.filters, l.input_c*l.ksize*l.ksize, 1, kp);
         for (int i = 0; i < l.filters; ++i){
-            l.bias_weights[i] = rand()/(RAND_MAX+1.0);
+            l.bias_weights[i] = 2.0*rand()/RAND_MAX-1;
         }
-        save_data(l.bias_weights, 1, l.filters, 1, 1, bp);
     }
 }

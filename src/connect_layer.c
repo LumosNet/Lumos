@@ -79,7 +79,7 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
 
 void update_connect_layer(Layer l, Network net)
 {
-    float rate = net.learning_rate / (float)net.batch;
+    float rate = -net.learning_rate / (float)net.batch;
     for (int i = 0; i < net.batch; ++i){
         int offset_d = i*l.output_h*l.output_w*l.output_c;
         int offset_i = i*l.input_h*l.input_w*l.input_c;
@@ -106,10 +106,10 @@ void load_connect_weights(Layer l, FILE *file)
         fread(l.bias_weights, sizeof(float), l.output_h, file);
     } else{
         for (int i = 0; i < l.output_h*l.input_h; ++i){
-            l.kernel_weights[i] = rand()/(RAND_MAX+1.0);
+            l.kernel_weights[i] = 2.0*rand()/RAND_MAX-1;
         }
         for (int i = 0; i < l.output_h; ++i){
-            l.bias_weights[i] = rand()/(RAND_MAX+1.0);
+            l.bias_weights[i] = 2.0*rand()/RAND_MAX-1;
         }
     }
 }

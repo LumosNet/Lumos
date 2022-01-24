@@ -1,2 +1,0 @@
-/home/btboay/lumos-matrix/data/1.txt
-/home/btboay/lumos-matrix/data/2.txt

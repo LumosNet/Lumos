@@ -2,12 +2,12 @@
 
 void load_train_data(Network *net, int offset)
 {
+    int *w = malloc(sizeof(int));
+    int *h = malloc(sizeof(int));
+    int *c = malloc(sizeof(int));
     for (int i = 0; i < net->batch; ++i){
         int index = offset + i;
         if (index >= net->num) index -= net->num;
-        int *w = malloc(sizeof(int));
-        int *h = malloc(sizeof(int));
-        int *c = malloc(sizeof(int));
         float *im = load_image_data(net->data[index], w, h, c);
         if (w[0] != net->width || h[0] != net->height){
             float *new = calloc(net->height*net->width*c[0], sizeof(float));
@@ -17,6 +17,7 @@ void load_train_data(Network *net, int offset)
         }
         int offset_i = i*net->height*net->width*c[0];
         memcpy_float_list(net->input, im, offset_i, 0, net->height*net->width*net->channel);
+        free(im);
         int *num = malloc(sizeof(int));
         int *n = malloc(sizeof(int));
         char **lines = read_lines(net->label[index], num);
@@ -41,6 +42,9 @@ void load_train_data(Network *net, int offset)
         net->labels[i] = head[0];
     }
     net->output = net->input;
+    free(w);
+    free(h);
+    free(c);
 }
 
 void load_train_path(Network *net, char *data_path, char *label_path)

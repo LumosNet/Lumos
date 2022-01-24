@@ -28,10 +28,9 @@ float *load_image_data(char *img_path, int *w, int *h, int *c)
 {
     unsigned char *data = stbi_load(img_path, w, h, c, 0);
     float *im_new = malloc((w[0]*h[0]*c[0])*sizeof(float));
-    int i, j, k;
-    for(k = 0; k < c[0]; ++k){
-        for(j = 0; j < h[0]; ++j){
-            for(i = 0; i < w[0]; ++i){
+    for(int k = 0; k < c[0]; ++k){
+        for(int j = 0; j < h[0]; ++j){
+            for(int i = 0; i < w[0]; ++i){
                 int dst_index = i + w[0]*j + w[0]*h[0]*k;
                 int src_index = k + c[0]*i + c[0]*w[0]*j;
                 im_new[dst_index] = (float)data[src_index]/255.;

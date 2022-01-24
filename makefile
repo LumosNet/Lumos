@@ -1,6 +1,6 @@
 LINUX=1
 GPU=0
-DEBUG=0
+DEBUG=1
 
 ARCH= 	-gencode arch=compute_35,code=sm_35 \
       	-gencode arch=compute_50,code=[sm_50,compute_50] \
@@ -10,8 +10,6 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
 VPATH=./src/:./test/:./scripts
 EXEC=main.exe
 OBJDIR=./obj/
-
-DEBUG = 0
 
 CC=gcc
 CPP=g++
@@ -27,6 +25,10 @@ CFLAGS+= -DGPU
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 endif
 
+ifeq ($(DEBUG), 1)
+COMMON+= -g
+endif
+
 OBJ=activation_layer.o active.o array.o avgpool_layer.o bias.o cluster.o connect_layer.o \
 	convolutional_layer.o data.o gemm.o gray_process.o im2col.o image.o list.o loss.o maxpool_layer.o \
 	network.o parser.o pooling_layer.o softmax_layer.o tensor.o umath.o utils.o vector.o \
@@ -39,10 +41,6 @@ endif
 
 ifeq ($(LINUX),1)
 CFLAGS += -fPIC
-endif
-
-ifeq ($(DEBUG),1)
-COMMON += -DDEBUG
 endif
 
 EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))

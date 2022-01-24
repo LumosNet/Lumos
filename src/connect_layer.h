@@ -1,6 +1,8 @@
 #ifndef CONNECT_LAYER_H
 #define CONNECT_LAYER_H
 
+#include <time.h>
+
 #include "lumos.h"
 #include "parser.h"
 #include "array.h"

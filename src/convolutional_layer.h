@@ -1,6 +1,8 @@
 #ifndef CONVOLUTIONAL_LAYER_H
 #define CONVOLUTIONAL_LAYER_H
 
+#include <time.h>
+
 #include "lumos.h"
 #include "parser.h"
 #include "image.h"
