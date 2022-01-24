@@ -70,7 +70,6 @@ float *flid_float_cpu(float *data, int h, int w, int c)
                 }
                 int index = (i*h + j)*w + k;
                 int new_index = (i*h + rel_h)*w + rel_l;
-                //printf("%d %d\n", rel_h, rel_l);
                 output[new_index] = data[index];
             }
         }

@@ -120,7 +120,10 @@ void forward_cross_entropy_loss(Layer l, Network net)
         float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
         float *loss = l.output+offset_o;
         loss[0] = cross_entropy(yi, l.input+offset_i, net.kinds);
+        float *input = l.input+offset_i;
+        printf("%f %f\n", yi[i], input[i]);
     }
+    printf("\n");
 }
 
 void forward_hinge_loss(Layer l, Network net)

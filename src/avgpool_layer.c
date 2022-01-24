@@ -6,10 +6,6 @@ void forward_avgpool_layer(Layer l, Network net)
     for (int i = 0; i < net.batch; ++i){
         int offset_i = i*l.input_h*l.input_w*l.input_c;
         int offset_o = i*l.output_h*l.output_w*l.output_c;
-
-        // char *layer_i = "./data/layer"
-        // save_data(l.input+offset_i, l.input_c, l.input_h, l.input_w, 1, );
-
         im2col(l.input+offset_i, l.input_h, l.input_w, l.input_c, 
             l.ksize, l.stride, l.pad, net.workspace);
         for (int c = 0; c < l.output_c; ++c){
