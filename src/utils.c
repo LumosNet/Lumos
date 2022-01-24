@@ -140,24 +140,43 @@ char **split(char *line, char c, int *num)
 
 char *int2str(int x)
 {
+    char *res;
+    if (x < 0 && x > -10){
+        res = malloc(2*sizeof(char));
+        res[1] = inten2str(-x)[0];
+        res[0] = '-';
+        return res;
+    }
+    if (x >= 0 && x < 10){
+        return inten2str(x);
+    }
     int a = x;
     int b;
-    int n = 0;
+    int n = 1;
     while (1)
     {
         if (a != 0) n += 1;
         else break;
         a = a / 10;
     }
-    char *res = malloc(n*sizeof(char));
     a = x;
+    if (x < 0){
+        a = -x;
+        n += 1;
+    }
+    res = malloc(n*sizeof(char));
+    printf("%d\n", n);
     for (int i = 0; i < n; ++i){
         b = a % 10;
         a = a / 10;
-        res[i] = inten2str(b);
+        res[n-i-2] = inten2str(b)[0];
     }
+    if (x < 0) res[0] = '-';
+    res[n-1] = '\0';
     return res;
 }
+
+char *float2str(float x);
 
 char *link_str(char *a, char *b)
 {
@@ -171,16 +190,17 @@ char *link_str(char *a, char *b)
 
 char *inten2str(int x)
 {
-    char *res = malloc(sizeof(char));
+    char *res = malloc(2*sizeof(char));
     if (x == 0) res[0] = '0';
     else if (x == 1) res[0] = '1';
-    else if (x == 1) res[0] = '2';
-    else if (x == 1) res[0] = '3';
-    else if (x == 1) res[0] = '4';
-    else if (x == 1) res[0] = '5';
-    else if (x == 1) res[0] = '6';
-    else if (x == 1) res[0] = '7';
-    else if (x == 1) res[0] = '8';
-    else if (x == 1) res[0] = '9';
+    else if (x == 2) res[0] = '2';
+    else if (x == 3) res[0] = '3';
+    else if (x == 4) res[0] = '4';
+    else if (x == 5) res[0] = '5';
+    else if (x == 6) res[0] = '6';
+    else if (x == 7) res[0] = '7';
+    else if (x == 8) res[0] = '8';
+    else if (x == 9) res[0] = '9';
+    res[1] = '\0';
     return res;
 }

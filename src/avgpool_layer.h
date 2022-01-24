@@ -6,6 +6,7 @@
 #include "lumos.h"
 #include "parser.h"
 #include "im2col.h"
+#include "utils.h"
 
 #ifdef __cplusplus
 extern "C" {

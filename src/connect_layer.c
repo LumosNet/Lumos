@@ -21,7 +21,7 @@ void backward_connect_layer(Layer l, Network net)
         int offset_d = i*l.input_h*l.input_w*l.input_c;
         gradient_list(l.output+offset_o, l.output_h*l.output_w*l.output_c, l.gradient);
         multiply(net.delta+offset_o, l.output+offset_o, l.output_h*l.output_w*l.output_c, net.delta+offset_o);
-        gemm(1, 0, l.output_h, l.input_h, l.output_h, l.output_w, 1, 
+        gemm(1, 0, l.output_h, l.input_h, l.output_h, l.input_w, 1, 
             l.kernel_weights, net.delta+offset_o, l.delta+offset_d);
     }
     l.update(l, net);

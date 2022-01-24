@@ -205,9 +205,9 @@ void backward_cross_entropy_loss(Layer l, Network net)
         for (int j = 0; j < l.input_h*l.input_w*l.input_c; ++j){
             if (yi[j] == 0) delta[j] = 0;
             else delta[j] = -yi[j] / (input[j] + .000001);
-            // printf("%f %f\n", yi[j], input[j]);
+            printf("%f %f\n", yi[j], input[j]);
         }
-        // printf("\n");
+        printf("\n");
     }
 }
 
