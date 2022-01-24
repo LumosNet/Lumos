@@ -16,7 +16,6 @@ int main(int argc, char **argv)
     Network *net = load_network("./cfg/lumos.cfg");
     init_network(net, "./mnist/mnist.data", NULL);
     train(net);
-    train(net);
 
     // int *h = calloc(1, sizeof(int));
     // int *w = calloc(1, sizeof(int));
