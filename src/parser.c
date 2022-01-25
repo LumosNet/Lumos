@@ -106,23 +106,55 @@ Node *make_node_param(char *line)
     return n;
 }
 
+Label *get_labels(char *path)
+{
+    FILE *fp = fopen(path, "r");
+    char *line;
+    Label *head = NULL;
+    Label *tail = NULL;
+    int *num = malloc(sizeof(int));
+    while ((line = fgetl(fp)) != 0){
+        if (line[0] == '\0') continue;
+        Label *A = malloc(sizeof(Label *));
+        if (tail) tail->next = A;
+        char **sline = split(line, ' ', num);
+        float *data = malloc(num[0]*sizeof(float));
+        for (int i = 0; i < num[0]; ++i){
+            data[i] = atof(sline[i]);
+        }
+        A->data = data;
+        A->next = NULL;
+        A->num = num[0];
+        tail = A;
+        if (head == NULL) head = A;
+    }
+    fclose(fp);
+    return head;
+}
+
 char **read_lines(char *path, int *num)
 {
     FILE *fp = fopen(path, "r");
     char *line;
-    num[0] = 0;
+    FLines *head = NULL;
+    FLines *tail = NULL;
+    int n = 0;
     while ((line = fgetl(fp)) != 0){
         if (line[0] == '\0') continue;
-        num[0] += 1;
+        FLines *L = malloc(sizeof(struct FLines *));
+        if (tail) tail->next = L;
+        L->data = line;
+        tail = L;
+        if (head == NULL) head = L;
+        n += 1;
     }
-    char **res = malloc(num[0]*sizeof(char *));
-    fclose(fp);
-    num[0] = 0;
-    fp = fopen(path, "r");
-    while ((line = fgetl(fp)) != 0){
-        if (line[0] == '\0') continue;
-        res[num[0]] = line;
-        num[0] += 1;
+    num[0] = n;
+    char **lines = malloc(n*sizeof(char *));
+    n = 0;
+    while (head){
+        lines[n] = head->data;
+        head = head->next;
+        n += 1;
     }
-    return res;
+    return lines;
 }

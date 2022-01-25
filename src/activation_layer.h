@@ -3,7 +3,6 @@
 
 #include "lumos.h"
 #include "parser.h"
-#include "tensor.h"
 #include "loss.h"
 
 #ifdef __cplusplus

@@ -2,7 +2,6 @@
 
 Layer make_activation_layer(LayerParams *p, int batch, int h, int w, int c)
 {
-    printf("activate layer\n");
     Layer l = {0};
     char *loss_name = NULL;
     l.type = ACTIVATION;

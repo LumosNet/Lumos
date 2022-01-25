@@ -4,7 +4,7 @@
 float *one_hot_encoding(int n, int label)
 {
     float *code = calloc(n, sizeof(float));
-    code[label-1] = (float)1;
+    code[label] = (float)1;
     return code;
 }
 
@@ -53,7 +53,7 @@ float cross_entropy(float *yi, float *yh, int n)
 {
     float entropy = 0;
     for (int i = 0; i < n; ++i){
-        entropy += yi[i] * log(yh[i]);
+        entropy += yi[i] * log(yh[i]+0.00001);
     }
     return -entropy;
 }
@@ -114,13 +114,16 @@ void forward_quantile_loss(Layer l, Network net)
 
 void forward_cross_entropy_loss(Layer l, Network net)
 {
+    float n = 0;
     for (int i = 0; i < net.batch; ++i){
         int offset_i = i*l.input_h*l.input_w*l.input_c;
         int offset_o = i*l.output_h*l.output_w*l.output_c;
         float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
         float *loss = l.output+offset_o;
         loss[0] = cross_entropy(yi, l.input+offset_i, net.kinds);
+        n += loss[0];
     }
+    printf("%f\n", n/net.batch);
 }
 
 void forward_hinge_loss(Layer l, Network net)
@@ -201,12 +204,9 @@ void backward_cross_entropy_loss(Layer l, Network net)
         float *delta = l.delta+offset_i;
         for (int j = 0; j < l.input_h*l.input_w*l.input_c; ++j){
             if (yi[j] == 0) delta[j] = 0;
-            else delta[j] = -yi[j] / (input[j]);
-            printf("%f %f\n", yi[j], input[j]);
+            else delta[j] = -yi[j] / (input[j] + 0.00001);
         }
-        printf("\n");
     }
-    printf("\n");
 }
 
 void backward_hinge_loss(Layer l, Network net)

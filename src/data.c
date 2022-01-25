@@ -6,40 +6,14 @@ void load_train_data(Network *net, int offset)
     int *h = malloc(sizeof(int));
     int *c = malloc(sizeof(int));
     for (int i = 0; i < net->batch; ++i){
+        int offset_i = i*net->height*net->width*c[0];
         int index = offset + i;
         if (index >= net->num) index -= net->num;
         float *im = load_image_data(net->data[index], w, h, c);
         if (w[0] != net->width || h[0] != net->height){
-            float *new = calloc(net->height*net->width*c[0], sizeof(float));
-            resize_im(im, h[0], w[0], c[0], net->height, net->width, new);
-            free(im);
-            im = new;
+            resize_im(im, h[0], w[0], c[0], net->height, net->width, net->input+offset_i);
         }
-        int offset_i = i*net->height*net->width*c[0];
-        memcpy_float_list(net->input, im, offset_i, 0, net->height*net->width*net->channel);
-        free(im);
-        int *num = malloc(sizeof(int));
-        int *n = malloc(sizeof(int));
-        char **lines = read_lines(net->label[index], num);
-        Label *head = NULL;
-        Label *tail = NULL;
-        for (int j = 0; j < num[0]; ++j){
-            Label *A = malloc(sizeof(Label *));
-            if (tail) tail->next = A;
-            char **sline = split(lines[j], ' ', n);
-            float *data = malloc(n[0]*sizeof(float));
-            for (int j = 0; j < n[0]; ++j){
-                data[j] = atof(sline[j]);
-            }
-            A->data = data;
-            A->next = NULL;
-            A->num = n[0];
-            tail = A;
-            if (head == NULL) {
-                head = A;
-            }
-        }
-        net->labels[i] = head[0];
+        net->labels[i] = get_labels(net->label[index])[0];
     }
     net->output = net->input;
     free(w);

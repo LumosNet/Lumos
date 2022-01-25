@@ -2,6 +2,7 @@
 #define PARSER_H
 
 #include "utils.h"
+#include "lumos.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,12 +40,22 @@ typedef struct netparams
     struct Node *tail;
 } netparams, net_params, NetParams;
 
+struct flines;
+typedef struct flines flines;
+
+typedef struct flines
+{
+    char *data;
+    struct flines *next;
+} Flines, FLines;
+
 NetParams *load_data_cfg(char *filecfg);
 LayerParams *make_layer_params(char *line);
 NetParams *make_net_params();
 void insert_net_params(NetParams *NP, LayerParams *LP);
 void insert_layer_params(LayerParams *LP, char *line);
 Node *make_node_param(char *line);
+Label *get_labels(char *path);
 char **read_lines(char *path, int *num);
 
 #ifdef __cplusplus
