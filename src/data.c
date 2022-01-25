@@ -23,6 +23,7 @@ void load_train_data(Network *net, int offset)
 
 void load_train_path(Network *net, char *data_path, char *label_path)
 {
+    printf("%s\n%s\n", data_path, label_path);
     FILE *fp = fopen(data_path, "r");
     int i;
     int num = 0;
@@ -45,15 +46,15 @@ void load_train_path(Network *net, char *data_path, char *label_path)
         i += 1;
     }
     fclose(fp);
-    fp = fopen(label_path, "r");
+    FILE *fl = fopen(label_path, "r");
     i = 0;
-    while ((line = fgetl(fp)) != 0)
+    while ((line = fgetl(fl)) != 0)
     {
         if (line[0] == '\0') continue;
         net->label[i] = line;
         i += 1;
     }
-    fclose(fp);
+    fclose(fl);
 }
 
 void load_weights(Network *net, char *file)

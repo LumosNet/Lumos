@@ -80,12 +80,17 @@ void train(Network *net)
     int offset = 0;
     int n = 0;
     while (1){
+        printf("%d\n", n);
         load_train_data(net, offset);
         forward_network(net[0]);
         backward_network(net[0]);
         offset += net->batch;
         if (offset >= net->num) offset -= net->num;
         n += 1;
+        // if (n == 6000){
+        //     save_weights(net, "./data/t.weights");
+        //     break;
+        // }
     }
 }
 
