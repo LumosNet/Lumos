@@ -98,7 +98,10 @@ void train(Network *net)
         offset += net->batch;
         if (offset >= net->num) offset -= net->num;
         n += 1;
-        if (n == 3) break;
+        if (n == 50000){
+            save_weights(net, "./data/w.weights");
+            break;
+        }
     }
 }
 
@@ -131,15 +134,15 @@ void forward_network(Network net)
         if (l->type == IM2COL) continue;
         l->input = net.output;
         l->forward(l[0], net);
-        for (int c = 0; c < l->output_c; ++c){
-            for (int h = 0; h < l->output_h; ++h){
-                for (int w = 0; w < l->output_w; ++w){
-                    printf("%f ", l->output[c*l->output_h*l->output_w+h*l->output_w+w]);
-                }
-                printf("\n");
-            }
-            printf("\n");
-        }
+        // for (int c = 0; c < l->output_c; ++c){
+        //     for (int h = 0; h < l->output_h; ++h){
+        //         for (int w = 0; w < l->output_w; ++w){
+        //             printf("%f ", l->output[c*l->output_h*l->output_w+h*l->output_w+w]);
+        //         }
+        //         printf("\n");
+        //     }
+        //     printf("\n");
+        // }
         net.output = l->output;
     }
 }

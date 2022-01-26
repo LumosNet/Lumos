@@ -9,8 +9,12 @@ void forward_softmax_layer(Layer l, Network net)
         float *input = l.input+offset_i;
         float *delta = l.delta+offset_i;
         float sum = 0;
+        float largest = -FLT_MAX;
+        for(int j = 0; j < l.group; ++j){
+            if(input[j] > largest) largest = input[j];
+        }
         for (int j = 0; j < l.group; ++j){
-            net.workspace[j] = exp(input[j]);
+            net.workspace[j] = exp(input[j] - largest);
             sum += net.workspace[j];
         }
         for (int j = 0; j < l.group; ++j){

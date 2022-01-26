@@ -2,6 +2,7 @@
 #define SOFTMAX_LAYER_H
 
 #include <math.h>
+#include <float.h>
 
 #include "lumos.h"
 #include "parser.h"

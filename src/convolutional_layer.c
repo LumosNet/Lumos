@@ -133,7 +133,7 @@ void load_convolutional_weights(Layer l, FILE *file)
     } else{
         float *weights = malloc(l.ksize*l.ksize*l.filters*sizeof(float));
         for (int i = 0; i < l.ksize*l.ksize*l.filters; ++i){
-            weights[i] = (2.0*rand()/RAND_MAX-1)*0.1;
+            weights[i] = 2.0*rand()/RAND_MAX-1;
         }
         for (int i = 0; i < l.filters; ++i){
             for (int j = 0; j < l.input_c; ++j){
@@ -143,7 +143,7 @@ void load_convolutional_weights(Layer l, FILE *file)
             }
         }
         for (int i = 0; i < l.filters; ++i){
-            l.bias_weights[i] = (2.0*rand()/RAND_MAX-1)*0.1;
+            l.bias_weights[i] = 2.0*rand()/RAND_MAX-1;
         }
     }
 }

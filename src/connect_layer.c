@@ -106,10 +106,10 @@ void load_connect_weights(Layer l, FILE *file)
         fread(l.bias_weights, sizeof(float), l.output_h, file);
     } else{
         for (int i = 0; i < l.output_h*l.input_h; ++i){
-            l.kernel_weights[i] = (2.0*rand()/RAND_MAX-1)*0.1;
+            l.kernel_weights[i] = 2.0*rand()/RAND_MAX-1;
         }
         for (int i = 0; i < l.output_h; ++i){
-            l.bias_weights[i] = (2.0*rand()/RAND_MAX-1)*0.1;
+            l.bias_weights[i] = 2.0*rand()/RAND_MAX-1;
         }
     }
 }
