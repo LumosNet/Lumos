@@ -10,11 +10,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 
 int main(int argc, char **argv)
 {
     Network *net = load_network("./cfg/lumos.cfg");
-    init_network(net, "./mnist/mnist.data", "./data/t.weights");
+    init_network(net, "./mnist/mnist.data", NULL);
     train(net);
     return 0;
 }

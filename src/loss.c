@@ -53,7 +53,8 @@ float cross_entropy(float *yi, float *yh, int n)
 {
     float entropy = 0;
     for (int i = 0; i < n; ++i){
-        entropy += yi[i] * log(yh[i]+0.0000001);
+        if (yh[i] <= 0.000001) entropy += yi[i] * log(0.001);
+        else entropy += yi[i] * log(yh[i]);
     }
     return -entropy;
 }
@@ -122,14 +123,7 @@ void forward_cross_entropy_loss(Layer l, Network net)
         float *loss = l.output+offset_o;
         loss[0] = cross_entropy(yi, l.input+offset_i, net.kinds);
         n += loss[0];
-        float *input = l.input+offset_i;
-        printf("%f\n", net.labels[i].data[0]);
-        for (int k = 0; k < net.kinds; ++k){
-            printf("%f %f\n", yi[k], input[k]);
-        }
-        printf("\n");
     }
-    printf("%f\n", n/net.batch);
 }
 
 void forward_hinge_loss(Layer l, Network net)
@@ -210,8 +204,17 @@ void backward_cross_entropy_loss(Layer l, Network net)
         float *delta = l.delta+offset_i;
         for (int j = 0; j < l.input_h*l.input_w*l.input_c; ++j){
             if (yi[j] == 0) delta[j] = 0;
-            else delta[j] = yi[j] / (input[j] + 0.0000001);
+            else {
+                if (input[j] <= 0.000001) {
+                    delta[j] = -yi[j] / 0.000001;
+                }
+                else {
+                    delta[j] = -yi[j] / input[j];
+                }
+            }
+            // printf("0 %f %f delta_j:%f\n", yi[j], input[j], delta[j]);
         }
+        // printf("\n");
     }
 }
 

@@ -4,7 +4,7 @@ import random
 import numpy as np
 
 path1 = "/home/btboay/lumos-matrix/mnist/data.txt"
-path2 = "/home/btboay/lumos-matrix/mnist/data2.txt"
+path2 = "/home/btboay/lumos-matrix/mnist/data3.txt"
 
 new_lines = []
 

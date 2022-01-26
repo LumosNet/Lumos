@@ -7,22 +7,6 @@ void forward_softmax_layer(Layer l, Network net)
         int offset_o = i*l.output_h*l.output_w*l.output_c;
         float *output = l.output+offset_o;
         float *input = l.input+offset_i;
-        float sum = 0;
-        for (int j = 0; j < l.group; ++j){
-            net.workspace[j] = exp(input[j]);
-            sum += net.workspace[j];
-        }
-        for (int j = 0; j < l.group; ++j){
-            output[j] = net.workspace[j] / sum;
-        }
-    }
-}
-
-void backward_softmax_layer(Layer l, Network net)
-{
-    for (int i = 0; i < net.batch; ++i){
-        int offset_i = i*l.input_h*l.input_w*l.input_c;
-        float *input = l.input + offset_i;
         float *delta = l.delta+offset_i;
         float sum = 0;
         for (int j = 0; j < l.group; ++j){
@@ -30,9 +14,17 @@ void backward_softmax_layer(Layer l, Network net)
             sum += net.workspace[j];
         }
         for (int j = 0; j < l.group; ++j){
-            delta[j] = (1 + (input[j]*net.workspace[j]) / sum) / sum;
+            output[j] = net.workspace[j] / sum;
+            delta[j] = (1 - net.workspace[j])*net.workspace[j];
+            printf("%f %f %f\n", delta[j], input[j], net.workspace[j]);
         }
+        printf("\n");
     }
+}
+
+void backward_softmax_layer(Layer l, Network net)
+{
+    multiply(l.delta, net.delta, net.batch*l.input_h*l.input_w*l.input_c, l.delta);
 }
 
 Layer make_softmax_layer(LayerParams *p, int batch, int h, int w, int c)
