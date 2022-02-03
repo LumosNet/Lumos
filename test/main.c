@@ -14,8 +14,9 @@
 
 int main(int argc, char **argv)
 {
-    Network *net = load_network("./cfg/lumos.cfg");
-    init_network(net, "./mnist/mnist.data", NULL);
-    train(net);
+    Network *net = load_network("./cfg/xor.cfg");
+    init_network(net, "./XOR/xor.data", NULL);
+    printf("255\n");
+    train(net, 5000);
     return 0;
 }

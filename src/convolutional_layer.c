@@ -100,7 +100,10 @@ void update_convolutional_layer(Layer l, Network net)
             net.delta+offset_o, net.workspace, net.workspace+l.ksize*l.ksize*l.input_c*l.output_h*l.output_w);
         saxpy(l.kernel_weights, net.workspace+l.ksize*l.ksize*l.input_c*l.output_h*l.output_w, l.filters*l.ksize*l.ksize*l.input_c, rate, l.kernel_weights);
         if (l.bias){
-            saxpy(l.bias_weights, net.delta+offset_o, l.filters, rate, l.bias_weights);
+            for (int j = 0; j < l.filters; ++j){
+                float bias = sum_float_list(net.delta+offset_o+j*l.output_h*l.output_w, 0, l.output_h*l.output_w);
+                l.bias_weights[j] += bias * rate;
+            }
         }
     }
 }

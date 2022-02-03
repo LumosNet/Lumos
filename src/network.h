@@ -20,7 +20,7 @@ extern "C" {
 #endif
 
 Network *load_network(char *cfg);
-void train(Network *net);
+void train(Network *net, int x);
 void init_network(Network *net, char *data_file, char *weight_file);
 void forward_network(Network net);
 void backward_network(Network net);

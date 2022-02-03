@@ -75,14 +75,14 @@ Layer create_layer(Network *net, LayerParams *p, int h, int w, int c)
     return layer;
 }
 
-void train(Network *net)
+void train(Network *net, int x)
 {
     int offset = 0;
     int n = 0;
-    // Layer l;
+    Layer l;
     while (1){
         printf("%d\n", n);
-        // l = net->layers[6];
+        l = net->layers[2];
         // int input_s = l.input_h*l.input_w*l.input_c;
         // int output_s = l.output_h*l.output_w*l.output_c;
         // for (int i = 0; i < input_s; ++i){
@@ -92,13 +92,18 @@ void train(Network *net)
         //     printf("\n");
         // }
         // printf("\n");
+
+        // for (int i = 0; i < l.filters; ++i){
+        //     printf("%f ", l.bias_weights[i]);
+        // }
+        // printf("\n");
         load_train_data(net, offset);
         forward_network(net[0]);
         backward_network(net[0]);
         offset += net->batch;
         if (offset >= net->num) offset -= net->num;
         n += 1;
-        if (n == 50000){
+        if (n == x){
             save_weights(net, "./data/w.weights");
             break;
         }
@@ -134,15 +139,6 @@ void forward_network(Network net)
         if (l->type == IM2COL) continue;
         l->input = net.output;
         l->forward(l[0], net);
-        // for (int c = 0; c < l->output_c; ++c){
-        //     for (int h = 0; h < l->output_h; ++h){
-        //         for (int w = 0; w < l->output_w; ++w){
-        //             printf("%f ", l->output[c*l->output_h*l->output_w+h*l->output_w+w]);
-        //         }
-        //         printf("\n");
-        //     }
-        //     printf("\n");
-        // }
         net.output = l->output;
     }
 }

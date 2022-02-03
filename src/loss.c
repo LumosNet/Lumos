@@ -53,8 +53,7 @@ float cross_entropy(float *yi, float *yh, int n)
 {
     float entropy = 0;
     for (int i = 0; i < n; ++i){
-        if (yh[i] <= 0.000001) entropy += yi[i] * log(0.001);
-        else entropy += yi[i] * log(yh[i]);
+        entropy += yi[i] * log(yh[i]);
     }
     return -entropy;
 }
@@ -77,6 +76,9 @@ void forward_mse_loss(Layer l, Network net)
         float *yi = one_hot_encoding(net.kinds, net.labels[i].data[0]);
         float *loss = l.output+offset_o;
         loss[0] = mse(yi, l.input+offset_i, net.kinds, net.workspace);
+        for (int j = 0; j < l.input_c*l.input_h*l.input_w; ++j){
+            // printf("%f %f %f\n", l.input[j], yi[j])
+        }
     }
 }
 
@@ -204,15 +206,8 @@ void backward_cross_entropy_loss(Layer l, Network net)
         float *delta = l.delta+offset_i;
         for (int j = 0; j < l.input_h*l.input_w*l.input_c; ++j){
             if (yi[j] == 0) delta[j] = 0;
-            else {
-                if (input[j] <= 0.000001) {
-                    delta[j] = -yi[j] / 0.000001;
-                }
-                else {
-                    delta[j] = -yi[j] / input[j];
-                }
-            }
-            printf("0 %f %f delta_j:%f\n", yi[j], input[j], delta[j]);
+            else delta[j] = -yi[j] / (input[j]+1e-7);
+            printf("0 %f %f delta_j:%f\n", input[j], yi[j], delta[j]);
         }
         printf("\n");
     }

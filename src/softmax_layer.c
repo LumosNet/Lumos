@@ -20,9 +20,9 @@ void forward_softmax_layer(Layer l, Network net)
         for (int j = 0; j < l.group; ++j){
             output[j] = net.workspace[j] / sum;
             delta[j] = (1 - net.workspace[j])*net.workspace[j];
-            printf("%f %f %f\n", delta[j], input[j], net.workspace[j]);
+            // printf("%f %f %f\n", delta[j], input[j], net.workspace[j]);
         }
-        printf("\n");
+        // printf("\n");
     }
 }
 

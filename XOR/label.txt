@@ -1,0 +1,4 @@
+/home/btboay/lumos-matrix/XOR/data/0_1.txt
+/home/btboay/lumos-matrix/XOR/data/0_2.txt
+/home/btboay/lumos-matrix/XOR/data/1_1.txt
+/home/btboay/lumos-matrix/XOR/data/1_2.txt

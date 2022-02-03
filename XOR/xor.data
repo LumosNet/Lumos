@@ -1,0 +1,3 @@
+classes=2
+data=/home/btboay/lumos-matrix/XOR/data.txt
+label=/home/btboay/lumos-matrix/XOR/label.txt
