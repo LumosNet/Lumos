@@ -1,4 +1,4 @@
 /home/btboay/lumos-matrix/XOR/data/0_1.png
-/home/btboay/lumos-matrix/XOR/data/0_2.png
 /home/btboay/lumos-matrix/XOR/data/1_1.png
+/home/btboay/lumos-matrix/XOR/data/0_2.png
 /home/btboay/lumos-matrix/XOR/data/1_2.png

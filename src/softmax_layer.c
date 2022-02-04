@@ -7,22 +7,8 @@ void forward_softmax_layer(Layer l, Network net)
     }
     softmax_cpu(l.input, l.group, net.batch, l.inputs, l.output);
     if (!l.noloss){
-        printf("计算loss\n");
         softmax_x_ent_cpu(net.batch*l.outputs, l.output, l.truth, l.delta, l.loss);
     }
-    for (int i = 0; i < net.batch; ++i){
-        for (int j = 0; j < l.group; ++j){
-            printf("%f ", l.truth[i*l.group+j]);
-        }
-        for (int j = 0; j < l.group; ++j){
-            printf("%f ", l.output[i*l.group+j]);
-        }
-        for (int j = 0; j < l.group; ++j){
-            printf("%f ", l.delta[i*l.group+j]);
-        }
-        printf("\n");
-    }
-    printf("\n");
 }
 
 void backward_softmax_layer(Layer l, Network net)

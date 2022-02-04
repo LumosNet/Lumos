@@ -2,13 +2,9 @@
 
 void forward_connect_layer(Layer l, Network net)
 {
-    printf("connect\n");
     for (int i = 0; i < net.batch; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;
-        // for (int j = 0; j < l.inputs; ++j){
-        //     printf("%f ", l.input[offset_i+j]);
-        // }
         gemm(0, 0, l.output_h, l.input_h, l.input_h, l.input_w, 
             1, l.kernel_weights, l.input+offset_i, l.output+offset_o);
         if (l.bias){
