@@ -56,6 +56,10 @@ void save_image_data(float *img, int w, int h, int c, char *savepath)
 
 void resize_im(float *img, int height, int width, int channel, int row, int col, float *space)
 {
+    if (height == row && width == col){
+        memcpy(space, img, height*width*channel*sizeof(float));
+        return;
+    }
     float *part = calloc(col*height*channel, sizeof(float));
     int r, c, k;
     float w_scale = (float)(width - 1) / (col - 1);

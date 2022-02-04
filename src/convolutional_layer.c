@@ -82,6 +82,9 @@ Layer make_convolutional_layer(LayerParams *p, int batch, int h, int w, int c)
     l.output = calloc(batch*size_o, sizeof(float));
     l.delta = calloc(batch*size_d, sizeof(float));
 
+    l.inputs = l.input_c*l.input_h*l.input_w;
+    l.outputs = l.output_c*l.output_h*l.output_w;
+
     fprintf(stderr, "  conv  %5d     %2d x%2d /%2d  %4d x%4d x%4d   ->  %4d x%4d x%4d\n", \
             l.filters, l.ksize, l.ksize, l.stride, l.input_h, \
             l.input_w, l.input_c, l.output_h, l.output_w, l.output_c);

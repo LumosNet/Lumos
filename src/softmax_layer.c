@@ -3,32 +3,31 @@
 void forward_softmax_layer(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
-        int offset_i = i*l.input_h*l.input_w*l.input_c;
-        int offset_o = i*l.output_h*l.output_w*l.output_c;
-        float *output = l.output+offset_o;
-        float *input = l.input+offset_i;
-        float *delta = l.delta+offset_i;
-        float sum = 0;
-        float largest = -FLT_MAX;
-        for(int j = 0; j < l.group; ++j){
-            if(input[j] > largest) largest = input[j];
-        }
-        for (int j = 0; j < l.group; ++j){
-            net.workspace[j] = exp(input[j] - largest);
-            sum += net.workspace[j];
-        }
-        for (int j = 0; j < l.group; ++j){
-            output[j] = net.workspace[j] / sum;
-            delta[j] = (1 - net.workspace[j])*net.workspace[j];
-            // printf("%f %f %f\n", delta[j], input[j], net.workspace[j]);
-        }
-        // printf("\n");
+        one_hot_encoding(l.group, net.labels[i].data[0], l.truth+i*l.group);
     }
+    softmax_cpu(l.input, l.group, net.batch, l.inputs, l.output);
+    if (!l.noloss){
+        printf("计算loss\n");
+        softmax_x_ent_cpu(net.batch*l.outputs, l.output, l.truth, l.delta, l.loss);
+    }
+    for (int i = 0; i < net.batch; ++i){
+        for (int j = 0; j < l.group; ++j){
+            printf("%f ", l.truth[i*l.group+j]);
+        }
+        for (int j = 0; j < l.group; ++j){
+            printf("%f ", l.output[i*l.group+j]);
+        }
+        for (int j = 0; j < l.group; ++j){
+            printf("%f ", l.delta[i*l.group+j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
 }
 
 void backward_softmax_layer(Layer l, Network net)
 {
-    multiply(l.delta, net.delta, net.batch*l.input_h*l.input_w*l.input_c, l.delta);
+    if (net.delta) saxpy(l.delta, net.delta, net.batch*l.inputs, 1, l.delta);
 }
 
 Layer make_softmax_layer(LayerParams *p, int batch, int h, int w, int c)
@@ -43,6 +42,8 @@ Layer make_softmax_layer(LayerParams *p, int batch, int h, int w, int c)
         Params *param = n->val;
         if (0 == strcmp(param->key, "group")){
             l.group = atoi(param->val);
+        } else if (0 == strcmp(param->key, "noloss")){
+            l.noloss = atoi(param->val);
         }
         n = n->next;
     }
@@ -56,10 +57,49 @@ Layer make_softmax_layer(LayerParams *p, int batch, int h, int w, int c)
 
     int size_o = l.output_w * l.output_h * l.output_c;
     int size_d = l.input_w * l.input_h * l.input_c;
+    l.truth = calloc(batch*l.group, sizeof(float));
     l.output = calloc(batch*size_o, sizeof(float));
     l.delta = calloc(batch*size_d, sizeof(float));
+
+    l.inputs = l.input_c*l.input_h*l.input_w;
+    l.outputs = l.output_c*l.output_h*l.output_w;
+
+    l.loss = calloc(batch*l.inputs, sizeof(float));
 
     fprintf(stderr, "  softmax          %5d      %4d x%4d         ->  %4d x%4d\n", \
             l.group, l.input_w, l.input_h, l.output_w, l.output_h);
     return l;
+}
+
+void softmax_cpu(float *input, int n, int batch, int batch_offset, float *output)
+{
+    for (int i = 0; i < batch; ++i){
+        softmax(input+i*batch_offset, n, output+i*batch_offset);
+    }
+}
+
+void softmax(float *input, int n, float *output)
+{
+    float sum = 0;
+    float largest = -FLT_MAX;
+    for (int i = 0; i < n; ++i){
+        if (input[i] > largest) largest = input[i];
+    }
+    for (int i = 0; i < n; ++i){
+        output[i] = exp(input[i] - largest);
+        sum += output[i];
+    }
+    for (int i = 0; i < n; ++i){
+        output[i] /= sum;
+    }
+}
+
+void softmax_x_ent_cpu(int n, float *pred, float *truth, float *delta, float *error)
+{
+    for(int i = 0; i < n; ++i){
+        float t = truth[i];
+        float p = pred[i];
+        error[i] = (t) ? -log(p) : 0;
+        delta[i] = t-p;
+    }
 }

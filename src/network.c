@@ -66,8 +66,6 @@ Layer create_layer(Network *net, LayerParams *p, int h, int w, int c)
         layer = make_softmax_layer(p, net->batch, h, w, c);
     } else if (0 == strcmp(p->type, "connect")){
         layer = make_connect_layer(p, net->batch, h, w, c);
-    } else if (0 == strcmp(p->type, "activation")){
-        layer = make_activation_layer(p, net->batch, h, w, c);
     } else if (0 == strcmp(p->type, "im2col")){
         layer = make_im2col_layer(p, net->batch, h, w, c);
     }
@@ -79,27 +77,10 @@ void train(Network *net, int x)
 {
     int offset = 0;
     int n = 0;
-    Layer l;
     while (1){
-        printf("%d\n", n);
-        l = net->layers[2];
-        // int input_s = l.input_h*l.input_w*l.input_c;
-        // int output_s = l.output_h*l.output_w*l.output_c;
-        // for (int i = 0; i < input_s; ++i){
-        //     for (int j = 0; j < output_s; ++j){
-        //         printf("%f ", l.kernel_weights[i*output_s+j]);
-        //     }
-        //     printf("\n");
-        // }
-        // printf("\n");
-
-        // for (int i = 0; i < l.filters; ++i){
-        //     printf("%f ", l.bias_weights[i]);
-        // }
-        // printf("\n");
         load_train_data(net, offset);
-        forward_network(net[0]);
-        backward_network(net[0]);
+        forward_network(net);
+        backward_network(net);
         offset += net->batch;
         if (offset >= net->num) offset -= net->num;
         n += 1;
@@ -132,23 +113,28 @@ void init_network(Network *net, char *data_file, char *weight_file)
     load_weights(net, weight_file);
 }
 
-void forward_network(Network net)
+void forward_network(Network *net)
 {
-    for (int i = 0; i < net.n; ++i){
-        Layer *l = &net.layers[i];
-        if (l->type == IM2COL) continue;
-        l->input = net.output;
-        l->forward(l[0], net);
-        net.output = l->output;
+    for (int i = 0; i < net->n; ++i){
+        Layer *l = &net->layers[i];
+        l->input = net->output;
+        for (int k = 0; k < net->batch; ++k){
+            for (int j = 0; j < l->inputs; ++j){
+                printf("%f ", l->input[k*l->inputs+j]);
+            }
+        }
+        printf("\n%d----\n", i);
+        l->forward(l[0], net[0]);
+        net->output = l->output;
     }
 }
 
-void backward_network(Network net)
+void backward_network(Network *net)
 {
-    for (int i = net.n-1; i >= 0; --i){
-        Layer *l = &net.layers[i];
-        if (l->type == IM2COL) continue;
-        l->backward(l[0], net);
-        net.delta = l->delta;
+    net->delta = NULL;
+    for (int i = net->n-1; i >= 0; --i){
+        Layer *l = &net->layers[i];
+        l->backward(l[0], net[0]);
+        net->delta = l->delta;
     }
 }

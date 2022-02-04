@@ -21,7 +21,23 @@ Layer make_im2col_layer(LayerParams *p, int batch, int h, int w, int c)
         }
         n = n->next;
     }
+    l.inputs = l.input_c*l.input_h*l.input_w;
+    l.outputs = l.output_c*l.output_h*l.output_w;
+    l.forward = forward_im2col_layer;
+    l.backward = backward_im2col_layer;
+    l.output = calloc(l.outputs, sizeof(float));
+    l.delta = calloc(l.inputs, sizeof(float));
     fprintf(stderr, "  im2col                      %4d x%4d x%4d   ->    %2d x%2d\n", \
             l.input_w, l.input_h, l.input_c, l.output_w, l.output_h);
     return l;
+}
+
+void forward_im2col_layer(Layer l, Network net)
+{
+    memcpy(l.output, l.input, net.batch*l.outputs*sizeof(float));
+}
+
+void backward_im2col_layer(Layer l, Network net)
+{
+    memcpy(l.delta, net.delta, net.batch*l.inputs*sizeof(float));
 }

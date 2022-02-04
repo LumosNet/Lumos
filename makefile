@@ -29,7 +29,7 @@ ifeq ($(DEBUG), 1)
 COMMON+= -g
 endif
 
-OBJ=activation_layer.o active.o array.o avgpool_layer.o bias.o cluster.o connect_layer.o \
+OBJ=active.o array.o avgpool_layer.o bias.o cluster.o connect_layer.o \
 	convolutional_layer.o data.o gemm.o gray_process.o im2col.o image.o list.o loss.o maxpool_layer.o \
 	network.o parser.o pooling_layer.o softmax_layer.o tensor.o umath.o utils.o vector.o \
 	weights.o im2col_layer.o debug.o

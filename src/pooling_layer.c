@@ -51,6 +51,9 @@ Layer make_pooling_layer(LayerParams *p, int batch, int h, int w, int c)
         if (l.pool == MAX) l.index[i] = calloc(l.output_h*l.output_w*l.output_c, sizeof(int));
     }
 
+    l.inputs = l.input_c*l.input_h*l.input_w;
+    l.outputs = l.output_c*l.output_h*l.output_w;
+
     char *type;
     if (l.pool == AVG) type = "avg";
     else type = "max";

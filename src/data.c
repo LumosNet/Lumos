@@ -6,14 +6,13 @@ void load_train_data(Network *net, int offset)
     int *h = malloc(sizeof(int));
     int *c = malloc(sizeof(int));
     for (int i = 0; i < net->batch; ++i){
-        int offset_i = i*net->height*net->width*c[0];
+        int offset_i = i*net->height*net->width*net->channel;
         int index = offset + i;
         if (index >= net->num) index -= net->num;
         float *im = load_image_data(net->data[index], w, h, c);
-        if (w[0] != net->width || h[0] != net->height){
-            resize_im(im, h[0], w[0], c[0], net->height, net->width, net->input+offset_i);
-        }
+        resize_im(im, h[0], w[0], c[0], net->height, net->width, net->input+offset_i);
         net->labels[i] = get_labels(net->label[index])[0];
+        free(im);
     }
     net->output = net->input;
     free(w);
