@@ -160,6 +160,10 @@ typedef struct network{
 
     int num;
     char **data;
+
+    FILE *fdebug;
+    FILE *bdebug;
+    FILE *udebug;
 } network, Network, NetWork;
 
 #ifdef __cplusplus

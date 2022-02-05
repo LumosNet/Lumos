@@ -15,6 +15,7 @@ void load_train_data(Network *net, int offset)
         free(im);
     }
     net->output = net->input;
+    debug_data(net->fdebug, net->height, net->width, net->input, "\ninput data\n");
     free(w);
     free(h);
     free(c);

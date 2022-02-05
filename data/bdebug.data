@@ -1,0 +1,296 @@
+
+push backward
+
+softmax_layer delta
+0.415394  
+-0.415394  
+
+connect_layer output
+0.694935  
+0.353224  
+
+connect_layer gradient_active output
+0.212000  
+0.228457  
+
+connect net.delta
+0.415394  
+-0.415394  
+
+connect net.delta dot output
+0.088064  
+-0.094900  
+
+connect kernel_weights
+0.680375  -0.211234  
+0.566198  0.596880  
+
+connect delta
+0.006184  
+-0.075246  
+
+im2col_layer net_delta
+0.006184  
+-0.075246  
+
+im2col_layer delta
+0.006184  -0.075246  
+
+push backward
+
+softmax_layer delta
+-0.537424  
+0.537424  
+
+connect_layer output
+0.648210  
+0.498233  
+
+connect_layer gradient_active output
+0.228034  
+0.249997  
+
+connect net.delta
+-0.537424  
+0.537424  
+
+connect net.delta dot output
+-0.122551  
+0.134354  
+
+connect kernel_weights
+0.680375  -0.211234  
+0.566198  0.596880  
+
+connect delta
+-0.007309  
+0.106080  
+
+im2col_layer net_delta
+-0.007309  
+0.106080  
+
+im2col_layer delta
+-0.007309  0.106080  
+
+push backward
+
+softmax_layer delta
+0.462770  
+-0.462770  
+
+connect_layer output
+0.784825  
+0.635629  
+
+connect_layer gradient_active output
+0.168875  
+0.231605  
+
+connect net.delta
+0.462770  
+-0.462770  
+
+connect net.delta dot output
+0.078150  
+-0.107180  
+
+connect kernel_weights
+0.680375  -0.210009  
+0.566198  0.595537  
+
+connect delta
+-0.007513  
+-0.080242  
+
+im2col_layer net_delta
+-0.007513  
+-0.080242  
+
+im2col_layer delta
+-0.007513  -0.080242  
+
+push backward
+
+softmax_layer delta
+-0.581072  
+0.581072  
+
+connect_layer output
+0.817940  
+0.490764  
+
+connect_layer gradient_active output
+0.148914  
+0.249915  
+
+connect net.delta
+-0.581072  
+0.581072  
+
+connect net.delta dot output
+-0.086530  
+0.145218  
+
+connect kernel_weights
+0.679594  -0.210790  
+0.567270  0.596608  
+
+connect delta
+0.023573  
+0.104878  
+
+im2col_layer net_delta
+0.023573  
+0.104878  
+
+im2col_layer delta
+0.023573  0.104878  
+
+push backward
+
+softmax_layer delta
+0.415329  
+-0.415329  
+
+connect_layer output
+0.695026  
+0.353047  
+
+connect_layer gradient_active output
+0.211965  
+0.228405  
+
+connect net.delta
+0.415329  
+-0.415329  
+
+connect net.delta dot output
+0.088035  
+-0.094863  
+
+connect kernel_weights
+0.680459  -0.210790  
+0.565818  0.596608  
+
+connect delta
+0.006229  
+-0.075153  
+
+im2col_layer net_delta
+0.006229  
+-0.075153  
+
+im2col_layer delta
+0.006229  -0.075153  
+
+push backward
+
+softmax_layer delta
+-0.537539  
+0.537539  
+
+connect_layer output
+0.648409  
+0.497971  
+
+connect_layer gradient_active output
+0.227975  
+0.249996  
+
+connect net.delta
+-0.537539  
+0.537539  
+
+connect net.delta dot output
+-0.122545  
+0.134382  
+
+connect kernel_weights
+0.680459  -0.210790  
+0.565818  0.596608  
+
+connect delta
+-0.007351  
+0.106005  
+
+im2col_layer net_delta
+-0.007351  
+0.106005  
+
+im2col_layer delta
+-0.007351  0.106005  
+
+push backward
+
+softmax_layer delta
+0.462648  
+-0.462648  
+
+connect_layer output
+0.784986  
+0.635298  
+
+connect_layer gradient_active output
+0.168783  
+0.231694  
+
+connect net.delta
+0.462648  
+-0.462648  
+
+connect net.delta dot output
+0.078087  
+-0.107193  
+
+connect kernel_weights
+0.680459  -0.209565  
+0.565818  0.595264  
+
+connect delta
+-0.007517  
+-0.080172  
+
+im2col_layer net_delta
+-0.007517  
+-0.080172  
+
+im2col_layer delta
+-0.007517  -0.080172  
+
+push backward
+
+softmax_layer delta
+-0.581161  
+0.581161  
+
+connect_layer output
+0.818016  
+0.490475  
+
+connect_layer gradient_active output
+0.148866  
+0.249909  
+
+connect net.delta
+-0.581161  
+0.581161  
+
+connect net.delta dot output
+-0.086515  
+0.145238  
+
+connect kernel_weights
+0.679678  -0.210346  
+0.566890  0.596336  
+
+connect delta
+0.023531  
+0.104808  
+
+im2col_layer net_delta
+0.023531  
+0.104808  
+
+im2col_layer delta
+0.023531  0.104808  

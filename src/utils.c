@@ -204,3 +204,24 @@ char *inten2str(int x)
     res[1] = '\0';
     return res;
 }
+
+void debug_data(FILE *fp, int height, int width, float *data, char *str)
+{
+    char buf[32];
+    char *a = "  ";
+    char b = '\n';
+    fputs(str, fp);
+    for (int i = 0; i < height; ++i){
+        for (int j = 0; j < width; ++j){
+            sprintf(buf, "%f", data[i*width+j]);
+            fputs(buf, fp);
+            fputs(a, fp);
+        }
+        fputc(b, fp);
+    }
+}
+
+void debug_str(FILE *fp, char *str)
+{
+    fputs(str, fp);
+}

@@ -101,7 +101,9 @@ void train(Network *net, int x)
     int n = 0;
     while (1){
         load_train_data(net, offset);
+        debug_str(net->fdebug, "\npush forward\n");
         forward_network(net);
+        debug_str(net->bdebug, "\npush backward\n");
         backward_network(net);
         for (int i = 0; i < net->n; ++i){
             Layer *l = &net->layers[i];

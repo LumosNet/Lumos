@@ -16,4 +16,7 @@ char *float2str(float x);
 char *link_str(char *a, char *b);
 
 char *inten2str(int x);
+
+void debug_data(FILE *fp, int height, int width, float *data, char *str);
+void debug_str(FILE *fp, char *str);
 #endif

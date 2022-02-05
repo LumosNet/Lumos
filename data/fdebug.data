@@ -1,0 +1,416 @@
+
+input data
+0.000000  0.000000  
+
+push forward
+
+im2col_layer input
+0.000000  0.000000  
+
+im2col_layer output
+0.000000  
+0.000000  
+
+connect_layer kernel_weights
+0.680375  -0.211234  
+0.566198  0.596880  
+
+connect_layer input
+0.000000  
+0.000000  
+
+connect_layer gemm_output
+0.000000  
+0.000000  
+
+connect_layer bias_weights
+0.823295  -0.604897  
+
+conect_layer bias_output
+0.823295  
+-0.604897  
+
+conect_layer active_output
+0.694935  
+0.353224  
+
+softmax_layer input
+0.694935  
+0.353224  
+
+label
+0.000000  
+
+truth
+1.000000  0.000000  
+
+softmax_layer output
+0.584606  
+0.415394  
+
+loss
+0.536817  
+
+input data
+0.000000  1.000000  
+
+push forward
+
+im2col_layer input
+0.000000  1.000000  
+
+im2col_layer output
+0.000000  
+1.000000  
+
+connect_layer kernel_weights
+0.680375  -0.211234  
+0.566198  0.596880  
+
+connect_layer input
+0.000000  
+1.000000  
+
+connect_layer gemm_output
+-0.211234  
+0.596880  
+
+connect_layer bias_weights
+0.822414  -0.603948  
+
+conect_layer bias_output
+0.611180  
+-0.007068  
+
+conect_layer active_output
+0.648210  
+0.498233  
+
+softmax_layer input
+0.648210  
+0.498233  
+
+label
+1.000000  
+
+truth
+0.000000  1.000000  
+
+softmax_layer output
+0.537424  
+0.462576  
+
+loss
+0.770945  
+
+input data
+1.000000  1.000000  
+
+push forward
+
+im2col_layer input
+1.000000  1.000000  
+
+im2col_layer output
+1.000000  
+1.000000  
+
+connect_layer kernel_weights
+0.680375  -0.210009  
+0.566198  0.595537  
+
+connect_layer input
+1.000000  
+1.000000  
+
+connect_layer gemm_output
+0.470367  
+1.161735  
+
+connect_layer bias_weights
+0.823640  -0.605292  
+
+conect_layer bias_output
+1.294006  
+0.556443  
+
+conect_layer active_output
+0.784825  
+0.635629  
+
+softmax_layer input
+0.784825  
+0.635629  
+
+label
+0.000000  
+
+truth
+1.000000  0.000000  
+
+softmax_layer output
+0.537230  
+0.462770  
+
+loss
+0.621329  
+
+input data
+1.000000  0.000000  
+
+push forward
+
+im2col_layer input
+1.000000  0.000000  
+
+im2col_layer output
+1.000000  
+0.000000  
+
+connect_layer kernel_weights
+0.679594  -0.210790  
+0.567270  0.596608  
+
+connect_layer input
+1.000000  
+0.000000  
+
+connect_layer gemm_output
+0.679594  
+0.567270  
+
+connect_layer bias_weights
+0.822858  -0.604220  
+
+conect_layer bias_output
+1.502452  
+-0.036950  
+
+conect_layer active_output
+0.817940  
+0.490764  
+
+softmax_layer input
+0.817940  
+0.490764  
+
+label
+1.000000  
+
+truth
+0.000000  1.000000  
+
+softmax_layer output
+0.581072  
+0.418928  
+
+loss
+0.870057  
+
+input data
+0.000000  0.000000  
+
+push forward
+
+im2col_layer input
+0.000000  0.000000  
+
+im2col_layer output
+0.000000  
+0.000000  
+
+connect_layer kernel_weights
+0.680459  -0.210790  
+0.565818  0.596608  
+
+connect_layer input
+0.000000  
+0.000000  
+
+connect_layer gemm_output
+0.000000  
+0.000000  
+
+connect_layer bias_weights
+0.823723  -0.605672  
+
+conect_layer bias_output
+0.823723  
+-0.605672  
+
+conect_layer active_output
+0.695026  
+0.353047  
+
+softmax_layer input
+0.695026  
+0.353047  
+
+label
+0.000000  
+
+truth
+1.000000  0.000000  
+
+softmax_layer output
+0.584671  
+0.415329  
+
+loss
+0.536706  
+
+input data
+0.000000  1.000000  
+
+push forward
+
+im2col_layer input
+0.000000  1.000000  
+
+im2col_layer output
+0.000000  
+1.000000  
+
+connect_layer kernel_weights
+0.680459  -0.210790  
+0.565818  0.596608  
+
+connect_layer input
+0.000000  
+1.000000  
+
+connect_layer gemm_output
+-0.210790  
+0.596608  
+
+connect_layer bias_weights
+0.822843  -0.604724  
+
+conect_layer bias_output
+0.612053  
+-0.008115  
+
+conect_layer active_output
+0.648409  
+0.497971  
+
+softmax_layer input
+0.648409  
+0.497971  
+
+label
+1.000000  
+
+truth
+0.000000  1.000000  
+
+softmax_layer output
+0.537539  
+0.462461  
+
+loss
+0.771192  
+
+input data
+1.000000  1.000000  
+
+push forward
+
+im2col_layer input
+1.000000  1.000000  
+
+im2col_layer output
+1.000000  
+1.000000  
+
+connect_layer kernel_weights
+0.680459  -0.209565  
+0.565818  0.595264  
+
+connect_layer input
+1.000000  
+1.000000  
+
+connect_layer gemm_output
+0.470895  
+1.161083  
+
+connect_layer bias_weights
+0.824068  -0.606067  
+
+conect_layer bias_output
+1.294963  
+0.555015  
+
+conect_layer active_output
+0.784986  
+0.635298  
+
+softmax_layer input
+0.784986  
+0.635298  
+
+label
+0.000000  
+
+truth
+1.000000  0.000000  
+
+softmax_layer output
+0.537352  
+0.462648  
+
+loss
+0.621101  
+
+input data
+1.000000  0.000000  
+
+push forward
+
+im2col_layer input
+1.000000  0.000000  
+
+im2col_layer output
+1.000000  
+0.000000  
+
+connect_layer kernel_weights
+0.679678  -0.210346  
+0.566890  0.596336  
+
+connect_layer input
+1.000000  
+0.000000  
+
+connect_layer gemm_output
+0.679678  
+0.566890  
+
+connect_layer bias_weights
+0.823288  -0.604995  
+
+conect_layer bias_output
+1.502966  
+-0.038105  
+
+conect_layer active_output
+0.818016  
+0.490475  
+
+softmax_layer input
+0.818016  
+0.490475  
+
+label
+1.000000  
+
+truth
+0.000000  1.000000  
+
+softmax_layer output
+0.581161  
+0.418839  
+
+loss
+0.870269  
