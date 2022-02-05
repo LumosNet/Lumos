@@ -98,7 +98,7 @@ void update_convolutional_layer(Layer l, Network net)
         int offset_o = i*l.output_h*l.output_w*l.output_c;
         int offset_i = i*l.input_h*l.input_w*l.input_c;
         im2col(l.input+offset_i, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, net.workspace);
-        gemm(0, 0, l.filters, l.output_h*l.output_w, \
+        gemm(0, 1, l.filters, l.output_h*l.output_w, \
             l.output_h*l.output_w, l.ksize*l.ksize*l.input_c, 1, \
             net.delta+offset_o, net.workspace, net.workspace+l.ksize*l.ksize*l.input_c*l.output_h*l.output_w);
         saxpy(l.kernel_weights, net.workspace+l.ksize*l.ksize*l.input_c*l.output_h*l.output_w, l.filters*l.ksize*l.ksize*l.input_c, rate, l.kernel_weights);

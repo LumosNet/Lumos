@@ -84,15 +84,13 @@ void update_connect_layer(Layer l, Network net)
 {
     float rate = -net.learning_rate / (float)net.batch;
     for (int i = 0; i < net.batch; ++i){
+        full_list_with_float(net.workspace, 0, net.workspace_size, 1, 0);
         int offset_d = i*l.outputs;
         int offset_i = i*l.inputs;
-        gemm(0, 0, l.output_h, l.output_w, \
+        gemm(0, 1, l.output_h, l.output_w, \
             l.input_h, l.input_w, 1, \
             net.delta+offset_d, l.input+offset_i, net.workspace);
         saxpy(l.kernel_weights, net.workspace, l.output_h * l.input_h, rate, l.kernel_weights);
-        if (l.bias){
-            saxpy(l.bias_weights, net.delta+offset_d, l.output_h, rate, l.bias_weights);
-        }
     }
 }
 

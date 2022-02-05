@@ -119,50 +119,22 @@ void train(Network *net, int x)
 
 void forward_network(Network *net)
 {
-    printf("\nforward\n");
     for (int i = 0; i < net->n; ++i){
-        printf("%d\n", i);
-        printf("\n----------------------------------\n");
         Layer *l = &net->layers[i];
         l->input = net->output;
-        for (int k = 0; k < net->batch; ++k){
-            for (int j = 0; j < l->inputs; ++j){
-                printf("%f ", l->input[k*l->inputs+j]);
-            }
-            printf("\n");
-        }
-        printf("\n----------------------------------\n");
-        printf("\n==================================\n");
         l->forward(l[0], net[0]);
         net->output = l->output;
-        for (int k = 0; k < net->batch; ++k){
-            for (int j = 0; j < l->outputs; ++j){
-                printf("%f ", l->output[k*l->outputs+j]);
-            }
-            printf("\n");
-        }
-        printf("\n==================================\n");
         full_list_with_float(net->workspace, 0, net->workspace_size, 1, 0);
     }
 }
 
 void backward_network(Network *net)
 {
-    printf("\nbackward\n");
     net->delta = NULL;
     for (int i = net->n-1; i >= 0; --i){
-        printf("%d\n", i);
         Layer *l = &net->layers[i];
         l->backward(l[0], net[0]);
         net->delta = l->delta;
-        printf("\n+++++++++++++++++++++++++++++++++++++++++++\n");
-        for (int k = 0; k < net->batch; ++k){
-            for (int j = 0; j < l->inputs; ++j){
-                printf("%f ", l->delta[k*l->inputs+j]);
-            }
-            printf("\n");
-        }
-        printf("\n+++++++++++++++++++++++++++++++++++++++++++\n");
         full_list_with_float(net->workspace, 0, net->workspace_size, 1, 0);
         full_list_with_float(l->output, 0, l->outputs, 1, 0);
     }
