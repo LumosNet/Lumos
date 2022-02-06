@@ -5,8 +5,3 @@
 *.exe
 main
 .vscode
-data
-docs
-mnist
-obj
-XOR
