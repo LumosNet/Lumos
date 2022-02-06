@@ -14,6 +14,7 @@
 #include "connect_layer.h"
 #include "activation_layer.h"
 #include "im2col_layer.h"
+#include "mse_layer.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,6 +22,7 @@ extern "C" {
 
 Network *load_network(char *cfg);
 void train(Network *net, int x);
+void test(Network *net, char *test_png, char *test_label);
 void init_network(Network *net, char *data_file, char *weight_file);
 void forward_network(Network *net);
 void backward_network(Network *net);

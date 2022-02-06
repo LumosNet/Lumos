@@ -68,6 +68,8 @@ Layer create_layer(Network *net, LayerParams *p, int h, int w, int c)
         layer = make_connect_layer(p, net->batch, h, w, c);
     } else if (0 == strcmp(p->type, "im2col")){
         layer = make_im2col_layer(p, net->batch, h, w, c);
+    } else if (0 == strcmp(p->type, "mse")){
+        layer = make_mse_layer(p, net->batch, h, w, c);
     }
     if (layer.workspace_size > net->workspace_size) net->workspace_size = layer.workspace_size;
     return layer;
@@ -101,9 +103,7 @@ void train(Network *net, int x)
     int n = 0;
     while (1){
         load_train_data(net, offset);
-        debug_str(net->fdebug, "\npush forward\n");
         forward_network(net);
-        debug_str(net->bdebug, "\npush backward\n");
         backward_network(net);
         for (int i = 0; i < net->n; ++i){
             Layer *l = &net->layers[i];
@@ -116,6 +116,27 @@ void train(Network *net, int x)
             save_weights(net, "./data/w.weights");
             break;
         }
+    }
+}
+
+void test(Network *net, char *test_png, char *test_label)
+{
+    int *w = malloc(sizeof(int));
+    int *h = malloc(sizeof(int));
+    int *c = malloc(sizeof(int));
+    float *im = load_image_data(test_png, w, h, c);
+    resize_im(im, h[0], w[0], c[0], net->height, net->width, net->input);
+    net->batch = 1;
+    net->output = net->input;
+    net->labels[0] = get_labels(test_label)[0];
+    free(w);
+    free(h);
+    free(c);
+    free(im);
+    forward_network(net);
+    for (int i = 0; i < net->n; ++i){
+        Layer *l = &net->layers[i];
+        full_list_with_float(l->output, 0, l->outputs, 1, 0);
     }
 }
 

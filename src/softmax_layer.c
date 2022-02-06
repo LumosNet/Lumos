@@ -15,6 +15,7 @@ void forward_softmax_layer(Layer l, Network net)
     }
     float loss = sum_float_list(l.loss, 0, net.batch*l.outputs);
     debug_data(net.fdebug, 1, 1, &loss, "\nloss\n");
+    printf("loss: %f\n", loss);
 }
 
 void backward_softmax_layer(Layer l, Network net)
@@ -47,15 +48,12 @@ Layer make_softmax_layer(LayerParams *p, int batch, int h, int w, int c)
     l.backward = backward_softmax_layer;
 
     l.workspace_size = l.group*l.group;
-
-    int size_o = l.output_w * l.output_h * l.output_c;
-    int size_d = l.input_w * l.input_h * l.input_c;
-    l.truth = calloc(batch*l.group, sizeof(float));
-    l.output = calloc(batch*size_o, sizeof(float));
-    l.delta = calloc(batch*size_d, sizeof(float));
-
     l.inputs = l.input_c*l.input_h*l.input_w;
     l.outputs = l.output_c*l.output_h*l.output_w;
+
+    l.truth = calloc(batch*l.group, sizeof(float));
+    l.output = calloc(batch*l.outputs, sizeof(float));
+    l.delta = calloc(batch*l.inputs, sizeof(float));
 
     l.loss = calloc(batch*l.inputs, sizeof(float));
 
