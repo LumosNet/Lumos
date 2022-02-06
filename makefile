@@ -64,8 +64,6 @@ $(OBJDIR)%.o: %.cu $(DEPS)
 
 obj:
 	mkdir obj
-results:
-	mkdir results
 
 .PHONY: clean
 

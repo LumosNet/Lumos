@@ -1,5 +1,0 @@
-classes=10
-data=/home/btboay/lumos-matrix/mnist/data.txt
-label=/home/btboay/lumos-matrix/mnist/label.txt
-names=/home/btboay/lumos-matrix/mnist/mnist.names
-backup=/home/btboay/lumos-matrix/mnist/backup

@@ -7,3 +7,6 @@ main
 .vscode
 obj
 XOR
+test
+mnist
+docs
