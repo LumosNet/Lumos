@@ -15,7 +15,7 @@ void load_train_data(Network *net, int offset)
         free(im);
     }
     net->output = net->input;
-    debug_data(net->fdebug, net->height, net->width, net->input, "\ninput data\n");
+    // debug_data(net->fdebug, net->height, net->width, net->input, "\ninput data\n");
     free(w);
     free(h);
     free(c);
@@ -23,7 +23,6 @@ void load_train_data(Network *net, int offset)
 
 void load_train_path(Network *net, char *data_path, char *label_path)
 {
-    printf("%s\n%s\n", data_path, label_path);
     FILE *fp = fopen(data_path, "r");
     int i;
     int num = 0;
@@ -38,6 +37,7 @@ void load_train_path(Network *net, char *data_path, char *label_path)
     net->data = malloc(num*sizeof(char *));
     net->label = malloc(num*sizeof(char *));
     net->num = num;
+    printf("%d\n", num);
     i = 0;
     while ((line = fgetl(fp)) != 0)
     {
