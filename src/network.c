@@ -114,7 +114,7 @@ void train(Network *net, int x)
         if (offset >= net->num) offset -= net->num;
         n += 1;
         if (n == x){
-            save_weights(net, "./data/w.weights");
+            save_weights(net, "./data/w2.weights");
             break;
         }
     }

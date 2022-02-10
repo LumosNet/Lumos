@@ -24,9 +24,9 @@ void forward_avgpool_layer(Layer l, Network net)
 void backward_avgpool_layer(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
-        int offset_ld = i*l.input_h*l.input_w*l.input_c;
-        int offset_nd = i*l.output_h*l.output_w*l.output_c;
-        for (int c = 0; c < l.output_c; ++c){
+        int offset_ld = i*l.inputs;
+        int offset_nd = i*l.outputs;
+        for (int c = 0; c < l.input_c; ++c){
             for (int h = 0; h < l.input_h; ++h){
                 for (int w = 0; w < l.input_w; ++w){
                     int height_index = h / l.ksize;

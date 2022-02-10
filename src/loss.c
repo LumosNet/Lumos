@@ -3,10 +3,13 @@
 // label表示是第几类
 void one_hot_encoding(int n, int label, float *space)
 {
-    for (int i = 0; i < n; ++i){
-        space[i] = (float)0;
+    if (n == 1) space[0] = (float)label;
+    else {
+        for (int i = 0; i < n; ++i){
+            space[i] = (float)0;
+        }
+        space[label] = (float)1;
     }
-    space[label] = (float)1;
 }
 
 // float mse(float *yi, float *yh, int n, float *space)

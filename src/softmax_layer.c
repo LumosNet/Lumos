@@ -2,20 +2,22 @@
 
 void forward_softmax_layer(Layer l, Network net)
 {
-    debug_data(net.fdebug, l.input_h, l.input_w, l.input, "\nsoftmax_layer input\n");
-    debug_data(net.fdebug, 1, 1, net.labels[0].data, "\nlabel\n");
+    // debug_data(net.fdebug, l.input_h, l.input_w, l.input, "\nsoftmax_layer input\n");
+    // debug_data(net.fdebug, 1, 1, net.labels[0].data, "\nlabel\n");
     for (int i = 0; i < net.batch; ++i){
         one_hot_encoding(l.group, net.labels[i].data[0], l.truth+i*l.group);
     }
-    debug_data(net.fdebug, 1, l.group, l.truth, "\ntruth\n");
     softmax_cpu(l.input, l.group, net.batch, l.inputs, l.output);
-    debug_data(net.fdebug, l.output_h, l.output_w, l.output, "\nsoftmax_layer output\n");
+    for (int i = 0; i < net.batch; ++i){
+        debug_data(net.fdebug, 1, l.group, l.truth+i*l.group, "\ntruth\n");
+        debug_data(net.fdebug, l.output_h, l.output_w, l.output+i*l.outputs, "\nsoftmax_layer output\n");
+    }
     if (!l.noloss){
         softmax_x_ent_cpu(net.batch*l.outputs, l.output, l.truth, l.delta, l.loss);
     }
     float loss = sum_float_list(l.loss, 0, net.batch*l.outputs);
     debug_data(net.fdebug, 1, 1, &loss, "\nloss\n");
-    printf("loss: %f\n", loss);
+    // printf("loss: %f\n", loss);
 }
 
 void backward_softmax_layer(Layer l, Network net)

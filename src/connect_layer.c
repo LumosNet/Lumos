@@ -5,19 +5,12 @@ void forward_connect_layer(Layer l, Network net)
     for (int i = 0; i < net.batch; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;
-        // debug_data(net.fdebug, l.output_h, l.input_h, l.kernel_weights, "\nconnect_layer kernel_weights\n");
-        // debug_data(net.fdebug, l.input_h, l.input_w, l.input, "\nconnect_layer input\n");
-        // debug_data(net.fdebug, l.output_h, l.output_w, l.output, "\nconnect output\n");
         gemm(0, 0, l.output_h, l.input_h, l.input_h, l.input_w, 
             1, l.kernel_weights, l.input+offset_i, l.output+offset_o);
-        // debug_data(net.fdebug, l.output_h, l.output_w, l.output, "\nconnect_layer gemm_output\n");
         if (l.bias){
             add_bias(l.output+offset_o, l.bias_weights, l.ksize, 1);
         }
-        // debug_data(net.fdebug, 1, l.ksize, l.bias_weights, "\nconnect_layer bias_weights\n");
-        // debug_data(net.fdebug, l.output_h, l.output_w, l.output, "\nconnect_layer bias_output\n");
         activate_list(l.output+offset_o, l.outputs, l.active);
-        // debug_data(net.fdebug, l.output_h, l.output_w, l.output, "\nconnect_layer active_output\n");
     }
 }
 
@@ -27,16 +20,10 @@ void backward_connect_layer(Layer l, Network net)
     for (int i = 0; i < net.batch; ++i){
         int offset_o = i*l.outputs;
         int offset_d = i*l.inputs;
-        // debug_data(net.bdebug, l.output_h, l.output_w, l.output, "\nconnect_layer output\n");
         gradient_list(l.output+offset_o, l.outputs, l.gradient);
-        // debug_data(net.bdebug, l.output_h, l.output_w, l.output, "\nconnect_layer gradient_active output\n");
-        // debug_data(net.bdebug, l.output_h, l.output_w, net.delta, "\nconnect net.delta\n");
         multiply(net.delta+offset_o, l.output+offset_o, l.outputs, net.delta+offset_o);
-        // debug_data(net.bdebug, l.output_h, l.output_w, net.delta, "\nconnect net.delta dot output\n");
-        // debug_data(net.bdebug, l.output_h, l.input_h, l.kernel_weights, "\nconnect kernel_weights\n");
         gemm(1, 0, l.output_h, l.input_h, l.output_h, l.output_w, 1, 
             l.kernel_weights, net.delta+offset_o, l.delta+offset_d);
-        // debug_data(net.bdebug, l.input_h, l.input_w, l.delta, "\nconnect delta\n");
     }
     l.update(l, net);
 }
@@ -94,25 +81,16 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
 void update_connect_layer(Layer l, Network net)
 {
     float rate = -net.learning_rate / (float)net.batch;
-    // debug_data(net.udebug, 1, 1, &rate, "\nlearning rate\n");
     for (int i = 0; i < net.batch; ++i){
         full_list_with_float(net.workspace, 0, net.workspace_size, 1, 0);
         int offset_d = i*l.outputs;
         int offset_i = i*l.inputs;
-        // debug_data(net.udebug, l.output_h, l.output_w, net.delta, "\nconnect update net.delta\n");
-        // debug_data(net.udebug, l.input_h, l.input_w, l.input, "\nconnect update input\n");
         gemm(0, 1, l.output_h, l.output_w, \
             l.input_h, l.input_w, 1, \
             net.delta+offset_d, l.input+offset_i, net.workspace);
-        // debug_data(net.udebug, l.output_h, l.input_h, net.workspace, "\nconnect update gemm workspace\n");
-        // debug_data(net.udebug, l.output_h, l.input_h, l.kernel_weights, "\nconnect update old kernel_weights\n");
         saxpy(l.kernel_weights, net.workspace, l.output_h * l.input_h, rate, l.kernel_weights);
-        // debug_data(net.udebug, l.output_h, l.input_h, l.kernel_weights, "\nconnect update new kernel_weights\n");
         if (l.bias){
-            // debug_data(net.udebug, 1, l.outputs, l.bias_weights, "\nconnect update old bias_weights\n");
-            // debug_data(net.udebug, l.output_h, l.output_w, net.delta, "\nconnect update net.delta\n");
             saxpy(l.bias_weights, net.delta+offset_d, l.outputs, rate, l.bias_weights);
-            // debug_data(net.udebug, 1, l.outputs, l.bias_weights, "\nconnect update new bias_weights\n");
         }
     }
 }

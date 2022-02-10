@@ -8,6 +8,8 @@
 #include "vector.h"
 #include "gemm.h"
 #include "umath.h"
+#include "loss.h"
+#include "cpu.h"
 
 #ifdef __cplusplus
 extern "C" {

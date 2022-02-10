@@ -31,6 +31,8 @@ Layer make_mse_layer(LayerParams *p, int batch, int h, int w, int c)
     l.output = calloc(batch*l.outputs, sizeof(float));
     l.delta = calloc(batch*l.inputs, sizeof(float));
 
+    l.truth = calloc(batch*l.group, sizeof(float));
+
     fprintf(stderr, "  mse              %5d      %4d x%4d         ->  %4d x%4d\n", \
             l.group, l.input_w, l.input_h, l.output_w, l.output_h);
     return l;
@@ -39,22 +41,20 @@ Layer make_mse_layer(LayerParams *p, int batch, int h, int w, int c)
 void forward_mse_layer(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
-        debug_data(net.fdebug, l.input_h, l.input_w, net.labels[i].data, "\nlabels\n");
         debug_data(net.fdebug, l.input_h, l.input_w, l.input+i*l.inputs, "\nmse_layer input\n");
-        subtract(net.labels[i].data, l.input+i*l.inputs, l.inputs, net.workspace);
-        // debug_data(net.fdebug, l.input_h, l.input_w, net.workspace, "\nmse_layer substruct\n");
+        one_hot_encoding(l.group, net.labels[i].data[0], l.truth+i*l.group);
+        debug_data(net.fdebug, l.group, 1, l.truth+i*l.group, "\nlabels\n");
+        subtract(l.truth+i*l.group, l.input+i*l.inputs, l.inputs, net.workspace);
         gemm(1, 0, l.input_h, l.input_w, l.input_h, l.input_w, 1, \
              net.workspace, net.workspace, l.output+i*l.outputs);
-        // debug_data(net.fdebug, l.output_h, l.output_w, l.output+i*l.outputs, "\nmse_layer output\n");
         l.output[i*l.outputs] /= l.group;
-        // printf("label: %f\n", l.input[i*l.inputs]);
     }
 }
 
 void backward_mse_layer(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
-        subtract(l.input+i*l.inputs, net.labels[i].data, l.inputs, l.delta+i*l.inputs);
-        // debug_data(net.bdebug, l.input_h, l.input_w, l.delta+i*l.inputs, "\nmse_layer delta\n");
+        subtract(l.input+i*l.inputs, l.truth+i*l.group, l.inputs, l.delta+i*l.inputs);
+        multy_cpu(l.delta+i*l.inputs, l.inputs, (float)2/l.group, 1);
     }
 }

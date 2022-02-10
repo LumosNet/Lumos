@@ -34,14 +34,10 @@ Layer make_im2col_layer(LayerParams *p, int batch, int h, int w, int c)
 
 void forward_im2col_layer(Layer l, Network net)
 {
-    // debug_data(net.fdebug, l.input_h, l.input_w, l.input, "\nim2col_layer input\n");
     memcpy(l.output, l.input, net.batch*l.outputs*sizeof(float));
-    // debug_data(net.fdebug, l.output_h, l.output_w, l.output, "\nim2col_layer output\n");
 }
 
 void backward_im2col_layer(Layer l, Network net)
 {
-    // debug_data(net.bdebug, l.output_h, l.output_w, net.delta, "\nim2col_layer net_delta\n");
     memcpy(l.delta, net.delta, net.batch*l.inputs*sizeof(float));
-    // debug_data(net.bdebug, l.input_h, l.input_w, l.delta, "\nim2col_layer delta\n");
 }
