@@ -7,7 +7,7 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
       	-gencode arch=compute_52,code=[sm_52,compute_52] \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
 
-VPATH=./src/:./test/:./scripts
+VPATH=./src/:./test/:./scripts/:./demo
 EXEC=main.exe
 OBJDIR=./obj/
 
@@ -33,7 +33,7 @@ OBJ=active.o array.o avgpool_layer.o bias.o cluster.o connect_layer.o \
 	convolutional_layer.o data.o gemm.o gray_process.o im2col.o image.o list.o loss.o maxpool_layer.o \
 	network.o parser.o pooling_layer.o softmax_layer.o tensor.o umath.o utils.o vector.o \
 	weights.o im2col_layer.o debug.o mse_layer.o cpu.o
-EXECOBJA=main.o
+EXECOBJA=xor.o
 
 ifeq ($(GPU), 1)
 LDFLAGS+= -lstdc++

@@ -119,7 +119,10 @@ void train(Network *net, int x)
             printf("%s\n", path);
             save_weights(net, path);
         }
-        if (n == x) break;
+        if (n == x) {
+	    save_weights(net, "./backup/weights.w");
+	    break;
+	}
     }
 }
 
@@ -138,10 +141,6 @@ void test(Network *net, char *test_png, char *test_label)
     free(c);
     free(im);
     forward_network(net);
-    for (int i = 0; i < net->n; ++i){
-        Layer *l = &net->layers[i];
-        full_list_with_float(l->output, 0, l->outputs, 1, 0);
-    }
 }
 
 void forward_network(Network *net)
