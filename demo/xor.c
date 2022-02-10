@@ -16,6 +16,6 @@ int main(int argc, char **argv)
     test(net, "./demo/xor/data/1_1.png", "./demo/xor/data/1_1.txt");
     printf("xor: [1, 0], test: %f\n", l->input[0]);
     test(net, "./demo/xor/data/1_2.png", "./demo/xor/data/1_2.txt");
-    printf("xor: [1, 1], test: %f\n", l->input[0]);
+    printf("xor: [0, 1], test: %f\n", l->input[0]);
     return 0;
 }

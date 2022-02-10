@@ -83,7 +83,7 @@ index  type   filters   ksize        input                  output
 xor: [0, 0], test: 0.049111
 xor: [1, 1], test: 0.057524
 xor: [1, 0], test: 0.960859
-xor: [1, 1], test: 0.983461
+xor: [0, 1], test: 0.983461
 ```
 
 
