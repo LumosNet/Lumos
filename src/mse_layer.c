@@ -41,9 +41,7 @@ Layer make_mse_layer(LayerParams *p, int batch, int h, int w, int c)
 void forward_mse_layer(Layer l, Network net)
 {
     for (int i = 0; i < net.batch; ++i){
-        debug_data(net.fdebug, l.input_h, l.input_w, l.input+i*l.inputs, "\nmse_layer input\n");
         one_hot_encoding(l.group, net.labels[i].data[0], l.truth+i*l.group);
-        debug_data(net.fdebug, l.group, 1, l.truth+i*l.group, "\nlabels\n");
         subtract(l.truth+i*l.group, l.input+i*l.inputs, l.inputs, net.workspace);
         gemm(1, 0, l.input_h, l.input_w, l.input_h, l.input_w, 1, \
              net.workspace, net.workspace, l.output+i*l.outputs);

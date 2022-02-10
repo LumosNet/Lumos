@@ -98,7 +98,7 @@ void update_connect_layer(Layer l, Network net)
 void save_connect_weights(Layer l, FILE *file)
 {
     fwrite(l.kernel_weights, sizeof(float), l.output_h * l.input_h, file);
-    fwrite(l.bias_weights, sizeof(float), l.output_h, file);
+    if (l.bias) fwrite(l.bias_weights, sizeof(float), l.output_h, file);
 }
 
 void load_connect_weights(Layer l, FILE *file)
