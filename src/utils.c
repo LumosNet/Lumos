@@ -182,9 +182,10 @@ char *link_str(char *a, char *b)
 {
     int len_a = strlen(a);
     int len_b = strlen(b);
-    char *res = malloc((len_a+len_b)*sizeof(char));
+    char *res = malloc((len_a+len_b+1)*sizeof(char));
     memcpy(res, a, len_a*sizeof(char));
     memcpy(res+len_a, b, len_b*sizeof(char));
+    res[len_a+len_b] = '\0';
     return res;
 }
 
