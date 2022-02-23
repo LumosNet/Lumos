@@ -1,5 +1,5 @@
 LINUX=1
-GPU=0
+GPU=1
 DEBUG=1
 
 ARCH= 	-gencode arch=compute_35,code=sm_35 \
