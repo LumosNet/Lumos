@@ -1,6 +1,6 @@
 ---
 layout: post
-permalink: /lumos/Docs/
+permalink: /Docs/
 ---
 # Documentation
 
