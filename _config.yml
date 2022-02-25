@@ -27,13 +27,13 @@ description: >- # this means to ignore newlines until "baseurl:"
 
 baseurl: "lumos" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-github_username:  jekyll
+github_username:  BTboay
 show_downloads: True
 
 github:
   is_project_page: True
   repository_url: https://github.com/BTboay/lumos
-  repository_name: BTboay
+  repository_name: lumos
   new_url: https://github.com/BTboay/lumos/archive/refs/heads/master.zip
   last_url: https://github.com/BTboay/lumos/archive/refs/tags/v0.1-a.zip
 github_url: https://github.com/BTboay
