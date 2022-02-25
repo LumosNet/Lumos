@@ -1,6 +1,6 @@
 ---
 layout: default
-permalink: /Install/
+permalink: /lumos/Install/
 ---
 # Lumos
 

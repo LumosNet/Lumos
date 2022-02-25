@@ -1,6 +1,6 @@
 ---
 layout: post
-permalink: /Docs/
+permalink: /lumos/Docs/
 ---
 # Documentation
 
@@ -10,8 +10,6 @@ permalink: /Docs/
 
 Lumos.doc
 
-
-
 ## Installation
 
 这里有完整的安装文件，引导您在您的设备上完成安装
@@ -20,15 +18,11 @@ Linux/Ubuntu安装向导
 
 Windows安装向导
 
-
-
 ## API
 
 这是一份完整的API手册，您可以随时查阅相关内容
 
 Lumos框架的完整API文档
-
-
 
 ## Demo
 

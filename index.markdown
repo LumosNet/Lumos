@@ -4,6 +4,7 @@
 
 layout: default
 categories: Home-Page
+permalink: /lumos/
 ---
 
 # Lumos

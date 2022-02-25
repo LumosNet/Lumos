@@ -1,4 +1,4 @@
 ---
 layout: default
-permalink: /Demo/
+permalink: /lumos/Demo/
 ---
