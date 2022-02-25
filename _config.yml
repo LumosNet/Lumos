@@ -25,7 +25,7 @@ footer_description: >-
 description: >- # this means to ignore newlines until "baseurl:"
   完全支持Linux的轻量级深度学习框架，支持多GPU加速
 
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "lumos" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  jekyll
 show_downloads: True
