@@ -1,4 +1,4 @@
 ---
 layout: home
-permalink: /lumos/Blog/
+permalink: Blog/
 ---
