@@ -1,5 +1,5 @@
 LINUX=1
-GPU=1
+GPU=0
 DEBUG=1
 
 ARCH= 	-gencode arch=compute_35,code=sm_35 \
@@ -7,7 +7,7 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
       	-gencode arch=compute_52,code=[sm_52,compute_52] \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
 
-VPATH=./src/:./test/:./scripts/:./demo
+VPATH=./src/:./test/:./scripts/:./demo/xor
 EXEC=main.exe
 OBJDIR=./obj/
 

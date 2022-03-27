@@ -1,4 +1,0 @@
-/home/btboay/lumos/XOR/data/0_1.png
-/home/btboay/lumos/XOR/data/1_1.png
-/home/btboay/lumos/XOR/data/0_2.png
-/home/btboay/lumos/XOR/data/1_2.png
