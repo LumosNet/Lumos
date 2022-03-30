@@ -11,15 +11,6 @@
 extern "C" {
 #endif
 
-Tensor *tensor_d(int dim, int *size);
-Tensor *tensor_x(int dim, int *size, float x);
-Tensor *tensor_list(int dim, int *size, float *list);
-Tensor *tensor_sparse(int dim, int *size, int **index, float *list, int n);
-Tensor *tensor_copy(Tensor *ts);
-
-void resize(Tensor *ts, int dim, int *size);
-void tsprint(Tensor *ts);
-
 float get_pixel(float *data, int dim, int *size, int *index);
 void change_pixel(float *data, int dim, int *size, int *index, float x);
 
@@ -37,7 +28,6 @@ void divide(float *data_a, float *data_b, int num, float *space);
 
 void saxpy(float *data_a, float *data_b, int num, float x, float *space);
 
-void free_tensor(Tensor *ts);
 #ifdef  __cplusplus
 }
 #endif

@@ -1,0 +1,3 @@
+classes=2
+data=./demo/xor/data.txt
+label=./demo/xor/label.txt

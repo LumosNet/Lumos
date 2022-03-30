@@ -6,8 +6,6 @@
 
 #include "lumos.h"
 #include "parser.h"
-#include "tensor.h"
-#include "array.h"
 #include "umath.h"
 #include "gemm.h"
 #include "loss.h"

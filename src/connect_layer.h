@@ -5,10 +5,11 @@
 
 #include "lumos.h"
 #include "parser.h"
-#include "array.h"
 #include "bias.h"
 #include "active.h"
 #include "gemm.h"
+#include "list.h"
+#include "tensor.h"
 
 #ifdef __cplusplus
 extern "C" {

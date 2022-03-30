@@ -4,8 +4,6 @@
 #include <math.h>
 
 #include "tensor.h"
-#include "array.h"
-#include "vector.h"
 #include "gemm.h"
 #include "umath.h"
 
