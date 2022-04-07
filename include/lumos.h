@@ -8,22 +8,6 @@
 extern "C" {
 #endif
 
-typedef enum {
-    TENSOR, VECTOR, ARRAY, IMAGE
-} TensorType;
-
-struct tensor;
-typedef struct tensor tensor;
-
-/* 行优先存储 */
-typedef struct tensor{
-    int       dim;
-    int       *size;
-    int       num;
-    float     *data;
-    TensorType type;
-} Tensor;
-
 typedef float   (*activate)(float);
 typedef float   (*gradient)(float);
 
