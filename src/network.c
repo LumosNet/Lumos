@@ -108,7 +108,7 @@ void train(Network *net, int x)
         backward_network(net);
         for (int i = 0; i < net->n; ++i){
             Layer *l = &net->layers[i];
-            full_list_with_float(l->delta, 0, l->inputs, 1, 0);
+            fill_cpu(l->delta, l->inputs, 0, 1);
         }
         offset += net->batch;
         if (offset >= net->num) offset -= net->num;
@@ -150,7 +150,7 @@ void forward_network(Network *net)
         l->input = net->output;
         l->forward(l[0], net[0]);
         net->output = l->output;
-        full_list_with_float(net->workspace, 0, net->workspace_size, 1, 0);
+        fill_cpu(net->workspace, net->workspace_size, 0, 1);
     }
 }
 
@@ -161,7 +161,7 @@ void backward_network(Network *net)
         Layer *l = &net->layers[i];
         l->backward(l[0], net[0]);
         net->delta = l->delta;
-        full_list_with_float(net->workspace, 0, net->workspace_size, 1, 0);
-        full_list_with_float(l->output, 0, l->outputs, 1, 0);
+        fill_cpu(net->workspace, net->workspace_size, 0, 1);
+        fill_cpu(l->output, l->outputs, 0, 1);
     }
 }

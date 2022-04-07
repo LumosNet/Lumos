@@ -15,7 +15,7 @@ void forward_softmax_layer(Layer l, Network net)
     if (!l.noloss){
         softmax_x_ent_cpu(net.batch*l.outputs, l.output, l.truth, l.delta, l.loss);
     }
-    float loss = sum_float_list(l.loss, 0, net.batch*l.outputs);
+    float loss = sum_cpu(l.loss, net.batch*l.outputs);
     debug_data(net.fdebug, 1, 1, &loss, "\nloss\n");
     // printf("loss: %f\n", loss);
 }

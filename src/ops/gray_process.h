@@ -4,7 +4,7 @@
 #include <math.h>
 
 #include "image.h"
-#include "tensor.h"
+ 
 
 #ifdef __cplusplus
 extern "C" {

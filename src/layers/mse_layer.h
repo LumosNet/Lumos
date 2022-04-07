@@ -5,9 +5,8 @@
 #include "parser.h"
 #include "gemm.h"
 #include "umath.h"
-#include "loss.h"
 #include "cpu.h"
-#include "tensor.h"
+ 
 
 #ifdef __cplusplus
 extern "C" {

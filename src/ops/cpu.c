@@ -1,20 +1,27 @@
-#include "tensor.h"
+#include "cpu.h"
 
-float get_pixel(float *data, int dim, int *size, int *index)
+void fill_cpu(float *data, int len, float x, int offset)
 {
-    int num = multing_int_list(size, 0, dim);
-    int ts2ls = index_ts2ls(index, dim, size);
-    if (ts2ls >= 0 && ts2ls < num) return data[ts2ls];
-    return 0;
+    for (int i = 0; i < len; i += offset){
+        data[i] = x;
+    }
 }
 
-void change_pixel(float *data, int dim, int *size, int *index, float x)
+void multy_cpu(float *data, int len, float x, int offset)
 {
-    int ts2ls = index_ts2ls(index, dim, size);
-    if (ts2ls) data[ts2ls] = x;
+    for (int i = 0; i < len; i += offset){
+        data[i] *= x;
+    }
 }
 
-float min(float *data, int num)
+void add_cpu(float *data, int len, float x, int offset)
+{
+    for (int i = 0; i < len; i += offset){
+        data[i] += x;
+    }
+}
+
+float min_cpu(float *data, int num)
 {
     float min = data[0];
     for (int i = 1; i < num; ++i){
@@ -23,7 +30,7 @@ float min(float *data, int num)
     return min;
 }
 
-float max(float *data, int num)
+float max_cpu(float *data, int num)
 {
     float max = data[0];
     for (int i = 1; i < num; ++i){
@@ -32,23 +39,29 @@ float max(float *data, int num)
     return max;
 }
 
-float mean(float *data, int num)
+float sum_cpu(float *data, int num)
 {
-    float sum = sum_float_list(data, 0, num);
+    float res = 0;
+    for (int i = 0; i < num; ++i){
+        res += data[i];
+    }
+    return res;
+}
+
+float mean_cpu(float *data, int num)
+{
+    float sum = sum_cpu(data, num);
     return sum / (float)num;
 }
 
-void add_x(float *data, int num, float x)
+void one_hot_encoding(int n, int label, float *space)
 {
-    for (int i = 0; i < num; ++i){
-        data[i] += x;
-    }
-}
-
-void mult_x(float *data, int num, float x)
-{
-    for (int i = 0; i < num; ++i){
-        data[i] *= x;
+    if (n == 1) space[0] = (float)label;
+    else {
+        for (int i = 0; i < n; ++i){
+            space[i] = (float)0;
+        }
+        space[label] = (float)1;
     }
 }
 

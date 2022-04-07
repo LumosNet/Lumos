@@ -1,7 +1,5 @@
 #include "utils.h"
 
-#include "utils.h"
-
 void fill_cpu_float(float *data, float x, int num)
 {
     int i;

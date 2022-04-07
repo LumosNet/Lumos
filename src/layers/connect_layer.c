@@ -16,7 +16,7 @@ void forward_connect_layer(Layer l, Network net)
 
 void backward_connect_layer(Layer l, Network net)
 {
-    full_list_with_float(l.delta, 0, net.batch*l.inputs, 1, 0);
+    fill_cpu(l.delta, net.batch*l.inputs, 0, 1);
     for (int i = 0; i < net.batch; ++i){
         int offset_o = i*l.outputs;
         int offset_d = i*l.inputs;
@@ -82,7 +82,7 @@ void update_connect_layer(Layer l, Network net)
 {
     float rate = -net.learning_rate / (float)net.batch;
     for (int i = 0; i < net.batch; ++i){
-        full_list_with_float(net.workspace, 0, net.workspace_size, 1, 0);
+        fill_cpu(net.workspace, net.workspace_size, 0, 1);
         int offset_d = i*l.outputs;
         int offset_i = i*l.inputs;
         gemm(0, 1, l.output_h, l.output_w, \

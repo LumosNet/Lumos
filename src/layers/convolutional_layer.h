@@ -9,6 +9,7 @@
 #include "active.h"
 #include "bias.h"
 #include "gemm.h"
+#include "cpu.h"
 
 #include "debug.h"
 

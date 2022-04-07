@@ -8,8 +8,7 @@
 #include "bias.h"
 #include "active.h"
 #include "gemm.h"
-#include "list.h"
-#include "tensor.h"
+#include "cpu.h"
 
 #ifdef __cplusplus
 extern "C" {

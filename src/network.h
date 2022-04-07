@@ -3,7 +3,6 @@
 
 #include <string.h>
 
-#include "tensor.h"
 #include "parser.h"
 #include "utils.h"
 #include "active.h"
@@ -12,9 +11,9 @@
 #include "convolutional_layer.h"
 #include "softmax_layer.h"
 #include "connect_layer.h"
-#include "activation_layer.h"
 #include "im2col_layer.h"
 #include "mse_layer.h"
+#include "cpu.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -21,7 +21,7 @@ void backward_convolutional_layer(Layer l, Network net)
     for (int i = 0; i < net.batch; ++i){
         int offset_o = i*l.outputs;
         int offset_d = i*l.inputs;
-        full_list_with_float(net.workspace, 0, net.workspace_size, 1, 0);
+        fill_cpu(net.workspace, net.workspace_size, 0, 1);
         gradient_list(l.output+offset_o, l.outputs, l.gradient);
         multiply(net.delta+offset_o, l.output+offset_o, l.outputs, net.delta+offset_o);
         gemm(1, 0, l.filters, l.ksize*l.ksize*l.input_c, 
@@ -92,7 +92,7 @@ void update_convolutional_layer(Layer l, Network net)
 {
     float rate = -net.learning_rate / (float)net.batch;
     for (int i = 0; i < net.batch; ++i){
-        full_list_with_float(net.workspace, 0, net.workspace_size, 1, 0);
+        fill_cpu(net.workspace, net.workspace_size, 0, 1);
         int offset_o = i*l.outputs;
         int offset_i = i*l.inputs;
         im2col(l.input+offset_i, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, net.workspace);
@@ -102,7 +102,7 @@ void update_convolutional_layer(Layer l, Network net)
         saxpy(l.kernel_weights, net.workspace+l.ksize*l.ksize*l.input_c*l.output_h*l.output_w, l.filters*l.ksize*l.ksize*l.input_c, rate, l.kernel_weights);
         if (l.bias){
             for (int j = 0; j < l.filters; ++j){
-                float bias = sum_float_list(net.delta+offset_o+j*l.output_h*l.output_w, 0, l.output_h*l.output_w);
+                float bias = sum_cpu(net.delta+offset_o+j*l.output_h*l.output_w, l.output_h*l.output_w);
                 l.bias_weights[j] += bias * rate;
             }
         }

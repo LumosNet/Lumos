@@ -7,7 +7,7 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
       	-gencode arch=compute_52,code=[sm_52,compute_52] \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
 
-VPATH=./src/:./test/:./scripts/:./demo
+VPATH=./src/:./src/layers/:./src/ops/:./src/cu_ops/:./src/utils/:./scripts/:./demo
 EXEC=main.exe
 OBJDIR=./obj/
 
@@ -16,7 +16,7 @@ CPP=g++
 NVCC=nvcc
 
 LDFLAGS= -lm -pthread
-COMMON= -Iinclude/ -Isrc -Iscripts -std=c99 -fopenmp
+COMMON= -Ilib/ -Iinclude/ -Isrc -Isrc/layers/ -Isrc/ops/ -Isrc/utils/ -Iscripts -std=c99 -fopenmp
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 
 ifeq ($(GPU), 1)
@@ -30,8 +30,8 @@ COMMON+= -g
 endif
 
 OBJ=active.o avgpool_layer.o bias.o connect_layer.o \
-	convolutional_layer.o data.o gemm.o gray_process.o im2col.o image.o list.o loss.o maxpool_layer.o \
-	network.o parser.o pooling_layer.o softmax_layer.o tensor.o umath.o utils.o \
+	convolutional_layer.o data.o gemm.o gray_process.o im2col.o image.o maxpool_layer.o \
+	network.o parser.o pooling_layer.o softmax_layer.o umath.o utils.o \
 	im2col_layer.o debug.o mse_layer.o cpu.o
 EXECOBJA=xor.o
 

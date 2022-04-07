@@ -8,7 +8,7 @@
 #include "parser.h"
 #include "umath.h"
 #include "gemm.h"
-#include "loss.h"
+#include "cpu.h"
 
 #ifdef __cplusplus
 extern "C" {

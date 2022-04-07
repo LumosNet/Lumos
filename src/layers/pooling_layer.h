@@ -5,7 +5,7 @@
 
 #include "lumos.h"
 #include "parser.h"
-#include "tensor.h"
+ 
 #include "avgpool_layer.h"
 #include "maxpool_layer.h"
 
