@@ -1,5 +1,4 @@
 #include "convolutional_layer.h"
-#include "debug.h"
 
 void forward_convolutional_layer(Layer l, Network net)
 {

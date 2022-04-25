@@ -32,7 +32,7 @@ endif
 OBJ=active.o avgpool_layer.o bias.o connect_layer.o \
 	convolutional_layer.o data.o gemm.o gray_process.o im2col.o image.o maxpool_layer.o \
 	network.o parser.o pooling_layer.o softmax_layer.o umath.o utils.o \
-	im2col_layer.o debug.o mse_layer.o cpu.o
+	im2col_layer.o mse_layer.o cpu.o
 EXECOBJA=xor.o
 
 ifeq ($(GPU), 1)
@@ -47,7 +47,7 @@ EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
 OBJS = $(addprefix $(OBJDIR), $(OBJ))
 DEPS = $(wildcard src/*.h) makefile include/lumos.h
 
-all: obj $(EXEC)
+all: obj backup $(EXEC)
 
 $(EXEC): $(OBJS) $(EXECOBJ)
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
@@ -63,6 +63,8 @@ $(OBJDIR)%.o: %.cu $(DEPS)
 
 obj:
 	mkdir obj
+backup:
+	mkdir backup
 
 .PHONY: clean
 

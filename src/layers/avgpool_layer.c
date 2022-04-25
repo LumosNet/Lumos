@@ -1,5 +1,4 @@
 #include "avgpool_layer.h"
-#include "debug.h"
 
 void forward_avgpool_layer(Layer l, Network net)
 {

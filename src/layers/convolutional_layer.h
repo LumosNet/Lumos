@@ -11,8 +11,6 @@
 #include "gemm.h"
 #include "cpu.h"
 
-#include "debug.h"
-
 #ifdef __cplusplus
 extern "C"{
 #endif

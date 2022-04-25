@@ -7,8 +7,6 @@
 #include "parser.h"
 #include "im2col.h"
 
-#include "debug.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif

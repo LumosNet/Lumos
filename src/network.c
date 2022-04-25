@@ -113,16 +113,10 @@ void train(Network *net, int x)
         offset += net->batch;
         if (offset >= net->num) offset -= net->num;
         n += 1;
-        if (n % 5000 == 0){
-            char *num = int2str(n);
-            char *path = link_str("./data/weight", num);
-            printf("%s\n", path);
-            save_weights(net, path);
-        }
         if (n == x) {
-	    save_weights(net, "./backup/weights.w");
-	    break;
-	}
+            save_weights(net, "./backup/weights.w");
+            break;
+	    }
     }
 }
 

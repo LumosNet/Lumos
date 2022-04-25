@@ -13,7 +13,6 @@ void load_train_data(Network *net, int offset)
         resize_im(im, h[0], w[0], c[0], net->height, net->width, net->input+offset_i);
         net->labels[i] = get_labels(net->label[index])[0];
         free(im);
-        // debug_data(net->bdebug, net->height*net->channel, net->width, net->input+offset_i, "\nnet input\n");
     }
     net->output = net->input;
     free(w);
