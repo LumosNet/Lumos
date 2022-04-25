@@ -19,7 +19,7 @@ void test_xor_demo(char **argv)
     printf("xor: [0, 1], test: %f\n", l->input[0]);
 }
 
-void train_xor_demo(char **argv, int x)
+void train_xor_demo(char **argv)
 {
     Network *net = load_network("./cfg/xor.cfg");
     init_network(net, "./demo/xor/xor.data", argv[1]);
@@ -28,6 +28,10 @@ void train_xor_demo(char **argv, int x)
 
 int main(int argc, char **argv)
 {
-    train_xor_demo(argv, 100);
+    if (0 == strcmp(argv[1], "train")){
+        train_xor_demo(argv);
+    } else if (0 == strcmp(argv[1], "test")){
+        test_xor_demo(argv);
+    }
     return 0;
 }

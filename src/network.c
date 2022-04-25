@@ -102,7 +102,6 @@ void train(Network *net, int x)
     int offset = 0;
     int n = 0;
     while (1){
-        printf("%d\n", n);
         load_train_data(net, offset);
         forward_network(net);
         backward_network(net);
