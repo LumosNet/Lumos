@@ -17,20 +17,23 @@ CFGPiece *make_cfg_piece(char *name_line)
 {
     CFGPiece *cfg_piece = malloc(sizeof(struct CFGPiece));
     cfg_piece->param_num = 0;
-    cfg_piece->name = malloc((strlen(name_line)-2)*sizeof(char));
-    memcpy(cfg_piece->name, name_line+1, (strlen(name_line)-2)*sizeof(char));
-    cfg_piece->name[strlen(name_line)-2] = '\0';
+    cfg_piece->name = malloc((strlen(name_line) - 2) * sizeof(char));
+    memcpy(cfg_piece->name, name_line + 1, (strlen(name_line) - 2) * sizeof(char));
+    cfg_piece->name[strlen(name_line) - 2] = '\0';
     cfg_piece->next = NULL;
     return cfg_piece;
 }
 
 void insert_cfg_params(CFGParams *cfg_params, CFGParam *cfg_param)
 {
-    if (cfg_params->head){
+    if (cfg_params->head)
+    {
         CFGParam *tail = cfg_params->tail;
         tail->next = cfg_param;
         cfg_params->tail = cfg_param;
-    } else{
+    }
+    else
+    {
         cfg_params->head = cfg_param;
         cfg_params->tail = cfg_param;
     }
@@ -38,11 +41,14 @@ void insert_cfg_params(CFGParams *cfg_params, CFGParam *cfg_param)
 
 void insert_cfg_pieces(CFGPieces *cfg_pieces, CFGPiece *cfg_piece)
 {
-    if (cfg_pieces->head){
+    if (cfg_pieces->head)
+    {
         CFGPiece *tail = cfg_pieces->tail;
         tail->next = cfg_piece;
         cfg_pieces->tail = cfg_piece;
-    } else{
+    }
+    else
+    {
         cfg_pieces->head = cfg_piece;
         cfg_pieces->tail = cfg_piece;
     }
@@ -63,24 +69,26 @@ CFG *load_conf_cfg(char *file)
     cfg_pieces->tail = NULL;
     cfg->pieces = cfg_pieces;
     cfg->piece_num = 0;
-    for (int i = 0; i < n_line; ++i){
-        line = lines[i+1];
-        switch (line[0]){
-            case '[':
-                cfg_piece = make_cfg_piece(line);
-                cfg_params = malloc(sizeof(struct CFGParams));
-                cfg_params->head = NULL;
-                cfg_params->tail = NULL;
-                cfg_piece->params = cfg_params;
-                insert_cfg_pieces(cfg_pieces, cfg_piece);
-                cfg->piece_num += 1;
-                break;
-            case '#':
-                break;
-            default:
-                cfg_param = make_cfg_param(line);
-                insert_cfg_params(cfg_params, cfg_param);
-                cfg_piece->param_num += 1;
+    for (int i = 0; i < n_line; ++i)
+    {
+        line = lines[i + 1];
+        switch (line[0])
+        {
+        case '[':
+            cfg_piece = make_cfg_piece(line);
+            cfg_params = malloc(sizeof(struct CFGParams));
+            cfg_params->head = NULL;
+            cfg_params->tail = NULL;
+            cfg_piece->params = cfg_params;
+            insert_cfg_pieces(cfg_pieces, cfg_piece);
+            cfg->piece_num += 1;
+            break;
+        case '#':
+            break;
+        default:
+            cfg_param = make_cfg_param(line);
+            insert_cfg_params(cfg_params, cfg_param);
+            cfg_piece->param_num += 1;
         }
     }
     return cfg;
@@ -106,8 +114,10 @@ char *get_param_by_key(CFGPiece *cfg_piece, char *key)
     CFGParams *params = cfg_piece->params;
     CFGParam *param = params->head;
     char *val = NULL;
-    while (param){
-        if (0 == strcmp(key, param->key)){
+    while (param)
+    {
+        if (0 == strcmp(key, param->key))
+        {
             val = param->val;
             break;
         }
@@ -121,8 +131,10 @@ CFGPiece *get_piece(CFG *cfg, int index)
     CFGPiece *piece = pieces->head;
     CFGPiece *res = NULL;
     int n = 0;
-    while (piece){
-        if (n+1 == index){
+    while (piece)
+    {
+        if (n + 1 == index)
+        {
             res = piece;
             break;
         }
@@ -138,8 +150,10 @@ CFGParam *get_param(CFGPiece *cfg_piece, int index)
     CFGParam *param = params->head;
     CFGParam *res;
     int n = 0;
-    while (param){
-        if (n+1 == index){
+    while (param)
+    {
+        if (n + 1 == index)
+        {
             res = param;
             break;
         }

@@ -19,7 +19,7 @@ void bind_train_data(Session *sess, char *path)
     fclose(fp);
     int lines = atoi(data_paths[0]);
     sess->train_data_num = lines;
-    sess->train_data_paths = data_paths+1;
+    sess->train_data_paths = data_paths + 1;
     fprintf(stderr, "\nGet Train Data List From %s\n", path);
 }
 
@@ -30,7 +30,7 @@ void bind_test_data(Session *sess, char *path)
     fclose(fp);
     int lines = atoi(data_paths[0]);
     sess->test_data_num = lines;
-    sess->test_data_paths = data_paths+1;
+    sess->test_data_paths = data_paths + 1;
     fprintf(stderr, "\nGet Test Data List From %s\n", path);
 }
 
@@ -39,15 +39,16 @@ void bind_train_label(Session *sess, int label_num, char *path)
     FILE *fp = fopen(path, "r");
     char **label_paths = fgetls(fp);
     fclose(fp);
-    sess->train_label_paths = label_paths+1;
+    sess->train_label_paths = label_paths + 1;
     sess->label_num = label_num;
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
-    for (int i = 0; i < graph->layer_num; ++i){
+    for (int i = 0; i < graph->layer_num; ++i)
+    {
         Layer *l = layers[i];
         l->label_num = label_num;
     }
-    Layer *l = layers[graph->layer_num-1];
+    Layer *l = layers[graph->layer_num - 1];
     l->truth = sess->truth;
     fprintf(stderr, "\nGet Label List From %s\n", path);
 }
@@ -57,15 +58,16 @@ void bind_test_label(Session *sess, int label_num, char *path)
     FILE *fp = fopen(path, "r");
     char **label_paths = fgetls(fp);
     fclose(fp);
-    sess->test_label_paths = label_paths+1;
+    sess->test_label_paths = label_paths + 1;
     sess->label_num = label_num;
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
-    for (int i = 0; i < graph->layer_num; ++i){
+    for (int i = 0; i < graph->layer_num; ++i)
+    {
         Layer *l = layers[i];
         l->label_num = label_num;
     }
-    Layer *l = layers[graph->layer_num-1];
+    Layer *l = layers[graph->layer_num - 1];
     l->truth = sess->truth;
     fprintf(stderr, "\nGet Label List From %s\n", path);
 }

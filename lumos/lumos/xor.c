@@ -15,8 +15,7 @@ void xor_process_test_information(char **label, float *truth, float *predict, fl
     fprintf(stderr, "Loss:    %f\n\n", loss);
 }
 
-void xor()
-{
+void xor () {
     Graph *graph = create_graph("Lumos", 5);
     Layer *l1 = make_im2col_layer(1);
     Layer *l2 = make_connect_layer(4, 1, "logistic");
