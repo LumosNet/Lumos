@@ -30,7 +30,7 @@ COMMON+= -g
 endif
 
 OBJ=active.o avgpool_layer.o bias.o connect_layer.o \
-	convolutional_layer.o data.o gemm.o gray_process.o im2col.o image.o maxpool_layer.o \
+	convolutional_layer.o data.o gemm.o im2col.o image.o maxpool_layer.o \
 	network.o parser.o pooling_layer.o softmax_layer.o umath.o utils.o \
 	im2col_layer.o mse_layer.o cpu.o
 EXECOBJA=xor.o
