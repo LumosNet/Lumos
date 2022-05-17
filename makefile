@@ -7,7 +7,30 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
       	-gencode arch=compute_52,code=[sm_52,compute_52] \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
 
-VPATH=./src/:./src/layers/:./src/ops/:./src/cu_ops/:./src/utils/:./scripts/:./demo
+# 源代码所在目录（包括所有子目录）
+VPATH=./src/: \
+      ./src/core/: \
+      ./src/core/component/: \
+      ./src/core/component/layer/: \
+      ./src/core/component/network/: \
+      ./src/core/ops/: \
+      ./src/dependent/: \
+      ./src/dependent/file/: \
+      ./src/dependent/str/: \
+      ./demo/: \
+      ./
+
+COMMON=-Isrc \
+       -Isrc/core \
+	   -Isrc/core/component \
+	   -Isrc/core/component/layer \
+	   -Isrc/core/component/network \
+	   -Isrc/core/ops \
+	   -Isrc/dependent \
+	   -Isrc/dependent/file \
+	   -Isrc/dependent/str \
+	   -Idemo
+
 EXEC=main.exe
 OBJDIR=./obj/
 
@@ -16,7 +39,7 @@ CPP=g++
 NVCC=nvcc
 
 LDFLAGS= -lm -pthread
-COMMON= -Ilib/ -Iinclude/ -Isrc -Isrc/layers/ -Isrc/ops/ -Isrc/utils/ -Iscripts -std=c99 -fopenmp
+COMMON+= -Ilib/ -Iinclude/ -Iscripts -std=c99 -fopenmp
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 
 ifeq ($(GPU), 1)
