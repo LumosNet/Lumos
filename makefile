@@ -55,7 +55,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o im2col_layer.o \
 		maxpool_layer.o mse_layer.o pooling_layer.o softmax_layer.o \
 		network.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o \
-		read_f.o \
+		binary_f.o cfg_f.o read_f.o \
 		parser.o str_ops.o \
 		data.o umath.o
 EXECOBJA=xor.o
