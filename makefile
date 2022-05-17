@@ -29,7 +29,6 @@ COMMON=-Isrc \
 	   -Isrc/dependent \
 	   -Isrc/dependent/file \
 	   -Isrc/dependent/str \
-	   -Idemo
 
 EXEC=main.exe
 OBJDIR=./obj/
@@ -52,10 +51,13 @@ ifeq ($(DEBUG), 1)
 COMMON+= -g
 endif
 
-OBJ=active.o avgpool_layer.o bias.o connect_layer.o \
-	convolutional_layer.o data.o gemm.o im2col.o image.o maxpool_layer.o \
-	network.o parser.o pooling_layer.o softmax_layer.o umath.o utils.o \
-	im2col_layer.o mse_layer.o cpu.o
+OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o im2col_layer.o \
+		maxpool_layer.o mse_layer.o pooling_layer.o softmax_layer.o \
+		network.o \
+		active.o bias.o cpu.o gemm.o im2col.o image.o \
+		read_f.o \
+		parser.o str_ops.o \
+		data.o umath.o
 EXECOBJA=xor.o
 
 ifeq ($(GPU), 1)

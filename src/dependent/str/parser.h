@@ -1,7 +1,8 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "utils.h"
+#include "str_ops.h"
+#include "read_f.h"
 #include "lumos.h"
 
 #include <stdio.h>

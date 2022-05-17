@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "parser.h"
-#include "utils.h"
+#include "str_ops.h"
 #include "active.h"
 #include "data.h"
 #include "pooling_layer.h"
