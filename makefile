@@ -58,7 +58,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o im2col_layer.o \
 		binary_f.o cfg_f.o text_f.o \
 		parser.o str_ops.o \
 		data.o umath.o
-EXECOBJA=xor.o
+EXECOBJA=main.o
 
 ifeq ($(GPU), 1)
 LDFLAGS+= -lstdc++

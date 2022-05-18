@@ -24,6 +24,7 @@ void train_xor_demo(char **argv)
     Network *net = load_network("./cfg/xor.cfg");
     init_network(net, "./demo/xor/xor.data", argv[3]);
     int x = strtol(argv[2], NULL, 10);
+    printf("%d\n",x);
     train(net, x);
 }
 
