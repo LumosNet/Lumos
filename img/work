@@ -1,8 +1,8 @@
 2022.5.16-22:
-    李卞：文本文件读写模块、CFG解析模块
-          src/dependent/file/cfg_f（master）
-          src/dependent/file/text_f（master）
-    子豪：二进制文件读写模块
-          src/dependent/file/binary_f（master）
-          https://github.com/LumosNet/lumos/tree/38447916b321f1b0bd1f91227617e24055d8189f
-          按照文档中xor模型的测试流程，试一下能不能跑通（使用上述提交版本）
+    李卞:   文本文件读写模块、CFG解析模块
+            src/dependent/file/cfg_f（master）
+            src/dependent/file/text_f（master）
+    子豪:   1.二进制文件读写模块
+                src/dependent/file/binary_f（master）
+            2.https://github.com/LumosNet/lumos/tree/38447916b321f1b0bd1f91227617e24055d8189f
+                按照文档中xor模型的测试流程，试一下能不能跑通（使用上述提交版本）
