@@ -7,9 +7,7 @@
 void test_xor_demo(char **argv)
 {
     Network *net = load_network("./cfg/xor.cfg");
-    printf("%s\n", argv[2]);
     init_network(net, "./demo/xor/xor.data", argv[2]);
-    printf("%s\n", argv[2]);
     Layer *l = &net->layers[net->n-1];
     test(net, "./demo/xor/data/00.png", "./demo/xor/data/00.txt");
     printf("xor: [0, 0], test: %f\n", l->input[0]);
