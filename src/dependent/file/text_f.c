@@ -1,4 +1,4 @@
-#include "read_f.h"
+#include "text_f.h"
 
 char *fgetl(FILE *fp)
 {

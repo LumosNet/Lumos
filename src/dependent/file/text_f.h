@@ -1,5 +1,5 @@
-#ifndef READ_F_H
-#define READ_F_H
+#ifndef TEXT_F_H
+#define TEXT_F_H
 
 #include <stdio.h>
 #include <stdlib.h>
