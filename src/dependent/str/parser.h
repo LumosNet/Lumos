@@ -2,7 +2,7 @@
 #define PARSER_H
 
 #include "str_ops.h"
-#include "read_f.h"
+#include "text_f.h"
 #include "lumos.h"
 
 #include <stdio.h>
