@@ -57,7 +57,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o im2col_layer.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o \
 		binary_f.o cfg_f.o text_f.o \
 		parser.o str_ops.o \
-		data.o umath.o
+		data.o
 EXECOBJA=main.o
 
 ifeq ($(GPU), 1)
