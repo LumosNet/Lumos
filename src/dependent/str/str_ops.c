@@ -1,13 +1,13 @@
 #include "str_ops.h"
 
-void strip(char *line)
+void strip(char *line, char c)
 {
     int len = strlen(line);
     int i;
     int offset = 0;
     for (i = 0; i < len; ++i){
-        char c = line[i];
-        if (c == ' ' || c == '\t' || c == '\n') ++offset;
+        char x = line[i];
+        if (x == ' ' || x == '\t' || x == '\n' || x == c) ++offset;
         else line[i-offset] = c;
     }
     line[len-offset] = '\0';

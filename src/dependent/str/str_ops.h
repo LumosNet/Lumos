@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-void strip(char *line);
+void strip(char *line, char c);
 char **split(char *line, char c, int *num);
 
 char *inten2str(int x);
