@@ -1,3 +1,4 @@
+以周为单位的阶段性工作内容
 2022.5.16-22:
     李卞:   文本文件读写模块、CFG解析模块
             src/dependent/file/cfg_f（master）

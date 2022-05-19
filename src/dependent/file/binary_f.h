@@ -35,8 +35,8 @@ extern "C" {
 #define FILEEND     39
 
 
-int write_as_binary(FILE *fp, float* arry, size_t size);
-int read_as_binary(FILE *fp, int mode, size_t *scop, float**arry, size_t *arrsize);
+int write_as_binary(FILE *fp, float* array, size_t size);
+int read_as_binary(FILE *fp, int mode, size_t *scop, float**array, size_t *arrsize);
 
 #ifdef __cplusplus
 }

@@ -1,9 +1,9 @@
 #include "binary_f.h"
 
 
-int write_as_binary(FILE *fp, float* arry, size_t size)
+int write_as_binary(FILE *fp, float* array, size_t size)
 {
-    size_t res = fwrite(arry, sizeof(float), size, fp);
+    size_t res = fwrite(array, sizeof(float), size, fp);
     if (res != size)
     {
         int error = ferror(fp);
@@ -17,7 +17,7 @@ int write_as_binary(FILE *fp, float* arry, size_t size)
 }
 
 
-int read_part_as_bin(FILE *fp, float**arry, size_t *arrsize, size_t start,\
+int read_part_as_bin(FILE *fp, float**array, size_t *arrsize, size_t start,\
      size_t end)
 {
     int state = fseek(fp, start*sizeof(float), SEEK_SET);
@@ -27,7 +27,7 @@ int read_part_as_bin(FILE *fp, float**arry, size_t *arrsize, size_t start,\
     }
     size_t length = end - start;
     float *arr = (float*)malloc(sizeof(float)*(end-start));
-    *arry = arr;
+    *array = arr;
     int res = fread(arr, sizeof(float), end-start, fp);
     
     if (res != (end-start))
@@ -46,7 +46,7 @@ int read_part_as_bin(FILE *fp, float**arry, size_t *arrsize, size_t start,\
 
 
 
-int read_as_binary(FILE *fp, int mode, size_t *scop, float**arry, size_t *arrsize)
+int read_as_binary(FILE *fp, int mode, size_t *scop, float**array, size_t *arrsize)
 {
     int res;
     size_t end;
@@ -64,7 +64,7 @@ int read_as_binary(FILE *fp, int mode, size_t *scop, float**arry, size_t *arrsiz
                 return FSEEKERROR;
             }
             end = ftell(fp)/sizeof(float);
-            return read_part_as_bin(fp, arry, arrsize, 0, end);
+            return read_part_as_bin(fp, array, arrsize, 0, end);
             break;
         case READPART:
             start = scop[0];
@@ -73,11 +73,11 @@ int read_as_binary(FILE *fp, int mode, size_t *scop, float**arry, size_t *arrsiz
             {
                 return RANGEERROR;
             }
-            return read_part_as_bin(fp, arry, arrsize, start, end);
+            return read_part_as_bin(fp, array, arrsize, start, end);
             break;
         case READSERIAL:
             end  = scop[0];
-            return read_part_as_bin(fp, arry, arrsize, 0, end);
+            return read_part_as_bin(fp, array, arrsize, 0, end);
             break;
         default:
             return  MODERROR;
