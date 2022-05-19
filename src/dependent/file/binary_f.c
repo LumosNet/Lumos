@@ -1,86 +1,29 @@
 #include "binary_f.h"
 
 
-int write_as_binary(FILE *fp, float* array, size_t size)
+void write_as_binary(FILE *fp, float* array, size_t size)
 {
-    size_t res = fwrite(array, sizeof(float), size, fp);
-    if (res != size)
-    {
-        int error = ferror(fp);
-        if (!error)
-        {
-            return FILEEND;
-        }
-        return error;
-    }
-    return SUCESS;
+    fwrite(array, sizeof(float), size, fp);
 }
 
 
-int read_part_as_bin(FILE *fp, float**array, size_t *arrsize, size_t start,\
-     size_t end)
+void read_part_as_bin(FILE *fp, float**array, size_t *arrsize, size_t length)
 {
-    int state = fseek(fp, start*sizeof(float), SEEK_SET);
-    if(state)
-    {
-        return FSEEKERROR;
-    }
-    size_t length = end - start;
-    float *arr = (float*)malloc(sizeof(float)*(end-start));
+    fseek(fp, 0, SEEK_SET);
+    float *arr = (float*)malloc(sizeof(float)*length);
     *array = arr;
-    int res = fread(arr, sizeof(float), end-start, fp);
-    
-    if (res != (end-start))
-    {
-        int error = ferror(fp);
-        if (!error)
-        {
-            return FILEEND;
-        }
-        *arrsize = res;
-        return error;
-    }
-    *arrsize = end - start;
-    return SUCESS;
+    int res = fread(arr, sizeof(float), length, fp);
+    *arrsize = res;
 }
 
-
-
-int read_as_binary(FILE *fp, int mode, size_t *scop, float**array, size_t *arrsize)
+void read_all_as_binary(FILE *fp, float**array, size_t *arrsize)
 {
-    int res;
-    size_t end;
-    size_t start;
-    if(!scop && mode != 0)
-    {
-        return ARGSERROR;
-    }
+    fseek(fp, 0, SEEK_END);
+    size_t end = ftell(fp)/sizeof(float);
+    read_part_as_bin(fp, array, arrsize, end);
+}
 
-    switch (mode)
-    {
-        case READALL:
-            if(!fseek(fp, 0, SEEK_END))
-            {
-                return FSEEKERROR;
-            }
-            end = ftell(fp)/sizeof(float);
-            return read_part_as_bin(fp, array, arrsize, 0, end);
-            break;
-        case READPART:
-            start = scop[0];
-            end   = scop[1];
-            if(end<=start)
-            {
-                return RANGEERROR;
-            }
-            return read_part_as_bin(fp, array, arrsize, start, end);
-            break;
-        case READSERIAL:
-            end  = scop[0];
-            return read_part_as_bin(fp, array, arrsize, 0, end);
-            break;
-        default:
-            return  MODERROR;
-            break;
-   } 
+void read_h2x_as_binary(FILE *fp, size_t length, float**array, size_t *arrsize)
+{
+    read_part_as_bin(fp, array, arrsize, length); 
 }
