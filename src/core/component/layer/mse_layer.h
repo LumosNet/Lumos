@@ -4,7 +4,6 @@
 #include "lumos.h"
 #include "parser.h"
 #include "gemm.h"
-#include "umath.h"
 #include "cpu.h"
  
 
