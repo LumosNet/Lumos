@@ -40,8 +40,10 @@ typedef struct CFG{
     struct CFGPieces *pieces;
 } CFG;
 
-
-void _insert_cfg_piece(struct CFG *cfg, struct CfgPiece *cfg_piece);
+CfgParam *make_cfg_param(char *param_line);
+CfgPiece *make_cfg_piece(char *name_line);
+void insert_cfg_params(CfgParams *cfg_params, CfgParam *cfg_param);
+void insert_cfg_pieces(CFGPieces *cfg_pieces, CfgPiece *cfg_piece);
 CFG *load_file_cfg(char *file);
 
 #ifdef __cplusplus
