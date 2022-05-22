@@ -1,6 +1,9 @@
 #ifndef LAYER_H
 #define LAYER_H
 
+#include <stdlib.h>
+#include <stdio.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -30,17 +33,12 @@ typedef void (*update) (struct layer, struct network);
 typedef update Update;
 
 typedef enum {
-    CONVOLUTIONAL, POOLING, ACTIVATION, CONNECT, SOFTMAX, IM2COL, MSE
+    CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MSE, SOFTMAX, \
+    MAXPOOL, AVGPOOL
 } LayerType;
-
-typedef enum {
-    MAX, AVG
-} PoolingType;
 
 typedef struct layer{
     LayerType type;
-    PoolingType pool;
-    int **index;
     int input_h;
     int input_w;
     int input_c;
@@ -73,6 +71,10 @@ typedef struct layer{
     float *truth;
     float theta;
     float gamma;
+
+    // label标签信息
+    char **labels;
+    int labels_num;
 
     float *kernel_weights;
     float *bias_weights;
