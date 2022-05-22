@@ -3,9 +3,6 @@
 
 #include <string.h>
 
-#include "lumos.h"
-#include "parser.h"
- 
 #include "avgpool_layer.h"
 #include "maxpool_layer.h"
 
@@ -14,7 +11,6 @@ extern "C" {
 #endif
 
 PoolingType load_pooling_type(char *pool);
-
 Layer make_pooling_layer(LayerParams *p, int batch, int h, int w, int c);
 
 #ifdef __cplusplus

@@ -4,8 +4,6 @@
 #include <math.h>
 #include <float.h>
 
-#include "lumos.h"
-#include "parser.h"
 #include "gemm.h"
 #include "cpu.h"
 

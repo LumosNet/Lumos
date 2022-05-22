@@ -1,11 +1,8 @@
 #ifndef MSE_LAYER_H
 #define MSE_LAYER_H
 
-#include "lumos.h"
-#include "parser.h"
 #include "gemm.h"
 #include "cpu.h"
- 
 
 #ifdef __cplusplus
 extern "C" {

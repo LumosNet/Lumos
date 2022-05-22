@@ -1,8 +1,5 @@
-#ifndef INCLUDE_H
-#define INCLUDE_H
-
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef LAYER_H
+#define LAYER_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -13,34 +10,6 @@ typedef float   (*gradient)(float);
 
 typedef activate Activate;
 typedef gradient Gradient;
-
-typedef enum {
-    STAIR,
-    HARDTAN,
-    LINEAR,
-    LOGISTIC,
-    LOGGY,
-    RELU,
-    ELU,
-    SELU,
-    RELIE,
-    RAMP,
-    LEAKY,
-    TANH,
-    PLSE,
-    LHTAN
-} Activation;
-
-typedef enum {
-    CONVOLUTIONAL, POOLING, ACTIVATION, CONNECT, SOFTMAX, IM2COL, MSE
-} LayerType;
-
-typedef enum {
-    MAX, AVG
-} PoolingType;
-
-struct network;
-typedef struct network network;
 
 struct layer;
 typedef struct layer layer;
@@ -58,8 +27,15 @@ typedef saveweight SaveWeight;
 typedef loadweight LoadWeight;
 
 typedef void (*update) (struct layer, struct network);
-
 typedef update Update;
+
+typedef enum {
+    CONVOLUTIONAL, POOLING, ACTIVATION, CONNECT, SOFTMAX, IM2COL, MSE
+} LayerType;
+
+typedef enum {
+    MAX, AVG
+} PoolingType;
 
 typedef struct layer{
     LayerType type;
@@ -78,8 +54,6 @@ typedef struct layer{
 
     int inputs;
     int outputs;
-
-    // Tensor *gradient_l;
 
     int filters;
     int ksize;
@@ -114,41 +88,6 @@ typedef struct layer{
 
     Update update;
 } layer, Layer;
-
-struct label;
-typedef struct label label;
-
-typedef struct label{
-    float *data;
-    int num;
-    struct label *next;
-} Label;
-
-typedef struct network{
-    int n;
-    int batch;
-    int width;
-    int height;
-    int channel;
-    float learning_rate;
-    size_t workspace_size;
-    float *workspace;
-    float *input;
-    float *output;
-    float *delta;
-    Layer *layers;
-
-    int kinds;
-    char **label;
-    Label *labels;
-
-    int num;
-    char **data;
-
-    FILE *fdebug;
-    FILE *bdebug;
-    FILE *udebug;
-} network, Network, NetWork;
 
 #ifdef __cplusplus
 }

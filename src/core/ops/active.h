@@ -4,11 +4,26 @@
 #include <math.h>
 #include <string.h>
 
-#include "lumos.h"
-
 #ifdef  __cplusplus
 extern "C" {
 #endif
+
+typedef enum {
+    STAIR,
+    HARDTAN,
+    LINEAR,
+    LOGISTIC,
+    LOGGY,
+    RELU,
+    ELU,
+    SELU,
+    RELIE,
+    RAMP,
+    LEAKY,
+    TANH,
+    PLSE,
+    LHTAN
+} Activation;
 
 static inline float stair_activate(float x)
 {

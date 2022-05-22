@@ -3,7 +3,6 @@
 
 #include <string.h>
 
-#include "lumos.h"
 #include "im2col.h"
 
 #ifdef __cplusplus

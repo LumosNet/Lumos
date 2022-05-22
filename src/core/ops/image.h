@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
- 
 #include "im2col.h"
 
 #ifdef __cplusplus

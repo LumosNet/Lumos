@@ -3,8 +3,6 @@
 
 #include <time.h>
 
-#include "lumos.h"
-#include "parser.h"
 #include "image.h"
 #include "active.h"
 #include "bias.h"
