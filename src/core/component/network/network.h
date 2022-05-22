@@ -5,6 +5,7 @@
 
 #include "parser.h"
 #include "str_ops.h"
+#include "cfg_f.h"
 #include "active.h"
 #include "data.h"
 #include "pooling_layer.h"

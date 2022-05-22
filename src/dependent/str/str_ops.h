@@ -14,7 +14,6 @@ char **split(char *line, char c, int *num);
 
 char *inten2str(int x);
 char *int2str(int x);
-char *float2str(float x);
 
 #ifdef __cplusplus
 }

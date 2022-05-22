@@ -12,27 +12,27 @@
 extern "C" {
 #endif
 
-typedef struct CfgParam{
+typedef struct CFGParam{
     char *key;
     char *val;
-    struct CfgParam *next;
-} CfgParam;
+    struct CFGParam *next;
+} CFGParam;
 
-typedef struct CfgParams{
-    struct CfgParam *head;
-    struct CfgParam *tail;
-} CfgParams;
+typedef struct CFGParams{
+    struct CFGParam *head;
+    struct CFGParam *tail;
+} CFGParams;
 
-typedef struct CfgPiece{
+typedef struct CFGPiece{
     int param_num;
     char *name;
-    struct CfgParams *params;
-    struct CfgPiece *next;
-} CfgPiece;
+    struct CFGParams *params;
+    struct CFGPiece *next;
+} CFGPiece;
 
 typedef struct CFGPieces{
-    struct CfgPiece *head;
-    struct CfgPiece *tail;
+    struct CFGPiece *head;
+    struct CFGPiece *tail;
 } CFGPieces;
 
 typedef struct CFG{
@@ -40,11 +40,18 @@ typedef struct CFG{
     struct CFGPieces *pieces;
 } CFG;
 
-CfgParam *make_cfg_param(char *param_line);
-CfgPiece *make_cfg_piece(char *name_line);
-void insert_cfg_params(CfgParams *cfg_params, CfgParam *cfg_param);
-void insert_cfg_pieces(CFGPieces *cfg_pieces, CfgPiece *cfg_piece);
-CFG *load_file_cfg(char *file);
+CFGParam *make_cfg_param(char *param_line);
+CFGPiece *make_cfg_piece(char *name_line);
+void insert_cfg_params(CFGParams *cfg_params, CFGParam *cfg_param);
+void insert_cfg_pieces(CFGPieces *cfg_pieces, CFGPiece *cfg_piece);
+CFG *load_conf_cfg(char *file);
+
+int get_piece_param_n(CFGPiece *cfg_piece);
+int get_cfg_piece_n(CFG *cfg);
+char *get_piece_name(CFGPiece *cfg_piece);
+char *get_param_by_key(CFGPiece *cfg_piece, char *key);
+CFGPiece *get_piece(CFG *cfg, int index);
+CFGParam *get_param(CFGPiece *cfg_piece, int index);
 
 #ifdef __cplusplus
 }

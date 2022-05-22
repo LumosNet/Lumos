@@ -2,7 +2,7 @@
 
 Network *load_network(char *cfg)
 {
-    NetParams *p = load_data_cfg(cfg);
+    NetParams *p =  load_conf_cfg(cfg);
     Node *n = p->head;
     Network *net = create_network(n->val, p->size);
     n = n->next;
