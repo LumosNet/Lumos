@@ -91,6 +91,8 @@ typedef struct layer{
     Update update;
 } layer, Layer;
 
+Layer create_layer(Network *net, LayerParams *p, int h, int w, int c);
+
 #ifdef __cplusplus
 }
 #endif

@@ -61,7 +61,6 @@ void forward_network(Network *net);
 void backward_network(Network *net);
 
 Network *create_network(LayerParams *p, int size);
-Layer create_layer(Network *net, LayerParams *p, int h, int w, int c);
 
 #ifdef __cplusplus
 }
