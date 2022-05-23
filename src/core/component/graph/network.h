@@ -33,13 +33,8 @@ typedef struct label{
 
 typedef struct network{
     int n;
-    int batch;
-    int width;
     int height;
     int channel;
-    float learning_rate;
-    size_t workspace_size;
-    float *workspace;
     float *input;
     float *output;
     float *delta;
