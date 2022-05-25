@@ -3,6 +3,8 @@
 
 #include <string.h>
 
+#include "layer.h"
+#include "cfg_f.h"
 #include "im2col.h"
 
 #ifdef __cplusplus

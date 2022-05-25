@@ -4,9 +4,6 @@ Layer make_avgpool_layer(CFGParams *p, int h, int w, int c)
 {
     Layer l = {0};
     l.type = AVGPOOL;
-    l.input_h = h;
-    l.input_w = w;
-    l.input_c = c;
     l.pad = 0;
 
     CFGParam *param = p->head;
@@ -17,22 +14,9 @@ Layer make_avgpool_layer(CFGParams *p, int h, int w, int c)
         }
         param = param->next;
     }
-    l.output_h = (l.input_h - l.ksize) / l.ksize + 1;
-    l.output_w = (l.input_w - l.ksize) / l.ksize + 1;
-    l.output_c = l.input_c;
 
     l.forward = forward_avgpool_layer;
     l.backward = backward_avgpool_layer;
-
-    l.workspace_size = l.output_h*l.output_w*l.ksize*l.ksize*l.output_c;
-
-    int size_o = l.output_w * l.output_h * l.output_c;
-    int size_d = l.input_w * l.input_h * l.input_c;
-    l.output = calloc(batch*size_o, sizeof(float));
-    l.delta = calloc(batch*size_d, sizeof(float));
-
-    l.inputs = l.input_c*l.input_h*l.input_w;
-    l.outputs = l.output_c*l.output_h*l.output_w;
 
     fprintf(stderr, "  avg              %d x %d / %d  %4d x%4d x%4d   ->  %4d x%4d x%4d\n", \
             l.ksize, l.ksize, l.ksize, l.input_h, l.input_w, l.input_c, \

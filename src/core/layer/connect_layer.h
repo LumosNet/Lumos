@@ -3,6 +3,8 @@
 
 #include <time.h>
 
+#include "layer.h"
+#include "cfg_f.h"
 #include "bias.h"
 #include "active.h"
 #include "gemm.h"

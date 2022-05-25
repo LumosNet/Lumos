@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "cfg_f.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -91,16 +93,7 @@ typedef struct layer{
     Update update;
 } layer, Layer;
 
-// 单独构建一个模块是不是更好
-typedef struct Session{
-    int epoch;
-    int batch;
-    float learning_rate;
-    size_t workspace_size;
-    float *workspace;
-} Session;
-
-Layer create_layer(Network *net, LayerParams *p, int h, int w, int c);
+Layer create_layer(CFGPiece *p, int h, int w, int c);
 
 #ifdef __cplusplus
 }

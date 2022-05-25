@@ -1,6 +1,8 @@
 #ifndef MSE_LAYER_H
 #define MSE_LAYER_H
 
+#include "layer.h"
+#include "cfg_f.h"
 #include "gemm.h"
 #include "cpu.h"
 

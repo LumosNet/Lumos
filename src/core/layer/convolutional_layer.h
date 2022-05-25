@@ -3,6 +3,8 @@
 
 #include <time.h>
 
+#include "layer.h"
+#include "cfg_f.h"
 #include "image.h"
 #include "active.h"
 #include "bias.h"
