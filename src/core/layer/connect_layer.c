@@ -1,34 +1,6 @@
 #include "connect_layer.h"
 
-void forward_connect_layer(Layer l, Network net)
-{
-    for (int i = 0; i < net.batch; ++i){
-        int offset_i = i*l.inputs;
-        int offset_o = i*l.outputs;
-        gemm(0, 0, l.output_h, l.input_h, l.input_h, l.input_w, 
-            1, l.kernel_weights, l.input+offset_i, l.output+offset_o);
-        if (l.bias){
-            add_bias(l.output+offset_o, l.bias_weights, l.ksize, 1);
-        }
-        activate_list(l.output+offset_o, l.outputs, l.active);
-    }
-}
-
-void backward_connect_layer(Layer l, Network net)
-{
-    fill_cpu(l.delta, net.batch*l.inputs, 0, 1);
-    for (int i = 0; i < net.batch; ++i){
-        int offset_o = i*l.outputs;
-        int offset_d = i*l.inputs;
-        gradient_list(l.output+offset_o, l.outputs, l.gradient);
-        multiply(net.delta+offset_o, l.output+offset_o, l.outputs, net.delta+offset_o);
-        gemm(1, 0, l.output_h, l.input_h, l.output_h, l.output_w, 1, 
-            l.kernel_weights, net.delta+offset_o, l.delta+offset_d);
-    }
-    l.update(l, net);
-}
-
-Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
+Layer make_connect_layer(CFGParams *p, int h, int w, int c)
 {
     Layer l = {0};
     l.type = CONNECT;
@@ -37,9 +9,9 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
     l.input_c = c;
     l.bias = 1;
     l.filters = 1;
-    Node *n = p->head;
-    while (n){
-        Params *param = n->val;
+
+    CFGParam *param = p->head;
+    while (param){
         if (0 == strcmp(param->key, "output")){
             l.ksize = atoi(param->val);
         } else if (0 == strcmp(param->key, "active")){
@@ -49,7 +21,7 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
         } else if (0 == strcmp(param->key, "bias")){
             l.bias = atoi(param->val);
         }
-        n = n->next;
+        param = param->next;
     }
     l.output_h = l.ksize;
     l.output_w = 1;
@@ -78,20 +50,32 @@ Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c)
     return l;
 }
 
-void update_connect_layer(Layer l, Network net)
+void forward_connect_layer(Layer l, float *workspace)
 {
-    float rate = -net.learning_rate / (float)net.batch;
-    for (int i = 0; i < net.batch; ++i){
-        fill_cpu(net.workspace, net.workspace_size, 0, 1);
-        int offset_d = i*l.outputs;
-        int offset_i = i*l.inputs;
-        gemm(0, 1, l.output_h, l.output_w, \
-            l.input_h, l.input_w, 1, \
-            net.delta+offset_d, l.input+offset_i, net.workspace);
-        saxpy(l.kernel_weights, net.workspace, l.output_h * l.input_h, rate, l.kernel_weights);
-        if (l.bias){
-            saxpy(l.bias_weights, net.delta+offset_d, l.outputs, rate, l.bias_weights);
-        }
+    gemm(0, 0, l.output_h, l.input_h, l.input_h, l.input_w, 
+        1, l.kernel_weights, l.input, l.output);
+    if (l.bias){
+        add_bias(l.output, l.bias_weights, l.ksize, 1);
+    }
+    activate_list(l.output, l.outputs, l.active);
+}
+
+void backward_connect_layer(Layer l, float *n_delta, float *workspace)
+{
+    gradient_list(l.output, l.outputs, l.gradient);
+    multiply(net.delta, l.output, l.outputs, net.delta);
+    gemm(1, 0, l.output_h, l.input_h, l.output_h, l.output_w, 1, 
+        l.kernel_weights, net.delta, l.delta);
+}
+
+void update_connect_layer(Layer l, float rate, float *n_delta, float *workspace)
+{
+    gemm(0, 1, l.output_h, l.output_w, \
+        l.input_h, l.input_w, 1, \
+        net.delta, l.input, net.workspace);
+    saxpy(l.kernel_weights, net.workspace, l.output_h * l.input_h, rate, l.kernel_weights);
+    if (l.bias){
+        saxpy(l.bias_weights, net.delta, l.outputs, rate, l.bias_weights);
     }
 }
 
