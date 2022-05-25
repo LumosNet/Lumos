@@ -1,14 +1,14 @@
 #include "str_ops.h"
 
-void strip(char *line, char c)
+void strip(char *line)
 {
     int len = strlen(line);
     int i;
     int offset = 0;
     for (i = 0; i < len; ++i){
-        char x = line[i];
-        if (x == ' ' || x == '\t' || x == '\n' || x == c) ++offset;
-        else line[i-offset] = x;
+        char c = line[i];
+        if (c == ' ' || c == '\t' || c == '\n') ++offset;
+        else line[i-offset] = c;
     }
     line[len-offset] = '\0';
 }
@@ -54,6 +54,15 @@ char **split(char *line, char c, int *num)
 char *int2str(int x)
 {
     char *res;
+    // if (x < 0 && x > -10){
+    //     res = malloc(2*sizeof(char));
+    //     res[1] = inten2str(-x)[0];
+    //     res[0] = '-';
+    //     return res;
+    // }
+    // if (x >= 0 &&  x < 10){
+    //     return inten2str(x);
+    // }
     int a = x;
     int b;
     int n = 1;
@@ -77,6 +86,8 @@ char *int2str(int x)
     res[n-1] = '\0';
     return res;
 }
+
+char *float2str(float x);
 
 char *inten2str(int x)
 {
