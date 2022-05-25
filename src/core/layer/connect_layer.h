@@ -12,12 +12,12 @@
 extern "C" {
 #endif
 
-void forward_connect_layer(Layer l, Network net);
-void backward_connect_layer(Layer l, Network net);
+Layer make_connect_layer(CFGParams *p, int h, int w, int c);
 
-Layer make_connect_layer(LayerParams *p, int batch, int h, int w, int c);
+void forward_connect_layer(Layer l, float *workspace);
+void backward_connect_layer(Layer l, float *n_delta, float *workspace);
 
-void update_connect_layer(Layer l, Network net);
+void update_connect_layer(Layer l, float rate, float *n_delta, float *workspace);
 
 void save_connect_weights(Layer l, FILE *file);
 void load_connect_weights(Layer l, FILE *file);

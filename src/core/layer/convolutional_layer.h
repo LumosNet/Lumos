@@ -13,12 +13,12 @@
 extern "C"{
 #endif
 
-void forward_convolutional_layer(Layer l, Network net);
-void backward_convolutional_layer(Layer l, Network net);
+Layer make_convolutional_layer(CFGParams *p, int h, int w, int c);
 
-Layer make_convolutional_layer(LayerParams *p, int batch, int h, int w, int c);
+void forward_convolutional_layer(Layer l, float *workspace);
+void backward_convolutional_layer(Layer l, float *n_delta, float *workspace);
 
-void update_convolutional_layer(Layer l, Network net);
+void update_convolutional_layer(Layer l, float rate, float *n_delta, float *workspace);
 
 void save_convolutional_weights(Layer l, FILE *file);
 void load_convolutional_weights(Layer l, FILE *file);

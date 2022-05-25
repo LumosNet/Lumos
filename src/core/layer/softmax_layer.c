@@ -1,38 +1,21 @@
 #include "softmax_layer.h"
 
-void forward_softmax_layer(Layer l, Network net)
-{
-    for (int i = 0; i < net.batch; ++i){
-        one_hot_encoding(l.group, net.labels[i].data[0], l.truth+i*l.group);
-    }
-    softmax_cpu(l.input, l.group, net.batch, l.inputs, l.output);
-    if (!l.noloss){
-        softmax_x_ent_cpu(net.batch*l.outputs, l.output, l.truth, l.delta, l.loss);
-    }
-    // float loss = sum_cpu(l.loss, net.batch*l.outputs);
-}
-
-void backward_softmax_layer(Layer l, Network net)
-{
-    if (net.delta) saxpy(l.delta, net.delta, net.batch*l.inputs, 1, l.delta);
-}
-
-Layer make_softmax_layer(LayerParams *p, int batch, int h, int w, int c)
+Layer make_softmax_layer(CFGParams *p, int h, int w, int c)
 {
     Layer l = {0};
     l.type = SOFTMAX;
     l.input_h = h;
     l.input_w = w;
     l.input_c = c;
-    Node *n = p->head;
-    while (n){
-        Params *param = n->val;
+
+    CFGParam *param = p->head;
+    while (param){
         if (0 == strcmp(param->key, "group")){
             l.group = atoi(param->val);
         } else if (0 == strcmp(param->key, "noloss")){
             l.noloss = atoi(param->val);
         }
-        n = n->next;
+        param = param->next;
     }
     l.output_h = l.group;
     l.output_w = 1;
@@ -53,6 +36,20 @@ Layer make_softmax_layer(LayerParams *p, int batch, int h, int w, int c)
     fprintf(stderr, "  softmax          %5d      %4d x%4d         ->  %4d x%4d\n", \
             l.group, l.input_w, l.input_h, l.output_w, l.output_h);
     return l;
+}
+
+void forward_softmax_layer(Layer l, float *workspace)
+{
+    one_hot_encoding(l.group, net.labels[i].data[0], l.truth+i*l.group);
+    softmax_cpu(l.input, l.group, net.batch, l.inputs, l.output);
+    if (!l.noloss){
+        softmax_x_ent_cpu(net.batch*l.outputs, l.output, l.truth, l.delta, l.loss);
+    }
+}
+
+void backward_softmax_layer(Layer l, float *n_delta, float *workspace)
+{
+    if (net.delta) saxpy(l.delta, net.delta, net.batch*l.inputs, 1, l.delta);
 }
 
 void softmax_cpu(float *input, int n, int batch, int batch_offset, float *output)

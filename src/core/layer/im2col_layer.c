@@ -1,6 +1,6 @@
 #include "im2col_layer.h"
 
-Layer make_im2col_layer(LayerParams *p, int batch, int h, int w, int c)
+Layer make_im2col_layer(CFGParams *p, int h, int w, int c)
 {
     Layer l = {0};
     l.type = IM2COL;
@@ -11,15 +11,15 @@ Layer make_im2col_layer(LayerParams *p, int batch, int h, int w, int c)
     l.output_h = 1;
     l.output_w = 1;
     l.output_c = 1;
-    Node *n = p->head;
-    while (n){
-        Params *param = n->val;
+
+    CFGParam *param = p->head;
+    while (param){
         if (0 == strcmp(param->key, "flag")){
             int flag = atoi(param->val);
             if (flag) l.output_h = l.input_h*l.input_w*l.input_c;
             else l.output_w = l.input_h*l.input_w*l.input_c;
         }
-        n = n->next;
+        param = param->next;
     }
     l.inputs = l.input_c*l.input_h*l.input_w;
     l.outputs = l.output_c*l.output_h*l.output_w;
@@ -32,12 +32,12 @@ Layer make_im2col_layer(LayerParams *p, int batch, int h, int w, int c)
     return l;
 }
 
-void forward_im2col_layer(Layer l, Network net)
+void forward_im2col_layer(Layer l, float *workspace)
 {
-    memcpy(l.output, l.input, net.batch*l.outputs*sizeof(float));
+    memcpy(l.output, l.input, l.outputs*sizeof(float));
 }
 
-void backward_im2col_layer(Layer l, Network net)
+void backward_im2col_layer(Layer l, float *n_delta, float *workspace)
 {
-    memcpy(l.delta, net.delta, net.batch*l.inputs*sizeof(float));
+    memcpy(l.delta, n_delta, n_delta*l.inputs*sizeof(float));
 }

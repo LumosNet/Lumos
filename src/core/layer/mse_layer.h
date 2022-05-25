@@ -8,10 +8,10 @@
 extern "C" {
 #endif
 
-Layer make_mse_layer(LayerParams *p, int batch, int h, int w, int c);
+Layer make_mse_layer(CFGParams *p, int h, int w, int c);
 
-void forward_mse_layer(Layer l, Network net);
-void backward_mse_layer(Layer l, Network net);
+void forward_mse_layer(Layer l, float *workspace);
+void backward_mse_layer(Layer l, float *n_delta, float *workspace);
 
 #ifdef __cplusplus
 }

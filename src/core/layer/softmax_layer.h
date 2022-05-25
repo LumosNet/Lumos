@@ -11,10 +11,10 @@
 extern "C" {
 #endif
 
-void forward_softmax_layer(Layer l, Network net);
-void backward_softmax_layer(Layer l, Network net);
+Layer make_softmax_layer(CFGParams *p, int h, int w, int c);
 
-Layer make_softmax_layer(LayerParams *p, int batch, int h, int w, int c);
+void forward_softmax_layer(Layer l, float *workspace);
+void backward_softmax_layer(Layer l, float *n_delta, float *workspace);
 
 void softmax_cpu(float *input, int n, int batch, int batch_offset, float *output);
 void softmax(float *input, int n, float *output);

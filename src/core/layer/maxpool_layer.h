@@ -9,10 +9,10 @@
 extern "C" {
 #endif
 
-Layer make_maxpool_layer(LayerParams *p, int batch, int h, int w, int c);
+Layer make_maxpool_layer(CFGParams *p, int h, int w, int c);
 
-void forward_maxpool_layer(Layer l, Network net);
-void backward_maxpool_layer(Layer l, Network net);
+void forward_maxpool_layer(Layer l, float *workspace);
+void backward_maxpool_layer(Layer l, float *n_delta, float *workspace);
 
 #ifdef __cplusplus
 }

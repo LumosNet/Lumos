@@ -11,10 +11,10 @@
 extern "C" {
 #endif
 
-Layer make_avgpool_layer(CFGPiece *p, int batch, int h, int w, int c);
+Layer make_avgpool_layer(CFGParams *p, int h, int w, int c);
 
-void forward_avgpool_layer(Layer l, Session sess);
-void backward_avgpool_layer(Layer l, Session sess);
+void forward_avgpool_layer(Layer l, float *workspace);
+void backward_avgpool_layer(Layer l, float *n_delta, float *workspace);
 
 #ifdef __cplusplus
 }
