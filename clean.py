@@ -12,4 +12,4 @@ def main():
         os.remove(file)
 
 if __name__ == "__main__":
-    main()
+    main() 
