@@ -6,7 +6,7 @@ extern "C" {
 #endif
 
 typedef struct graph{
-    int n;
+    int layer_num;
     int height;
     int channel;
     float *input;
@@ -20,6 +20,8 @@ typedef struct graph{
 
     int num;
     char **data;
+
+    CFG *cfg;
 } graph, Graph;
 
 Network *load_network(char *cfg);
@@ -30,6 +32,9 @@ void forward_network(Network *net);
 void backward_network(Network *net);
 
 Network *create_network(LayerParams *p, int size);
+
+Graph *load_graph(char *cfg);
+Graph *create_graph(CFGPiece *p, int layer_n);
 
 #ifdef __cplusplus
 }

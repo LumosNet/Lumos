@@ -26,6 +26,20 @@ Network *load_network(char *cfg)
     return net;
 }
 
+Graph *load_graph(char *cfg)
+{
+    CFG *cfg = load_conf_cfg(cfg);
+    CFGPieces *pieces = cfg->pieces;
+    CFGPiece *net_params = pieces->head;
+    Graph *graph = create_graph(net_params, cfg->piece_num-1);
+    CFGPiece *piece = net_params->next;
+    int index = 0;
+    while (piece){
+        CFGParams *params = piece->params;
+        Layer layer = create_layer()
+    }
+}
+
 Network *create_network(LayerParams *p, int size)
 {
     Network *net = malloc(sizeof(Network));
@@ -53,6 +67,19 @@ Network *create_network(LayerParams *p, int size)
     net->labels = calloc(net->batch, sizeof(Label));
     fprintf(stderr, "index  type   filters   ksize        input                  output\n");
     return net;
+}
+
+Graph *create_graph(CFGPiece *p, int layer_n)
+{
+    Graph *graph = malloc(sizeof(struct Graph));
+    CFGParams *params = p->params;
+    CFGParam *param = params->head;
+    while (param){
+        param = param->next;
+    } 
+    graph->layer_num = layer_n;
+    graph->layers = calloc(layer_n, sizeof(struct Layer));
+    return graph;
 }
 
 void init_network(Network *net, char *data_file, char *weight_file)
