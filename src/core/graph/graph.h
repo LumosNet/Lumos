@@ -1,37 +1,11 @@
 #ifndef NETWORK_H
 #define NETWORK_H
 
-#include <string.h>
-
-#include "str_ops.h"
-#include "cfg_f.h"
-#include "active.h"
-#include "data.h"
-#include "pooling_layer.h"
-#include "convolutional_layer.h"
-#include "softmax_layer.h"
-#include "connect_layer.h"
-#include "im2col_layer.h"
-#include "mse_layer.h"
-#include "cpu.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-struct network;
-typedef struct network network;
-
-struct label;
-typedef struct label label;
-
-typedef struct label{
-    float *data;
-    int num;
-    struct label *next;
-} Label;
-
-typedef struct network{
+typedef struct graph{
     int n;
     int height;
     int channel;
@@ -46,7 +20,7 @@ typedef struct network{
 
     int num;
     char **data;
-} network, Network, NetWork;
+} graph, Graph;
 
 Network *load_network(char *cfg);
 void train(Network *net, int x);
