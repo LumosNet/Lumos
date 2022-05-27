@@ -4,6 +4,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "avgpool_layer.h"
+#include "connect_layer.h"
+#include "convolutional_layer.h"
+#include "im2col_layer.h"
+#include "maxpool_layer.h"
+#include "mse_layer.h"
+#include "softmax_layer.h"
 #include "cfg_f.h"
 
 #ifdef __cplusplus
@@ -16,20 +23,10 @@ typedef float   (*gradient)(float);
 typedef activate Activate;
 typedef gradient Gradient;
 
-struct layer;
-typedef struct layer layer;
-
 typedef void (*forward)  (struct layer, struct network);
 typedef void (*backward) (struct layer, struct network);
-
 typedef forward Forward;
 typedef backward Backward;
-
-typedef void (*saveweight) (struct layer, FILE *);
-typedef void (*loadweight) (struct layer, FILE *);
-
-typedef saveweight SaveWeight;
-typedef loadweight LoadWeight;
 
 typedef void (*update) (struct layer, struct network);
 typedef update Update;
@@ -47,10 +44,12 @@ typedef struct layer{
     int output_h;
     int output_w;
     int output_c;
-    size_t workspace_size;
+
     float *input;
     float *output;
     float *delta;
+
+    float *workspace;
 
     int inputs;
     int outputs;
@@ -65,18 +64,7 @@ typedef struct layer{
     int batchnorm;
 
     // 在网中的位置，0开始
-    int i;
-
-    // 损失计算参数
-    int noloss;
-    float *loss;
-    float *truth;
-    float theta;
-    float gamma;
-
-    // label标签信息
-    char **labels;
-    int labels_num;
+    int index;
 
     float *kernel_weights;
     float *bias_weights;
@@ -87,13 +75,10 @@ typedef struct layer{
     Activate active;
     Gradient gradient;
 
-    SaveWeight sweights;
-    LoadWeight lweights;
-
     Update update;
 } layer, Layer;
 
-Layer create_layer(CFGPiece *p, int h, int w, int c);
+Layer create_layer(CFGPiece *p);
 
 #ifdef __cplusplus
 }
