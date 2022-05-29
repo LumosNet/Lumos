@@ -11,10 +11,10 @@
 extern "C" {
 #endif
 
-Layer make_maxpool_layer(CFGParams *p, int h, int w, int c);
+Layer make_maxpool_layer(CFGParams *p);
 
-void forward_maxpool_layer(Layer l, float *workspace);
-void backward_maxpool_layer(Layer l, float *n_delta, float *workspace);
+void forward_maxpool_layer(Layer l);
+void backward_maxpool_layer(Layer l, float *n_delta);
 
 #ifdef __cplusplus
 }

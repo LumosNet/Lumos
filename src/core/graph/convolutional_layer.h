@@ -15,15 +15,12 @@
 extern "C"{
 #endif
 
-Layer make_convolutional_layer(CFGParams *p, int h, int w, int c);
+Layer make_convolutional_layer(CFGParams *p);
 
-void forward_convolutional_layer(Layer l, float *workspace);
-void backward_convolutional_layer(Layer l, float *n_delta, float *workspace);
+void forward_convolutional_layer(Layer l);
+void backward_convolutional_layer(Layer l, float *n_delta);
 
-void update_convolutional_layer(Layer l, float rate, float *n_delta, float *workspace);
-
-void save_convolutional_weights(Layer l, FILE *file);
-void load_convolutional_weights(Layer l, FILE *file);
+void update_convolutional_layer(Layer l, float rate, float *n_delta);
 
 #ifdef __cplusplus
 }

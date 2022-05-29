@@ -1,16 +1,9 @@
 #include "im2col_layer.h"
 
-Layer make_im2col_layer(CFGParams *p, int h, int w, int c)
+Layer make_im2col_layer(CFGParams *p)
 {
     Layer l = {0};
     l.type = IM2COL;
-    l.input_h = h,
-    l.input_w = w;
-    l.input_c = c;
-
-    l.output_h = 1;
-    l.output_w = 1;
-    l.output_c = 1;
 
     CFGParam *param = p->head;
     while (param){
@@ -21,23 +14,17 @@ Layer make_im2col_layer(CFGParams *p, int h, int w, int c)
         }
         param = param->next;
     }
-    l.inputs = l.input_c*l.input_h*l.input_w;
-    l.outputs = l.output_c*l.output_h*l.output_w;
     l.forward = forward_im2col_layer;
     l.backward = backward_im2col_layer;
-    l.output = calloc(l.outputs, sizeof(float));
-    l.delta = calloc(l.inputs, sizeof(float));
-    fprintf(stderr, "  im2col                      %4d x%4d x%4d   ->    %2d x%2d\n", \
-            l.input_w, l.input_h, l.input_c, l.output_w, l.output_h);
     return l;
 }
 
-void forward_im2col_layer(Layer l, float *workspace)
+void forward_im2col_layer(Layer l)
 {
     memcpy(l.output, l.input, l.outputs*sizeof(float));
 }
 
-void backward_im2col_layer(Layer l, float *n_delta, float *workspace)
+void backward_im2col_layer(Layer l, float *n_delta)
 {
-    memcpy(l.delta, n_delta, n_delta*l.inputs*sizeof(float));
+    memcpy(l.delta, n_delta, l.inputs*sizeof(float));
 }

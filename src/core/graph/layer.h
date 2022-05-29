@@ -51,6 +51,8 @@ typedef struct layer{
 
     float *workspace;
 
+    int *maxpool_index;
+
     int inputs;
     int outputs;
 
