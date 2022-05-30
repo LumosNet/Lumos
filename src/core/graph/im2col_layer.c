@@ -16,6 +16,8 @@ Layer make_im2col_layer(CFGParams *p)
     }
     l.forward = forward_im2col_layer;
     l.backward = backward_im2col_layer;
+    l.update = NULL;
+
     return l;
 }
 

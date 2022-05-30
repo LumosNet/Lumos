@@ -24,6 +24,7 @@ Layer make_connect_layer(CFGParams *p)
     l.forward = forward_connect_layer;
     l.backward = backward_connect_layer;
     l.update = update_connect_layer;
+
     return l;
 }
 

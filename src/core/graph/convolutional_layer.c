@@ -30,6 +30,7 @@ Layer make_convolutional_layer(CFGParams *p)
     l.forward = forward_convolutional_layer;
     l.backward = backward_convolutional_layer;
     l.update = update_convolutional_layer;
+
     return l;
 }
 
