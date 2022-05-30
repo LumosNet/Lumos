@@ -11,7 +11,7 @@ permalink: /
 
 ### 简介
 
-[Lumos](https://gitee.com/lumos-net/lumos)是一个以个人学习为目的而开发的深度学习框架，以darknet框架作为主要参考。Lumos框架以C语言为主要开发语言，gcc作为主要编译器，当然该框架也可以轻松的在Windows上进行开发。
+[Lumos](https://gitee.com/Lumos-net/Lumos)是一个以个人学习为目的而开发的深度学习框架，以darknet框架作为主要参考。Lumos框架以C语言为主要开发语言，gcc作为主要编译器，当然该框架也可以轻松的在Windows上进行开发。
 
 Lumos一词来源《哈利波特》中的咒语荧光闪烁，该框架旨在提供一个简洁的轻量级深度学习框架，帮助学习、研究深度学习算法和底层实现的学者和爱好者更容易学习相关内容，希望该框架是你学习过程中指引你的荧光。
 
@@ -53,4 +53,4 @@ Lumos框架现在只提供了最基本的网络组件，对于一些特定算法
 
 ### release
 
-[**v0.1-a**](https://github.com/BTboay/lumos/tree/v0.1-a)：第一个正式发布的测试版，我们并不建议您使用该版本，当前我们依然推建您直接使用master分支，并及时更随我们的更新
+[**v0.1-a**](https://github.com/BTboay/Lumos/tree/v0.1-a)：第一个正式发布的测试版，我们并不建议您使用该版本，当前我们依然推建您直接使用master分支，并及时更随我们的更新

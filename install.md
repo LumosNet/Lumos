@@ -22,8 +22,8 @@ $ sudo apt install build-essential
 拉取我们的代码，并进入项目目录
 
 ```shell
-$ git clone git@gitee.com:lumos-net/lumos.git
-$ cd lumos
+$ git clone git@gitee.com:Lumos-net/Lumos.git
+$ cd Lumos
 ```
 
 现在我们来验证您是否可以正常使用，我们为您准备了一个简单的demo
@@ -40,13 +40,13 @@ EXECOBJA=xor.o
 batch=1
 ```
 
-然后，请回到lumos根目录下，命令行输入
+然后，请回到Lumos根目录下，命令行输入
 
 ```shell
 make
 ```
 
-开始编译lumos
+开始编译Lumos
 
 当您编译完成后，命令行输入
 
@@ -54,7 +54,7 @@ make
 ./main.exe ./demo/weights.w
 ```
 
-如果有如下输出，那么您可以正常使用lumos
+如果有如下输出，那么您可以正常使用Lumos
 
 ```shell
 XOR

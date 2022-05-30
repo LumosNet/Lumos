@@ -25,17 +25,17 @@ footer_description: >-
 description: >- # this means to ignore newlines until "baseurl:"
   轻量级深度学习框架，支持多GPU加速
 
-baseurl: "lumos" # the subpath of your site, e.g. /blog
+baseurl: "Lumos" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  BTboay
 show_downloads: True
 
 github:
   is_project_page: True
-  repository_url: https://github.com/BTboay/lumos
-  repository_name: lumos
-  new_url: https://github.com/BTboay/lumos/archive/refs/heads/master.zip
-  last_url: https://github.com/BTboay/lumos/archive/refs/tags/v0.1-a.zip
+  repository_url: https://github.com/BTboay/Lumos
+  repository_name: Lumos
+  new_url: https://github.com/BTboay/Lumos/archive/refs/heads/master.zip
+  last_url: https://github.com/BTboay/Lumos/archive/refs/tags/v0.1-a.zip
 github_url: https://github.com/BTboay
 
 # Build settings
