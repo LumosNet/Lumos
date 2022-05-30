@@ -11,6 +11,10 @@ extern "C" {
 typedef struct session{
     Graph *graph;
 
+    int input_w;
+    int input_h;
+    int input_c;
+
     float *workspace;
     float *output;
     float *layer_delta;
