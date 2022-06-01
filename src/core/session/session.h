@@ -13,13 +13,17 @@ extern "C" {
 typedef struct session{
     Graph *graph;
 
-    int input_w;
-    int input_h;
-    int input_c;
+    int batch;
 
-    int workspace_size;
+    int width;
+    int height;
+    int channel;
+
+    float learning_rate;
+    size_t workspace_size;
 
     float *workspace;
+    float *input;
     float *output;
     float *layer_delta;
     float *net_delta;
