@@ -121,6 +121,10 @@ void TestBackwardConvolutionalLayer()
     net.workspace_size = l.workspace_size;
     net.workspace = calloc(l.workspace_size, sizeof(float));
     net.delta = calloc(batch*l.outputs, sizeof(float));
+    net.input = calloc(l.input_h*l.input_w*l.input_c, sizeof(float));
+    for (int i = 0; i < l.input_h*l.input_w*l.input_c; ++i){
+        net.input[i] = i+1;
+    }
     for (int i = 0; i < batch*l.outputs; ++i){
         net.delta[i] = i+1;
     }
@@ -131,6 +135,7 @@ void TestBackwardConvolutionalLayer()
     for (int i = 0; i < size_k; ++i){
         l.kernel_weights[i] = i+1;
     }
+    l.input = net.input;
     l.bias_weights[0] = 1;
     l.backward(l, net);
 }
