@@ -17,6 +17,9 @@ extern "C"{
 
 Layer make_convolutional_layer(CFGParams *p);
 
+void init_convolutional_layer(Layer l, int w, int h, int c);
+void restore_convolutional_layer(Layer l);
+
 void forward_convolutional_layer(Layer l);
 void backward_convolutional_layer(Layer l, float *n_delta);
 

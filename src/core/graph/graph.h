@@ -28,8 +28,11 @@ typedef struct graph{
 
 Graph *load_graph(char *cfg);
 Graph *create_graph(CFGPiece *p, int layer_n);
-void forward_network(Network *net);
-void backward_network(Network *net);
+// void forward_network(Network *net);
+// void backward_network(Network *net);
+
+void init_graph(Graph g, int w, int h, int c);
+void restore_graph(Graph g);
 
 #ifdef __cplusplus
 }

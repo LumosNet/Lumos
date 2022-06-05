@@ -31,7 +31,53 @@ Layer make_convolutional_layer(CFGParams *p)
     l.backward = backward_convolutional_layer;
     l.update = update_convolutional_layer;
 
+    restore_convolutional_layer(l);
+
     return l;
+}
+
+void init_convolutional_layer(Layer l, int w, int h, int c)
+{
+    l.input_h = h;
+    l.input_w = w;
+    l.input_c = c;
+    l.inputs = l.input_h*l.input_w*l.input_c;
+
+    l.output_h = (l.input_h + 2*l.pad - l.ksize) / l.stride + 1;
+    l.output_w = (l.input_w + 2*l.pad - l.ksize) / l.stride + 1;
+    l.output_c = l.filters;
+    l.outputs = l.output_h*l.output_w*l.output_c;
+
+    l.workspace_size = l.ksize*l.ksize*l.input_c*l.output_h*l.output_w + l.filters*l.ksize*l.ksize*l.input_c;
+
+    l.kernel_weights_size = l.ksize*l.ksize*l.input_c;
+    l.bias_weights_size = l.filters;
+    l.deltas = l.inputs;
+}
+
+void restore_convolutional_layer(Layer l)
+{
+    l.input_h = -1;
+    l.input_w = -1;
+    l.input_c = -1;
+    l.inputs = -1;
+
+    l.output_h = -1;
+    l.output_w = -1;
+    l.output_c = -1;
+    l.outputs = -1;
+
+    l.workspace_size = -1;
+
+    l.kernel_weights_size = -1;
+    l.bias_weights_size = -1;
+    l.deltas = -1;
+
+    l.input = NULL;
+    l.output = NULL;
+    l.kernel_weights = NULL;
+    l.bias_weights = NULL;
+    l.delta = NULL;
 }
 
 void forward_convolutional_layer(Layer l)

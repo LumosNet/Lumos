@@ -12,6 +12,9 @@ extern "C" {
 
 Layer make_mse_layer(CFGParams *p);
 
+void init_mse_layer(Layer l, int w, int h, int c);
+void restore_mse_layer(Layer l);
+
 void forward_mse_layer(Layer l);
 void backward_mse_layer(Layer l, float *n_delta);
 

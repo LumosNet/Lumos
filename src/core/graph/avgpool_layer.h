@@ -11,6 +11,9 @@ extern "C" {
 
 Layer make_avgpool_layer(CFGParams *p);
 
+void init_avgpool_layer(Layer l, int w, int h, int c);
+void restore_avgpool_layer(Layer l);
+
 void forward_avgpool_layer(Layer l);
 void backward_avgpool_layer(Layer l, float *n_delta);
 

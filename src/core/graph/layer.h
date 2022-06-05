@@ -45,6 +45,13 @@ typedef struct layer{
     int output_w;
     int output_c;
 
+    int inputs;
+    int outputs;
+    int kernel_weights_size;
+    int bias_weights_size;
+    int deltas;
+    int workspace_size;
+
     float *input;
     float *output;
     float *delta;

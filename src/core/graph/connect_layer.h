@@ -14,6 +14,9 @@ extern "C" {
 
 Layer make_connect_layer(CFGParams *p);
 
+void init_connect_layer(Layer l, int w, int h, int c);
+void restore_connect_layer(Layer l);
+
 void forward_connect_layer(Layer l);
 void backward_connect_layer(Layer l, float *n_delta);
 

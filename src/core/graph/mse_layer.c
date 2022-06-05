@@ -17,7 +17,45 @@ Layer make_mse_layer(CFGParams *p)
     l.backward = backward_mse_layer;
     l.update = NULL;
 
+    restore_mse_layer(l);
+
     return l;
+}
+
+void init_mse_layer(Layer l, int w, int h, int c)
+{
+    l.input_h = h;
+    l.input_w = w;
+    l.input_c = c;
+    l.inputs = l.input_h*l.input_w*l.input_c;
+
+    l.output_h = 1;
+    l.output_w = 1;
+    l.output_c = 1;
+    l.outputs = l.output_h*l.output_w*l.output_c;
+
+    l.deltas = l.inputs;
+}
+
+void restore_mse_layer(Layer l)
+{
+    l.input_h = -1;
+    l.input_w = -1;
+    l.input_c = -1;
+    l.inputs = -1;
+
+    l.output_h = -1;
+    l.output_w = -1;
+    l.output_c = -1;
+    l.outputs = -1;
+
+    l.workspace_size = -1;
+
+    l.deltas = -1;
+
+    l.input = NULL;
+    l.output = NULL;
+    l.delta = NULL;
 }
 
 // void forward_mse_layer(Layer l, float *workspace)
