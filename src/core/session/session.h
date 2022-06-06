@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 typedef struct session{
-    Graph *graph;
+    Graph graph;
 
     int batch;
 

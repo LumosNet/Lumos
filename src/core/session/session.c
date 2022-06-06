@@ -7,7 +7,8 @@ void session_bind_graph(Session sess, Graph graph)
 
 void session_unbind_graph(Session sess)
 {
-    sess.graph = NULL;
+    Graph graph = {0};
+    sess.graph = graph;
 }
 
 void session_bind_data(Session sess)

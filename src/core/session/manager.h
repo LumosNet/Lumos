@@ -12,7 +12,11 @@
 extern "C" {
 #endif
 
-void create_memory(Session sess);
+void create_run_memory(Session sess);
+void create_workspace_memory(Session sess);
+void create_output_memory(Session sess);
+void create_delta_memory(Session sess);
+
 void set_graph_memory();
 void set_layer_output_memory();
 void set_layer_weight_memory();
