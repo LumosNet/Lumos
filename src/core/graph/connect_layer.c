@@ -6,6 +6,7 @@ Layer make_connect_layer(CFGParams *p)
     l.type = CONNECT;
     l.bias = 1;
     l.filters = 1;
+    l.weights = 1;
 
     CFGParam *param = p->head;
     while (param){

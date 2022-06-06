@@ -69,6 +69,7 @@ typedef struct layer{
     int pad;
     int group;
 
+    int weights;
     int bias;
     int batchnorm;
 

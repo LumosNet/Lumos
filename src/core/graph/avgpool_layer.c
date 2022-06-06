@@ -5,6 +5,7 @@ Layer make_avgpool_layer(CFGParams *p)
     Layer l = {0};
     l.type = AVGPOOL;
     l.pad = 0;
+    l.weights = 0;
 
     CFGParam *param = p->head;
     while (param){

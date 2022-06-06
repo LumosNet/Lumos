@@ -4,6 +4,7 @@ Layer make_im2col_layer(CFGParams *p)
 {
     Layer l = {0};
     l.type = IM2COL;
+    l.weights = 0;
 
     CFGParam *param = p->head;
     while (param){

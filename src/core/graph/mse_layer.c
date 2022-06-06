@@ -4,6 +4,7 @@ Layer make_mse_layer(CFGParams *p)
 {
     Layer l = {0};
     l.type = MSE;
+    l.weights = 0;
 
     CFGParam *param = p->head;
     while (param){

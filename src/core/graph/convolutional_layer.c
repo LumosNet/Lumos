@@ -4,6 +4,7 @@ Layer make_convolutional_layer(CFGParams *p)
 {
     Layer l = {0};
     l.type = CONVOLUTIONAL;
+    l.weights = 1;
 
     CFGParam *param = p->head;
     while (param){
