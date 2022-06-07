@@ -76,9 +76,11 @@ void set_graph_weight(Session sess)
         Layer l = layers[i];
         if (l.weights){
             l.kernel_weights = sess.weights+weights_offset;
+            l.update_kernel_weights = sess.update_weights+weights_offset;
             weights_offset += l.kernel_weights_size;
             if (l.bias){
                 l.bias_weights = sess.weights+weights_offset;
+                l.update_bias_weights = sess.update_weights+weights_offset;
                 weights_offset += l.bias_weights_size;
             }
         }

@@ -98,8 +98,8 @@ void update_connect_layer(Layer l, float rate, float *n_delta)
     gemm(0, 1, l.output_h, l.output_w, \
         l.input_h, l.input_w, 1, \
         n_delta, l.input, l.workspace);
-    saxpy(l.kernel_weights, l.workspace, l.output_h * l.input_h, rate, l.kernel_weights);
+    saxpy(l.update_kernel_weights, l.workspace, l.output_h * l.input_h, rate, l.update_kernel_weights);
     if (l.bias){
-        saxpy(l.bias_weights, n_delta, l.outputs, rate, l.bias_weights);
+        saxpy(l.update_bias_weights, n_delta, l.outputs, rate, l.update_bias_weights);
     }
 }

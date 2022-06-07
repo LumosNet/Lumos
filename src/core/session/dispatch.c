@@ -35,9 +35,23 @@ void backward_session(Session sess)
     Layer *layers = graph.layers;
     Layer l;
     float *delta = NULL;
-    for (int i = 0; i < graph.layer_num; ++i){
+    for (int i = graph.layer_num-1; i >= 0; --i){
         l = layers[i];
         l.backward(l, delta);
+        delta = l.delta;
+    }
+}
+
+void update_session(Session sess)
+{
+    Graph graph = sess.graph;
+    Layer *layers = graph.layers;
+    Layer l;
+    float rate = sess.learning_rate / sess.batch;
+    float *delta = NULL;
+    for (int i = graph.layer_num-1; i >= 0; --i){
+        l = layers[i];
+        l.update(l, rate, delta);
         delta = l.delta;
     }
 }

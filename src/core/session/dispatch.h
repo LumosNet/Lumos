@@ -13,6 +13,7 @@ void session_run(Session sess);
 
 void forward_session(Session sess);
 void backward_session(Session sess);
+void update_session(Session sess);
 
 #ifdef __cplusplus
 }

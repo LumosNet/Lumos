@@ -65,6 +65,9 @@ typedef struct layer{
     float *kernel_weights;
     float *bias_weights;
 
+    float *update_kernel_weights;
+    float *update_bias_weights;
+
     Forward forward;
     Backward backward;
 

@@ -108,11 +108,11 @@ void update_convolutional_layer(Layer l, float rate, float *n_delta)
     gemm(0, 1, l.filters, l.output_h*l.output_w, \
         l.ksize*l.ksize*l.input_c, l.output_h*l.output_w, 1, \
         n_delta, l.workspace, l.workspace+l.ksize*l.ksize*l.input_c*l.output_h*l.output_w);
-    saxpy(l.kernel_weights, l.workspace+l.ksize*l.ksize*l.input_c*l.output_h*l.output_w, l.filters*l.ksize*l.ksize*l.input_c, rate, l.kernel_weights);
+    saxpy(l.update_kernel_weights, l.workspace+l.ksize*l.ksize*l.input_c*l.output_h*l.output_w, l.filters*l.ksize*l.ksize*l.input_c, rate, l.update_kernel_weights);
     if (l.bias){
         for (int j = 0; j < l.filters; ++j){
             float bias = sum_cpu(n_delta+j*l.output_h*l.output_w, l.output_h*l.output_w);
-            l.bias_weights[j] += bias * rate;
+            l.update_bias_weights[j] += bias * rate;
         }
     }
 }
