@@ -5,6 +5,8 @@
 #include <stdlib.h>
 
 #include "graph.h"
+#include "text_f.h"
+#include "binary_f.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,13 +39,9 @@ typedef struct session{
     每次读取一个subdivision的数据
 */
 
-void session_bind_graph(Session sess, Graph graph);
-void session_unbind_graph(Session sess);
-void session_bind_data(Session sess);
-void session_unbind_data(Session sess);
-void session_run(Session sess);
-void session_del(Session sess);
-
+void bind_graph(Session sess, Graph graph);
+void bind_train_data(Session sess, char *path);
+void bind_test_data(Session sess, char *path);
 // 从index读取num个数据
 void load_data(Session sess, int index, int num);
 

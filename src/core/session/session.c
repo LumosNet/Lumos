@@ -1,32 +1,19 @@
 #include "session.h"
 
-void session_bind_graph(Session sess, Graph graph)
+void bind_graph(Session sess, Graph graph)
 {
     sess.graph = graph;
 }
 
-void session_unbind_graph(Session sess)
+void bind_train_data(Session sess, char *path)
 {
-    Graph graph = {0};
-    sess.graph = graph;
+    FILE *fp = fopen(path, "r");
+    char **data_paths = fgetls(fp);
 }
 
-void session_bind_data(Session sess)
-{
+void bind_test_data(Session sess, char *path);
+// 从index读取num个数据
+void load_data(Session sess, int index, int num);
 
-}
-
-void session_unbind_data(Session sess)
-{
-
-}
-
-void session_run(Session sess)
-{
-
-}
-
-void session_del(Session sess)
-{
-    
-}
+void save_weigths(Session sess, char *path);
+void load_weights(Session sess, char *path);
