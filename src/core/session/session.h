@@ -7,6 +7,7 @@
 #include "graph.h"
 #include "text_f.h"
 #include "binary_f.h"
+#include "image.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,9 +31,12 @@ typedef struct session{
     float *input;
     float *output;
     float *layer_delta;
-    float *net_delta;
 
     float *weights;
+    float *update_weights;
+
+    int train_data_num;
+    char **train_data_paths;
 } session, Session;
 
 /*

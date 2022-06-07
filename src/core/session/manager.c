@@ -21,6 +21,12 @@ void create_workspace_memory(Session sess)
     sess.workspace = calloc(max_workspace_size, sizeof(float));
 }
 
+void create_input_memory(Session sess)
+{
+    int inputs = sess.subdivision*sess.height*sess.width*sess.channel;
+    sess.input = calloc(inputs, sizeof(float));
+}
+
 void create_output_memory(Session sess)
 {
     Graph graph = sess.graph;

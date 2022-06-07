@@ -14,6 +14,7 @@ extern "C" {
 
 void create_run_memory(Session sess);
 void create_workspace_memory(Session sess);
+void create_input_memory(Session sess);
 void create_output_memory(Session sess);
 void create_delta_memory(Session sess);
 

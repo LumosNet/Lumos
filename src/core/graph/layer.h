@@ -17,20 +17,6 @@
 extern "C" {
 #endif
 
-typedef float   (*activate)(float);
-typedef float   (*gradient)(float);
-
-typedef activate Activate;
-typedef gradient Gradient;
-
-typedef void (*forward)  (struct layer, struct network);
-typedef void (*backward) (struct layer, struct network);
-typedef forward Forward;
-typedef backward Backward;
-
-typedef void (*update) (struct layer, struct network);
-typedef update Update;
-
 typedef enum {
     CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MSE, SOFTMAX, \
     MAXPOOL, AVGPOOL
@@ -87,6 +73,20 @@ typedef struct layer{
 
     Update update;
 } layer, Layer;
+
+typedef float   (*activate)(float);
+typedef float   (*gradient)(float);
+
+typedef activate Activate;
+typedef gradient Gradient;
+
+typedef void (*forward)  (struct layer);
+typedef void (*backward) (struct layer, float*);
+typedef forward Forward;
+typedef backward Backward;
+
+typedef void (*update) (struct layer, float, float*);
+typedef update Update;
 
 Layer create_layer(CFGPiece *p);
 
