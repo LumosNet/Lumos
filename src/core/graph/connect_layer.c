@@ -13,6 +13,7 @@ Layer make_connect_layer(CFGParams *p)
         if (0 == strcmp(param->key, "output")){
             l.ksize = atoi(param->val);
         } else if (0 == strcmp(param->key, "active")){
+            l.active_str = param->key;
             Activation type = load_activate_type(param->val);
             l.active = load_activate(type);
             l.gradient = load_gradient(type);
@@ -28,6 +29,7 @@ Layer make_connect_layer(CFGParams *p)
 
     restore_connect_layer(l);
 
+    fprintf(stderr, "Connect Layer: [output=%d, active=%s, bias=%d]\n", l.output, l.active_str, l.bias);
     return l;
 }
 

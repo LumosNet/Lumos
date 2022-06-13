@@ -38,6 +38,8 @@ typedef struct layer{
     int deltas;
     int workspace_size;
 
+    char *active_str;
+
     float *input;
     float *output;
     float *delta;

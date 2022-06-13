@@ -1,5 +1,5 @@
-#ifndef NETWORK_H
-#define NETWORK_H
+#ifndef GRAPH_H
+#define GRAPH_H
 
 #include "layer.h"
 
@@ -18,7 +18,7 @@ typedef struct graph{
 
     int kinds;
     char **label;
-    Label *labels;
+    // Label *labels;
 
     int num;
     char **data;
@@ -26,10 +26,8 @@ typedef struct graph{
     CFG *cfg;
 } graph, Graph;
 
-Graph *load_graph(char *cfg);
-Graph *create_graph(CFGPiece *p, int layer_n);
-// void forward_network(Network *net);
-// void backward_network(Network *net);
+Graph load_graph(char *cfg_path);
+Graph create_graph(CFGPiece *p, int layer_n);
 
 void init_graph(Graph g, int w, int h, int c);
 void restore_graph(Graph g);

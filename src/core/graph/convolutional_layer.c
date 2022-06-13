@@ -21,6 +21,7 @@ Layer make_convolutional_layer(CFGParams *p)
         } else if (0 == strcmp(param->key, "normalization")){
             l.batchnorm = atoi(param->val);
         } else if (0 == strcmp(param->key, "active")){
+            l.active_str = param->key;
             Activation type = load_activate_type(param->val);
             l.active = load_activate(type);
             l.gradient = load_gradient(type);
@@ -34,6 +35,8 @@ Layer make_convolutional_layer(CFGParams *p)
 
     restore_convolutional_layer(l);
 
+    fprintf(stderr, "Connect Layer: [filters=%d, ksize=%d, stride=%d, pad=%d, bias=%d, normalization=%d, active=%s]\n", \
+            l.output, l.active_str, l.bias);
     return l;
 }
 

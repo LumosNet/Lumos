@@ -9,24 +9,15 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
 
 # 源代码所在目录（包括所有子目录）
 VPATH=./src/: \
-      ./src/core/: \
-      ./src/core/component/: \
-      ./src/core/component/layer/: \
-      ./src/core/component/network/: \
-      ./src/core/ops/: \
-      ./src/dependent/: \
+	  ./src/dependent/: \
       ./src/dependent/file/: \
       ./src/dependent/str/: \
-      ./demo/: \
+	  ./test/dependent/: \
+      ./test/dependent/file/: \
+      ./test/dependent/str/: \
       ./
 
-COMMON=-Isrc \
-       -Isrc/core \
-	   -Isrc/core/component \
-	   -Isrc/core/component/layer \
-	   -Isrc/core/component/network \
-	   -Isrc/core/ops \
-	   -Isrc/dependent \
+COMMON=-Isrc/dependent \
 	   -Isrc/dependent/file \
 	   -Isrc/dependent/str \
 
@@ -51,14 +42,10 @@ ifeq ($(DEBUG), 1)
 COMMON+= -g
 endif
 
-OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o im2col_layer.o \
-		maxpool_layer.o mse_layer.o pooling_layer.o \
-		network.o \
-		active.o bias.o cpu.o gemm.o im2col.o image.o \
-		binary_f.o cfg_f.o text_f.o \
-		parser.o str_ops.o \
-		data.o
-EXECOBJA=main.o
+OBJ=	binary_f.o cfg_f.o text_f.o \
+		str_ops.o \
+
+EXECOBJA=test_binary.o
 
 ifeq ($(GPU), 1)
 LDFLAGS+= -lstdc++
@@ -70,7 +57,7 @@ endif
 
 EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
 OBJS = $(addprefix $(OBJDIR), $(OBJ))
-DEPS = $(wildcard src/*.h) makefile include/lumos.h
+DEPS = makefile
 
 all: obj backup $(EXEC)
 
@@ -94,4 +81,4 @@ backup:
 .PHONY: clean
 
 clean:
-	python clean.py
+	python3 clean.py

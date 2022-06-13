@@ -1,6 +1,6 @@
 #include "avgpool_layer.h"
 
-Layer make_avgpool_layer(CFGParams *p)
+Layer make_avgpool_layer_by_cfg(CFGParams *p)
 {
     Layer l = {0};
     l.type = AVGPOOL;
@@ -22,8 +22,30 @@ Layer make_avgpool_layer(CFGParams *p)
 
     restore_avgpool_layer(l);
 
+    fprintf(stderr, "Avg Poolling Layer: [ksize=%d]\n", l.ksize);
     return l;
 }
+
+
+Layer make_avgpool_layer_by_arg(int ksize)
+{
+    Layer l = {0};
+    l.type = AVGPOOL;
+    l.pad = 0;
+    l.weights = 0;
+
+    l.ksize = ksize;
+    l.stride = l.ksize;
+
+    l.forward = forward_avgpool_layer;
+    l.backward = backward_avgpool_layer;
+    l.update = NULL;
+
+    restore_avgpool_layer(l);
+
+    return l;
+}
+
 
 void init_avgpool_layer(Layer l, int w, int h, int c)
 {
