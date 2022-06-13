@@ -9,9 +9,7 @@ Layer make_im2col_layer(CFGParams *p)
     CFGParam *param = p->head;
     while (param){
         if (0 == strcmp(param->key, "flag")){
-            int flag = atoi(param->val);
-            if (flag) l.output_h = l.input_h*l.input_w*l.input_c;
-            else l.output_w = l.input_h*l.input_w*l.input_c;
+            l.im2col_flag = atoi(param->val);
         }
         param = param->next;
     }
@@ -21,6 +19,7 @@ Layer make_im2col_layer(CFGParams *p)
 
     restore_im2col_layer(l);
 
+    fprintf(stderr, "Im2col Layer: [flag=%d]\n", l.im2col_flag);
     return l;
 }
 

@@ -56,6 +56,7 @@ typedef struct layer{
     int stride;
     int pad;
     int group;
+    int im2col_flag;
 
     int weights;
     int bias;

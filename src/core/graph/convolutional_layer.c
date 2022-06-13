@@ -35,8 +35,8 @@ Layer make_convolutional_layer(CFGParams *p)
 
     restore_convolutional_layer(l);
 
-    fprintf(stderr, "Connect Layer: [filters=%d, ksize=%d, stride=%d, pad=%d, bias=%d, normalization=%d, active=%s]\n", \
-            l.output, l.active_str, l.bias);
+    fprintf(stderr, "Convolutional Layer: [filters=%d, ksize=%d, stride=%d, pad=%d, bias=%d, normalization=%d, active=%s]\n", \
+            l.filters, l.ksize, l.stride, l.pad, l.bias, l.batchnorm, l.active);
     return l;
 }
 

@@ -20,6 +20,7 @@ Layer make_mse_layer(CFGParams *p)
 
     restore_mse_layer(l);
 
+    fprintf(stderr, "mse Layer\n");
     return l;
 }
 
