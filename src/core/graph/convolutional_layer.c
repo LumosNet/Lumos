@@ -1,37 +1,37 @@
 #include "convolutional_layer.h"
 
-Layer make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalization, char *active)
+Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalization, char *active)
 {
-    Layer l = {0};
-    l.type = CONVOLUTIONAL;
-    l.weights = 1;
+    Layer *l = malloc(sizeof(Layer));
+    l->type = CONVOLUTIONAL;
+    l->weights = 1;
 
-    l.filters = filters;
-    l.ksize = ksize;
-    l.stride = stride;
-    l.pad = pad;
+    l->filters = filters;
+    l->ksize = ksize;
+    l->stride = stride;
+    l->pad = pad;
 
-    l.bias = bias;
+    l->bias = bias;
 
-    l.batchnorm = normalization;
+    l->batchnorm = normalization;
 
-    l.active_str = active;
+    l->active_str = active;
     Activation type = load_activate_type(active);
-    l.active = load_activate(type);
-    l.gradient = load_gradient(type);
+    l->active = load_activate(type);
+    l->gradient = load_gradient(type);
 
-    l.forward = forward_convolutional_layer;
-    l.backward = backward_convolutional_layer;
-    l.update = update_convolutional_layer;
+    l->forward = forward_convolutional_layer;
+    l->backward = backward_convolutional_layer;
+    l->update = update_convolutional_layer;
 
     restore_convolutional_layer(l);
 
     fprintf(stderr, "Convolutional   Layer    :    [filters=%2d, ksize=%2d, stride=%2d, pad=%2d, bias=%d, normalization=%d, active=%s]\n", \
-            l.filters, l.ksize, l.stride, l.pad, l.bias, l.batchnorm, l.active_str);
+            l->filters, l->ksize, l->stride, l->pad, l->bias, l->batchnorm, l->active_str);
     return l;
 }
 
-Layer make_convolutional_layer_by_cfg(CFGParams *p)
+Layer *make_convolutional_layer_by_cfg(CFGParams *p)
 {
     int filters = 0;
     int ksize = 0;
@@ -64,52 +64,52 @@ Layer make_convolutional_layer_by_cfg(CFGParams *p)
         param = param->next;
     }
 
-    Layer l = make_convolutional_layer(filters, ksize, stride, pad, bias, normalization, active);
+    Layer *l = make_convolutional_layer(filters, ksize, stride, pad, bias, normalization, active);
     return l;
 }
 
-void init_convolutional_layer(Layer l, int w, int h, int c)
+void init_convolutional_layer(Layer *l, int w, int h, int c)
 {
-    l.input_h = h;
-    l.input_w = w;
-    l.input_c = c;
-    l.inputs = l.input_h*l.input_w*l.input_c;
+    l->input_h = h;
+    l->input_w = w;
+    l->input_c = c;
+    l->inputs = l->input_h*l->input_w*l->input_c;
 
-    l.output_h = (l.input_h + 2*l.pad - l.ksize) / l.stride + 1;
-    l.output_w = (l.input_w + 2*l.pad - l.ksize) / l.stride + 1;
-    l.output_c = l.filters;
-    l.outputs = l.output_h*l.output_w*l.output_c;
+    l->output_h = (l->input_h + 2*l->pad - l->ksize) / l->stride + 1;
+    l->output_w = (l->input_w + 2*l->pad - l->ksize) / l->stride + 1;
+    l->output_c = l->filters;
+    l->outputs = l->output_h*l->output_w*l->output_c;
 
-    l.workspace_size = l.ksize*l.ksize*l.input_c*l.output_h*l.output_w + l.filters*l.ksize*l.ksize*l.input_c;
+    l->workspace_size = l->ksize*l->ksize*l->input_c*l->output_h*l->output_w + l->filters*l->ksize*l->ksize*l->input_c;
 
-    l.kernel_weights_size = l.ksize*l.ksize*l.input_c;
-    l.bias_weights_size = l.filters;
-    l.deltas = l.inputs;
+    l->kernel_weights_size = l->ksize*l->ksize*l->input_c;
+    l->bias_weights_size = l->filters;
+    l->deltas = l->inputs;
 }
 
-void restore_convolutional_layer(Layer l)
+void restore_convolutional_layer(Layer *l)
 {
-    l.input_h = -1;
-    l.input_w = -1;
-    l.input_c = -1;
-    l.inputs = -1;
+    l->input_h = -1;
+    l->input_w = -1;
+    l->input_c = -1;
+    l->inputs = -1;
 
-    l.output_h = -1;
-    l.output_w = -1;
-    l.output_c = -1;
-    l.outputs = -1;
+    l->output_h = -1;
+    l->output_w = -1;
+    l->output_c = -1;
+    l->outputs = -1;
 
-    l.workspace_size = -1;
+    l->workspace_size = -1;
 
-    l.kernel_weights_size = -1;
-    l.bias_weights_size = -1;
-    l.deltas = -1;
+    l->kernel_weights_size = -1;
+    l->bias_weights_size = -1;
+    l->deltas = -1;
 
-    l.input = NULL;
-    l.output = NULL;
-    l.kernel_weights = NULL;
-    l.bias_weights = NULL;
-    l.delta = NULL;
+    l->input = NULL;
+    l->output = NULL;
+    l->kernel_weights = NULL;
+    l->bias_weights = NULL;
+    l->delta = NULL;
 }
 
 void forward_convolutional_layer(Layer l)

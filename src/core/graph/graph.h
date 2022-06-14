@@ -23,7 +23,7 @@ typedef struct graph{
     float *input;
     float *output;
     float *delta;
-    Layer *layers;
+    Layer **layers;
 
     int kinds;
     char **label;

@@ -7,7 +7,7 @@ Graph create_graph(char *name, int layer_n)
     graph.layer_list_num = layer_n;
     graph.layer_num = 0;
     graph.layers = calloc(layer_n, sizeof(Layer));
-    fprintf(stderr, "[%s]        %d  Layers\n", graph.graph_name, graph.layer_num);
+    fprintf(stderr, "[%s]         max   %d  Layers\n", graph.graph_name, graph.layer_list_num);
     return graph;
 }
 
@@ -28,7 +28,7 @@ Graph load_graph_from_cfg(char *cfg_path)
     int index = 0;
     while (piece){
         fprintf(stderr, "%3d ", index+1);
-        Layer layer = create_layer_by_cfg(piece);
+        Layer *layer = create_layer_by_cfg(piece);
         graph.layers[index] = layer;
         graph.layer_num += 1;
         index += 1;
@@ -40,7 +40,7 @@ Graph load_graph_from_cfg(char *cfg_path)
 
 Layer create_layer_by_cfg(CFGPiece *p)
 {
-    Layer layer;
+    Layer *layer;
     if (0 == strcmp(p->name, "convolutional")){
         layer = make_convolutional_layer_by_cfg(p->params);
     } else if (0 == strcmp(p->name, "avgpool")){

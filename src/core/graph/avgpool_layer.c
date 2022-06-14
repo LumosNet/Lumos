@@ -1,27 +1,27 @@
 #include "avgpool_layer.h"
 
-Layer make_avgpool_layer(int ksize)
+Layer *make_avgpool_layer(int ksize)
 {
-    Layer l = {0};
-    l.type = AVGPOOL;
-    l.pad = 0;
-    l.weights = 0;
+    Layer *l = malloc(sizeof(Layer));
+    l->type = AVGPOOL;
+    l->pad = 0;
+    l->weights = 0;
 
-    l.ksize = ksize;
-    l.stride = l.ksize;
+    l->ksize = ksize;
+    l->stride = l->ksize;
 
-    l.forward = forward_avgpool_layer;
-    l.backward = backward_avgpool_layer;
-    l.update = NULL;
+    l->forward = forward_avgpool_layer;
+    l->backward = backward_avgpool_layer;
+    l->update = NULL;
 
     restore_avgpool_layer(l);
 
-    fprintf(stderr, "Avg Pooling     Layer    :    [ksize=%2d]\n", l.ksize);
+    fprintf(stderr, "Avg Pooling     Layer    :    [ksize=%2d]\n", l->ksize);
     return l;
 }
 
 
-Layer make_avgpool_layer_by_cfg(CFGParams *p)
+Layer *make_avgpool_layer_by_cfg(CFGParams *p)
 {
     CFGParam *param = p->head;
     int ksize = 0;
@@ -31,48 +31,48 @@ Layer make_avgpool_layer_by_cfg(CFGParams *p)
         }
         param = param->next;
     }
-    Layer l = make_avgpool_layer(ksize);
+    Layer *l = make_avgpool_layer(ksize);
 
     return l;
 }
 
 
-void init_avgpool_layer(Layer l, int w, int h, int c)
+void init_avgpool_layer(Layer *l, int w, int h, int c)
 {
-    l.input_h = h;
-    l.input_w = w;
-    l.input_c = c;
-    l.inputs = l.input_h*l.input_w*l.input_c;
+    l->input_h = h;
+    l->input_w = w;
+    l->input_c = c;
+    l->inputs = l->input_h*l->input_w*l->input_c;
 
-    l.output_h = (l.input_h - l.ksize) / l.ksize + 1;
-    l.output_w = (l.input_w - l.ksize) / l.ksize + 1;
-    l.output_c = l.input_c;
-    l.outputs = l.output_h*l.output_w*l.output_c;
+    l->output_h = (l->input_h - l->ksize) / l->ksize + 1;
+    l->output_w = (l->input_w - l->ksize) / l->ksize + 1;
+    l->output_c = l->input_c;
+    l->outputs = l->output_h*l->output_w*l->output_c;
 
-    l.workspace_size = l.output_h*l.output_w*l.ksize*l.ksize*l.output_c;
+    l->workspace_size = l->output_h*l->output_w*l->ksize*l->ksize*l->output_c;
 
-    l.deltas = l.inputs;
+    l->deltas = l->inputs;
 }
 
-void restore_avgpool_layer(Layer l)
+void restore_avgpool_layer(Layer *l)
 {
-    l.input_h = -1;
-    l.input_w = -1;
-    l.input_c = -1;
-    l.inputs = -1;
+    l->input_h = -1;
+    l->input_w = -1;
+    l->input_c = -1;
+    l->inputs = -1;
 
-    l.output_h = -1;
-    l.output_w = -1;
-    l.output_c = -1;
-    l.outputs = -1;
+    l->output_h = -1;
+    l->output_w = -1;
+    l->output_c = -1;
+    l->outputs = -1;
 
-    l.workspace_size = -1;
+    l->workspace_size = -1;
 
-    l.deltas = -1;
+    l->deltas = -1;
 
-    l.input = NULL;
-    l.output = NULL;
-    l.delta = NULL;
+    l->input = NULL;
+    l->output = NULL;
+    l->delta = NULL;
 }
 
 void forward_avgpool_layer(Layer l)

@@ -1,24 +1,24 @@
 #include "im2col_layer.h"
 
-Layer make_im2col_layer(int flag)
+Layer *make_im2col_layer(int flag)
 {
-    Layer l = {0};
-    l.type = IM2COL;
-    l.weights = 0;
+    Layer *l = malloc(sizeof(Layer));
+    l->type = IM2COL;
+    l->weights = 0;
 
-    l.im2col_flag = flag;
+    l->im2col_flag = flag;
 
-    l.forward = forward_im2col_layer;
-    l.backward = backward_im2col_layer;
-    l.update = NULL;
+    l->forward = forward_im2col_layer;
+    l->backward = backward_im2col_layer;
+    l->update = NULL;
 
     restore_im2col_layer(l);
 
-    fprintf(stderr, "Im2col          Layer    :    [flag=%d]\n", l.im2col_flag);
+    fprintf(stderr, "Im2col          Layer    :    [flag=%d]\n", l->im2col_flag);
     return l;
 }
 
-Layer make_im2col_layer_by_cfg(CFGParams *p)
+Layer *make_im2col_layer_by_cfg(CFGParams *p)
 {
     int flag = 1;
 
@@ -30,46 +30,46 @@ Layer make_im2col_layer_by_cfg(CFGParams *p)
         param = param->next;
     }
 
-    Layer l = make_im2col_layer(flag);
+    Layer *l = make_im2col_layer(flag);
     return l;
 }
 
-void init_im2col_layer(Layer l, int w, int h, int c)
+void init_im2col_layer(Layer *l, int w, int h, int c)
 {
-    l.input_h = h,
-    l.input_w = w;
-    l.input_c = c;
-    l.inputs = l.input_h*l.input_w*l.input_c;
+    l->input_h = h,
+    l->input_w = w;
+    l->input_c = c;
+    l->inputs = l->input_h*l->input_w*l->input_c;
 
-    l.output_h = 1;
-    l.output_w = 1;
-    l.output_c = 1;
-    l.outputs = 1;
+    l->output_h = 1;
+    l->output_w = 1;
+    l->output_c = 1;
+    l->outputs = 1;
 
-    l.workspace_size = 0;
+    l->workspace_size = 0;
 
-    l.deltas = l.inputs;
+    l->deltas = l->inputs;
 }
 
-void restore_im2col_layer(Layer l)
+void restore_im2col_layer(Layer *l)
 {
-    l.input_h = -1;
-    l.input_w = -1;
-    l.input_c = -1;
-    l.inputs = -1;
+    l->input_h = -1;
+    l->input_w = -1;
+    l->input_c = -1;
+    l->inputs = -1;
 
-    l.output_h = -1;
-    l.output_w = -1;
-    l.output_c = -1;
-    l.outputs = -1;
+    l->output_h = -1;
+    l->output_w = -1;
+    l->output_c = -1;
+    l->outputs = -1;
 
-    l.workspace_size = -1;
+    l->workspace_size = -1;
 
-    l.deltas = -1;
+    l->deltas = -1;
 
-    l.input = NULL;
-    l.output = NULL;
-    l.delta = NULL;
+    l->input = NULL;
+    l->output = NULL;
+    l->delta = NULL;
 }
 
 void forward_im2col_layer(Layer l)

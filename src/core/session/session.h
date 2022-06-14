@@ -49,6 +49,10 @@ void del_session();
 void bind_graph(Session sess, Graph graph);
 void bind_train_data(Session sess, char *path);
 void bind_test_data(Session sess, char *path);
+
+void set_input_dimension(Session sess, int h, int w, int c);
+void set_train_params(Session sess, int epoch, int batch, int subdivision, float learning_rate);
+
 // 从index读取num个数据
 void load_data(Session sess, int index, int num);
 
