@@ -32,14 +32,8 @@ int main(int argc, char **argv)
     append_layer2grpah(graph, l8);
     append_layer2grpah(graph, l9);
 
-    printf("%d\n", graph->layer_num);
-
     Session *sess = create_session();
     bind_graph(sess, *graph);
     bind_train_data(sess, "./demo/xor/data.txt");
 
-    printf("%d\n", sess->train_data_num);
-    for (int i = 0; i < sess->train_data_num; ++i){
-        printf("%s\n", sess->train_data_paths[i]);
-    }
 }

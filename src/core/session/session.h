@@ -43,6 +43,15 @@ typedef struct session{
     每次读取一个subdivision的数据
 */
 
+/*
+    06.14：session创建。
+           init：训练超参、数据维度大小
+           绑定图
+           绑定数据集
+           初始化图：创建内存，分配内存，初始化权重
+           运行
+*/
+
 Session *create_session();
 void del_session();
 
