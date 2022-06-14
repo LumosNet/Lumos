@@ -22,7 +22,7 @@ Layer make_maxpool_layer(CFGParams *p)
 
     restore_maxpool_layer(l);
 
-    fprintf(stderr, "Max Pooling Layer: [ksize=%d]\n", l.ksize);
+    fprintf(stderr, "Max Pooling     Layer    :    [ksize=%d]\n", l.ksize);
     return l;
 }
 

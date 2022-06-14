@@ -5,5 +5,5 @@
 
 int main(int argc, char **argv)
 {
-    Graph graph = load_graph("./cfg/xor.cfg");
+    Graph graph = load_graph("./cfg/catvdog.cfg");
 }

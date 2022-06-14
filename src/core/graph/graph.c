@@ -9,6 +9,7 @@ Graph load_graph(char *cfg_path)
     CFGPiece *piece = net_params->next;
     int index = 0;
     while (piece){
+        fprintf(stderr, "%3d ", index+1);
         Layer layer = create_layer(piece);
         graph.layers[index] = layer;
         index += 1;
@@ -22,12 +23,31 @@ Graph create_graph(CFGPiece *p, int layer_n)
     Graph graph = {0};
     CFGParams *params = p->params;
     CFGParam *param = params->head;
+    graph.graph_name = p->name;
     while (param){
         param = param->next;
     }
     graph.layer_num = layer_n;
     graph.layers = calloc(layer_n, sizeof(Layer));
+    fprintf(stderr, "[%s]       %d  layers\n", graph.graph_name, graph.layer_num);
     return graph;
+}
+
+Layer create_layer(CFGPiece *p)
+{
+    Layer layer;
+    if (0 == strcmp(p->name, "convolutional")){
+        layer = make_convolutional_layer(p->params);
+    } else if (0 == strcmp(p->name, "avgpool")){
+        layer = make_avgpool_layer_by_cfg(p->params);
+    } else if (0 == strcmp(p->name, "maxpool")){
+        layer = make_maxpool_layer(p->params);
+    } else if (0 == strcmp(p->name, "connect")){
+        layer = make_connect_layer(p->params);
+    } else if (0 == strcmp(p->name, "im2col")){
+        layer = make_im2col_layer(p->params);
+    }
+    return layer;
 }
 
 void init_graph(Graph g, int w, int h, int c)
@@ -46,8 +66,8 @@ void init_graph(Graph g, int w, int h, int c)
                 init_im2col_layer(l, w, h, c); break;
             case MAXPOOL:
                 init_maxpool_layer(l, w, h, c); break;
-            case MSE:
-                init_mse_layer(l, w, h, c); break;
+            default:
+                break;
         }
     }
 }
@@ -68,8 +88,8 @@ void restore_graph(Graph g)
                 restore_im2col_layer(l); break;
             case MAXPOOL:
                 restore_maxpool_layer(l); break;
-            case MSE:
-                restore_mse_layer(l); break;
+            default:
+                break;
         }
     }
 }

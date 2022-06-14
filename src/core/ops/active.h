@@ -25,6 +25,11 @@ typedef enum {
     LHTAN
 } Activation;
 
+typedef float   (*activate)(float);
+typedef float   (*gradient)(float);
+typedef activate Activate;
+typedef gradient Gradient;
+
 static inline float stair_activate(float x)
 {
     int n = floor(x);

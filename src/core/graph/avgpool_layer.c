@@ -22,7 +22,7 @@ Layer make_avgpool_layer_by_cfg(CFGParams *p)
 
     restore_avgpool_layer(l);
 
-    fprintf(stderr, "Avg Pooling Layer: [ksize=%d]\n", l.ksize);
+    fprintf(stderr, "Avg Pooling     Layer    :    [ksize=%d]\n", l.ksize);
     return l;
 }
 

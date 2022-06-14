@@ -9,15 +9,19 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
 
 # 源代码所在目录（包括所有子目录）
 VPATH=./src/: \
+	  ./src/core/: \
+	  ./src/core/cu_ops/: \
+	  ./src/core/graph/: \
+	  ./src/core/ops/: \
+	  ./src/core/session/: \
 	  ./src/dependent/: \
       ./src/dependent/file/: \
       ./src/dependent/str/: \
-	  ./test/dependent/: \
-      ./test/dependent/file/: \
-      ./test/dependent/str/: \
       ./
 
-COMMON=-Isrc/dependent \
+COMMON=-Isrc/core/graph \
+	   -Isrc/core/ops \
+	   -Isrc/core/session \
 	   -Isrc/dependent/file \
 	   -Isrc/dependent/str \
 
@@ -42,10 +46,13 @@ ifeq ($(DEBUG), 1)
 COMMON+= -g
 endif
 
-OBJ=	binary_f.o cfg_f.o text_f.o \
+OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
+		active.o bias.o cpu.o gemm.o im2col.o image.o \
+		dispatch.o manager.o session.o \
+		binary_f.o cfg_f.o text_f.o \
 		str_ops.o \
 
-EXECOBJA=test_binary.o
+EXECOBJA=main.o
 
 ifeq ($(GPU), 1)
 LDFLAGS+= -lstdc++

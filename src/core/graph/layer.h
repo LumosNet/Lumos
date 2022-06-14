@@ -4,14 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "avgpool_layer.h"
-#include "connect_layer.h"
-#include "convolutional_layer.h"
-#include "im2col_layer.h"
-#include "maxpool_layer.h"
-#include "mse_layer.h"
-#include "softmax_layer.h"
-#include "cfg_f.h"
+#include "active.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,7 +15,17 @@ typedef enum {
     MAXPOOL, AVGPOOL
 } LayerType;
 
-typedef struct layer{
+typedef struct layer Layer;
+
+typedef void (*forward)  (struct layer);
+typedef void (*backward) (struct layer, float*);
+typedef forward Forward;
+typedef backward Backward;
+
+typedef void (*update) (struct layer, float, float*);
+typedef update Update;
+
+struct layer{
     LayerType type;
     int input_h;
     int input_w;
@@ -47,9 +50,6 @@ typedef struct layer{
     float *workspace;
 
     int *maxpool_index;
-
-    int inputs;
-    int outputs;
 
     int filters;
     int ksize;
@@ -78,23 +78,8 @@ typedef struct layer{
     Gradient gradient;
 
     Update update;
-} layer, Layer;
+};
 
-typedef float   (*activate)(float);
-typedef float   (*gradient)(float);
-
-typedef activate Activate;
-typedef gradient Gradient;
-
-typedef void (*forward)  (struct layer);
-typedef void (*backward) (struct layer, float*);
-typedef forward Forward;
-typedef backward Backward;
-
-typedef void (*update) (struct layer, float, float*);
-typedef update Update;
-
-Layer create_layer(CFGPiece *p);
 
 #ifdef __cplusplus
 }

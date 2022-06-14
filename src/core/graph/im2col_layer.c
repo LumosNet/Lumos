@@ -19,7 +19,7 @@ Layer make_im2col_layer(CFGParams *p)
 
     restore_im2col_layer(l);
 
-    fprintf(stderr, "Im2col Layer: [flag=%d]\n", l.im2col_flag);
+    fprintf(stderr, "Im2col          Layer    :    [flag=%d]\n", l.im2col_flag);
     return l;
 }
 

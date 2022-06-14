@@ -30,7 +30,6 @@ void create_input_memory(Session sess)
 void create_output_memory(Session sess)
 {
     Graph graph = sess.graph;
-    Layer *layers = graph.layers;
     int outputs = 0;
     for (int i = 0; i < graph.layer_num; ++i){
         Layer l = graph.layers[i];
@@ -42,7 +41,6 @@ void create_output_memory(Session sess)
 void create_delta_memory(Session sess)
 {
     Graph graph = sess.graph;
-    Layer *layers = graph.layers;
     int deltas = 0;
     for (int i = 0; i < graph.layer_num; ++i){
         Layer l = graph.layers[i];

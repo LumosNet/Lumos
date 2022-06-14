@@ -2,9 +2,6 @@
 
 void session_run(Session sess)
 {
-    Graph graph = sess.graph;
-    Layer *layers = graph.layers;
-    Layer l;
     for (int i = 0; i < sess.epoch; ++i){
         int sub_epoch = (int)(sess.batch / sess.subdivision);
         for (int j = 0; j < sub_epoch; ++j){
