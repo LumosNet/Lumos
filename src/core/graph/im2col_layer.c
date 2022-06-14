@@ -1,18 +1,13 @@
 #include "im2col_layer.h"
 
-Layer make_im2col_layer(CFGParams *p)
+Layer make_im2col_layer(int flag)
 {
     Layer l = {0};
     l.type = IM2COL;
     l.weights = 0;
 
-    CFGParam *param = p->head;
-    while (param){
-        if (0 == strcmp(param->key, "flag")){
-            l.im2col_flag = atoi(param->val);
-        }
-        param = param->next;
-    }
+    l.im2col_flag = flag;
+
     l.forward = forward_im2col_layer;
     l.backward = backward_im2col_layer;
     l.update = NULL;
@@ -20,6 +15,22 @@ Layer make_im2col_layer(CFGParams *p)
     restore_im2col_layer(l);
 
     fprintf(stderr, "Im2col          Layer    :    [flag=%d]\n", l.im2col_flag);
+    return l;
+}
+
+Layer make_im2col_layer_by_cfg(CFGParams *p)
+{
+    int flag = 1;
+
+    CFGParam *param = p->head;
+    while (param){
+        if (0 == strcmp(param->key, "flag")){
+            flag = atoi(param->val);
+        }
+        param = param->next;
+    }
+
+    Layer l = make_im2col_layer(flag);
     return l;
 }
 

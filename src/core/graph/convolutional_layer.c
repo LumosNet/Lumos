@@ -1,33 +1,24 @@
 #include "convolutional_layer.h"
 
-Layer make_convolutional_layer(CFGParams *p)
+Layer make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalization, char *active)
 {
     Layer l = {0};
     l.type = CONVOLUTIONAL;
     l.weights = 1;
 
-    CFGParam *param = p->head;
-    while (param){
-        if (0 == strcmp(param->key, "filters")){
-            l.filters = atoi(param->val);
-        } else if (0 == strcmp(param->key, "ksize")){
-            l.ksize = atoi(param->val);
-        } else if (0 == strcmp(param->key, "stride")){
-            l.stride = atoi(param->val);
-        } else if (0 == strcmp(param->key, "pad")){
-            l.pad = atoi(param->val);
-        } else if (0 == strcmp(param->key, "bias")){
-            l.bias = atoi(param->val);
-        } else if (0 == strcmp(param->key, "normalization")){
-            l.batchnorm = atoi(param->val);
-        } else if (0 == strcmp(param->key, "active")){
-            l.active_str = param->val;
-            Activation type = load_activate_type(param->val);
-            l.active = load_activate(type);
-            l.gradient = load_gradient(type);
-        }
-        param = param->next;
-    }
+    l.filters = filters;
+    l.ksize = ksize;
+    l.stride = stride;
+    l.pad = pad;
+
+    l.bias = bias;
+
+    l.batchnorm = normalization;
+
+    l.active_str = active;
+    Activation type = load_activate_type(active);
+    l.active = load_activate(type);
+    l.gradient = load_gradient(type);
 
     l.forward = forward_convolutional_layer;
     l.backward = backward_convolutional_layer;
@@ -35,8 +26,45 @@ Layer make_convolutional_layer(CFGParams *p)
 
     restore_convolutional_layer(l);
 
-    fprintf(stderr, "Convolutional   Layer    :    [filters=%d, ksize=%d, stride=%d, pad=%d, bias=%d, normalization=%d, active=%s]\n", \
+    fprintf(stderr, "Convolutional   Layer    :    [filters=%2d, ksize=%2d, stride=%2d, pad=%2d, bias=%d, normalization=%d, active=%s]\n", \
             l.filters, l.ksize, l.stride, l.pad, l.bias, l.batchnorm, l.active_str);
+    return l;
+}
+
+Layer make_convolutional_layer_by_cfg(CFGParams *p)
+{
+    int filters = 0;
+    int ksize = 0;
+    int stride = 0;
+    int pad = 0;
+
+    int bias = 0;
+
+    int normalization = 0;
+
+    char *active = NULL;
+
+    CFGParam *param = p->head;
+    while (param){
+        if (0 == strcmp(param->key, "filters")){
+            filters = atoi(param->val);
+        } else if (0 == strcmp(param->key, "ksize")){
+            ksize = atoi(param->val);
+        } else if (0 == strcmp(param->key, "stride")){
+            stride = atoi(param->val);
+        } else if (0 == strcmp(param->key, "pad")){
+            pad = atoi(param->val);
+        } else if (0 == strcmp(param->key, "bias")){
+            bias = atoi(param->val);
+        } else if (0 == strcmp(param->key, "normalization")){
+            normalization = atoi(param->val);
+        } else if (0 == strcmp(param->key, "active")){
+            active = param->val;
+        }
+        param = param->next;
+    }
+
+    Layer l = make_convolutional_layer(filters, ksize, stride, pad, bias, normalization, active);
     return l;
 }
 

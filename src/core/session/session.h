@@ -43,6 +43,9 @@ typedef struct session{
     每次读取一个subdivision的数据
 */
 
+Session create_session();
+void del_session();
+
 void bind_graph(Session sess, Graph graph);
 void bind_train_data(Session sess, char *path);
 void bind_test_data(Session sess, char *path);

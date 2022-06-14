@@ -1,20 +1,14 @@
 #include "maxpool_layer.h"
 
-Layer make_maxpool_layer(CFGParams *p)
+Layer make_maxpool_layer(int ksize)
 {
     Layer l = {0};
     l.type = MAXPOOL;
     l.pad = 0;
     l.weights = 0;
 
-    CFGParam *param = p->head;
-    while (param){
-        if (0 == strcmp(param->key, "ksize")){
-            l.ksize = atoi(param->val);
-            l.stride = l.ksize;
-        }
-        param = param->next;
-    }
+    l.ksize = ksize;
+    l.stride = ksize;
 
     l.forward = forward_maxpool_layer;
     l.backward = backward_maxpool_layer;
@@ -22,7 +16,23 @@ Layer make_maxpool_layer(CFGParams *p)
 
     restore_maxpool_layer(l);
 
-    fprintf(stderr, "Max Pooling     Layer    :    [ksize=%d]\n", l.ksize);
+    fprintf(stderr, "Max Pooling     Layer    :    [ksize=%2d]\n", l.ksize);
+    return l;
+}
+
+Layer make_maxpool_layer_by_cfg(CFGParams *p)
+{
+    int ksize = 0;
+
+    CFGParam *param = p->head;
+    while (param){
+        if (0 == strcmp(param->key, "ksize")){
+            ksize = atoi(param->val);
+        }
+        param = param->next;
+    }
+
+    Layer l = make_maxpool_layer(ksize);
     return l;
 }
 

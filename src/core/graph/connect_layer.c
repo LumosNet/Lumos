@@ -1,6 +1,6 @@
 #include "connect_layer.h"
 
-Layer make_connect_layer(CFGParams *p)
+Layer make_connect_layer(int output, int bias, char *active)
 {
     Layer l = {0};
     l.type = CONNECT;
@@ -8,20 +8,14 @@ Layer make_connect_layer(CFGParams *p)
     l.filters = 1;
     l.weights = 1;
 
-    CFGParam *param = p->head;
-    while (param){
-        if (0 == strcmp(param->key, "output")){
-            l.ksize = atoi(param->val);
-        } else if (0 == strcmp(param->key, "active")){
-            l.active_str = param->val;
-            Activation type = load_activate_type(param->val);
-            l.active = load_activate(type);
-            l.gradient = load_gradient(type);
-        } else if (0 == strcmp(param->key, "bias")){
-            l.bias = atoi(param->val);
-        }
-        param = param->next;
-    }
+    l.ksize = output;
+
+    l.active_str = active;
+    Activation type = load_activate_type(active);
+    l.active = load_activate(type);
+    l.gradient = load_gradient(type);
+
+    l.bias = bias;
 
     l.forward = forward_connect_layer;
     l.backward = backward_connect_layer;
@@ -29,7 +23,30 @@ Layer make_connect_layer(CFGParams *p)
 
     restore_connect_layer(l);
 
-    fprintf(stderr, "Connect         Layer    :    [output=%4d, active=%s, bias=%d]\n", l.ksize, l.active_str, l.bias);
+    fprintf(stderr, "Connect         Layer    :    [output=%4d, bias=%d, active=%s]\n", l.ksize, l.bias, l.active_str);
+    return l;
+}
+
+
+Layer make_connect_layer_by_cfg(CFGParams *p)
+{
+    int output = 0;
+    int bias = 0;
+    char *active = NULL;
+
+    CFGParam *param = p->head;
+    while (param){
+        if (0 == strcmp(param->key, "output")){
+            output = atoi(param->val);
+        } else if (0 == strcmp(param->key, "active")){
+            active = param->val;
+        } else if (0 == strcmp(param->key, "bias")){
+            bias = atoi(param->val);
+        }
+        param = param->next;
+    }
+
+    Layer l = make_connect_layer(output, bias, active);
     return l;
 }
 

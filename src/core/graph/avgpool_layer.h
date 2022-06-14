@@ -9,8 +9,8 @@
 extern "C" {
 #endif
 
+Layer make_avgpool_layer(int ksize);
 Layer make_avgpool_layer_by_cfg(CFGParams *p);
-Layer make_avgpool_layer_by_arg(int ksize);
 
 void init_avgpool_layer(Layer l, int w, int h, int c);
 void restore_avgpool_layer(Layer l);
