@@ -1,8 +1,8 @@
 #include "session.h"
 
-Session create_session()
+Session *create_session()
 {
-    Session sess = {0};
+    Session *sess = malloc(sizeof(Session));
     return sess;
 }
 
@@ -11,22 +11,22 @@ void del_session()
 
 }
 
-void bind_graph(Session sess, Graph graph)
+void bind_graph(Session *sess, Graph graph)
 {
-    sess.graph = graph;
+    sess->graph = graph;
 }
 
-void bind_train_data(Session sess, char *path)
+void bind_train_data(Session *sess, char *path)
 {
     FILE *fp = fopen(path, "r");
     char **data_paths = fgetls(fp);
     fclose(fp);
     int lines = atoi(data_paths[0]);
-    sess.train_data_num = lines;
-    sess.train_data_paths = data_paths+1;
+    sess->train_data_num = lines;
+    sess->train_data_paths = data_paths+1;
 }
 
-void bind_test_data(Session sess, char *path);
+void bind_test_data(Session *sess, char *path);
 
 void set_input_dimension(Session sess, int h, int w, int c)
 {

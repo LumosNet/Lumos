@@ -1,6 +1,9 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "layer.h"
 #include "cfg_f.h"
 
@@ -34,15 +37,15 @@ typedef struct graph{
     CFG *cfg;
 } graph, Graph;
 
-Graph create_graph(char *name, int layer_n);
-Graph create_graph_by_cfg(CFGPiece *p, int layer_n);
-Graph load_graph_from_cfg(char *cfg_path);
-Layer create_layer_by_cfg(CFGPiece *p);
+Graph *create_graph(char *name, int layer_n);
+Graph *create_graph_by_cfg(CFGPiece *p, int layer_n);
+Graph *load_graph_from_cfg(char *cfg_path);
+Layer *create_layer_by_cfg(CFGPiece *p);
 
-void append_layer2grpah(Graph graph, Layer l);
+void append_layer2grpah(Graph *graph, Layer *l);
 
-void init_graph(Graph g, int w, int h, int c);
-void restore_graph(Graph g);
+void init_graph(Graph *g, int w, int h, int c);
+void restore_graph(Graph *g);
 
 #ifdef __cplusplus
 }

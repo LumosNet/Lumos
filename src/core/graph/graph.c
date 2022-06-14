@@ -1,36 +1,36 @@
 #include "graph.h"
 
-Graph create_graph(char *name, int layer_n)
+Graph *create_graph(char *name, int layer_n)
 {
-    Graph graph = {0};
-    graph.graph_name = name;
-    graph.layer_list_num = layer_n;
-    graph.layer_num = 0;
-    graph.layers = calloc(layer_n, sizeof(Layer));
-    fprintf(stderr, "[%s]         max   %d  Layers\n", graph.graph_name, graph.layer_list_num);
+    Graph *graph = malloc(sizeof(Graph));
+    graph->graph_name = name;
+    graph->layer_list_num = layer_n;
+    graph->layer_num = 0;
+    graph->layers = calloc(layer_n, sizeof(Layer));
+    fprintf(stderr, "[%s]         max   %d  Layers\n", graph->graph_name, graph->layer_list_num);
     return graph;
 }
 
-Graph create_graph_by_cfg(CFGPiece *p, int layer_n)
+Graph *create_graph_by_cfg(CFGPiece *p, int layer_n)
 {
-    Graph graph = create_graph(p->name, layer_n);
+    Graph *graph = create_graph(p->name, layer_n);
     return graph;
 }
 
-Graph load_graph_from_cfg(char *cfg_path)
+Graph *load_graph_from_cfg(char *cfg_path)
 {
     fprintf(stderr, "Load Graph From CFG File '%s'\n", cfg_path);
     CFG *cfg = load_conf_cfg(cfg_path);
     CFGPieces *pieces = cfg->pieces;
     CFGPiece *net_params = pieces->head;
-    Graph graph = create_graph_by_cfg(net_params, cfg->piece_num-1);
+    Graph *graph = create_graph_by_cfg(net_params, cfg->piece_num-1);
     CFGPiece *piece = net_params->next;
     int index = 0;
     while (piece){
         fprintf(stderr, "%3d ", index+1);
         Layer *layer = create_layer_by_cfg(piece);
-        graph.layers[index] = layer;
-        graph.layer_num += 1;
+        graph->layers[index] = layer;
+        graph->layer_num += 1;
         index += 1;
         piece = piece->next;
     }
@@ -38,7 +38,7 @@ Graph load_graph_from_cfg(char *cfg_path)
     return graph;
 }
 
-Layer create_layer_by_cfg(CFGPiece *p)
+Layer *create_layer_by_cfg(CFGPiece *p)
 {
     Layer *layer;
     if (0 == strcmp(p->name, "convolutional")){
@@ -55,18 +55,18 @@ Layer create_layer_by_cfg(CFGPiece *p)
     return layer;
 }
 
-void append_layer2grpah(Graph graph, Layer l)
+void append_layer2grpah(Graph *graph, Layer *l)
 {
-    graph.layers[graph.layer_num] = l;
-    graph.layer_num += 1;
+    graph->layers[graph->layer_num] = l;
+    graph->layer_num += 1;
 }
 
-void init_graph(Graph g, int w, int h, int c)
+void init_graph(Graph *g, int w, int h, int c)
 {
-    Layer l;
-    for (int i = 0; i < g.layer_num; ++i){
-        l = g.layers[i];
-        switch (l.type){
+    Layer *l;
+    for (int i = 0; i < g->layer_num; ++i){
+        l = g->layers[i];
+        switch (l->type){
             case AVGPOOL:
                 init_avgpool_layer(l, w, h, c); break;
             case CONNECT:
@@ -83,12 +83,12 @@ void init_graph(Graph g, int w, int h, int c)
     }
 }
 
-void restore_graph(Graph g)
+void restore_graph(Graph *g)
 {
-    Layer l;
-    for (int i = 0; i < g.layer_num; ++i){
-        l = g.layers[i];
-        switch (l.type){
+    Layer *l;
+    for (int i = 0; i < g->layer_num; ++i){
+        l = g->layers[i];
+        switch (l->type){
             case AVGPOOL:
                 restore_avgpool_layer(l); break;
             case CONNECT:

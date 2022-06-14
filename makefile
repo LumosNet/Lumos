@@ -48,7 +48,7 @@ endif
 
 OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o \
-		dispatch.o manager.o session.o \
+		session.o \
 		binary_f.o cfg_f.o text_f.o \
 		str_ops.o \
 

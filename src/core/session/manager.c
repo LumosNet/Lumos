@@ -27,27 +27,27 @@ void create_input_memory(Session sess)
     sess.input = calloc(inputs, sizeof(float));
 }
 
-void create_output_memory(Session sess)
-{
-    Graph graph = sess.graph;
-    int outputs = 0;
-    for (int i = 0; i < graph.layer_num; ++i){
-        Layer l = graph.layers[i];
-        outputs += l.outputs;
-    }
-    sess.output = calloc(outputs, sizeof(float));
-}
+// void create_output_memory(Session sess)
+// {
+//     Graph graph = sess.graph;
+//     int outputs = 0;
+//     for (int i = 0; i < graph.layer_num; ++i){
+//         Layer l = graph.layers[i];
+//         outputs += l.outputs;
+//     }
+//     sess.output = calloc(outputs, sizeof(float));
+// }
 
-void create_delta_memory(Session sess)
-{
-    Graph graph = sess.graph;
-    int deltas = 0;
-    for (int i = 0; i < graph.layer_num; ++i){
-        Layer l = graph.layers[i];
-        deltas += l.deltas;
-    }
-    sess.layer_delta = calloc(deltas, sizeof(float));
-}
+// void create_delta_memory(Session sess)
+// {
+//     Graph graph = sess.graph;
+//     int deltas = 0;
+//     for (int i = 0; i < graph.layer_num; ++i){
+//         Layer l = graph.layers[i];
+//         deltas += l.deltas;
+//     }
+//     sess.layer_delta = calloc(deltas, sizeof(float));
+// }
 
 void set_graph_memory(Session sess)
 {
