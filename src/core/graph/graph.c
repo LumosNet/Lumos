@@ -80,6 +80,9 @@ void init_graph(Graph *g, int w, int h, int c)
             default:
                 break;
         }
+        w = l->output_w;
+        h = l->output_h;
+        c = l->output_c;
     }
 }
 

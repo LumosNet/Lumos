@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "session.h"
+#include "manager.h"
 #include "graph.h"
 #include "layer.h"
 #include "convolutional_layer.h"
@@ -32,8 +33,12 @@ int main(int argc, char **argv)
     append_layer2grpah(graph, l8);
     append_layer2grpah(graph, l9);
 
-    Session *sess = create_session();
-    bind_graph(sess, *graph);
-    bind_train_data(sess, "./demo/xor/data.txt");
+    printf("num: %d\n", graph->layer_num);
 
+    Session *sess = create_session();
+    bind_graph(sess, graph);
+    bind_train_data(sess, "./demo/xor/data.txt");
+    create_run_memory(sess);
+    set_graph_memory(sess);
+    set_graph_weight(sess);
 }

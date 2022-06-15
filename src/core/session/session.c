@@ -6,12 +6,7 @@ Session *create_session()
     return sess;
 }
 
-void del_session()
-{
-
-}
-
-void bind_graph(Session *sess, Graph graph)
+void bind_graph(Session *sess, Graph *graph)
 {
     sess->graph = graph;
 }
@@ -28,20 +23,37 @@ void bind_train_data(Session *sess, char *path)
 
 void bind_test_data(Session *sess, char *path);
 
-void set_input_dimension(Session sess, int h, int w, int c)
+void set_input_dimension(Session *sess, int h, int w, int c)
 {
-    sess.height = h;
-    sess.width = w;
-    sess.channel = c;
+    sess->height = h;
+    sess->width = w;
+    sess->channel = c;
 }
 
-void set_train_params(Session sess, int epoch, int batch, int subdivision, float learning_rate)
+void set_train_params(Session *sess, int epoch, int batch, int subdivision, float learning_rate)
 {
-    sess.epoch = epoch;
-    sess.batch = batch;
-    sess.subdivision = subdivision;
-    sess.learning_rate = learning_rate;
+    sess->epoch = epoch;
+    sess->batch = batch;
+    sess->subdivision = subdivision;
+    sess->learning_rate = learning_rate;
 }
+
+
+void create_run_scene(Session *sess, int h, int w, int c, char *dataset_list_file)
+{
+    set_input_dimension(sess, h, w, c);
+    bind_train_data(sess, dataset_list_file);
+}
+
+
+void init_run_scene(Session *sess, char *weights_file)
+{
+    init_graph(sess->graph, sess->width, sess->height, sess->channel);
+    create_run_memory(sess);
+    set_graph_memory(sess);
+    init_weights(sess, weights_file);
+}
+
 
 // 从index读取num个数据
 void load_data(Session sess, int index, int num)
