@@ -37,8 +37,5 @@ int main(int argc, char **argv)
 
     Session *sess = create_session();
     bind_graph(sess, graph);
-    bind_train_data(sess, "./demo/xor/data.txt");
-    create_run_memory(sess);
-    set_graph_memory(sess);
-    set_graph_weight(sess);
+    // create_run_scene(sess, h, w, c, "./demo/xor/data.txt");
 }

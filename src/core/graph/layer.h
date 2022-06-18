@@ -11,8 +11,7 @@ extern "C" {
 #endif
 
 typedef enum {
-    CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MSE, SOFTMAX, \
-    MAXPOOL, AVGPOOL
+    CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MAXPOOL, AVGPOOL
 } LayerType;
 
 typedef struct layer Layer;
