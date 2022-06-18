@@ -59,7 +59,7 @@ ops模块包含如下子类（在C语言中通常将一个文件视为一个类�
 
 该类的类图如下：
 
-![](https://github.com/LumosNet/Lumos/tree/master/img/active.png)
+![](../../../img/active.png)
 
 通常我们使用字符串来表明所希望选择的激活函数类型，*load_activate_type*函数提供了该功能
 
