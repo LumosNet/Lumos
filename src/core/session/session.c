@@ -9,19 +9,6 @@ Session *create_session()
 void bind_graph(Session *sess, Graph *graph)
 {
     sess->graph = graph;
-    Layer **layers = graph->layers;
-    int max_workspace_size = -1;
-    int weights_size = 0;
-    for (int i = 0; i < graph->layer_num; ++i){
-        Layer *l = layers[i];
-        if (l->workspace_size > max_workspace_size){
-            max_workspace_size = l->workspace_size;
-        }
-        weights_size += l->kernel_weights_size;
-        weights_size += l->bias_weights_size;
-    }
-    sess->workspace_size = max_workspace_size;
-    sess->weights_size = weights_size;
 }
 
 void bind_train_data(Session *sess, char *path)
@@ -39,6 +26,7 @@ void bind_test_data(Session *sess, char *path);
 
 void init_weights(Session *sess, char *weights_file)
 {
+    sess->weights = calloc(sess->weights_size, sizeof(float));
     if (weights_file){
         FILE *fp = fopen(weights_file, "rb");
         bfget(fp, sess->weights, sess->weights_size);

@@ -16,8 +16,8 @@ typedef enum {
 
 typedef struct layer Layer;
 
-typedef void (*forward)  (struct layer);
-typedef void (*backward) (struct layer, float*);
+typedef void (*forward)  (struct layer, int);
+typedef void (*backward) (struct layer, int, float*);
 typedef forward Forward;
 typedef backward Backward;
 

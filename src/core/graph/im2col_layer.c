@@ -44,8 +44,8 @@ void init_im2col_layer(Layer *l, int w, int h, int c)
     l->output_h = 1;
     l->output_w = 1;
     l->output_c = 1;
-    if (l->im2col_flag) l->output_w = l->inputs;
-    else l->output_h = l->inputs;
+    if (l->im2col_flag) l->output_h = l->inputs;
+    else l->output_w = l->inputs;
     l->outputs = l->inputs;
 
     l->workspace_size = 0;
@@ -77,12 +77,18 @@ void restore_im2col_layer(Layer *l)
     l->delta = NULL;
 }
 
-void forward_im2col_layer(Layer l)
+void forward_im2col_layer(Layer l, int num)
 {
-    memcpy(l.output, l.input, l.outputs*sizeof(float));
+    for (int i = 0; i < num; ++i){
+        int input_offset = i*l.inputs;
+        int output_offset = i*l.outputs;
+        float *input = l.input+input_offset;
+        float *output = l.output+output_offset;
+        memcpy(output, input, l.outputs*sizeof(float));
+    }
 }
 
-void backward_im2col_layer(Layer l, float *n_delta)
+void backward_im2col_layer(Layer l, int num, float *n_delta)
 {
     memcpy(l.delta, n_delta, l.inputs*sizeof(float));
 }

@@ -64,8 +64,8 @@ void init_connect_layer(Layer *l, int w, int h, int c)
 
     l->workspace_size = l->input_c*l->input_h*l->input_w*l->output_c*l->output_h*l->output_w;
 
-    l->kernel_weights_size = l->input_h*l->output_h;
-    l->bias_weights_size = l->output_h;
+    l->kernel_weights_size = l->inputs*l->outputs;
+    l->bias_weights_size = l->outputs;
     l->deltas = l->inputs;
 
     fprintf(stderr, "Connect         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n", \
@@ -97,17 +97,23 @@ void restore_connect_layer(Layer *l)
     l->delta = NULL;
 }
 
-void forward_connect_layer(Layer l)
+void forward_connect_layer(Layer l, int num)
 {
-    gemm(0, 0, l.output_h, l.input_h, l.input_h, l.input_w, 
-        1, l.kernel_weights, l.input, l.output);
-    if (l.bias){
-        add_bias(l.output, l.bias_weights, l.ksize, 1);
+    for (int i = 0; i < num; ++i){
+        int input_offset = i*l.inputs;
+        int output_offset = i*l.outputs;
+        float *input = l.input+input_offset;
+        float *output = l.output+output_offset;
+        gemm(0, 0, l.outputs, l.inputs, l.inputs, 1, 
+            1, l.kernel_weights, input, output);
+        if (l.bias){
+            add_bias(output, l.bias_weights, l.ksize, 1);
+        }
+        activate_list(output, l.outputs, l.active);
     }
-    activate_list(l.output, l.outputs, l.active);
 }
 
-void backward_connect_layer(Layer l, float *n_delta)
+void backward_connect_layer(Layer l, int num, float *n_delta)
 {
     gradient_list(l.output, l.outputs, l.gradient);
     multiply(n_delta, l.output, l.outputs, n_delta);

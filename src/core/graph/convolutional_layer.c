@@ -115,18 +115,24 @@ void restore_convolutional_layer(Layer *l)
     l->delta = NULL;
 }
 
-void forward_convolutional_layer(Layer l)
+void forward_convolutional_layer(Layer l, int num)
 {
-    im2col(l.input, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, l.workspace);
-    gemm(0, 0, l.filters, l.ksize*l.ksize*l.input_c, l.ksize*l.ksize*l.input_c, l.output_h*l.output_w, 1, 
-        l.kernel_weights, l.workspace, l.output);
-    if (l.bias){
-        add_bias(l.output, l.bias_weights, l.filters, l.output_h*l.output_w);
+    for (int i = 0; i < num; ++i){
+        int input_offset = i*l.inputs;
+        int output_offset = i*l.outputs;
+        float *input = l.input+input_offset;
+        float *output = l.output+output_offset;
+        im2col(input, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, l.workspace);
+        gemm(0, 0, l.filters, l.ksize*l.ksize*l.input_c, l.ksize*l.ksize*l.input_c, l.output_h*l.output_w, 1, 
+            l.kernel_weights, l.workspace, output);
+        if (l.bias){
+            add_bias(output, l.bias_weights, l.filters, l.output_h*l.output_w);
+        }
+        activate_list(output, l.outputs, l.active);
     }
-    activate_list(l.output, l.outputs, l.active);
 }
 
-void backward_convolutional_layer(Layer l, float *n_delta)
+void backward_convolutional_layer(Layer l, int num, float *n_delta)
 {
     gradient_list(l.output, l.outputs, l.gradient);
     multiply(n_delta, l.output, l.outputs, n_delta);

@@ -22,8 +22,8 @@ Layer *make_connect_layer_by_cfg(CFGParams *p);
 void init_connect_layer(Layer *l, int w, int h, int c);
 void restore_connect_layer(Layer *l);
 
-void forward_connect_layer(Layer l);
-void backward_connect_layer(Layer l, float *n_delta);
+void forward_connect_layer(Layer l, int num);
+void backward_connect_layer(Layer l, int num, float *n_delta);
 
 void update_connect_layer(Layer l, float rate, float *n_delta);
 

@@ -18,7 +18,7 @@ int main(int argc, char **argv)
     Layer *l1 = make_convolutional_layer(16, 3, 1, 1, 1, 1, "relu");
     Layer *l2 = make_avgpool_layer(2);
     Layer *l3 = make_convolutional_layer(16, 3, 1, 1, 1, 1, "relu");
-    Layer *l4 = make_maxpool_layer(2);
+    Layer *l4 = make_avgpool_layer(2);
     Layer *l5 = make_im2col_layer(1);
     Layer *l6 = make_connect_layer(128, 1, "relu");
     Layer *l7 = make_connect_layer(64, 1, "relu");
@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 
     Session *sess = create_session();
     bind_graph(sess, graph);
-    create_run_scene(sess, 28, 28, 3, "./demo/xor/data.txt");
-    init_run_scene(sess, NULL);
-    session_run(sess, 4, 2, 2);
+    create_run_scene(sess, 28, 28, 1, "./demo/xor/data.txt");
+    init_run_scene(sess, 4, 2, 2, NULL);
+    session_run(sess);
 }

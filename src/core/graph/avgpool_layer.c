@@ -77,23 +77,29 @@ void restore_avgpool_layer(Layer *l)
     l->delta = NULL;
 }
 
-void forward_avgpool_layer(Layer l)
+void forward_avgpool_layer(Layer l, int num)
 {
-    im2col(l.input, l.input_h, l.input_w, l.input_c,
+    for (int i = 0; i < num; ++i){
+        int input_offset = i*l.inputs;
+        int output_offset = i*l.outputs;
+        float *input = l.input+input_offset;
+        float *output = l.output+output_offset;
+        im2col(input, l.input_h, l.input_w, l.input_c,
         l.ksize, l.stride, l.pad, l.workspace);
-    for (int c = 0; c < l.output_c; ++c){
-        for (int h = 0; h < l.output_h; ++h){
-            for (int w = 0; w < l.output_w; ++w){
-                for (int k = 0; k < l.ksize*l.ksize; ++k){
-                    l.output[c*l.output_h*l.output_w + h*l.output_w + w] +=
-                    l.workspace[(c*l.ksize*l.ksize+k)*l.output_h*l.output_w+h*l.output_w+w] * (float)(1 / (float)(l.ksize*l.ksize));
+        for (int c = 0; c < l.output_c; ++c){
+            for (int h = 0; h < l.output_h; ++h){
+                for (int w = 0; w < l.output_w; ++w){
+                    for (int k = 0; k < l.ksize*l.ksize; ++k){
+                        output[c*l.output_h*l.output_w + h*l.output_w + w] +=
+                        l.workspace[(c*l.ksize*l.ksize+k)*l.output_h*l.output_w+h*l.output_w+w] * (float)(1 / (float)(l.ksize*l.ksize));
+                    }
                 }
             }
         }
     }
 }
 
-void backward_avgpool_layer(Layer l, float *n_delta)
+void backward_avgpool_layer(Layer l, int num, float *n_delta)
 {
     for (int c = 0; c < l.input_c; ++c){
         for (int h = 0; h < l.input_h; ++h){
