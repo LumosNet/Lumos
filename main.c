@@ -3,6 +3,7 @@
 
 #include "session.h"
 #include "manager.h"
+#include "dispatch.h"
 #include "graph.h"
 #include "layer.h"
 #include "convolutional_layer.h"
@@ -33,9 +34,9 @@ int main(int argc, char **argv)
     append_layer2grpah(graph, l8);
     append_layer2grpah(graph, l9);
 
-    printf("num: %d\n", graph->layer_num);
-
     Session *sess = create_session();
     bind_graph(sess, graph);
-    // create_run_scene(sess, h, w, c, "./demo/xor/data.txt");
+    create_run_scene(sess, 28, 28, 3, "./demo/xor/data.txt");
+    init_run_scene(sess, NULL);
+    session_run(sess);
 }
