@@ -85,6 +85,9 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
     l->kernel_weights_size = l->ksize*l->ksize*l->input_c;
     l->bias_weights_size = l->filters;
     l->deltas = l->inputs;
+
+    fprintf(stderr, "Convolutional   Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n", \
+            l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
 }
 
 void restore_convolutional_layer(Layer *l)

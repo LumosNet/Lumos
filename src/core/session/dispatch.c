@@ -1,7 +1,13 @@
 #include "dispatch.h"
 
-void session_run(Session *sess)
+void session_run(Session *sess, int epoch, int batch, int subdivision)
 {
+    fprintf(stderr, "\nSession Start To Running\n");
+    fprintf(stderr, "Epoch   Batch   Subdivision\n");
+    fprintf(stderr, "%3d     %3d     %3d\n", epoch, batch, subdivision);
+    sess->epoch = epoch;
+    sess->batch = batch;
+    sess->subdivision = subdivision;
     for (int i = 0; i < sess->epoch; ++i){
         int sub_epoch = (int)(sess->batch / sess->subdivision);
         for (int j = 0; j < sub_epoch; ++j){

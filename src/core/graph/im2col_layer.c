@@ -44,11 +44,16 @@ void init_im2col_layer(Layer *l, int w, int h, int c)
     l->output_h = 1;
     l->output_w = 1;
     l->output_c = 1;
-    l->outputs = 1;
+    if (l->im2col_flag) l->output_w = l->inputs;
+    else l->output_h = l->inputs;
+    l->outputs = l->inputs;
 
     l->workspace_size = 0;
 
     l->deltas = l->inputs;
+
+    fprintf(stderr, "Im2col          Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n", \
+            l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
 }
 
 void restore_im2col_layer(Layer *l)

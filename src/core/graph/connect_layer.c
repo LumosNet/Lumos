@@ -67,6 +67,9 @@ void init_connect_layer(Layer *l, int w, int h, int c)
     l->kernel_weights_size = l->input_h*l->output_h;
     l->bias_weights_size = l->output_h;
     l->deltas = l->inputs;
+
+    fprintf(stderr, "Connect         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n", \
+            l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
 }
 
 void restore_connect_layer(Layer *l)

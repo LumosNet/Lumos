@@ -2,6 +2,7 @@
 
 void create_run_memory(Session *sess)
 {
+    fprintf(stderr, "\n");
     create_workspace_memory(sess);
     create_output_memory(sess);
     create_delta_memory(sess);
@@ -10,6 +11,7 @@ void create_run_memory(Session *sess)
 void create_workspace_memory(Session *sess)
 {
     sess->workspace = calloc(sess->workspace_size, sizeof(float));
+    fprintf(stderr, "Apply For The Commond Work Space\n");
 }
 
 void create_input_memory(Session *sess)
@@ -27,6 +29,7 @@ void create_output_memory(Session *sess)
         outputs += l->outputs;
     }
     sess->output = calloc(outputs, sizeof(float));
+    fprintf(stderr, "Apply For Layers Output Data Space\n");
 }
 
 void create_delta_memory(Session *sess)
@@ -38,6 +41,7 @@ void create_delta_memory(Session *sess)
         deltas += l->deltas;
     }
     sess->layer_delta = calloc(deltas, sizeof(float));
+    fprintf(stderr, "APPly For Layers Delta Data Space\n");
 }
 
 void set_graph_memory(Session *sess)
@@ -54,6 +58,7 @@ void set_graph_memory(Session *sess)
         output_offset += l->outputs;
         delta_offset += l->deltas;
     }
+    fprintf(stderr, "\nDistribut Running Memory To Each Layer\n");
 }
 
 void set_graph_weight(Session *sess)
@@ -74,4 +79,5 @@ void set_graph_weight(Session *sess)
             }
         }
     }
+    fprintf(stderr, "\nDistribut Weights To Each Layer\n");
 }

@@ -10,7 +10,7 @@
 extern "C" {
 #endif
 
-void session_run(Session *sess);
+void session_run(Session *sess, int epoch, int batch, int subdivision);
 
 void forward_session(Session *sess);
 void backward_session(Session *sess);

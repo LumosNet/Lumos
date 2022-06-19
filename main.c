@@ -38,5 +38,5 @@ int main(int argc, char **argv)
     bind_graph(sess, graph);
     create_run_scene(sess, 28, 28, 3, "./demo/xor/data.txt");
     init_run_scene(sess, NULL);
-    session_run(sess);
+    session_run(sess, 4, 2, 2);
 }

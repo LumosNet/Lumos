@@ -52,6 +52,8 @@ void init_avgpool_layer(Layer *l, int w, int h, int c)
     l->workspace_size = l->output_h*l->output_w*l->ksize*l->ksize*l->output_c;
 
     l->deltas = l->inputs;
+    fprintf(stderr, "Avg Pooling     Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n", \
+            l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
 }
 
 void restore_avgpool_layer(Layer *l)

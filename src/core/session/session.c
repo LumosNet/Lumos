@@ -32,6 +32,7 @@ void bind_train_data(Session *sess, char *path)
     int lines = atoi(data_paths[0]);
     sess->train_data_num = lines;
     sess->train_data_paths = data_paths+1;
+    fprintf(stderr, "\nGet Train Data List From %s\n", path);
 }
 
 void bind_test_data(Session *sess, char *path);
@@ -41,6 +42,9 @@ void init_weights(Session *sess, char *weights_file)
     if (weights_file){
         FILE *fp = fopen(weights_file, "rb");
         bfget(fp, sess->weights, sess->weights_size);
+        fprintf(stderr, "\nInit Weights From Weights File: %s\n", weights_file);
+    } else{
+        fprintf(stderr, "\nInit Weights\n");
     }
 }
 
@@ -49,6 +53,8 @@ void set_input_dimension(Session *sess, int h, int w, int c)
     sess->height = h;
     sess->width = w;
     sess->channel = c;
+    fprintf(stderr, "\nSet Input Dementions: Height Width Channel\n");
+    fprintf(stderr, "                       %3d    %3d   %3d\n", h, w, c);
 }
 
 void set_train_params(Session *sess, int epoch, int batch, int subdivision, float learning_rate)

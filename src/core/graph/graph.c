@@ -63,6 +63,8 @@ void append_layer2grpah(Graph *graph, Layer *l)
 
 void init_graph(Graph *g, int w, int h, int c)
 {
+    fprintf(stderr, "\nStart To Init Graph\n");
+    fprintf(stderr, "[%s]                     Inputs         Outputs\n", g->graph_name);
     Layer *l;
     for (int i = 0; i < g->layer_num; ++i){
         l = g->layers[i];
