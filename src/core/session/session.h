@@ -33,6 +33,8 @@ typedef struct session{
     float *output;
     float *layer_delta;
 
+    int *maxpool_index;
+
     float *weights;
     float *update_weights;
 

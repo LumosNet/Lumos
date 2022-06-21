@@ -101,13 +101,19 @@ void forward_avgpool_layer(Layer l, int num)
 
 void backward_avgpool_layer(Layer l, int num, float *n_delta)
 {
-    for (int c = 0; c < l.input_c; ++c){
-        for (int h = 0; h < l.input_h; ++h){
-            for (int w = 0; w < l.input_w; ++w){
-                int height_index = h / l.ksize;
-                int width_index = w / l.ksize;
-                l.delta[l.input_h*l.input_w*c + l.input_w*h + w] =
-                n_delta[c*l.output_h*l.output_w + height_index*l.output_w + width_index] * (float)(1 / (float)(l.ksize*l.ksize));
+    for (int i = 0; i < num; ++i){
+        int offset_i = i*l.inputs;
+        int offset_o = i*l.outputs;
+        float *delta_l = l.delta+offset_i;
+        float *delta_n = n_delta+offset_o;
+        for (int c = 0; c < l.input_c; ++c){
+            for (int h = 0; h < l.input_h; ++h){
+                for (int w = 0; w < l.input_w; ++w){
+                    int height_index = h / l.ksize;
+                    int width_index = w / l.ksize;
+                    delta_l[l.input_h*l.input_w*c + l.input_w*h + w] =
+                    delta_n[c*l.output_h*l.output_w + height_index*l.output_w + width_index] * (float)(1 / (float)(l.ksize*l.ksize));
+                }
             }
         }
     }

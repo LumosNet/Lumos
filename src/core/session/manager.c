@@ -5,6 +5,7 @@ void create_run_memory(Session *sess)
     create_workspace_memory(sess);
     create_output_memory(sess);
     create_delta_memory(sess);
+    create_maxpool_index_memory(sess);
 }
 
 void create_workspace_memory(Session *sess)
@@ -43,6 +44,22 @@ void create_delta_memory(Session *sess)
     fprintf(stderr, "APPly For Layers Delta Data Space\n");
 }
 
+void create_maxpool_index_memory(Session *sess)
+{
+    Graph *graph = sess->graph;
+    int max_indexes = 0;
+    for (int i = 0; i < graph->layer_num; ++i){
+        Layer *l = graph->layers[i];
+        if (l->type == MAXPOOL) max_indexes += l->outputs;
+    }
+    if (max_indexes == 0){
+        sess->maxpool_index = NULL;
+        return;
+    }
+    sess->maxpool_index = calloc(max_indexes*sess->subdivision, sizeof(float));
+    fprintf(stderr, "APPly For MAX Pool Layers's MAX Pixel Index Space\n");
+}
+
 void set_graph_memory(Session *sess)
 {
     Graph *graph = sess->graph;
@@ -79,4 +96,22 @@ void set_graph_weight(Session *sess)
         }
     }
     fprintf(stderr, "\nDistribut Weights To Each Layer\n");
+}
+
+void set_maxpool_index_memory(Session *sess)
+{
+    if (sess->maxpool_index == NULL) return;
+    Graph *graph = sess->graph;
+    Layer **layers = graph->layers;
+    int index_offset = 0;
+    for (int i = 0; i < graph->layer_num; ++i){
+        Layer *l = layers[i];
+        if (l->type == MAXPOOL){
+            l->maxpool_index = sess->maxpool_index+index_offset;
+            index_offset += l->outputs*sess->subdivision;
+        } else{
+            l->maxpool_index = NULL;
+        }
+    }
+    fprintf(stderr, "\nDistribut MAX Pool Layers's MAX Pixel Index To Each Layer\n");
 }

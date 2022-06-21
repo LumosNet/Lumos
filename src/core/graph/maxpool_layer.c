@@ -105,7 +105,13 @@ void forward_maxpool_layer(Layer l, int num)
 
 void backward_maxpool_layer(Layer l, int num, float *n_delta)
 {
-    for (int j = 0; j < l.output_h*l.output_w*l.output_c; ++j){
-        l.delta[l.maxpool_index[j]] = n_delta[j];
+    for (int i = 0; i < num; ++i){
+        int offset_i = i*l.inputs;
+        int offset_o = i*l.outputs;
+        float *delta_l = l.delta+offset_i;
+        float *delta_n = n_delta+offset_o;
+        for (int j = 0; j < l.output_h*l.output_w*l.output_c; ++j){
+            delta_l[l.maxpool_index[j]] = delta_n[j];
+        }
     }
 }

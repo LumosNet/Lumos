@@ -9,9 +9,10 @@ void session_run(Session *sess)
         for (int j = 0; j < sub_epochs; ++j){
             for (int k = 0; k < sub_batchs; ++k){
                 load_data(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
-                forward_session(sess);
-                // backward_session(sess);
+                // forward_session(sess);
+                backward_session(sess);
             }
+            memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
         }
     }
 }
@@ -91,4 +92,5 @@ void init_run_scene(Session *sess, int epoch, int batch, int subdivision, char *
     set_graph_memory(sess);
     init_weights(sess, weights_file);
     set_graph_weight(sess);
+    set_maxpool_index_memory(sess);
 }

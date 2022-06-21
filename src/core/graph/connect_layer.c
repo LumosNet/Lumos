@@ -115,10 +115,14 @@ void forward_connect_layer(Layer l, int num)
 
 void backward_connect_layer(Layer l, int num, float *n_delta)
 {
-    gradient_list(l.output, l.outputs, l.gradient);
-    multiply(n_delta, l.output, l.outputs, n_delta);
-    gemm(1, 0, l.output_h, l.input_h, l.output_h, l.output_w, 1, 
-        l.kernel_weights, n_delta, l.delta);
+    for (int i = 0; i < num; ++i){
+        int offset_i = i*l.inputs;
+        int offset_o = i*l.outputs;
+        gradient_list(l.output+offset_o, l.outputs, l.gradient);
+        multiply(n_delta+offset_o, l.output+offset_o, l.outputs, n_delta+offset_o);
+        gemm(1, 0, l.output_h, l.input_h, l.output_h, l.output_w, 1, 
+            l.kernel_weights, n_delta+offset_o, l.delta+offset_i);
+    }
 }
 
 void update_connect_layer(Layer l, float rate, float *n_delta)

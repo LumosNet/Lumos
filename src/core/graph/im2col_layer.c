@@ -90,5 +90,11 @@ void forward_im2col_layer(Layer l, int num)
 
 void backward_im2col_layer(Layer l, int num, float *n_delta)
 {
-    memcpy(l.delta, n_delta, l.inputs*sizeof(float));
+    for (int i = 0; i < num; ++i){
+        int offset_i = i*l.inputs;
+        int offset_o = i*l.outputs;
+        if (n_delta){
+            memcpy(l.delta+offset_i, n_delta+offset_o, l.inputs*sizeof(float));
+        }
+    }
 }

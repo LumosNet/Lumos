@@ -27,6 +27,7 @@ void bind_test_data(Session *sess, char *path);
 void init_weights(Session *sess, char *weights_file)
 {
     sess->weights = calloc(sess->weights_size, sizeof(float));
+    sess->update_weights = calloc(sess->weights_size, sizeof(float));
     if (weights_file){
         FILE *fp = fopen(weights_file, "rb");
         bfget(fp, sess->weights, sess->weights_size);
@@ -34,6 +35,7 @@ void init_weights(Session *sess, char *weights_file)
     } else{
         fprintf(stderr, "\nInit Weights\n");
     }
+    memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
 }
 
 void set_input_dimension(Session *sess, int h, int w, int c)
