@@ -4,17 +4,21 @@ void session_run(Session *sess)
 {
     fprintf(stderr, "\nSession Start To Running\n");
     for (int i = 0; i < sess->epoch; ++i){
+        fprintf(stderr, "\nEpoch %d/%d\n", i, sess->epoch);
         int sub_epochs = (int)(sess->train_data_num / sess->batch);
         int sub_batchs = (int)(sess->batch / sess->subdivision);
         for (int j = 0; j < sub_epochs; ++j){
+            progress_bar(j+1, sub_epochs);
             for (int k = 0; k < sub_batchs; ++k){
                 load_data(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
-                // forward_session(sess);
+                forward_session(sess);
                 backward_session(sess);
+                update_session(sess);
             }
             memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
         }
     }
+    fprintf(stderr, "\n");
 }
 
 void forward_session(Session *sess)
@@ -53,7 +57,7 @@ void update_session(Session *sess)
     float *delta = NULL;
     for (int i = graph->layer_num-1; i >= 0; --i){
         l = layers[i];
-        l->update(*l, rate, delta);
+        if (l->update) l->update(*l, rate, delta);
         delta = l->delta;
     }
 }

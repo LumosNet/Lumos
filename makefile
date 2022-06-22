@@ -15,6 +15,7 @@ VPATH=./src/: \
 	  ./src/core/ops/: \
 	  ./src/core/session/: \
 	  ./src/dependent/: \
+	  ./src/dependent/command/: \
       ./src/dependent/file/: \
       ./src/dependent/str/: \
       ./
@@ -22,6 +23,7 @@ VPATH=./src/: \
 COMMON=-Isrc/core/graph \
 	   -Isrc/core/ops \
 	   -Isrc/core/session \
+	   -Isrc/dependent/command \
 	   -Isrc/dependent/file \
 	   -Isrc/dependent/str \
 
@@ -49,6 +51,7 @@ endif
 OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o \
 		session.o manager.o dispatch.o\
+		progress_bar.o \
 		binary_f.o cfg_f.o text_f.o \
 		str_ops.o \
 

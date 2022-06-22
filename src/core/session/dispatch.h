@@ -6,6 +6,8 @@
 #include "graph.h"
 #include "layer.h"
 
+#include "progress_bar.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
