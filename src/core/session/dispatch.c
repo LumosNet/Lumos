@@ -4,11 +4,10 @@ void session_run(Session *sess)
 {
     fprintf(stderr, "\nSession Start To Running\n");
     for (int i = 0; i < sess->epoch; ++i){
-        fprintf(stderr, "\nEpoch %d/%d\n", i, sess->epoch);
+        fprintf(stderr, "\nEpoch %d/%d\n", i+1, sess->epoch);
         int sub_epochs = (int)(sess->train_data_num / sess->batch);
         int sub_batchs = (int)(sess->batch / sess->subdivision);
         for (int j = 0; j < sub_epochs; ++j){
-            progress_bar(j+1, sub_epochs);
             for (int k = 0; k < sub_batchs; ++k){
                 load_data(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
                 forward_session(sess);
@@ -92,6 +91,7 @@ void init_run_scene(Session *sess, int epoch, int batch, int subdivision, char *
     }
     sess->workspace_size = max_workspace_size;
     sess->weights_size = weights_size;
+    statistics_memory_occupy_size(sess);
     create_run_memory(sess);
     set_graph_memory(sess);
     init_weights(sess, weights_file);

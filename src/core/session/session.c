@@ -3,6 +3,7 @@
 Session *create_session()
 {
     Session *sess = malloc(sizeof(Session));
+    sess->memory_size = 0;
     return sess;
 }
 
@@ -69,6 +70,7 @@ void load_data(Session *sess, int index, int num)
         input_offset += sess->height*sess->width*sess->channel;
         free(im);
     }
+    // fprintf(stderr, "Load Subdivision Data Succeed\n");
 }
 
 void save_weigths(Session sess, char *path);

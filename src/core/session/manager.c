@@ -115,3 +115,30 @@ void set_maxpool_index_memory(Session *sess)
     }
     fprintf(stderr, "\nDistribut MAX Pool Layers's MAX Pixel Index To Each Layer\n");
 }
+
+void statistics_memory_occupy_size(Session *sess)
+{
+    Graph *graph = sess->graph;
+    int outputs = 0;
+    int deltas = 0;
+    int max_indexes = 0;
+    for (int i = 0; i < graph->layer_num; ++i){
+        Layer *l = graph->layers[i];
+        if (l->type == MAXPOOL) max_indexes += l->outputs;
+        outputs += l->outputs;
+        deltas += l->deltas;
+    }
+    sess->memory_size += outputs*sess->subdivision*sizeof(float);
+    sess->memory_size += deltas*sess->subdivision*sizeof(float);
+    sess->memory_size += max_indexes*sess->subdivision*sizeof(float);
+    sess->memory_size += sess->workspace_size*sizeof(float);
+    sess->memory_size += sess->subdivision*sess->height*sess->width*sess->channel*sizeof(float);
+    float mem_size = (float)sess->memory_size / 1024 / 1024 / 1024;
+    if (mem_size > 0.1){
+        fprintf(stderr, "\nThe Whole Training Process Will Occupy %.1fGB Host Memory\n", mem_size);
+    } else{
+        mem_size = (float)sess->memory_size / 1024 / 1024;
+        fprintf(stderr, "\nThe Whole Training Process Will Occupy %.1fMB Host Memory\n", mem_size);
+    }
+    fprintf(stderr, "Please Make Sure The Host Have Enough Memory\n\n");
+}

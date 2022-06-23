@@ -40,6 +40,8 @@ typedef struct session{
 
     int train_data_num;
     char **train_data_paths;
+
+    int memory_size;
 } Session;
 
 /*

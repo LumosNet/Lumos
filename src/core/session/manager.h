@@ -23,6 +23,8 @@ void set_graph_memory(Session *sess);
 void set_graph_weight(Session *sess);
 void set_maxpool_index_memory(Session *sess);
 
+void statistics_memory_occupy_size(Session *sess);
+
 #ifdef __cplusplus
 }
 #endif
