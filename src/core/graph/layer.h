@@ -25,6 +25,9 @@ typedef backward Backward;
 typedef void (*update) (struct layer, float, float*);
 typedef update Update;
 
+typedef void (*init_layer_weights) (struct layer*);
+typedef init_layer_weights InitLayerWeights;
+
 struct layer{
     LayerType type;
     int input_h;
@@ -82,6 +85,8 @@ struct layer{
     Gradient gradient;
 
     Update update;
+
+    InitLayerWeights init_layer_weights;
 };
 
 

@@ -99,3 +99,10 @@ void saxpy(float *data_a, float *data_b, int num, float x, float *space)
         space[i] = data_a[i] + data_b[i]*x;
     }
 }
+
+void random(int range_l, int range_r, float scale, int num, float *space)
+{
+    for (int i = 0; i < num; ++i){
+        space[i] = (rand() % (range_r+1) + range_l)*scale;
+    }
+}

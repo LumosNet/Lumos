@@ -1,6 +1,9 @@
 #ifndef CPU_H
 #define CPU_H
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #ifdef __cplusplus
 extern "C"{
 #endif
@@ -23,6 +26,8 @@ void multiply(float *data_a, float *data_b, int num, float *space);
 void divide(float *data_a, float *data_b, int num, float *space);
 
 void saxpy(float *data_a, float *data_b, int num, float x, float *space);
+
+void random(int range_l, int range_r, float scale, int num, float *space);
 
 #ifdef __cplusplus
 }

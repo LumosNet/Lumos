@@ -21,6 +21,8 @@ Layer *make_connect_layer(int output, int bias, char *active)
     l->backward = backward_connect_layer;
     l->update = update_connect_layer;
 
+    l->init_layer_weights = init_connect_weights;
+
     restore_connect_layer(l);
 
     fprintf(stderr, "Connect         Layer    :    [output=%4d, bias=%d, active=%s]\n", l->ksize, l->bias, l->active_str);
@@ -95,6 +97,14 @@ void restore_connect_layer(Layer *l)
     l->kernel_weights = NULL;
     l->bias_weights = NULL;
     l->delta = NULL;
+}
+
+void init_connect_weights(Layer *l)
+{
+    random(1, l->inputs, 0.01, l->kernel_weights_size, l->kernel_weights);
+    for (int i = 0; i < l->bias_weights_size; ++i){
+        l->bias_weights[i] = 0.01;
+    }
 }
 
 void forward_connect_layer(Layer l, int num)

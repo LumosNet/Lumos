@@ -24,6 +24,8 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
     l->backward = backward_convolutional_layer;
     l->update = update_convolutional_layer;
 
+    l->init_layer_weights = init_convolutional_weights;
+
     restore_convolutional_layer(l);
 
     fprintf(stderr, "Convolutional   Layer    :    [filters=%2d, ksize=%2d, stride=%2d, pad=%2d, bias=%d, normalization=%d, active=%s]\n", \
@@ -113,6 +115,14 @@ void restore_convolutional_layer(Layer *l)
     l->kernel_weights = NULL;
     l->bias_weights = NULL;
     l->delta = NULL;
+}
+
+void init_convolutional_weights(Layer *l)
+{
+    random(1, l->inputs, 0.01, l->kernel_weights_size, l->kernel_weights);
+    for (int i = 0; i < l->bias_weights_size; ++i){
+        l->bias_weights[i] = 0.01;
+    }
 }
 
 void forward_convolutional_layer(Layer l, int num)

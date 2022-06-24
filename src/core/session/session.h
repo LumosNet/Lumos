@@ -68,6 +68,7 @@ void bind_graph(Session *sess, Graph *graph);
 void bind_train_data(Session *sess, char *path);
 void bind_test_data(Session *sess, char *path);
 void bind_label(Session *sess, int label_num, char *path);
+
 void init_weights(Session *sess, char *weights_file);
 
 void set_input_dimension(Session *sess, int h, int w, int c);

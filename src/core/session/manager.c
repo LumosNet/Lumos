@@ -32,6 +32,13 @@ void create_output_memory(Session *sess)
     fprintf(stderr, "Apply For Layers Output Data Space\n");
 }
 
+void create_weights_memory(Session *sess)
+{
+    sess->weights = calloc(sess->weights_size, sizeof(float));
+    sess->update_weights = calloc(sess->weights_size, sizeof(float));
+    fprintf(stderr, "Apply For Graph Weights Space\n");
+}
+
 void create_delta_memory(Session *sess)
 {
     Graph *graph = sess->graph;

@@ -103,8 +103,9 @@ void init_run_scene(Session *sess, int epoch, int batch, int subdivision, char *
     statistics_memory_occupy_size(sess);
     create_run_memory(sess);
     set_graph_memory(sess);
-    init_weights(sess, weights_file);
+    create_weights_memory(sess);
     set_graph_weight(sess);
+    init_weights(sess, weights_file);
     create_label_memory(sess);
     set_label(sess);
     set_maxpool_index_memory(sess);

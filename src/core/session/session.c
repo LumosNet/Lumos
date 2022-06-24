@@ -43,12 +43,16 @@ void bind_label(Session *sess, int label_num, char *path)
 
 void init_weights(Session *sess, char *weights_file)
 {
-    sess->weights = calloc(sess->weights_size, sizeof(float));
-    sess->update_weights = calloc(sess->weights_size, sizeof(float));
     if (weights_file){
         load_weights(sess, weights_file);
         fprintf(stderr, "\nInit Weights From Weights File: %s\n", weights_file);
     } else{
+        Graph *graph = sess->graph;
+        Layer **layers = graph->layers;
+        for (int i = 0; i < graph->layer_num; ++i){
+            Layer *l = layers[i];
+            if (l->init_layer_weights) l->init_layer_weights(l);
+        }
         fprintf(stderr, "\nInit Weights\n");
     }
     memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
