@@ -25,12 +25,13 @@ void bind_train_data(Session *sess, char *path)
 
 void bind_test_data(Session *sess, char *path);
 
-void bind_label(Session *sess, char *path)
+void bind_label(Session *sess, int label_num, char *path)
 {
     FILE *fp = fopen(path, "r");
     char **label_paths = fgetls(fp);
     fclose(fp);
     sess->label_paths = label_paths+1;
+    sess->label_num = label_num;
     fprintf(stderr, "\nGet Label List From %s\n", path);
 }
 
@@ -80,6 +81,27 @@ void load_data(Session *sess, int index, int num)
         free(im);
     }
     // fprintf(stderr, "Load Subdivision Data Succeed\n");
+}
+
+void load_label(Session *sess, int index, int num)
+{
+    int label_offset = 0;
+    for (int i = index; i < index+num; ++i){
+        FILE *fp = fopen(sess->label_paths[i], "r");
+        char **label_paths = fgetls(fp);
+        fclose(fp);
+        int lines = atoi(label_paths[0]);
+        for (int j = 0; j < lines; ++j){
+            char *line = label_paths[j+1];
+            int num[1];
+            char **nodes = split(line, ' ', num);
+            for (int k = 0; k < num[0]; ++k){
+                strip(nodes[k], ' ');
+                sess->label[label_offset+k] = nodes[k];
+                label_offset += 1;
+            }
+        }
+    }
 }
 
 void save_weigths(Session sess, char *path);

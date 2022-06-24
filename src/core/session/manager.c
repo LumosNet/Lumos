@@ -44,6 +44,11 @@ void create_delta_memory(Session *sess)
     fprintf(stderr, "APPly For Layers Delta Data Space\n");
 }
 
+void create_label_memory(Session *sess)
+{
+    sess->label = calloc(sess->label_num*sess->subdivision, sizeof(char*));
+}
+
 void create_maxpool_index_memory(Session *sess)
 {
     Graph *graph = sess->graph;
@@ -96,6 +101,16 @@ void set_graph_weight(Session *sess)
         }
     }
     fprintf(stderr, "\nDistribut Weights To Each Layer\n");
+}
+
+void set_label(Session *sess)
+{
+    Graph *graph = sess->graph;
+    Layer **layers = graph->layers;
+    for (int i = 0; i < graph->layer_num; ++i){
+        Layer *l = layers[i];
+        l->label = sess->label;
+    }
 }
 
 void set_maxpool_index_memory(Session *sess)

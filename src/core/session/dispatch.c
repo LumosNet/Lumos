@@ -12,6 +12,7 @@ void session_run(Session *sess)
         for (int j = 0; j < sub_epochs; ++j){
             for (int k = 0; k < sub_batchs; ++k){
                 load_data(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
+                load_label(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
                 start = clock();
                 forward_session(sess);
                 backward_session(sess);
@@ -68,11 +69,11 @@ void update_session(Session *sess)
     }
 }
 
-void create_run_scene(Session *sess, int h, int w, int c, char *dataset_list_file, char *label_list_file)
+void create_run_scene(Session *sess, int h, int w, int c, int label_num, char *dataset_list_file, char *label_list_file)
 {
     set_input_dimension(sess, h, w, c);
     bind_train_data(sess, dataset_list_file);
-    bind_label(sess, label_list_file);
+    bind_label(sess, label_num, label_list_file);
 }
 
 
@@ -104,5 +105,7 @@ void init_run_scene(Session *sess, int epoch, int batch, int subdivision, char *
     set_graph_memory(sess);
     init_weights(sess, weights_file);
     set_graph_weight(sess);
+    create_label_memory(sess);
+    set_label(sess);
     set_maxpool_index_memory(sess);
 }

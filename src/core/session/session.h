@@ -24,6 +24,8 @@ typedef struct session{
     int height;
     int channel;
 
+    int label_num;
+
     float learning_rate;
     size_t workspace_size;
     size_t weights_size;
@@ -32,6 +34,7 @@ typedef struct session{
     float *input;
     float *output;
     float *layer_delta;
+    char **label;
 
     int *maxpool_index;
 
@@ -64,7 +67,7 @@ void del_session();
 void bind_graph(Session *sess, Graph *graph);
 void bind_train_data(Session *sess, char *path);
 void bind_test_data(Session *sess, char *path);
-void bind_label(Session *sess, char *path);
+void bind_label(Session *sess, int label_num, char *path);
 void init_weights(Session *sess, char *weights_file);
 
 void set_input_dimension(Session *sess, int h, int w, int c);
@@ -72,6 +75,7 @@ void set_train_params(Session *sess, int epoch, int batch, int subdivision, floa
 
 // 从index读取num个数据
 void load_data(Session *sess, int index, int num);
+void load_label(Session *sess, int index, int num);
 
 void save_weigths(Session sess, char *path);
 void load_weights(Session sess, char *path);
