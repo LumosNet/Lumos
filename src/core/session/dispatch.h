@@ -18,7 +18,7 @@ void forward_session(Session *sess);
 void backward_session(Session *sess);
 void update_session(Session *sess);
 
-void create_run_scene(Session *sess, int h, int w, int c, char *dataset_list_file);
+void create_run_scene(Session *sess, int h, int w, int c, char *dataset_list_file, char *label_list_file);
 void init_run_scene(Session *sess, int epoch, int batch, int subdivision, char *weights_file);
 
 #ifdef __cplusplus

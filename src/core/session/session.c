@@ -25,6 +25,15 @@ void bind_train_data(Session *sess, char *path)
 
 void bind_test_data(Session *sess, char *path);
 
+void bind_label(Session *sess, char *path)
+{
+    FILE *fp = fopen(path, "r");
+    char **label_paths = fgetls(fp);
+    fclose(fp);
+    sess->label_paths = label_paths+1;
+    fprintf(stderr, "\nGet Label List From %s\n", path);
+}
+
 void init_weights(Session *sess, char *weights_file)
 {
     sess->weights = calloc(sess->weights_size, sizeof(float));

@@ -44,6 +44,7 @@ struct layer{
 
     float *input;
     float *output;
+    float *label;
     float *delta;
 
     float *workspace;
@@ -63,6 +64,8 @@ struct layer{
 
     // 在网中的位置，0开始
     int index;
+    // 浮点数操作数
+    int fops;
 
     float *kernel_weights;
     float *bias_weights;

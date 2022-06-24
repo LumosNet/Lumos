@@ -3,6 +3,8 @@
 void session_run(Session *sess)
 {
     fprintf(stderr, "\nSession Start To Running\n");
+    clock_t start, final;
+    double run_time = 0;
     for (int i = 0; i < sess->epoch; ++i){
         fprintf(stderr, "\nEpoch %d/%d\n", i+1, sess->epoch);
         int sub_epochs = (int)(sess->train_data_num / sess->batch);
@@ -10,9 +12,14 @@ void session_run(Session *sess)
         for (int j = 0; j < sub_epochs; ++j){
             for (int k = 0; k < sub_batchs; ++k){
                 load_data(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
+                start = clock();
                 forward_session(sess);
                 backward_session(sess);
                 update_session(sess);
+                final = clock();
+                run_time = (double)(final-start) / CLOCKS_PER_SEC;
+                fprintf(stderr, "%4d   RunTime\n", j*sub_batchs+k);
+                fprintf(stderr, "        %.3lfs\n", run_time);
             }
             memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
         }
@@ -61,10 +68,11 @@ void update_session(Session *sess)
     }
 }
 
-void create_run_scene(Session *sess, int h, int w, int c, char *dataset_list_file)
+void create_run_scene(Session *sess, int h, int w, int c, char *dataset_list_file, char *label_list_file)
 {
     set_input_dimension(sess, h, w, c);
     bind_train_data(sess, dataset_list_file);
+    bind_label(sess, label_list_file);
 }
 
 

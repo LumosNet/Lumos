@@ -1,6 +1,7 @@
 LINUX=1
 GPU=0
-DEBUG=1
+DEBUG=0
+AST=0
 
 ARCH= 	-gencode arch=compute_35,code=sm_35 \
       	-gencode arch=compute_50,code=[sm_50,compute_50] \
@@ -12,18 +13,22 @@ VPATH=./src/: \
 	  ./src/core/: \
 	  ./src/core/cu_ops/: \
 	  ./src/core/graph/: \
+	  ./src/core/graph/layer/: \
+	  ./src/core/graph/loss_layer/: \
 	  ./src/core/ops/: \
 	  ./src/core/session/: \
 	  ./src/dependent/: \
-	  ./src/dependent/command/: \
+	  ./src/dependent/cmd/: \
       ./src/dependent/file/: \
       ./src/dependent/str/: \
       ./
 
 COMMON=-Isrc/core/graph \
+	   -Isrc/core/graph/layer \
+	   -Isrc/core/graph/loss_layer \
 	   -Isrc/core/ops \
 	   -Isrc/core/session \
-	   -Isrc/dependent/command \
+	   -Isrc/dependent/cmd \
 	   -Isrc/dependent/file \
 	   -Isrc/dependent/str \
 
@@ -63,6 +68,10 @@ endif
 
 ifeq ($(LINUX),1)
 CFLAGS += -fPIC
+endif
+
+ifeq ($(AST),1)
+COMMON+= -fdump-tree-all-graph
 endif
 
 EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))

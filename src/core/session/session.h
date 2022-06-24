@@ -40,6 +40,7 @@ typedef struct session{
 
     int train_data_num;
     char **train_data_paths;
+    char **label_paths;
 
     int memory_size;
 } Session;
@@ -63,6 +64,7 @@ void del_session();
 void bind_graph(Session *sess, Graph *graph);
 void bind_train_data(Session *sess, char *path);
 void bind_test_data(Session *sess, char *path);
+void bind_label(Session *sess, char *path);
 void init_weights(Session *sess, char *weights_file);
 
 void set_input_dimension(Session *sess, int h, int w, int c);
