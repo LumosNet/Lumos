@@ -104,5 +104,16 @@ void load_label(Session *sess, int index, int num)
     }
 }
 
-void save_weigths(Session sess, char *path);
-void load_weights(Session sess, char *path);
+void save_weigths(Session sess, char *path)
+{
+    FILE *fp = fopen(path, "wb");
+    bfput(fp, sess->weights, sess->weights_size);
+    fclose(fp);
+}
+
+void load_weights(Session sess, char *path)
+{
+    FILE *fp = fopen(path, "rb");
+    bfget(fp, sess->weights, sess->weights_size);
+    fclose(fp);
+}
