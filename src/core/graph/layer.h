@@ -11,7 +11,8 @@ extern "C" {
 #endif
 
 typedef enum {
-    CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MAXPOOL, AVGPOOL
+    CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MAXPOOL, AVGPOOL, \
+    MSE
 } LayerType;
 
 typedef struct layer Layer;
@@ -39,6 +40,7 @@ struct layer{
     int bias_weights_size;
     int deltas;
     int workspace_size;
+    int label_num;
 
     char *active_str;
 

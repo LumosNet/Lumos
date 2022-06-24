@@ -77,8 +77,8 @@ void set_train_params(Session *sess, int epoch, int batch, int subdivision, floa
 void load_data(Session *sess, int index, int num);
 void load_label(Session *sess, int index, int num);
 
-void save_weigths(Session sess, char *path);
-void load_weights(Session sess, char *path);
+void save_weigths(Session *sess, char *path);
+void load_weights(Session *sess, char *path);
 
 #ifdef __cplusplus
 }

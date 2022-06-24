@@ -51,6 +51,8 @@ Layer *create_layer_by_cfg(CFGPiece *p)
         layer = make_connect_layer_by_cfg(p->params);
     } else if (0 == strcmp(p->name, "im2col")){
         layer = make_im2col_layer_by_cfg(p->params);
+    } else if (0 == strcmp(p->name, "mse")){
+        layer = make_mse_layer_by_cfg(p->params);
     }
     return layer;
 }
@@ -79,6 +81,8 @@ void init_graph(Graph *g, int w, int h, int c)
                 init_im2col_layer(l, w, h, c); break;
             case MAXPOOL:
                 init_maxpool_layer(l, w, h, c); break;
+            case MSE:
+                init_mse_layer(l, w, h, c); break;
             default:
                 break;
         }
@@ -104,6 +108,8 @@ void restore_graph(Graph *g)
                 restore_im2col_layer(l); break;
             case MAXPOOL:
                 restore_maxpool_layer(l); break;
+            case MSE:
+                restore_mse_layer(l); break;
             default:
                 break;
         }

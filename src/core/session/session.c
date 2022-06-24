@@ -32,6 +32,12 @@ void bind_label(Session *sess, int label_num, char *path)
     fclose(fp);
     sess->label_paths = label_paths+1;
     sess->label_num = label_num;
+    Graph *graph = sess->graph;
+    Layer **layers = graph->layers;
+    for (int i = 0; i < graph->layer_num; ++i){
+        Layer *l = layers[i];
+        l->label_num = label_num;
+    }
     fprintf(stderr, "\nGet Label List From %s\n", path);
 }
 
@@ -40,8 +46,7 @@ void init_weights(Session *sess, char *weights_file)
     sess->weights = calloc(sess->weights_size, sizeof(float));
     sess->update_weights = calloc(sess->weights_size, sizeof(float));
     if (weights_file){
-        FILE *fp = fopen(weights_file, "rb");
-        bfget(fp, sess->weights, sess->weights_size);
+        load_weights(sess, weights_file);
         fprintf(stderr, "\nInit Weights From Weights File: %s\n", weights_file);
     } else{
         fprintf(stderr, "\nInit Weights\n");
@@ -104,14 +109,14 @@ void load_label(Session *sess, int index, int num)
     }
 }
 
-void save_weigths(Session sess, char *path)
+void save_weigths(Session *sess, char *path)
 {
     FILE *fp = fopen(path, "wb");
     bfput(fp, sess->weights, sess->weights_size);
     fclose(fp);
 }
 
-void load_weights(Session sess, char *path)
+void load_weights(Session *sess, char *path)
 {
     FILE *fp = fopen(path, "rb");
     bfget(fp, sess->weights, sess->weights_size);

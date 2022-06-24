@@ -13,6 +13,8 @@
 #include "im2col_layer.h"
 #include "maxpool_layer.h"
 
+#include "mse_layer.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

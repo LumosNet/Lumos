@@ -11,6 +11,7 @@
 #include "im2col_layer.h"
 #include "maxpool_layer.h"
 #include "avgpool_layer.h"
+#include "mse_layer.h"
 
 int main(int argc, char **argv)
 {
@@ -24,7 +25,7 @@ int main(int argc, char **argv)
     Layer *l7 = make_connect_layer(64, 1, "relu");
     Layer *l8 = make_connect_layer(32, 1, "relu");
     Layer *l9 = make_connect_layer(1, 1, "relu");
-    Layer *l10 = make_im2col_layer(1);
+    Layer *l10 = make_mse_layer(2);
     append_layer2grpah(graph, l1);
     append_layer2grpah(graph, l2);
     append_layer2grpah(graph, l3);
