@@ -88,6 +88,11 @@ void forward_mse_layer(Layer l, int num)
             l.workspace, l.workspace, l.output+output_offset);
         l.output[i*l.outputs] /= l.group;
     }
+    float loss = 0;
+    for (int i = 0; i < num; ++i){
+        loss += l.output[i];
+    }
+    printf("loss: %f\n", loss/num);
     free(truth);
 }
 
