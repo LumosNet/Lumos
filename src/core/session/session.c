@@ -84,6 +84,7 @@ void load_data(Session *sess, int index, int num)
     int input_offset = 0;
     for (int i = index; i < index+num; ++i){
         char *data_path = sess->train_data_paths[i];
+        printf("%s\n", data_path);
         im = load_image_data(data_path, w, h, c);
         resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input+input_offset);
         input_offset += sess->height*sess->width*sess->channel;
@@ -93,14 +94,18 @@ void load_data(Session *sess, int index, int num)
 
 void load_label(Session *sess, int index, int num)
 {
+    printf("start load label\n");
     int label_offset = 0;
     for (int i = index; i < index+num; ++i){
         FILE *fp = fopen(sess->label_paths[i], "r");
-        char **label_paths = fgetls(fp);
+        printf("lable path: %s\n", sess->label_paths[i]);
+        char **labels = fgetls(fp);
         fclose(fp);
-        int lines = atoi(label_paths[0]);
+        int lines = atoi(labels[0]);
+        printf("lines: %d\n", lines);
         for (int j = 0; j < lines; ++j){
-            char *line = label_paths[j+1];
+            char *line = labels[j+1];
+            printf("line: %s\n", line);
             int num[1];
             char **nodes = split(line, ' ', num);
             for (int k = 0; k < num[0]; ++k){
@@ -110,6 +115,7 @@ void load_label(Session *sess, int index, int num)
             }
         }
     }
+    printf("finif load label\n");
 }
 
 void save_weigths(Session *sess, char *path)

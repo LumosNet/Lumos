@@ -13,7 +13,7 @@ void session_run(Session *sess, float learning_rate)
         for (int j = 0; j < sub_epochs; ++j){
             for (int k = 0; k < sub_batchs; ++k){
                 load_data(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
-                load_label(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
+                // load_label(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
                 start = clock();
                 forward_session(sess);
                 backward_session(sess);
@@ -31,6 +31,7 @@ void session_run(Session *sess, float learning_rate)
 
 void forward_session(Session *sess)
 {
+    printf("start forward sess\n");
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     Layer *l;

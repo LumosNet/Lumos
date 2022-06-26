@@ -127,6 +127,7 @@ void init_convolutional_weights(Layer *l)
 
 void forward_convolutional_layer(Layer l, int num)
 {
+    fill_cpu(l.delta, l.deltas*num, 0, 1);
     for (int i = 0; i < num; ++i){
         int input_offset = i*l.inputs;
         int output_offset = i*l.outputs;

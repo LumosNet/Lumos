@@ -8,6 +8,7 @@
 #include "layer.h"
 #include "cfg_f.h"
 #include "im2col.h"
+#include "cpu.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -109,11 +109,7 @@ void init_connect_weights(Layer *l)
 
 void forward_connect_layer(Layer l, int num)
 {
-    printf("\n------------------weight-------------------\n");
-    for (int i = 0; i < l.kernel_weights_size; ++i){
-        printf("%f ", l.update_kernel_weights[i]);
-    }
-    printf("\n------------------weight-------------------\n");
+    fill_cpu(l.delta, l.deltas*num, 0, 1);
     for (int i = 0; i < num; ++i){
         int input_offset = i*l.inputs;
         int output_offset = i*l.outputs;
@@ -124,8 +120,14 @@ void forward_connect_layer(Layer l, int num)
         if (l.bias){
             add_bias(output, l.bias_weights, l.ksize, 1);
         }
+        printf("\n------------------output------------------\n");
+        for (int j = 0; j < l.outputs; ++j){
+            printf("%f ", output[j]);
+        }
+        printf("\n------------------output------------------\n");
         activate_list(output, l.outputs, l.active);
     }
+    printf("finish connect\n");
 }
 
 void backward_connect_layer(Layer l, int num, float *n_delta)
@@ -133,18 +135,18 @@ void backward_connect_layer(Layer l, int num, float *n_delta)
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;
+        float *output = l.output+offset_o;
         float *delta_l = l.delta+offset_i;
         float *delta_n = n_delta+offset_o;
-        gradient_list(l.output+offset_o, l.outputs, l.gradient);
-        multiply(delta_n, l.output+offset_o, l.outputs, delta_n);
-        gemm(1, 0, l.output_h, l.input_h, l.output_h, l.output_w, 1, 
-            l.kernel_weights, n_delta+offset_o, delta_l);
+        gradient_list(output, l.outputs, l.gradient);
+        multiply(delta_n, output, l.outputs, delta_n);
+        gemm(1, 0, l.output_h, l.input_h, l.output_h, l.input_w, 1, 
+            l.kernel_weights, delta_n, delta_l);
     }
 }
 
 void update_connect_layer(Layer l, float rate, int num, float *n_delta)
 {
-    printf("rate: %f\n", rate);
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;

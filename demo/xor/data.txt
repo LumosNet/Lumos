@@ -1,4 +1,4 @@
 ./demo/xor/data/00.png
-./demo/xor/data/11.png
 ./demo/xor/data/01.png
+./demo/xor/data/11.png
 ./demo/xor/data/10.png

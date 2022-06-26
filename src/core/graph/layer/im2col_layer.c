@@ -79,6 +79,7 @@ void restore_im2col_layer(Layer *l)
 
 void forward_im2col_layer(Layer l, int num)
 {
+    fill_cpu(l.delta, l.deltas*num, 0, 1);
     for (int i = 0; i < num; ++i){
         int input_offset = i*l.inputs;
         int output_offset = i*l.outputs;
@@ -86,6 +87,7 @@ void forward_im2col_layer(Layer l, int num)
         float *output = l.output+output_offset;
         memcpy(output, input, l.outputs*sizeof(float));
     }
+    printf("finish im2col\n");
 }
 
 void backward_im2col_layer(Layer l, int num, float *n_delta)

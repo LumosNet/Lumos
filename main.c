@@ -15,7 +15,7 @@
 
 int main(int argc, char **argv)
 {
-    Graph *graph = create_graph("Lumos", 4);
+    Graph *graph = create_graph("Lumos", 3);
     Layer *l1 = make_im2col_layer(1);
     Layer *l2 = make_connect_layer(4, 1, "logistic");
     Layer *l3 = make_connect_layer(1, 1, "logistic");
@@ -28,6 +28,7 @@ int main(int argc, char **argv)
     Session *sess = create_session();
     bind_graph(sess, graph);
     create_run_scene(sess, 1, 2, 1, 1, "./demo/xor/data.txt", "./demo/xor/label.txt");
-    init_run_scene(sess, 1000, 4, 1, NULL);
+    init_run_scene(sess, 100, 2, 2, NULL);
     session_run(sess, 0.1);
+    return 0;
 }

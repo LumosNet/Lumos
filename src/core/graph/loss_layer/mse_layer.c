@@ -76,15 +76,17 @@ void restore_mse_layer(Layer *l)
 
 void forward_mse_layer(Layer l, int num)
 {
+    printf("num: %d\n", num);
     float *truth = calloc(l.group*num, sizeof(float));
+    truth[0] = 0;
+    truth[1] = 1;
+    fill_cpu(l.delta, l.deltas*num, 0, 1);
     for (int i = 0; i < num; ++i){
-        int label_offset = i*l.label_num;
+        printf("input: %f\n", l.input[i]);
         int input_offset = i*l.inputs;
         int output_offset = i*l.outputs;
-        char **label = l.label+label_offset;
         float *input = l.input+input_offset;
         float *output = l.output+output_offset;
-        one_hot_encoding(l.group, atoi(label[0]), truth+i*l.group);
         subtract(truth+i*l.group, input, l.inputs, l.workspace);
         gemm(1, 0, l.input_h, l.input_w, l.input_h, l.input_w, 1, \
             l.workspace, l.workspace, output);
@@ -92,9 +94,8 @@ void forward_mse_layer(Layer l, int num)
     }
     float loss = 0;
     for (int i = 0; i < num; ++i){
-        float *tt = truth+i*l.group;
         loss += l.output[i];
-        printf("p:%f t:%f\n", l.input[i], tt[0]);
+        printf("p:%f t:%f\n", l.input[i], truth[i]);
     }
     printf("all loss: %f\n", loss);
     printf("loss: %f\n", loss/num);
@@ -104,12 +105,13 @@ void forward_mse_layer(Layer l, int num)
 void backward_mse_layer(Layer l, int num, float *n_delta)
 {
     float *truth = calloc(l.group*num, sizeof(float));
+    truth[0] = 0;
+    truth[1] = 1;
     for (int i = 0; i < num; ++i){
         int label_offset = i*l.label_num;
         int input_offset = i*l.inputs;
-        char **label = l.label+label_offset;
-        one_hot_encoding(l.group, atoi(label[0]), truth+i*l.group);
         subtract(l.input+input_offset, truth+i*l.group, l.inputs, l.delta+input_offset);
         multy_cpu(l.delta+input_offset, l.inputs, (float)2/l.group, 1);
     }
+    printf("finish mse back\n");
 }
