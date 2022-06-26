@@ -1,10 +1,11 @@
 #include "dispatch.h"
 
-void session_run(Session *sess)
+void session_run(Session *sess, float learning_rate)
 {
     fprintf(stderr, "\nSession Start To Running\n");
     clock_t start, final;
     double run_time = 0;
+    sess->learning_rate = learning_rate;
     for (int i = 0; i < sess->epoch; ++i){
         fprintf(stderr, "\nEpoch %d/%d\n", i+1, sess->epoch);
         int sub_epochs = (int)(sess->train_data_num / sess->batch);
@@ -62,13 +63,13 @@ void update_session(Session *sess)
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     Layer *l;
-    float rate = sess->learning_rate / sess->batch;
+    float rate = sess->learning_rate / (float)sess->batch;
     float *delta = NULL;
     for (int i = graph->layer_num-1; i >= 0; --i){
         l = layers[i];
         if (l->update){
             fill_cpu(sess->workspace, sess->workspace_size, 0, 1);
-            l->update(*l, rate, delta);
+            l->update(*l, rate, sess->subdivision, delta);
         }
         delta = l->delta;
     }

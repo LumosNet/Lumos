@@ -3,6 +3,7 @@
 void gemm(int TA, int TB, int AM, int AN, int BM, int BN, float ALPHA, 
         float *A, float *B, float *C)
 {
+    fill_cpu(C, AM*BN, 0, 1);
     if(!TA && !TB)
         gemm_nn(AM, AN, BM, BN, ALPHA, A, B, C);
     else if(TA && !TB)

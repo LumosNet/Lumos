@@ -147,16 +147,18 @@ void backward_convolutional_layer(Layer l, int num, float *n_delta)
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;
+        float *delta_l = l.delta+offset_i;
+        float *delta_n = n_delta+offset_o;
         gradient_list(l.output+offset_o, l.outputs, l.gradient);
-        multiply(n_delta+offset_o, l.output+offset_o, l.outputs, n_delta+offset_o);
+        multiply(delta_n, l.output+offset_o, l.outputs, delta_n);
         gemm(1, 0, l.filters, l.ksize*l.ksize*l.input_c, 
             l.filters, l.output_h*l.output_w, 1, 
             l.kernel_weights, n_delta+offset_o, l.workspace);
-        col2im(l.workspace, l.ksize, l.stride, l.pad, l.input_h, l.input_w, l.input_c, l.delta+offset_i);
+        col2im(l.workspace, l.ksize, l.stride, l.pad, l.input_h, l.input_w, l.input_c, delta_l);
     }
 }
 
-void update_convolutional_layer(Layer l, float rate, float *n_delta)
+void update_convolutional_layer(Layer l, float rate, int num, float *n_delta)
 {
     im2col(l.input, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, l.workspace);
     gemm(0, 1, l.filters, l.output_h*l.output_w, \

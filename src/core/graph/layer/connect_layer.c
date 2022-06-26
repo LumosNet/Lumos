@@ -109,6 +109,11 @@ void init_connect_weights(Layer *l)
 
 void forward_connect_layer(Layer l, int num)
 {
+    printf("\n------------------weight-------------------\n");
+    for (int i = 0; i < l.kernel_weights_size; ++i){
+        printf("%f ", l.update_kernel_weights[i]);
+    }
+    printf("\n------------------weight-------------------\n");
     for (int i = 0; i < num; ++i){
         int input_offset = i*l.inputs;
         int output_offset = i*l.outputs;
@@ -128,20 +133,29 @@ void backward_connect_layer(Layer l, int num, float *n_delta)
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;
+        float *delta_l = l.delta+offset_i;
+        float *delta_n = n_delta+offset_o;
         gradient_list(l.output+offset_o, l.outputs, l.gradient);
-        multiply(n_delta+offset_o, l.output+offset_o, l.outputs, n_delta+offset_o);
+        multiply(delta_n, l.output+offset_o, l.outputs, delta_n);
         gemm(1, 0, l.output_h, l.input_h, l.output_h, l.output_w, 1, 
-            l.kernel_weights, n_delta+offset_o, l.delta+offset_i);
+            l.kernel_weights, n_delta+offset_o, delta_l);
     }
 }
 
-void update_connect_layer(Layer l, float rate, float *n_delta)
+void update_connect_layer(Layer l, float rate, int num, float *n_delta)
 {
-    gemm(0, 1, l.output_h, l.output_w, \
-        l.input_h, l.input_w, 1, \
-        n_delta, l.input, l.workspace);
-    saxpy(l.update_kernel_weights, l.workspace, l.output_h * l.input_h, rate, l.update_kernel_weights);
-    if (l.bias){
-        saxpy(l.update_bias_weights, n_delta, l.outputs, rate, l.update_bias_weights);
+    printf("rate: %f\n", rate);
+    for (int i = 0; i < num; ++i){
+        int offset_i = i*l.inputs;
+        int offset_o = i*l.outputs;
+        float *input = l.input+offset_i;
+        float *delta_n = n_delta+offset_o;
+        gemm(0, 1, l.output_h, l.output_w, \
+            l.input_h, l.input_w, 1, \
+            delta_n, input, l.workspace);
+        saxpy(l.update_kernel_weights, l.workspace, l.output_h * l.input_h, rate, l.update_kernel_weights);
+        if (l.bias){
+            saxpy(l.update_bias_weights, delta_n, l.outputs, rate, l.update_bias_weights);
+        }
     }
 }

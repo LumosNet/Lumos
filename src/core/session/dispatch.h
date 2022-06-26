@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-void session_run(Session *sess);
+void session_run(Session *sess, float learning_rate);
 
 void forward_session(Session *sess);
 void backward_session(Session *sess);

@@ -22,7 +22,7 @@ typedef void (*backward) (struct layer, int, float*);
 typedef forward Forward;
 typedef backward Backward;
 
-typedef void (*update) (struct layer, float, float*);
+typedef void (*update) (struct layer, float, int, float*);
 typedef update Update;
 
 typedef void (*init_layer_weights) (struct layer*);

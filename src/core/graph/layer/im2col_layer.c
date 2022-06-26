@@ -93,6 +93,8 @@ void backward_im2col_layer(Layer l, int num, float *n_delta)
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;
-        memcpy(l.delta+offset_i, n_delta+offset_o, l.inputs*sizeof(float));
+        float *delta_l = l.delta+offset_i;
+        float *delta_n = n_delta+offset_o;
+        memcpy(delta_l, delta_n, l.inputs*sizeof(float));
     }
 }

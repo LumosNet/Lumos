@@ -82,16 +82,21 @@ void forward_mse_layer(Layer l, int num)
         int input_offset = i*l.inputs;
         int output_offset = i*l.outputs;
         char **label = l.label+label_offset;
+        float *input = l.input+input_offset;
+        float *output = l.output+output_offset;
         one_hot_encoding(l.group, atoi(label[0]), truth+i*l.group);
-        subtract(truth+i*l.group, l.input+input_offset, l.inputs, l.workspace);
+        subtract(truth+i*l.group, input, l.inputs, l.workspace);
         gemm(1, 0, l.input_h, l.input_w, l.input_h, l.input_w, 1, \
-            l.workspace, l.workspace, l.output+output_offset);
-        l.output[i*l.outputs] /= l.group;
+            l.workspace, l.workspace, output);
+        multy_cpu(output, l.outputs, 1/(float)l.group, 1);
     }
     float loss = 0;
     for (int i = 0; i < num; ++i){
+        float *tt = truth+i*l.group;
         loss += l.output[i];
+        printf("p:%f t:%f\n", l.input[i], tt[0]);
     }
+    printf("all loss: %f\n", loss);
     printf("loss: %f\n", loss/num);
     free(truth);
 }

@@ -1,6 +1,8 @@
 #ifndef GEMM_H
 #define GEMM_H
 
+#include "cpu.h"
+
 #ifdef __cplusplus
 extern "C"{
 #endif

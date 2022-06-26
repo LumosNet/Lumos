@@ -55,7 +55,7 @@ void init_weights(Session *sess, char *weights_file)
         }
         fprintf(stderr, "\nInit Weights\n");
     }
-    memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
+    memcpy(sess->update_weights, sess->weights, sess->weights_size*sizeof(float));
 }
 
 void set_input_dimension(Session *sess, int h, int w, int c)
@@ -89,7 +89,6 @@ void load_data(Session *sess, int index, int num)
         input_offset += sess->height*sess->width*sess->channel;
         free(im);
     }
-    // fprintf(stderr, "Load Subdivision Data Succeed\n");
 }
 
 void load_label(Session *sess, int index, int num)
