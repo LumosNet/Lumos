@@ -1,6 +1,7 @@
 LINUX=1
 GPU=0
 DEBUG=0
+TEST=1
 AST=0
 
 ARCH= 	-gencode arch=compute_35,code=sm_35 \
@@ -21,7 +22,8 @@ VPATH=./src/: \
 	  ./src/dependent/cmd/: \
       ./src/dependent/file/: \
       ./src/dependent/str/: \
-      ./
+      ./ \
+	  ./test/
 
 COMMON=-Isrc/core/graph \
 	   -Isrc/core/graph/layer \
@@ -53,6 +55,10 @@ ifeq ($(DEBUG), 1)
 COMMON+= -g
 endif
 
+ifeq ($(TEST), 1)
+COMMON+= -Itest
+endif
+
 OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
 		mse_layer.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o \
@@ -62,6 +68,10 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		str_ops.o \
 
 EXECOBJA=main.o
+
+ifeq ($(TEST), 1)
+OBJ+= test.o
+endif
 
 ifeq ($(GPU), 1)
 LDFLAGS+= -lstdc++
