@@ -21,7 +21,6 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
 Layer *make_convolutional_layer_by_cfg(CFGParams *p);
 
 void init_convolutional_layer(Layer *l, int w, int h, int c);
-void restore_convolutional_layer(Layer *l);
 void init_convolutional_weights(Layer *l);
 
 void forward_convolutional_layer(Layer l, int num);

@@ -29,8 +29,8 @@ int main(int argc, char **argv)
     Session *sess = create_session();
     bind_graph(sess, graph);
     create_run_scene(sess, 1, 2, 1, 1, "./demo/xor/data.txt", "./demo/xor/label.txt");
-    init_run_scene(sess, 1000000, 4, 4, NULL);
-    session_run(sess, 0.1);
+    init_run_scene(sess, 10000000, 2, 2, NULL);
+    session_run(sess, 0.001);
 
     return 0;
 }

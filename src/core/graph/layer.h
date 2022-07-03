@@ -89,6 +89,7 @@ struct layer{
     InitLayerWeights init_layer_weights;
 };
 
+void restore_layer(Layer *l);
 
 #ifdef __cplusplus
 }

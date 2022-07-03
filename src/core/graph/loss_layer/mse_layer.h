@@ -14,7 +14,6 @@ Layer *make_mse_layer(int group);
 Layer *make_mse_layer_by_cfg(CFGParams *p);
 
 void init_mse_layer(Layer *l, int w, int h, int c);
-void restore_mse_layer(Layer *l);
 
 void forward_mse_layer(Layer l, int num);
 void backward_mse_layer(Layer l, int num, float *n_delta);

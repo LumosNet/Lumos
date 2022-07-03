@@ -97,21 +97,6 @@ void restore_graph(Graph *g)
     Layer *l;
     for (int i = 0; i < g->layer_num; ++i){
         l = g->layers[i];
-        switch (l->type){
-            case AVGPOOL:
-                restore_avgpool_layer(l); break;
-            case CONNECT:
-                restore_connect_layer(l); break;
-            case CONVOLUTIONAL:
-                restore_convolutional_layer(l); break;
-            case IM2COL:
-                restore_im2col_layer(l); break;
-            case MAXPOOL:
-                restore_maxpool_layer(l); break;
-            case MSE:
-                restore_mse_layer(l); break;
-            default:
-                break;
-        }
+        restore_layer(l);
     }
 }

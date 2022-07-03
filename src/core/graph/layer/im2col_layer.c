@@ -10,9 +10,9 @@ Layer *make_im2col_layer(int flag)
 
     l->forward = forward_im2col_layer;
     l->backward = backward_im2col_layer;
-    l->update = NULL;
 
-    restore_im2col_layer(l);
+    l->update = NULL;
+    l->init_layer_weights = NULL;
 
     fprintf(stderr, "Im2col          Layer    :    [flag=%d]\n", l->im2col_flag);
     return l;
@@ -56,35 +56,14 @@ void init_im2col_layer(Layer *l, int w, int h, int c)
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
 }
 
-void restore_im2col_layer(Layer *l)
-{
-    l->input_h = -1;
-    l->input_w = -1;
-    l->input_c = -1;
-    l->inputs = -1;
-
-    l->output_h = -1;
-    l->output_w = -1;
-    l->output_c = -1;
-    l->outputs = -1;
-
-    l->workspace_size = -1;
-
-    l->deltas = -1;
-
-    l->input = NULL;
-    l->output = NULL;
-    l->delta = NULL;
-}
-
 void forward_im2col_layer(Layer l, int num)
 {
     fill_cpu(l.delta, l.deltas*num, 0, 1);
     for (int i = 0; i < num; ++i){
-        int input_offset = i*l.inputs;
-        int output_offset = i*l.outputs;
-        float *input = l.input+input_offset;
-        float *output = l.output+output_offset;
+        int offset_i = i*l.inputs;
+        int offset_o = i*l.outputs;
+        float *input = l.input+offset_i;
+        float *output = l.output+offset_o;
         memcpy(output, input, l.outputs*sizeof(float));
     }
     printf("finish im2col\n");

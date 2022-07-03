@@ -76,14 +76,14 @@ void set_graph_memory(Session *sess)
 {
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
-    int output_offset = 0;
+    int offset_o = 0;
     int delta_offset = 0;
     for (int i = 0; i < graph->layer_num; ++i){
         Layer *l = layers[i];
-        l->output = sess->output+output_offset;
+        l->output = sess->output+offset_o;
         l->delta = sess->layer_delta+delta_offset;
         l->workspace = sess->workspace;
-        output_offset += l->outputs*sess->subdivision;
+        offset_o += l->outputs*sess->subdivision;
         delta_offset += l->deltas*sess->subdivision;
     }
     fprintf(stderr, "\nDistribut Running Memory To Each Layer\n");

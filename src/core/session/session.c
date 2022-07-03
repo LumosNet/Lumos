@@ -81,13 +81,13 @@ void load_data(Session *sess, int index, int num)
 {
     int h[1], w[1], c[1];
     float *im;
-    int input_offset = 0;
+    int offset_i = 0;
     for (int i = index; i < index+num; ++i){
         char *data_path = sess->train_data_paths[i];
         printf("%s\n", data_path);
         im = load_image_data(data_path, w, h, c);
-        resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input+input_offset);
-        input_offset += sess->height*sess->width*sess->channel;
+        resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input+offset_i);
+        offset_i += sess->height*sess->width*sess->channel;
         free(im);
     }
 }

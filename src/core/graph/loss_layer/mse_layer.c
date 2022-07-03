@@ -2,18 +2,18 @@
 
 Layer *make_mse_layer(int group)
 {
-     Layer *l = malloc(sizeof(Layer));
-     l->type = MSE;
-     l->group = group;
+    Layer *l = malloc(sizeof(Layer));
+    l->type = MSE;
+    l->group = group;
 
-     l->forward = forward_mse_layer;
-     l->backward = backward_mse_layer;
-     l->update = NULL;
+    l->forward = forward_mse_layer;
+    l->backward = backward_mse_layer;
 
-     restore_mse_layer(l);
+    l->update = NULL;
+    l->init_layer_weights = NULL;
 
-     fprintf(stderr, "Mse             Layer    :    [output=%4d]\n", 1);
-     return l;
+    fprintf(stderr, "Mse             Layer    :    [output=%4d]\n", 1);
+    return l;
 }
 
 Layer *make_mse_layer_by_cfg(CFGParams *p)
@@ -50,29 +50,6 @@ void init_mse_layer(Layer *l, int w, int h, int c)
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
 }
 
-void restore_mse_layer(Layer *l)
-{
-    l->input_h = -1;
-    l->input_w = -1;
-    l->input_c = -1;
-    l->inputs = -1;
-
-    l->output_h = -1;
-    l->output_w = -1;
-    l->output_c = -1;
-    l->outputs = -1;
-
-    l->workspace_size = -1;
-
-    l->deltas = -1;
-
-    l->input = NULL;
-    l->output = NULL;
-    l->delta = NULL;
-    l->kernel_weights = NULL;
-    l->bias_weights = NULL;
-    l->label = NULL;
-}
 
 void forward_mse_layer(Layer l, int num)
 {
@@ -80,15 +57,13 @@ void forward_mse_layer(Layer l, int num)
     float *truth = calloc(l.group*num, sizeof(float));
     truth[0] = 0;
     truth[1] = 1;
-    truth[2] = 0;
-    truth[3] = 1;
     fill_cpu(l.delta, l.deltas*num, 0, 1);
     for (int i = 0; i < num; ++i){
         printf("input: %f\n", l.input[i]);
-        int input_offset = i*l.inputs;
-        int output_offset = i*l.outputs;
-        float *input = l.input+input_offset;
-        float *output = l.output+output_offset;
+        int offset_i = i*l.inputs;
+        int offset_o = i*l.outputs;
+        float *input = l.input+offset_i;
+        float *output = l.output+offset_o;
         subtract(truth+i*l.group, input, l.inputs, l.workspace);
         gemm(1, 0, l.input_h, l.input_w, l.input_h, l.input_w, 1, \
             l.workspace, l.workspace, output);
@@ -109,13 +84,11 @@ void backward_mse_layer(Layer l, int num, float *n_delta)
     float *truth = calloc(l.group*num, sizeof(float));
     truth[0] = 0;
     truth[1] = 1;
-    truth[2] = 0;
-    truth[3] = 1;
     for (int i = 0; i < num; ++i){
         int label_offset = i*l.label_num;
-        int input_offset = i*l.inputs;
-        subtract(l.input+input_offset, truth+i*l.group, l.inputs, l.delta+input_offset);
-        multy_cpu(l.delta+input_offset, l.inputs, (float)2/l.group, 1);
+        int offset_i = i*l.inputs;
+        subtract(l.input+offset_i, truth+i*l.group, l.inputs, l.delta+offset_i);
+        multy_cpu(l.delta+offset_i, l.inputs, (float)2/l.group, 1);
     }
     printf("finish mse back\n");
 }
