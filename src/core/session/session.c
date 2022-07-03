@@ -83,7 +83,6 @@ void load_data(Session *sess, int index, int num)
     int offset_i = 0;
     for (int i = index; i < index+num; ++i){
         char *data_path = sess->train_data_paths[i];
-        printf("%s\n", data_path);
         im = load_image_data(data_path, w, h, c);
         resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input+offset_i);
         offset_i += sess->height*sess->width*sess->channel;
@@ -93,15 +92,14 @@ void load_data(Session *sess, int index, int num)
 
 void load_label(Session *sess, int index, int num)
 {
-    printf("start load label\n");
     for (int i = index; i < index+num; ++i){
         char **label = load_label_txt(sess->label_paths[i], sess->label_num);
         for (int j = 0; j < sess->label_num; ++j){
-            // sess->label[j] = label[j];
-            printf("%s\n", label[j]);
+            sess->label[(i-index)*sess->label_num+j] = label[j];
         }
     }
-    printf("finif load label\n");
+    for (int i = 0; i < num; ++i){
+    }
 }
 
 void save_weigths(Session *sess, char *path)

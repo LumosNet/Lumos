@@ -3,31 +3,27 @@
 void session_run(Session *sess, float learning_rate)
 {
     fprintf(stderr, "\nSession Start To Running\n");
-    clock_t start, final;
-    double run_time = 0;
     sess->learning_rate = learning_rate;
     for (int i = 0; i < sess->epoch; ++i){
-        fprintf(stderr, "\nEpoch %d/%d\n", i+1, sess->epoch);
         int sub_epochs = (int)(sess->train_data_num / sess->batch);
         int sub_batchs = (int)(sess->batch / sess->subdivision);
         for (int j = 0; j < sub_epochs; ++j){
             for (int k = 0; k < sub_batchs; ++k){
-                // load_data(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
+                load_data(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
                 load_label(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
-                // forward_session(sess);
-                // backward_session(sess);
-                // update_session(sess);
+                forward_session(sess);
+                backward_session(sess);
+                update_session(sess);
             }
             memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
         }
     }
     save_weigths(sess, "./backup/Lumos.w");
-    fprintf(stderr, "\n");
+    fprintf(stderr, "\nWeights Saved To: ./backup/Lumos.w\n");
 }
 
 void forward_session(Session *sess)
 {
-    printf("start forward sess\n");
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     Layer *l;

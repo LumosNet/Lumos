@@ -74,9 +74,15 @@ void init_connect_layer(Layer *l, int w, int h, int c)
 
 void init_connect_weights(Layer *l)
 {
-    random(1, l->inputs, 0.01, l->kernel_weights_size, l->kernel_weights);
+    // random(1, l->inputs, 0.01, l->kernel_weights_size, l->kernel_weights);
+    // for (int i = 0; i < l->bias_weights_size; ++i){
+    //     l->bias_weights[i] = 0.001;
+    // }
+    for (int i = 0; i < l->kernel_weights_size; ++i){
+        l->kernel_weights[i] = 2.0*rand()/RAND_MAX-1;
+    }
     for (int i = 0; i < l->bias_weights_size; ++i){
-        l->bias_weights[i] = 0.001;
+        l->bias_weights[i] = 2.0*rand()/RAND_MAX-1;
     }
 }
 
@@ -95,7 +101,6 @@ void forward_connect_layer(Layer l, int num)
         }
         activate_list(output, l.outputs, l.active);
     }
-    printf("finish connect\n");
 }
 
 void backward_connect_layer(Layer l, int num, float *n_delta)

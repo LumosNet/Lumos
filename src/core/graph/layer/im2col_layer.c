@@ -66,7 +66,6 @@ void forward_im2col_layer(Layer l, int num)
         float *output = l.output+offset_o;
         memcpy(output, input, l.outputs*sizeof(float));
     }
-    printf("finish im2col\n");
 }
 
 void backward_im2col_layer(Layer l, int num, float *n_delta)

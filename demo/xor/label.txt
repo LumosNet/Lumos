@@ -1,4 +1,4 @@
-0
-1
-0
-1
+./demo/xor/data/00.txt
+./demo/xor/data/01.txt
+./demo/xor/data/11.txt
+./demo/xor/data/10.txt

@@ -36,7 +36,6 @@ char **fgetls(FILE *fp)
         ln += 1;
     }
     lines[0] = int2str(ln-1);
-    free(f_lines);
     return lines;
 }
 
