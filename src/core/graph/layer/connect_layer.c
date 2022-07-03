@@ -76,7 +76,7 @@ void init_connect_weights(Layer *l)
 {
     random(1, l->inputs, 0.01, l->kernel_weights_size, l->kernel_weights);
     for (int i = 0; i < l->bias_weights_size; ++i){
-        l->bias_weights[i] = 0.01;
+        l->bias_weights[i] = 0.001;
     }
 }
 

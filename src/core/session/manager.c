@@ -138,6 +138,24 @@ void set_maxpool_index_memory(Session *sess)
     fprintf(stderr, "\nDistribut MAX Pool Layers's MAX Pixel Index To Each Layer\n");
 }
 
+void get_workspace_size(Session *sess)
+{
+    Graph *graph = sess->graph;
+    Layer **layers = graph->layers;
+    int max_workspace_size = -1;
+    int weights_size = 0;
+    for (int i = 0; i < graph->layer_num; ++i){
+        Layer *l = layers[i];
+        if (l->workspace_size > max_workspace_size){
+            max_workspace_size = l->workspace_size;
+        }
+        weights_size += l->kernel_weights_size;
+        weights_size += l->bias_weights_size;
+    }
+    sess->workspace_size = max_workspace_size;
+    sess->weights_size = weights_size;
+}
+
 void statistics_memory_occupy_size(Session *sess)
 {
     Graph *graph = sess->graph;

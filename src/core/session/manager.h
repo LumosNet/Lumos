@@ -26,6 +26,7 @@ void set_graph_weight(Session *sess);
 void set_label(Session *sess);
 void set_maxpool_index_memory(Session *sess);
 
+void get_workspace_size(Session *sess);
 void statistics_memory_occupy_size(Session *sess);
 
 #ifdef __cplusplus

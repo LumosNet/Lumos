@@ -12,20 +12,16 @@ void session_run(Session *sess, float learning_rate)
         int sub_batchs = (int)(sess->batch / sess->subdivision);
         for (int j = 0; j < sub_epochs; ++j){
             for (int k = 0; k < sub_batchs; ++k){
-                load_data(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
-                // load_label(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
-                start = clock();
-                forward_session(sess);
-                backward_session(sess);
-                update_session(sess);
-                final = clock();
-                // run_time = (double)(final-start) / CLOCKS_PER_SEC;
-                // fprintf(stderr, "%4d   RunTime\n", j*sub_batchs+k);
-                // fprintf(stderr, "        %.3lfs\n", run_time);
+                // load_data(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
+                load_label(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
+                // forward_session(sess);
+                // backward_session(sess);
+                // update_session(sess);
             }
             memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
         }
     }
+    save_weigths(sess, "./backup/Lumos.w");
     fprintf(stderr, "\n");
 }
 
@@ -93,20 +89,7 @@ void init_run_scene(Session *sess, int epoch, int batch, int subdivision, char *
     sess->subdivision = subdivision;
     sess->input = calloc(sess->subdivision*sess->height*sess->width*sess->channel, sizeof(float));
     init_graph(sess->graph, sess->width, sess->height, sess->channel);
-    Graph *graph = sess->graph;
-    Layer **layers = graph->layers;
-    int max_workspace_size = -1;
-    int weights_size = 0;
-    for (int i = 0; i < graph->layer_num; ++i){
-        Layer *l = layers[i];
-        if (l->workspace_size > max_workspace_size){
-            max_workspace_size = l->workspace_size;
-        }
-        weights_size += l->kernel_weights_size;
-        weights_size += l->bias_weights_size;
-    }
-    sess->workspace_size = max_workspace_size;
-    sess->weights_size = weights_size;
+    get_workspace_size(sess);
     statistics_memory_occupy_size(sess);
     create_run_memory(sess);
     set_graph_memory(sess);

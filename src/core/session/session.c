@@ -76,7 +76,6 @@ void set_train_params(Session *sess, int epoch, int batch, int subdivision, floa
 }
 
 
-// 从index读取num个数据
 void load_data(Session *sess, int index, int num)
 {
     int h[1], w[1], c[1];
@@ -95,24 +94,11 @@ void load_data(Session *sess, int index, int num)
 void load_label(Session *sess, int index, int num)
 {
     printf("start load label\n");
-    int label_offset = 0;
     for (int i = index; i < index+num; ++i){
-        FILE *fp = fopen(sess->label_paths[i], "r");
-        printf("lable path: %s\n", sess->label_paths[i]);
-        char **labels = fgetls(fp);
-        fclose(fp);
-        int lines = atoi(labels[0]);
-        printf("lines: %d\n", lines);
-        for (int j = 0; j < lines; ++j){
-            char *line = labels[j+1];
-            printf("line: %s\n", line);
-            int num[1];
-            char **nodes = split(line, ' ', num);
-            for (int k = 0; k < num[0]; ++k){
-                strip(nodes[k], ' ');
-                sess->label[label_offset+k] = nodes[k];
-                label_offset += 1;
-            }
+        char **label = load_label_txt(sess->label_paths[i], sess->label_num);
+        for (int j = 0; j < sess->label_num; ++j){
+            // sess->label[j] = label[j];
+            printf("%s\n", label[j]);
         }
     }
     printf("finif load label\n");
