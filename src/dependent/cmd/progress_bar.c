@@ -1,6 +1,6 @@
 #include "progress_bar.h"
 
-void progress_bar(int n, int m)
+void progress_bar(int n, int m, double time, float loss)
 {
     int p = (n/(float)m)*20;
     fprintf(stderr, "\r[");
@@ -11,4 +11,6 @@ void progress_bar(int n, int m)
         fprintf(stderr, " ");
     }
     fprintf(stderr, "]");
+    fprintf(stderr, "  Time: %.3lfs", time);
+    fprintf(stderr, "  Loss: %.3f", loss);
 }

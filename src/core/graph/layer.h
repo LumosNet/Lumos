@@ -51,6 +51,7 @@ struct layer{
     float *output;
     char **label;
     float *delta;
+    float *loss;
 
     float *workspace;
 

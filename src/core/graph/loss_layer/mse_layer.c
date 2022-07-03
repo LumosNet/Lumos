@@ -54,6 +54,7 @@ void init_mse_layer(Layer *l, int w, int h, int c)
 void forward_mse_layer(Layer l, int num)
 {
     float *truth = calloc(l.group*num, sizeof(float));
+    float loss = 0;
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;
@@ -66,7 +67,9 @@ void forward_mse_layer(Layer l, int num)
         gemm(1, 0, l.input_h, l.input_w, l.input_h, l.input_w, 1, \
             l.workspace, l.workspace, output);
         multy_cpu(output, l.outputs, 1/(float)l.group, 1);
+        loss += output[0];
     }
+    l.loss[0] = loss / num;
     free(truth);
 }
 

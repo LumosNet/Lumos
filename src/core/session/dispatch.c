@@ -3,8 +3,12 @@
 void session_run(Session *sess, float learning_rate)
 {
     fprintf(stderr, "\nSession Start To Running\n");
+    clock_t start, final;
+    double run_time = 0;
     sess->learning_rate = learning_rate;
     for (int i = 0; i < sess->epoch; ++i){
+        fprintf(stderr, "\n\nEpoch %d/%d\n", i+1, sess->epoch);
+        start = clock();
         int sub_epochs = (int)(sess->train_data_num / sess->batch);
         int sub_batchs = (int)(sess->batch / sess->subdivision);
         for (int j = 0; j < sub_epochs; ++j){
@@ -14,12 +18,16 @@ void session_run(Session *sess, float learning_rate)
                 forward_session(sess);
                 backward_session(sess);
                 update_session(sess);
+                final = clock();
+                run_time = (double)(final-start) / CLOCKS_PER_SEC;
+                progress_bar(j*sub_batchs+k+1, sub_epochs*sub_batchs, run_time, sess->loss[0]);
             }
             memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
         }
     }
+    fprintf(stderr, "\n\nSession Training Finished\n");
     save_weigths(sess, "./backup/Lumos.w");
-    fprintf(stderr, "\nWeights Saved To: ./backup/Lumos.w\n");
+    fprintf(stderr, "\nWeights Saved To: ./backup/Lumos.w\n\n");
 }
 
 void forward_session(Session *sess)
@@ -93,6 +101,8 @@ void init_run_scene(Session *sess, int epoch, int batch, int subdivision, char *
     set_graph_weight(sess);
     init_weights(sess, weights_file);
     create_label_memory(sess);
+    create_loss_memory(sess);
+    set_loss_memory(sess);
     set_label(sess);
     set_maxpool_index_memory(sess);
 }

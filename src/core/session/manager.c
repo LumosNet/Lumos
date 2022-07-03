@@ -56,6 +56,11 @@ void create_label_memory(Session *sess)
     sess->label = calloc(sess->label_num*sess->subdivision, sizeof(char*));
 }
 
+void create_loss_memory(Session *sess)
+{
+    sess->loss = calloc(1, sizeof(float));
+}
+
 void create_maxpool_index_memory(Session *sess)
 {
     Graph *graph = sess->graph;
@@ -118,6 +123,14 @@ void set_label(Session *sess)
         Layer *l = layers[i];
         l->label = sess->label;
     }
+}
+
+void set_loss_memory(Session *sess)
+{
+    Graph *graph = sess->graph;
+    Layer **layers = graph->layers;
+    Layer *l = layers[graph->layer_num-1];
+    l->loss = sess->loss;
 }
 
 void set_maxpool_index_memory(Session *sess)

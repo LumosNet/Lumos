@@ -19,11 +19,13 @@ void create_output_memory(Session *sess);
 void create_weights_memory(Session *sess);
 void create_delta_memory(Session *sess);
 void create_label_memory(Session *sess);
+void create_loss_memory(Session *sess);
 void create_maxpool_index_memory(Session *sess);
 
 void set_graph_memory(Session *sess);
 void set_graph_weight(Session *sess);
 void set_label(Session *sess);
+void set_loss_memory(Session *sess);
 void set_maxpool_index_memory(Session *sess);
 
 void get_workspace_size(Session *sess);

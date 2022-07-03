@@ -24,6 +24,8 @@ typedef struct session{
     int height;
     int channel;
 
+    float *loss;
+
     int label_num;
 
     float learning_rate;
