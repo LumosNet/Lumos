@@ -80,6 +80,8 @@ void forward_mse_layer(Layer l, int num)
     float *truth = calloc(l.group*num, sizeof(float));
     truth[0] = 0;
     truth[1] = 1;
+    truth[2] = 0;
+    truth[3] = 1;
     fill_cpu(l.delta, l.deltas*num, 0, 1);
     for (int i = 0; i < num; ++i){
         printf("input: %f\n", l.input[i]);
@@ -107,6 +109,8 @@ void backward_mse_layer(Layer l, int num, float *n_delta)
     float *truth = calloc(l.group*num, sizeof(float));
     truth[0] = 0;
     truth[1] = 1;
+    truth[2] = 0;
+    truth[3] = 1;
     for (int i = 0; i < num; ++i){
         int label_offset = i*l.label_num;
         int input_offset = i*l.inputs;
