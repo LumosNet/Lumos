@@ -1,5 +1,0 @@
-classes=2
-data=./demo/xor/data.txt
-label=./demo/xor/label.txt
-test=./demo/xor/test.txt
-backup=./demo/xor/weights/weights.w
