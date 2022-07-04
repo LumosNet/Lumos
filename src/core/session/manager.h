@@ -31,6 +31,15 @@ void set_maxpool_index_memory(Session *sess);
 void get_workspace_size(Session *sess);
 void statistics_memory_occupy_size(Session *sess);
 
+void init_weights(Session *sess, char *weights_file);
+
+// 从index读取num个数据
+void load_data(Session *sess, int index, int num);
+void load_label(Session *sess, int index, int num);
+
+void save_weigths(Session *sess, char *path);
+void load_weights(Session *sess, char *path);
+
 #ifdef __cplusplus
 }
 #endif
