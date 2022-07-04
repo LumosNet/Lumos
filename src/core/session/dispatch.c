@@ -1,6 +1,6 @@
 #include "dispatch.h"
 
-void session_run(Session *sess, float learning_rate)
+void session_train(Session *sess, float learning_rate)
 {
     fprintf(stderr, "\nSession Start To Running\n");
     clock_t start, final;
@@ -30,17 +30,19 @@ void session_run(Session *sess, float learning_rate)
     fprintf(stderr, "\nWeights Saved To: ./backup/Lumos.w\n\n");
 }
 
-void session_test(Session *sess)
+void session_test(Session *sess, ProcessTestInformation process_test_information)
 {
     fprintf(stderr, "\nSession Start To Detect Test Cases\n");
     for (int i = 0; i < sess->test_data_num; ++i){
         load_test_data(sess, i);
-        load_test_label(sess, i);
+        char **label = load_test_label(sess, i);
         forward_session(sess);
+        Graph *graph = sess->graph;
+        Layer **layers = graph->layers;
+        sess->predicts = layers[graph->layer_num-2]->output;
+        process_test_information(label, sess->truth, sess->predicts, sess->loss[0], sess->test_data_paths[i]);
     }
-    fprintf(stderr, "\n\nSession Training Finished\n");
-    save_weigths(sess, "./backup/Lumos.w");
-    fprintf(stderr, "\nWeights Saved To: ./backup/Lumos.w\n\n");
+    fprintf(stderr, "\nSession Testing Finished\n\n");
 }
 
 void forward_session(Session *sess)
@@ -89,22 +91,56 @@ void update_session(Session *sess)
     }
 }
 
-void create_run_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file)
+void create_train_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file)
 {
     set_input_dimension(sess, h, w, c);
     bind_train_data(sess, dataset_list_file);
-    bind_label(sess, label_num, label_list_file);
+    bind_train_label(sess, label_num, label_list_file);
     bind_label2truth_func(sess, truth_num, func);
 }
 
 
-void init_run_scene(Session *sess, int epoch, int batch, int subdivision, char *weights_file)
+void create_test_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file)
+{
+    set_input_dimension(sess, h, w, c);
+    bind_test_data(sess, dataset_list_file);
+    bind_test_label(sess, label_num, label_list_file);
+    bind_label2truth_func(sess, truth_num, func);
+}
+
+
+void init_train_scene(Session *sess, int epoch, int batch, int subdivision, char *weights_file)
 {
     fprintf(stderr, "\nEpoch   Batch   Subdivision\n");
     fprintf(stderr, "%3d     %3d     %3d\n", epoch, batch, subdivision);
     sess->epoch = epoch;
     sess->batch = batch;
     sess->subdivision = subdivision;
+    sess->input = calloc(sess->subdivision*sess->height*sess->width*sess->channel, sizeof(float));
+    init_graph(sess->graph, sess->width, sess->height, sess->channel);
+    get_workspace_size(sess);
+    statistics_memory_occupy_size(sess);
+    create_run_memory(sess);
+    set_graph_memory(sess);
+    create_weights_memory(sess);
+    set_graph_weight(sess);
+    init_weights(sess, weights_file);
+    create_label_memory(sess);
+    create_loss_memory(sess);
+    set_loss_memory(sess);
+    set_label(sess);
+    create_truth_memory(sess);
+    set_truth_memory(sess);
+    set_maxpool_index_memory(sess);
+}
+
+
+void init_test_scene(Session *sess, char *weights_file)
+{
+    if (weights_file == NULL) return;
+    sess->epoch = 1;
+    sess->batch = 1;
+    sess->subdivision = 1;
     sess->input = calloc(sess->subdivision*sess->height*sess->width*sess->channel, sizeof(float));
     init_graph(sess->graph, sess->width, sess->height, sess->channel);
     get_workspace_size(sess);

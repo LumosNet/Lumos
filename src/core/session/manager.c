@@ -254,24 +254,18 @@ void load_test_data(Session *sess, int index)
 {
     int h[1], w[1], c[1];
     float *im;
-    int offset_i = 0;
-    for (int i = index; i < index+1; ++i){
-        char *data_path = sess->test_data_paths[i];
-        im = load_image_data(data_path, w, h, c);
-        resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input+offset_i);
-        offset_i += sess->height*sess->width*sess->channel;
-        free(im);
-    }
+    char *data_path = sess->test_data_paths[index];
+    im = load_image_data(data_path, w, h, c);
+    resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input);
+    free(im);
 }
 
-void load_test_label(Session *sess, int index)
+char **load_test_label(Session *sess, int index)
 {
-    for (int i = index; i < index+1; ++i){
-        char **label = load_label_txt(sess->test_label_paths[i], sess->label_num);
-        for (int j = 0; j < sess->label_num; ++j){
-            sess->label[(i-index)*sess->label_num+j] = label[j];
-        }
-    }
+    float *truth = sess->truth;
+    char **label = load_label_txt(sess->test_label_paths[index], sess->label_num);
+    sess->label2truth(label, truth);
+    return label;
 }
 
 void save_weigths(Session *sess, char *path)

@@ -16,6 +16,9 @@ extern "C" {
 typedef void (*label2truth) (char **, float *);
 typedef label2truth Label2Truth;
 
+typedef void (*process_test_information) (char **, float *, float *, float, char *);
+typedef process_test_information ProcessTestInformation;
+
 typedef struct session{
     Graph *graph;
 
@@ -44,6 +47,8 @@ typedef struct session{
     float *truth;
     int truth_num;
 
+    float *predicts;
+
     int *maxpool_index;
 
     float *weights;
@@ -68,7 +73,8 @@ void del_session();
 void bind_graph(Session *sess, Graph *graph);
 void bind_train_data(Session *sess, char *path);
 void bind_test_data(Session *sess, char *path);
-void bind_label(Session *sess, int label_num, char *path);
+void bind_train_label(Session *sess, int label_num, char *path);
+void bind_test_label(Session *sess, int label_num, char *path);
 void bind_label2truth_func(Session *sess, int truth_num, Label2Truth func);
 
 void set_input_dimension(Session *sess, int h, int w, int c);
