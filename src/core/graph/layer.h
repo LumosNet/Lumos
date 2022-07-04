@@ -49,8 +49,9 @@ struct layer{
 
     float *input;
     float *output;
-    char **label;
     float *delta;
+    char **label;
+    float *truth;
     float *loss;
 
     float *workspace;

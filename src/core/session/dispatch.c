@@ -13,8 +13,8 @@ void session_run(Session *sess, float learning_rate)
         int sub_batchs = (int)(sess->batch / sess->subdivision);
         for (int j = 0; j < sub_epochs; ++j){
             for (int k = 0; k < sub_batchs; ++k){
-                load_data(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
-                load_label(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
+                load_train_data(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
+                load_train_label(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
                 forward_session(sess);
                 backward_session(sess);
                 update_session(sess);
@@ -24,6 +24,19 @@ void session_run(Session *sess, float learning_rate)
             }
             memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
         }
+    }
+    fprintf(stderr, "\n\nSession Training Finished\n");
+    save_weigths(sess, "./backup/Lumos.w");
+    fprintf(stderr, "\nWeights Saved To: ./backup/Lumos.w\n\n");
+}
+
+void session_test(Session *sess)
+{
+    fprintf(stderr, "\nSession Start To Detect Test Cases\n");
+    for (int i = 0; i < sess->test_data_num; ++i){
+        load_test_data(sess, i);
+        load_test_label(sess, i);
+        forward_session(sess);
     }
     fprintf(stderr, "\n\nSession Training Finished\n");
     save_weigths(sess, "./backup/Lumos.w");

@@ -214,7 +214,7 @@ void init_weights(Session *sess, char *weights_file)
 }
 
 
-void load_data(Session *sess, int index, int num)
+void load_train_data(Session *sess, int index, int num)
 {
     int h[1], w[1], c[1];
     float *im;
@@ -228,15 +228,37 @@ void load_data(Session *sess, int index, int num)
     }
 }
 
-void load_label(Session *sess, int index, int num)
+void load_train_label(Session *sess, int index, int num)
 {
     for (int i = index; i < index+num; ++i){
-        char **label = load_label_txt(sess->label_paths[i], sess->label_num);
+        char **label = load_label_txt(sess->train_label_paths[i], sess->label_num);
         for (int j = 0; j < sess->label_num; ++j){
             sess->label[(i-index)*sess->label_num+j] = label[j];
         }
     }
-    for (int i = 0; i < num; ++i){
+}
+
+void load_test_data(Session *sess, int index)
+{
+    int h[1], w[1], c[1];
+    float *im;
+    int offset_i = 0;
+    for (int i = index; i < index+1; ++i){
+        char *data_path = sess->test_data_paths[i];
+        im = load_image_data(data_path, w, h, c);
+        resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input+offset_i);
+        offset_i += sess->height*sess->width*sess->channel;
+        free(im);
+    }
+}
+
+void load_test_label(Session *sess, int index)
+{
+    for (int i = index; i < index+1; ++i){
+        char **label = load_label_txt(sess->test_label_paths[i], sess->label_num);
+        for (int j = 0; j < sess->label_num; ++j){
+            sess->label[(i-index)*sess->label_num+j] = label[j];
+        }
     }
 }
 
