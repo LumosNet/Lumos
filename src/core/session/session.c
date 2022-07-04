@@ -47,9 +47,16 @@ void bind_label(Session *sess, int label_num, char *path)
         Layer *l = layers[i];
         l->label_num = label_num;
     }
+    Layer *l = layers[graph->layer_num-1];
+    l->truth = sess->truth;
     fprintf(stderr, "\nGet Label List From %s\n", path);
 }
 
+void bind_label2truth_func(Session *sess, int truth_num, Label2Truth func)
+{
+    sess->label2truth = func;
+    sess->truth_num = truth_num;
+}
 
 void set_input_dimension(Session *sess, int h, int w, int c)
 {

@@ -13,6 +13,9 @@
 extern "C" {
 #endif
 
+typedef void (*label2truth) (char **, float *);
+typedef label2truth Label2Truth;
+
 typedef struct session{
     Graph *graph;
 
@@ -26,8 +29,6 @@ typedef struct session{
 
     float *loss;
 
-    int label_num;
-
     float learning_rate;
     size_t workspace_size;
     size_t weights_size;
@@ -36,7 +37,12 @@ typedef struct session{
     float *input;
     float *output;
     float *layer_delta;
+
     char **label;
+    int label_num;
+
+    float *truth;
+    int truth_num;
 
     int *maxpool_index;
 
@@ -52,20 +58,9 @@ typedef struct session{
     char **test_label_paths;
 
     int memory_size;
+
+    Label2Truth label2truth;
 } Session;
-
-/*
-    每次读取一个subdivision的数据
-*/
-
-/*
-    06.14：session创建。
-           init：训练超参、数据维度大小
-           绑定图
-           绑定数据集
-           初始化图：创建内存，分配内存，初始化权重
-           运行
-*/
 
 Session *create_session();
 void del_session();
@@ -74,6 +69,7 @@ void bind_graph(Session *sess, Graph *graph);
 void bind_train_data(Session *sess, char *path);
 void bind_test_data(Session *sess, char *path);
 void bind_label(Session *sess, int label_num, char *path);
+void bind_label2truth_func(Session *sess, int truth_num, Label2Truth func);
 
 void set_input_dimension(Session *sess, int h, int w, int c);
 void set_train_params(Session *sess, int epoch, int batch, int subdivision, float learning_rate);

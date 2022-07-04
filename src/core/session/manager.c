@@ -61,6 +61,11 @@ void create_loss_memory(Session *sess)
     sess->loss = calloc(1, sizeof(float));
 }
 
+void create_truth_memory(Session *sess)
+{
+    sess->truth = calloc(sess->truth_num*sess->subdivision, sizeof(float));
+}
+
 void create_maxpool_index_memory(Session *sess)
 {
     Graph *graph = sess->graph;
@@ -131,6 +136,14 @@ void set_loss_memory(Session *sess)
     Layer **layers = graph->layers;
     Layer *l = layers[graph->layer_num-1];
     l->loss = sess->loss;
+}
+
+void set_truth_memory(Session *sess)
+{
+    Graph *graph = sess->graph;
+    Layer **layers = graph->layers;
+    Layer *l = layers[graph->layer_num-1];
+    l->truth = sess->truth;
 }
 
 void set_maxpool_index_memory(Session *sess)
@@ -206,7 +219,7 @@ void init_weights(Session *sess, char *weights_file)
         Layer **layers = graph->layers;
         for (int i = 0; i < graph->layer_num; ++i){
             Layer *l = layers[i];
-            if (l->init_layer_weights) l->init_layer_weights(l);
+            if (l->weights) l->init_layer_weights(l);
         }
         fprintf(stderr, "\nInit Weights\n");
     }
@@ -231,10 +244,9 @@ void load_train_data(Session *sess, int index, int num)
 void load_train_label(Session *sess, int index, int num)
 {
     for (int i = index; i < index+num; ++i){
+        float *truth = sess->truth+(i-index)*sess->truth_num;
         char **label = load_label_txt(sess->train_label_paths[i], sess->label_num);
-        for (int j = 0; j < sess->label_num; ++j){
-            sess->label[(i-index)*sess->label_num+j] = label[j];
-        }
+        sess->label2truth(label, truth);
     }
 }
 

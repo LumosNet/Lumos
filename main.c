@@ -14,6 +14,12 @@
 #include "mse_layer.h"
 #include "test.h"
 
+void xor_label2truth(char **label, float *truth)
+{
+    int x = atoi(label[0]);
+    one_hot_encoding(1, x, truth);
+}
+
 int main(int argc, char **argv)
 {
     Graph *graph = create_graph("Lumos", 5);
@@ -30,7 +36,7 @@ int main(int argc, char **argv)
 
     Session *sess = create_session();
     bind_graph(sess, graph);
-    create_run_scene(sess, 1, 2, 1, 1, "./demo/xor/data.txt", "./demo/xor/label.txt");
+    create_run_scene(sess, 1, 2, 1, 1, 1, xor_label2truth, "./demo/xor/data.txt", "./demo/xor/label.txt");
     init_run_scene(sess, 2000, 2, 2, NULL);
     session_run(sess, 0.1);
 

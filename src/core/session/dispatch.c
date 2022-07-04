@@ -89,11 +89,12 @@ void update_session(Session *sess)
     }
 }
 
-void create_run_scene(Session *sess, int h, int w, int c, int label_num, char *dataset_list_file, char *label_list_file)
+void create_run_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file)
 {
     set_input_dimension(sess, h, w, c);
     bind_train_data(sess, dataset_list_file);
     bind_label(sess, label_num, label_list_file);
+    bind_label2truth_func(sess, truth_num, func);
 }
 
 
@@ -117,5 +118,7 @@ void init_run_scene(Session *sess, int epoch, int batch, int subdivision, char *
     create_loss_memory(sess);
     set_loss_memory(sess);
     set_label(sess);
+    create_truth_memory(sess);
+    set_truth_memory(sess);
     set_maxpool_index_memory(sess);
 }

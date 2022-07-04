@@ -5,6 +5,7 @@ Layer *make_mse_layer(int group)
     Layer *l = malloc(sizeof(Layer));
     l->type = MSE;
     l->group = group;
+    l->weights = 0;
 
     l->forward = forward_mse_layer;
     l->backward = backward_mse_layer;
@@ -53,7 +54,6 @@ void init_mse_layer(Layer *l, int w, int h, int c)
 
 void forward_mse_layer(Layer l, int num)
 {
-    float *truth = calloc(l.group*num, sizeof(float));
     float loss = 0;
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
@@ -61,29 +61,25 @@ void forward_mse_layer(Layer l, int num)
         int offset_t = i*l.group;
         float *input = l.input+offset_i;
         float *output = l.output+offset_o;
-        float *label = truth+offset_t;
-        one_hot_encoding(l.group, atoi(l.label[i]), label);
-        subtract(label, input, l.inputs, l.workspace);
+        float *truth = l.truth+offset_t;
+        subtract(truth, input, l.inputs, l.workspace);
         gemm(1, 0, l.input_h, l.input_w, l.input_h, l.input_w, 1, \
             l.workspace, l.workspace, output);
         multy_cpu(output, l.outputs, 1/(float)l.group, 1);
         loss += output[0];
     }
     l.loss[0] = loss / num;
-    free(truth);
 }
 
 void backward_mse_layer(Layer l, int num, float *n_delta)
 {
-    float *truth = calloc(l.group*num, sizeof(float));
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_t = i*l.group;
         float *input = l.input+offset_i;
         float *delta_l = l.delta+offset_i;
-        float *label = truth+offset_t;
-        one_hot_encoding(l.group, atoi(l.label[i]), label);
-        subtract(input, label, l.inputs, delta_l);
+        float *truth = l.truth+offset_t;
+        subtract(input, truth, l.inputs, delta_l);
         multy_cpu(delta_l, l.inputs, (float)2/l.group, 1);
     }
 }
