@@ -24,7 +24,7 @@ VPATH=./src/: \
       ./src/dependent/str/: \
       ./ \
 	  ./test/ \
-	  ./demo/xor/
+	  ./src/demo/xor/ \
 
 COMMON=-Isrc/core/graph \
 	   -Isrc/core/graph/layer \
@@ -34,6 +34,7 @@ COMMON=-Isrc/core/graph \
 	   -Isrc/dependent/cmd \
 	   -Isrc/dependent/file \
 	   -Isrc/dependent/str \
+	   -Isrc/demo/xor \
 
 EXEC=main.exe
 OBJDIR=./obj/
@@ -67,6 +68,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		progress_bar.o \
 		binary_f.o cfg_f.o text_f.o \
 		str_ops.o \
+		xor.o \
 
 EXECOBJA=main.o
 

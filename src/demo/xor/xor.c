@@ -31,13 +31,13 @@ void xor()
 
     Session *sess = create_session();
     bind_graph(sess, graph);
-    create_train_scene(sess, 1, 2, 1, 1, 1, xor_label2truth, "./demo/xor/data.txt", "./demo/xor/label.txt");
-    init_train_scene(sess, 2500, 2, 2, NULL);
+    create_train_scene(sess, 1, 2, 1, 1, 1, xor_label2truth, "./src/demo/xor/data.txt", "./src/demo/xor/label.txt");
+    init_train_scene(sess, 4500, 4, 2, NULL);
     session_train(sess, 0.1);
 
     Session *t_sess = create_session();
     bind_graph(t_sess, graph);
-    create_test_scene(t_sess, 1, 2, 1, 1, 1, xor_label2truth, "./demo/xor/test.txt", "./demo/xor/label.txt");
+    create_test_scene(t_sess, 1, 2, 1, 1, 1, xor_label2truth, "./src/demo/xor/test.txt", "./src/demo/xor/label.txt");
     init_test_scene(t_sess, "./backup/Lumos.w");
     session_test(t_sess, xor_process_test_information);
 }
