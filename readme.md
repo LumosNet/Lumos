@@ -50,16 +50,16 @@ $ cd lumos
 
 我们提供了一个简单的demo，您可以尝试运行该demo，来开启您的lumos之旅
 
-首先您需要修改根目录下makefile第36行，改为如下
+首先您需要在根目录下新建一个main.c文件，文件内容如下
 
-```makefile
-EXECOBJA=xor.o
-```
+```c
+#include "xor.h"
 
-其次您需要修改cfg/xor.cfg文件第2行，改为如下
-
-```makefile
-batch=1
+int main(int argc, char **argv)
+{
+    xor();
+    return 0;
+}
 ```
 
 然后，请回到lumos根目录下，命令行输入
@@ -73,25 +73,49 @@ make
 当您编译完成后，命令行输入
 
 ```shell
-./main.exe ./demo/weights.w
+./main.exe
 ```
 
-如果有如下输出，那么您可以正常使用lumos
+我们提供的demo是使用一个简单的全连接网络解决xor问题
+lumos会打印网络结构
 
 ```shell
-XOR
-index  type   filters   ksize        input                  output
-  1    im2col                         2 x   1 x   1   ->     1 x 2
-  2    connect              4         1 x   2         ->     1 x   4
-  3    connect              1         1 x   4         ->     1 x   1
-  4    mse                  1         1 x   1         ->     1 x   1
-4
-xor: [0, 0], test: 0.049111
-xor: [1, 1], test: 0.057524
-xor: [1, 0], test: 0.960859
-xor: [0, 1], test: 0.983461
+[Lumos]                     Inputs         Outputs
+Im2col          Layer      2*  1*  1 ==>   1*  2*  1
+Connect         Layer      1*  2*  1 ==>   1*  4*  1
+Connect         Layer      1*  4*  1 ==>   1*  2*  1
+Connect         Layer      1*  2*  1 ==>   1*  1*  1
+Mse             Layer      1*  1*  1 ==>   1*  1*  1
 ```
 
+经过训练和测试您将看到最终结果如下
+
+```shell
+Session Start To Detect Test Cases
+Test Data Path: ./src/demo/xor/data/00.png
+Label:   0
+Truth:   0.000000
+Predict: 0.189420
+Loss:    0.035880
+
+Test Data Path: ./src/demo/xor/data/01.png
+Label:   1
+Truth:   1.000000
+Predict: 0.842445
+Loss:    0.024823
+
+Test Data Path: ./src/demo/xor/data/11.png
+Label:   0
+Truth:   0.000000
+Predict: 0.135885
+Loss:    0.018465
+
+Test Data Path: ./src/demo/xor/data/10.png
+Label:   1
+Truth:   1.000000
+Predict: 0.866493
+Loss:    0.017824
+```
 
 
 **Windows：**
