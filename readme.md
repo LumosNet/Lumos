@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/LumosNet/Lumos/blob/master/img/l3.png">
+  <img src="https://github.com/LumosNet/Lumos/blob/master/img/Lumos.png">
 </div>
 
 # Lumos
