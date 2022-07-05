@@ -26,9 +26,11 @@ Lumos框架现在只提供了最基本的网络组件，对于一些特定算法
 
 ### 安装
 
-Lumos在[Linux](https://www.linux.org/)上开发，我们推荐您在Linux上使用该框架，当然我们也会示范如何在Windows上使用
+当前Lumos并未作为工具包发布，您只能clone我们的代码并当作本地代码使用
 
-为了您更方便的获取我们的代码，推荐您安装[Git](https://git-scm.com/)版本控制工具
+Lumos在[Linux](https://www.linux.org/)上开发，我们推荐您在Linux上使用该框架
+
+为了方便您获取我们的代码，推荐您安装[Git](https://git-scm.com/)版本控制工具
 
 **Ubuntu：**
 
@@ -42,11 +44,11 @@ $ sudo apt install build-essential
 拉取我们的代码，并进入项目目录
 
 ```shell
-$ git clone git@gitee.com:lumos-net/lumos.git
+$ git clone git@github.com:LumosNet/Lumos.git
 $ cd lumos
 ```
 
-现在我们来验证您是否可以正常使用，我们为您准备了一个简单的demo
+我们提供了一个简单的demo，您可以尝试运行该demo，来开启您的lumos之旅
 
 首先您需要修改根目录下makefile第36行，改为如下
 
@@ -102,11 +104,11 @@ xor: [0, 1], test: 0.983461
 
 **CUDA：**
 
-Lumos支持cuda加速（虽然现在还没有），如果您拥有支持cuda的GPU，并且希望使用GPU加速您的算法，那么请提前安装cuda，相关安装方法请参考[cuda文档](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html)
+Lumos支持cuda加速（虽然现在还没有^_^），如果您拥有支持cuda的GPU，并且希望使用GPU加速您的算法，那么请提前安装cuda，相关安装方法请参考[cuda文档](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html)
 
 
 
 ### 发行版
 
-**[v0.1-a](https://gitee.com/lumos-net/lumos/tree/v0.1-a/)**：Lumos第一个测试版本，主要对基本网络框架进行测试，若无必要，请不要使用该版本。当前我们推荐			   您直接使用master分支的最新提交版本
+**[v0.1-a](https://gitee.com/lumos-net/lumos/tree/v0.1-a/)**：Lumos第一个测试版本，主要对基本网络框架进行测试，若无必要，请不要使用该版本。当前我们推荐您直接使用master分支的最新提交版本
 
