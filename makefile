@@ -23,7 +23,8 @@ VPATH=./src/: \
       ./src/dependent/file/: \
       ./src/dependent/str/: \
       ./ \
-	  ./test/
+	  ./test/ \
+	  ./demo/xor/
 
 COMMON=-Isrc/core/graph \
 	   -Isrc/core/graph/layer \
