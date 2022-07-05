@@ -9,3 +9,4 @@ obj
 backup
 .idea
 utest
+main.*
