@@ -134,5 +134,7 @@ Lumos支持cuda加速（虽然现在还没有^_^），如果您拥有支持cuda�
 
 ### 发行版
 
-**[v0.1-a](https://gitee.com/lumos-net/lumos/tree/v0.1-a/)**：Lumos第一个测试版本，主要对基本网络框架进行测试，若无必要，请不要使用该版本。当前我们推荐您直接使用master分支的最新提交版本
+**[v0.2-a](https://github.com/LumosNet/Lumos/tree/v0.2-a/)**：我们对lumos代码进行了全面重构，我们将在这个版本进行全面测试，若无必要，请不要使用该版本。当前我们推荐您直接使用master分支的最新提交版本
+
+**[v0.1-a](https://github.com/LumosNet/Lumos/tree/v0.1-a/)**：Lumos第一个测试版本，主要对基本网络框架进行测试，若无必要，请不要使用该版本。当前我们推荐您直接使用master分支的最新提交版本
 
