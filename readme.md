@@ -1,4 +1,6 @@
-![](./img/l3.png)
+<div align="center">
+  <img src="https://github.com/LumosNet/Lumos/blob/master/img/l3.png">
+</div>
 
 # Lumos
 
