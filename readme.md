@@ -1,4 +1,4 @@
-![](C:\Users\BTboay\Desktop\l3.png)
+![](./img/l3.png)
 
 ### 简介
 
