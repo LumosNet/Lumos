@@ -64,7 +64,7 @@ source ~/.bashrc
 lumos --version
 ```
 
-若出现一下版本信息，则您已经安装好了lumos
+若出现以下版本信息，则您已经安装好了lumos
 
 ```shell
 Lumos version: v0.2-a
