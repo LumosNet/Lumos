@@ -26,57 +26,70 @@ Lumos框架现在只提供了最基本的网络组件，对于一些特定算法
 
 ### 安装
 
-当前Lumos并未作为工具包发布，您只能clone我们的代码并当作本地代码使用
-
-Lumos在[Linux](https://www.linux.org/)上开发，我们推荐您在Linux上使用该框架
-
-为了方便您获取我们的代码，推荐您安装[Git](https://git-scm.com/)版本控制工具
+当前Lumos只支持Ubuntu操作系统
 
 **Ubuntu：**
 
-首先您需要相关的编译工具，gcc编译器和make工具是您必须安装的工具
+首先您需要下载我们的安装包
+
+最新安装包为：[lumos-v0.2a.run](https://raw.githubusercontent.com/LumosNet/Lumos-Build/main/lumos-v0.2a.run)
+
+如果需要更早版本的安装包，请到[lumos-build](https://github.com/LumosNet/Lumos-Build)下自行查找
+
+下载完成安装包后，使用如下命令安装
 
 ```shell
-$ sudo apt update
-$ sudo apt install build-essential
+$ sudo sh lumos-v0.2a.run
 ```
 
-拉取我们的代码，并进入项目目录
+添加环境变量，在用户目录下~/.bashrc文件末尾添加如下语句
+
+```
+export PATH=$PATH:/usr/local/lumos/bin
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lumos/lib
+export LIBRARY_PATH=$LIBRARY_PATH:/usr/local/lumos/lib
+```
+
+添加完成后，在命令行运行
 
 ```shell
-$ git clone git@github.com:LumosNet/Lumos.git
-$ cd lumos
+source ~/.bashrc
 ```
 
-我们提供了一个简单的demo，您可以尝试运行该demo，来开启您的lumos之旅
+来激活相关设置，此时您已经完成lumos的安装
 
-首先您需要在根目录下新建一个main.c文件，文件内容如下
+通过命令行验证安装
 
-```c
-#include "xor.h"
-
-int main(int argc, char **argv)
-{
-    xor();
-    return 0;
-}
+```shell
+lumos --version
 ```
 
-然后，请回到lumos根目录下，命令行输入
+若出现一下版本信息，则您已经安装好了lumos
+
+```shell
+Lumos version: v0.2-a
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+```
+
+我们提供了丰富的用例demo，您可以尝试运行这些demo，来开启您的lumos之旅
+
+首先您需要在lumos-demo仓库中获取相关的demo，您也可以将该仓库clone到您的本地环境
+
+以xor用例为例，首先将xor示例的文件夹拷贝到您的环境中，进入该文件夹路径，运行make
 
 ```shell
 make
 ```
 
-开始编译lumos
+开始编译xor示例
 
-当您编译完成后，命令行输入
+当您编译完成后，命令行运行main.exe
 
 ```shell
 ./main.exe
 ```
 
-我们提供的demo是使用一个简单的全连接网络解决xor问题
 lumos会打印网络结构
 
 ```shell
@@ -116,6 +129,7 @@ Truth:   1.000000
 Predict: 0.866493
 Loss:    0.017824
 ```
+
 
 
 **Windows：**
