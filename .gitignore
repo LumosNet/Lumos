@@ -10,3 +10,5 @@ backup
 .idea
 utest
 main.*
+./lumos
+build

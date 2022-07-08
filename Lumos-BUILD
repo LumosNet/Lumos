@@ -1,0 +1,83 @@
+VPATH=./src/core/: \
+	  ./src/core/cu_ops/: \
+	  ./src/core/graph/: \
+	  ./src/core/graph/layer/: \
+	  ./src/core/graph/loss_layer/: \
+	  ./src/core/ops/: \
+	  ./src/core/session/: \
+	  ./src/dependent/: \
+	  ./src/dependent/cmd/: \
+      ./src/dependent/file/: \
+      ./src/dependent/str/: \
+	  ./src/lumos/
+
+COMMON=-Isrc/core/graph \
+	   -Isrc/core/graph/layer \
+	   -Isrc/core/graph/loss_layer \
+	   -Isrc/core/ops \
+	   -Isrc/core/session \
+	   -Isrc/dependent/cmd \
+	   -Isrc/dependent/file \
+	   -Isrc/dependent/str \
+
+EXEC=lumos
+
+LIBOPS=liblumops.so
+LIBGRAPH=liblumgraph.so
+LIBLUMOS=liblumos.so
+
+OBJDIR=./build/obj/
+LIBDIR=./build/lib/
+EXECDIR=./build/bin/
+
+CC=gcc
+
+LDFLAGS= -lm -pthread
+COMMON+= -Ilib/ -Iinclude/ -Iscripts -std=c99 -fopenmp
+CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors -fPIC
+
+LIBOPSOBJ= 		progress_bar.o binary_f.o cfg_f.o text_f.o str_ops.o \
+		   		active.o bias.o cpu.o gemm.o im2col.o image.o
+
+LIBGRAPHOBJ=  	graph.o layer.o mse_layer.o avgpool_layer.o connect_layer.o \
+		   		convolutional_layer.o im2col_layer.o maxpool_layer.o
+
+LIBLUMOSOBJ= 	dispatch.o manager.o session.o
+
+EXECOBJ=        lumos.o
+
+LIBOPSOBJS =    $(addprefix $(OBJDIR), $(LIBOPSOBJ))
+LIBGRAPHOBJS =  $(addprefix $(OBJDIR), $(LIBGRAPHOBJ))
+LIBLUMOSOBJS =  $(addprefix $(OBJDIR), $(LIBLUMOSOBJ))
+EXECOBJS =      $(addprefix $(OBJDIR), $(EXECOBJ))
+
+EXELUMOS =      $(addprefix $(LIBDIR), $(LIBLUMOS))
+EXEGRAPH =      $(addprefix $(LIBDIR), $(LIBGRAPH))
+EXEOPS =        $(addprefix $(LIBDIR), $(LIBOPS))
+EXECS =         $(addprefix $(EXECDIR), $(EXEC))
+
+
+OBJS = $(LIBOPSOBJS)
+OBJS +=$(LIBGRAPHOBJS)
+OBJS +=$(LIBLUMOSOBJS)
+OBJS +=$(EXECOBJ)
+
+DEPS = makefile
+
+all: obj lumos $(EXECS) $(EXEOPS) $(EXEGRAPH) $(EXELUMOS)
+
+$(EXECS): $(EXECOBJS)
+	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
+
+$(EXEOPS): $(LIBOPSOBJS)
+	$(CC) $(CFLAGS) -shared $^ -o $@ $(LDFLAGS)
+
+$(EXEGRAPH): $(LIBGRAPHOBJS)
+	$(CC) $(CFLAGS) -shared $^ -o $@ $(LDFLAGS)
+
+$(EXELUMOS): $(LIBLUMOSOBJS)
+	$(CC) $(CFLAGS) -shared $^ -o $@ $(LDFLAGS)
+
+$(OBJDIR)%.o: %.c $(DEPS)
+	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@
+

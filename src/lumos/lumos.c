@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define VERSION "0.2-a"
+
+void analysis_argv(int argc, char **argv)
+{
+    if (0 == strcmp(argv[1], "--version")){
+        char version[] = VERSION;
+        fprintf(stderr, "Lumos version: v%s\n", version);
+        fprintf(stderr, "This is free software; see the source for copying conditions.  There is NO\n");
+        fprintf(stderr, "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n");
+    }else {
+        fprintf(stderr, "Lumos: \e[0;31merror\e[0m: unrecognized command line option '%s'\n", argv[1]);
+        fprintf(stderr, "compilation terminated.\n");
+    }
+}
+
+int main(int argc, char **argv)
+{
+    analysis_argv(argc, argv);
+    return 0;
+}
