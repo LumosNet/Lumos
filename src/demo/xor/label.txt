@@ -1,4 +1,0 @@
-./src/demo/xor/data/00.txt
-./src/demo/xor/data/01.txt
-./src/demo/xor/data/11.txt
-./src/demo/xor/data/10.txt

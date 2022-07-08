@@ -1,24 +1,24 @@
-VPATH=./src/core/: \
-	  ./src/core/cu_ops/: \
-	  ./src/core/graph/: \
-	  ./src/core/graph/layer/: \
-	  ./src/core/graph/loss_layer/: \
-	  ./src/core/ops/: \
-	  ./src/core/session/: \
-	  ./src/dependent/: \
-	  ./src/dependent/cmd/: \
-      ./src/dependent/file/: \
-      ./src/dependent/str/: \
-	  ./src/lumos/
+VPATH=./lumos-src/core/: \
+	  ./lumos-src/core/cu_ops/: \
+	  ./lumos-src/core/graph/: \
+	  ./lumos-src/core/graph/layer/: \
+	  ./lumos-src/core/graph/loss_layer/: \
+	  ./lumos-src/core/ops/: \
+	  ./lumos-src/core/session/: \
+	  ./lumos-src/dependent/: \
+	  ./lumos-src/dependent/cmd/: \
+      ./lumos-src/dependent/file/: \
+      ./lumos-src/dependent/str/: \
+	  ./lumos-src/lumos/
 
-COMMON=-Isrc/core/graph \
-	   -Isrc/core/graph/layer \
-	   -Isrc/core/graph/loss_layer \
-	   -Isrc/core/ops \
-	   -Isrc/core/session \
-	   -Isrc/dependent/cmd \
-	   -Isrc/dependent/file \
-	   -Isrc/dependent/str \
+COMMON=-Ilumos-src/core/graph \
+	   -Ilumos-src/core/graph/layer \
+	   -Ilumos-src/core/graph/loss_layer \
+	   -Ilumos-src/core/ops \
+	   -Ilumos-src/core/session \
+	   -Ilumos-src/dependent/cmd \
+	   -Ilumos-src/dependent/file \
+	   -Ilumos-src/dependent/str \
 
 EXEC=lumos
 
@@ -26,14 +26,14 @@ LIBOPS=liblumops.so
 LIBGRAPH=liblumgraph.so
 LIBLUMOS=liblumos.so
 
-OBJDIR=./build/obj/
-LIBDIR=./build/lib/
-EXECDIR=./build/bin/
+OBJDIR=./lumos-obj/
+LIBDIR=./lumos-build/lib/
+EXECDIR=./lumos-build/bin/
 
 CC=gcc
 
 LDFLAGS= -lm -pthread
-COMMON+= -Ilib/ -Iinclude/ -Iscripts -std=c99 -fopenmp
+COMMON+= -Ilumos-lib/ -Ilumos-include/ -std=c99 -fopenmp
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors -fPIC
 
 LIBOPSOBJ= 		progress_bar.o binary_f.o cfg_f.o text_f.o str_ops.o \
@@ -60,11 +60,11 @@ EXECS =         $(addprefix $(EXECDIR), $(EXEC))
 OBJS = $(LIBOPSOBJS)
 OBJS +=$(LIBGRAPHOBJS)
 OBJS +=$(LIBLUMOSOBJS)
-OBJS +=$(EXECOBJ)
+OBJS +=$(EXECOBJS)
 
 DEPS = makefile
 
-all: obj lumos $(EXECS) $(EXEOPS) $(EXEGRAPH) $(EXELUMOS)
+all: obj $(EXECS) $(EXEOPS) $(EXEGRAPH) $(EXELUMOS)
 
 $(EXECS): $(EXECOBJS)
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
@@ -81,3 +81,5 @@ $(EXELUMOS): $(LIBLUMOSOBJS)
 $(OBJDIR)%.o: %.c $(DEPS)
 	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@
 
+obj:
+	mkdir lumos-obj
