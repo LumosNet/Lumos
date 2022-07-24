@@ -5,20 +5,22 @@ VPATH=./lumos-src/core/: \
 	  ./lumos-src/core/graph/loss_layer/: \
 	  ./lumos-src/core/ops/: \
 	  ./lumos-src/core/session/: \
-	  ./lumos-src/dependent/: \
-	  ./lumos-src/dependent/cmd/: \
-      ./lumos-src/dependent/file/: \
-      ./lumos-src/dependent/str/: \
-	  ./lumos-src/lumos/
+	  ./lumos-src/utils/: \
+	  ./lumos-src/utils/cmd/: \
+      ./lumos-src/utils/file/: \
+      ./lumos-src/utils/str/: \
+	  ./lumos-src/lumos/: \
+	  ./lumos-src/lumos/xor
 
 COMMON=-Ilumos-src/core/graph \
 	   -Ilumos-src/core/graph/layer \
 	   -Ilumos-src/core/graph/loss_layer \
 	   -Ilumos-src/core/ops \
 	   -Ilumos-src/core/session \
-	   -Ilumos-src/dependent/cmd \
-	   -Ilumos-src/dependent/file \
-	   -Ilumos-src/dependent/str \
+	   -Ilumos-src/utils/cmd \
+	   -Ilumos-src/utils/file \
+	   -Ilumos-src/utils/str \
+	   -Ilumos-src/lumos/xor \
 
 EXEC=lumos
 
@@ -44,7 +46,7 @@ LIBGRAPHOBJ=  	graph.o layer.o mse_layer.o avgpool_layer.o connect_layer.o \
 
 LIBLUMOSOBJ= 	dispatch.o manager.o session.o
 
-EXECOBJ=        lumos.o
+EXECOBJ=        lumos.o xor.o
 
 LIBOPSOBJS =    $(addprefix $(OBJDIR), $(LIBOPSOBJ))
 LIBGRAPHOBJS =  $(addprefix $(OBJDIR), $(LIBGRAPHOBJ))
