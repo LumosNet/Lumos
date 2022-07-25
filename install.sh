@@ -1,12 +1,40 @@
 #!/bin/bash
 
-lines=39
-tail +$lines $0 >./lumos.tar.gz
+CDIR=`pwd`
 
-echo "unpack: lumos.tar.gz"
-tar -zxvf ./lumos.tar.gz
-echo "unpack finished"
+BUILDDIR=$CDIR/lumos-build
+INCLUDEDIR=$CDIR/lumos-include
+LIBDIR=$CDIR/lumos-lib
+SRCDIR=$CDIR/lumos-src
+INSTALLDIR=/usr/local/lumos
+
+if [ -d "$BUILDDIR" ]; then
+    rm -rf "$BUILDDIR"
+fi
+
+if [ -d "$INCLUDEDIR" ]; then
+    rm -rf "$INCLUDEDIR"
+fi
+
+if [ -d "$LIBDIR" ]; then
+    rm -rf "$LIBDIR"
+fi
+
+if [ -d "$SRCDIR" ]; then
+    rm -rf "$SRCDIR"
+fi
+
+if [ -d "$INSTALLDIR" ]; then
+    rm -rf "$INSTALLDIR"
+fi
+
+ARCHIVE=`awk '/^__ARCHIVE_BOUNDARY__/ { print NR + 1; exit 0; }' $0`
+
+tail -n +$ARCHIVE $0 > lumos.tar.gz
+tar -zpxf lumos.tar.gz
 wait
+
+rm lumos.tar.gz
 
 mv ./lumos-build/include ./lumos-include
 mv ./lumos-build/lib ./lumos-lib
@@ -22,7 +50,6 @@ wait
 
 mv ./lumos-include/lumos.h ./lumos-build/include/lumos.h
 
-rm -rf /usr/local/lumos
 mkdir /usr/local/lumos
 cp -r ./lumos-build/bin /usr/local/lumos/bin
 cp -r ./lumos-build/include /usr/local/lumos/include
@@ -36,3 +63,4 @@ rm -rf ./lumos-obj
 rm -f ./lumos-makefile
 
 exit 0
+__ARCHIVE_BOUNDARY__
