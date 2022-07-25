@@ -26,8 +26,8 @@ void session_train(Session *sess, float learning_rate)
         }
     }
     fprintf(stderr, "\n\nSession Training Finished\n");
-    save_weigths(sess, "./backup/Lumos.w");
-    fprintf(stderr, "\nWeights Saved To: ./backup/Lumos.w\n\n");
+    save_weigths(sess, "./Lumos.w");
+    fprintf(stderr, "\nWeights Saved To: ./Lumos.w\n\n");
 }
 
 void session_test(Session *sess, ProcessTestInformation process_test_information)

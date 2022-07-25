@@ -52,6 +52,7 @@ mv ./lumos-include/lumos.h ./lumos-build/include/lumos.h
 
 mkdir /usr/local/lumos
 cp -r ./lumos-build/bin /usr/local/lumos/bin
+cp -r ./lumos-src/lumos/demos /usr/local/lumos/bin/demos
 cp -r ./lumos-build/include /usr/local/lumos/include
 cp -r ./lumos-build/lib /usr/local/lumos/lib
 

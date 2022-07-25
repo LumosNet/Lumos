@@ -34,7 +34,7 @@ EXECDIR=./lumos-build/bin/
 CC=gcc
 
 LDFLAGS= -lm -pthread
-COMMON+= -Ilumos-lib/ -Ilumos-include/ -std=c99 -fopenmp
+COMMON+= -Ilumos-lib/ -std=c99 -fopenmp
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors -fPIC
 
 LIBOPSOBJ= 		progress_bar.o binary_f.o cfg_f.o text_f.o str_ops.o \
@@ -67,7 +67,7 @@ DEPS = makefile
 
 all: obj $(EXECS) $(EXEOPS) $(EXEGRAPH) $(EXELUMOS)
 
-$(EXECS): $(EXECOBJS)
+$(EXECS): $(OBJS)
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(EXEOPS): $(LIBOPSOBJS)

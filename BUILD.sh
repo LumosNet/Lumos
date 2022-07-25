@@ -16,5 +16,5 @@ cp -r ./Lumos-BUILD ./lumos-build/makefile
 tar zcvf lumos.tar.gz ./lumos-build
 cat install.sh lumos.tar.gz > lumos.run
 
-rm -rf $BUILDDIR
-rm -f lumos.tar.gz
+#rm -rf $BUILDDIR
+#rm -f lumos.tar.gz
