@@ -23,7 +23,7 @@ email: yuzhuoandlb@foxmail.com
 footer_description: >-
   Powered by BTboay, made with love, freedom and C.
 description: >- # this means to ignore newlines until "baseurl:"
-  轻量级深度学习框架，支持多GPU加速
+  轻量化深度学习框架，支持多GPU加速
 
 baseurl: "Lumos" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
@@ -35,7 +35,7 @@ github:
   repository_url: https://github.com/BTboay/Lumos
   repository_name: Lumos
   new_url: https://github.com/BTboay/Lumos/archive/refs/heads/master.zip
-  last_url: https://github.com/BTboay/Lumos/archive/refs/tags/v0.1-a.zip
+  last_url: https://github.com/BTboay/Lumos/archive/refs/tags/v0.2-a.zip
 github_url: https://github.com/BTboay
 
 # Build settings
