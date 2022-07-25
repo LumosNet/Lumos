@@ -10,7 +10,6 @@ VPATH=./lumos-src/core/: \
       ./lumos-src/utils/file/: \
       ./lumos-src/utils/str/: \
 	  ./lumos-src/lumos/: \
-	  ./lumos-src/lumos/xor
 
 COMMON=-Ilumos-src/core/graph \
 	   -Ilumos-src/core/graph/layer \
@@ -20,7 +19,7 @@ COMMON=-Ilumos-src/core/graph \
 	   -Ilumos-src/utils/cmd \
 	   -Ilumos-src/utils/file \
 	   -Ilumos-src/utils/str \
-	   -Ilumos-src/lumos/xor \
+	   -Ilumos-src/lumos \
 
 EXEC=lumos
 
