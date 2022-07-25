@@ -257,7 +257,7 @@ void backward_mse_layer(Layer l, int num, float *n_delta);
 
 void bind_graph(Session *sess, Graph *graph);
 
-void session_train(Session *sess, float learning_rate);
+void session_train(Session *sess, float learning_rate, char *weights_path);
 void session_test(Session *sess, ProcessTestInformation process_test_information);
 
 void create_train_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file);

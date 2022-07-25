@@ -1,6 +1,6 @@
 #include "dispatch.h"
 
-void session_train(Session *sess, float learning_rate)
+void session_train(Session *sess, float learning_rate, char *weights_path)
 {
     fprintf(stderr, "\nSession Start To Running\n");
     clock_t start, final;
@@ -26,8 +26,8 @@ void session_train(Session *sess, float learning_rate)
         }
     }
     fprintf(stderr, "\n\nSession Training Finished\n");
-    save_weigths(sess, "./Lumos.w");
-    fprintf(stderr, "\nWeights Saved To: ./Lumos.w\n\n");
+    save_weigths(sess, weights_path);
+    fprintf(stderr, "\nWeights Saved To: %s\n\n", weights_path);
 }
 
 void session_test(Session *sess, ProcessTestInformation process_test_information)

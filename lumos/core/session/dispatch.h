@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-void session_train(Session *sess, float learning_rate);
+void session_train(Session *sess, float learning_rate, char *weights_path);
 void session_test(Session *sess, ProcessTestInformation process_test_information);
 
 void forward_session(Session *sess);

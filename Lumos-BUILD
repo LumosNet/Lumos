@@ -63,7 +63,7 @@ OBJS +=$(LIBGRAPHOBJS)
 OBJS +=$(LIBLUMOSOBJS)
 OBJS +=$(EXECOBJS)
 
-DEPS = makefile
+DEPS = lumos-makefile
 
 all: obj $(EXECS) $(EXEOPS) $(EXEGRAPH) $(EXELUMOS)
 

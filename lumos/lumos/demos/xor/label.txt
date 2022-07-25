@@ -1,4 +1,4 @@
-./demos/xor/data/00.txt
-./demos/xor/data/01.txt
-./demos/xor/data/11.txt
-./demos/xor/data/10.txt
+/usr/local/lumos/bin/demos/xor/data/00.txt
+/usr/local/lumos/bin/demos/xor/data/01.txt
+/usr/local/lumos/bin/demos/xor/data/11.txt
+/usr/local/lumos/bin/demos/xor/data/10.txt

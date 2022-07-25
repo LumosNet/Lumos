@@ -8,6 +8,7 @@
 
 void analysis_argv(int argc, char **argv)
 {
+    if (argc <= 1) return;
     if (0 == strcmp(argv[1], "--version")){
         char version[] = VERSION;
         fprintf(stderr, "Lumos version: v%s\n", version);
