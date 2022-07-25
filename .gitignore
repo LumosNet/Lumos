@@ -3,6 +3,8 @@
 *.a
 *.so
 *.exe
+*.run
+*.tar.gz
 main
 .vscode
 obj
