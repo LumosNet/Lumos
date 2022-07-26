@@ -10,31 +10,30 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
 
 # 源代码所在目录（包括所有子目录）
-VPATH=./src/: \
-	  ./src/core/: \
-	  ./src/core/cu_ops/: \
-	  ./src/core/graph/: \
-	  ./src/core/graph/layer/: \
-	  ./src/core/graph/loss_layer/: \
-	  ./src/core/ops/: \
-	  ./src/core/session/: \
-	  ./src/dependent/: \
-	  ./src/dependent/cmd/: \
-      ./src/dependent/file/: \
-      ./src/dependent/str/: \
+VPATH=./lumos/: \
+	  ./lumos/core/: \
+	  ./lumos/core/cu_ops/: \
+	  ./lumos/core/graph/: \
+	  ./lumos/core/graph/layer/: \
+	  ./lumos/core/graph/loss_layer/: \
+	  ./lumos/core/ops/: \
+	  ./lumos/core/session/: \
+	  ./lumos/utils/: \
+	  ./lumos/utils/cmd/: \
+      ./lumos/utils/file/: \
+      ./lumos/utils/str/: \
       ./ \
-	  ./test/ \
-	  ./src/demo/xor/ \
+	  ./lumos/test/ \
 
-COMMON=-Isrc/core/graph \
-	   -Isrc/core/graph/layer \
-	   -Isrc/core/graph/loss_layer \
-	   -Isrc/core/ops \
-	   -Isrc/core/session \
-	   -Isrc/dependent/cmd \
-	   -Isrc/dependent/file \
-	   -Isrc/dependent/str \
-	   -Isrc/demo/xor \
+COMMON=-Ilumos/core/graph \
+	   -Ilumos/core/graph/layer \
+	   -Ilumos/core/graph/loss_layer \
+	   -Ilumos/core/ops \
+	   -Ilumos/core/session \
+	   -Ilumos/utils/cmd \
+	   -Ilumos/utils/file \
+	   -Ilumos/utils/str \
+	   -Ilumos/lib \
 
 EXEC=main.exe
 OBJDIR=./obj/
@@ -44,7 +43,7 @@ CPP=g++
 NVCC=nvcc
 
 LDFLAGS= -lm -pthread
-COMMON+= -Ilib/ -Iinclude/ -Iscripts -std=c99 -fopenmp
+COMMON+= -Iscripts -std=c99 -fopenmp
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 
 ifeq ($(GPU), 1)
@@ -68,7 +67,6 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		progress_bar.o \
 		binary_f.o cfg_f.o text_f.o \
 		str_ops.o \
-		xor.o \
 
 EXECOBJA=main.o
 

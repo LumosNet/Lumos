@@ -5,6 +5,7 @@
 *.exe
 *.run
 *.tar.gz
+*.w
 main
 .vscode
 obj
