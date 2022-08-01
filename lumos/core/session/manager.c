@@ -234,7 +234,6 @@ void load_train_data(Session *sess, int index, int num)
     int offset_i = 0;
     for (int i = index; i < index+num; ++i){
         char *data_path = sess->train_data_paths[i];
-        ("%s\n", data_path);
         im = load_image_data(data_path, w, h, c);
         resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input+offset_i);
         offset_i += sess->height*sess->width*sess->channel;
@@ -246,7 +245,6 @@ void load_train_label(Session *sess, int index, int num)
 {
     for (int i = index; i < index+num; ++i){
         float *truth = sess->truth+(i-index)*sess->truth_num;
-        ("%s\n", sess->train_label_paths[i]);
         char **label = load_label_txt(sess->train_label_paths[i], sess->label_num);
         sess->label2truth(label, truth);
     }
