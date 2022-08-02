@@ -4,14 +4,22 @@ void gemm(int TA, int TB, int AM, int AN, int BM, int BN, float ALPHA,
         float *A, float *B, float *C)
 {
     fill_cpu(C, AM*BN, 0, 1);
-    if(!TA && !TB)
+    if(!TA && !TB){
+	fill_cpu(C, AM*BN, 0, 1);
         gemm_nn(AM, AN, BM, BN, ALPHA, A, B, C);
-    else if(TA && !TB)
+    }
+    else if(TA && !TB){
+	fill_cpu(C, AN*BN, 0, 1);
         gemm_tn(AM, AN, BM, BN, ALPHA, A, B, C);
-    else if(!TA && TB)
+    }
+    else if(!TA && TB){
+	fill_cpu(C, AM*BM, 0, 1);
         gemm_nt(AM, AN, BM, BN, ALPHA, A, B, C);
-    else
+    }
+    else{
+	fill_cpu(C, AN*BM, 0, 1);
         gemm_tt(AM, AN, BM, BN, ALPHA, A, B, C);
+    }
 }
 
 void gemm_nn(int AM, int AN, int BM, int BN, float ALPHA, float *A, float *B, float *C)
