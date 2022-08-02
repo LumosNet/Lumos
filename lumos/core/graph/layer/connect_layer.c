@@ -88,7 +88,6 @@ void init_connect_weights(Layer *l)
 
 void forward_connect_layer(Layer l, int num)
 {
-    fill_cpu(l.delta, l.deltas*num, 0, 1);
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;

@@ -46,6 +46,7 @@ void init_mse_layer(Layer *l, int w, int h, int c)
     l->outputs = l->output_h*l->output_w*l->output_c;
 
     l->deltas = l->inputs;
+    l->workspace_size = l->inputs;
 
     fprintf(stderr, "Mse             Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n", \
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
