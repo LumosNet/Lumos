@@ -1,4 +1,4 @@
-#include "test.h"
+#include "utest.h"
 
 void test_run(char *msg)
 {

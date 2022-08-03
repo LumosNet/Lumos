@@ -7,7 +7,7 @@ void session_train(Session *sess, float learning_rate, char *weights_path)
     double run_time = 0;
     sess->learning_rate = learning_rate;
     for (int i = 0; i < sess->epoch; ++i){
-        fprintf(stderr, "\n\nEpoch %d/%d\n", i+1, sess->epoch);
+        // fprintf(stderr, "\n\nEpoch %d/%d\n", i+1, sess->epoch);
         start = clock();
         int sub_epochs = (int)(sess->train_data_num / sess->batch);
         int sub_batchs = (int)(sess->batch / sess->subdivision);
@@ -20,7 +20,7 @@ void session_train(Session *sess, float learning_rate, char *weights_path)
                 update_session(sess);
                 final = clock();
                 run_time = (double)(final-start) / CLOCKS_PER_SEC;
-                progress_bar(j*sub_batchs+k+1, sub_epochs*sub_batchs, run_time, sess->loss[0]);
+                // progress_bar(j*sub_batchs+k+1, sub_epochs*sub_batchs, run_time, sess->loss[0]);
             }
             memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
         }

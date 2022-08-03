@@ -1,5 +1,5 @@
-#ifndef TEST_H
-#define TEST_H
+#ifndef UTEST_H
+#define UTEST_H
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -22,8 +22,11 @@ VPATH=./lumos/: \
 	  ./lumos/utils/cmd/: \
       ./lumos/utils/file/: \
       ./lumos/utils/str/: \
+	  ./lumos/utils/test/: \
       ./ \
-	  ./lumos/test/ \
+	  ./lumos/test \
+	  ./lumos/test/core \
+	  ./lumos/test/core/ops \
 
 COMMON=-Ilumos/core/graph \
 	   -Ilumos/core/graph/layer \
@@ -33,6 +36,7 @@ COMMON=-Ilumos/core/graph \
 	   -Ilumos/utils/cmd \
 	   -Ilumos/utils/file \
 	   -Ilumos/utils/str \
+	   -Ilumos/utils/test \
 	   -Ilumos/lib \
 
 EXEC=main.exe
@@ -68,10 +72,10 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		binary_f.o cfg_f.o text_f.o \
 		str_ops.o \
 
-EXECOBJA=main.o
+EXECOBJA=cpu_test.o
 
 ifeq ($(TEST), 1)
-OBJ+= test.o
+OBJ+= utest.o
 endif
 
 ifeq ($(GPU), 1)
