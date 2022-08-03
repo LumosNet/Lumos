@@ -88,6 +88,11 @@ void init_connect_weights(Layer *l)
 
 void forward_connect_layer(Layer l, int num)
 {
+    printf("\n-----------------------\n");
+    for (int i = 0; i < l.kernel_weights_size; ++i){
+        printf("%f ", l.kernel_weights[i]);
+    }
+    printf("\n-----------------------\n");
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;
@@ -130,6 +135,11 @@ void update_connect_layer(Layer l, float rate, int num, float *n_delta)
         saxpy(l.update_kernel_weights, l.workspace, l.output_h * l.input_h, rate, l.update_kernel_weights);
         if (l.bias){
             saxpy(l.update_bias_weights, delta_n, l.outputs, rate, l.update_bias_weights);
-        }
+	}
+	printf("\n*************************\n");
+    	for (int i = 0; i < l.kernel_weights_size; ++i){
+            printf("%f ", l.update_kernel_weights[i]);
+   	}
+   	printf("\n*************************\n");
     }
 }
