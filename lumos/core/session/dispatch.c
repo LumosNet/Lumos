@@ -54,7 +54,6 @@ void forward_session(Session *sess)
     for (int i = 0; i < graph->layer_num; ++i){
         l = layers[i];
         l->input = input;
-        fill_cpu(sess->workspace, sess->workspace_size, 0, 1);
         l->forward(*l, sess->subdivision);
         input = l->output;
     }
@@ -68,7 +67,6 @@ void backward_session(Session *sess)
     float *delta = NULL;
     for (int i = graph->layer_num-1; i >= 0; --i){
         l = layers[i];
-        fill_cpu(sess->workspace, sess->workspace_size, 0, 1);
         l->backward(*l, sess->subdivision, delta);
         delta = l->delta;
     }
@@ -84,7 +82,6 @@ void update_session(Session *sess)
     for (int i = graph->layer_num-1; i >= 0; --i){
         l = layers[i];
         if (l->update){
-            fill_cpu(sess->workspace, sess->workspace_size, 0, 1);
             l->update(*l, rate, sess->subdivision, delta);
         }
         delta = l->delta;
