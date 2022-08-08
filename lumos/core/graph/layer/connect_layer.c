@@ -4,7 +4,6 @@ Layer *make_connect_layer(int output, int bias, char *active)
 {
     Layer *l = malloc(sizeof(Layer));
     l->type = CONNECT;
-    l->bias = 1;
     l->filters = 1;
     l->weights = 1;
 
@@ -65,7 +64,10 @@ void init_connect_layer(Layer *l, int w, int h, int c)
     l->workspace_size = l->input_c*l->input_h*l->input_w*l->output_c*l->output_h*l->output_w;
 
     l->kernel_weights_size = l->inputs*l->outputs;
-    l->bias_weights_size = l->outputs;
+    l->bias_weights_size = 0;
+    if (l->bias){
+        l->bias_weights_size = l->outputs;
+    }
     l->deltas = l->inputs;
 
     fprintf(stderr, "Connect         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n", \

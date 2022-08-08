@@ -162,10 +162,52 @@ void test_gemm_tt()
     test_res(0, "");
 }
 
+void test_gemm_vector()
+{
+    /*
+        1 2 3 4 5    1
+                     2
+                     3
+                     4
+                     5
+        55
+    */
+    test_run("test_gemm_vector");
+    float *a = malloc(5*sizeof(float));
+    float *b = malloc(5*sizeof(float));
+    float *res = malloc(1*sizeof(float));
+    for (int i = 0; i < 5; ++i){
+        a[i] = i+1;
+        b[i] = i+1;
+    }
+    gemm(0, 0, 1, 5, 5, 1, 1, a, b, res);
+    if (fabs(res[0]-55) > 1e-6){
+        test_res(1, "test_gemm_vector.gemm_nn fail");
+        return;
+    }
+    gemm(1, 0, 5, 1, 5, 1, 1, a, b, res);
+    if (fabs(res[0]-55) > 1e-6){
+        test_res(1, "test_gemm_vector.gemm_nn fail");
+        return;
+    }
+    gemm(0, 1, 1, 5, 1, 5, 1, a, b, res);
+    if (fabs(res[0]-55) > 1e-6){
+        test_res(1, "test_gemm_vector.gemm_nn fail");
+        return;
+    }
+    gemm(1, 1, 5, 1, 1, 5, 1, a, b, res);
+    if (fabs(res[0]-55) > 1e-6){
+        test_res(1, "test_gemm_vector.gemm_nn fail");
+        return;
+    }
+    test_res(0, "");
+}
+
 int main()
 {
     test_gemm_nn();
     test_gemm_tn();
     test_gemm_nt();
     test_gemm_tt();
+    test_gemm_vector();
 }

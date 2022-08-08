@@ -27,6 +27,7 @@ VPATH=./lumos/: \
 	  ./lumos/test \
 	  ./lumos/test/core \
 	  ./lumos/test/core/ops \
+	  ./lumos/test/core/graph \
 
 COMMON=-Ilumos/core/graph \
 	   -Ilumos/core/graph/layer \
@@ -72,7 +73,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		binary_f.o cfg_f.o text_f.o \
 		str_ops.o \
 
-EXECOBJA=gemm_test.o
+EXECOBJA=connect_layer_test.o
 
 ifeq ($(TEST), 1)
 OBJ+= utest.o
