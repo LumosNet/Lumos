@@ -102,10 +102,6 @@ void forward_connect_layer(Layer l, int num)
         }
         activate_list(output, l.outputs, l.active);
     }
-    for (int i = 0; i < l.outputs; ++i){
-        printf("%f ", l.output[i]);
-    }
-    printf("\n");
 }
 
 void backward_connect_layer(Layer l, int num, float *n_delta)
