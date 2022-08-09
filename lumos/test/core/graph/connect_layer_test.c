@@ -104,8 +104,8 @@ void test_connect_layer_init()
         test_res(1, "connect bias weights size error");
         return;
     }
-    if (l->deltas != 2){
-        test_res(1, "connect deltas size error");
+    if (l->delta_ns != 2){
+        test_res(1, "connect delta_ns size error");
         return;
     }
     l = make_connect_layer(4, 0, "relu");
@@ -178,9 +178,74 @@ void test_forward_connect_layer()
     test_res(0, "");
 }
 
+void test_backward_connect_layer()
+{
+    Layer *l;
+    l = make_connect_layer(4, 1, "relu");
+    init_connect_layer(l, 1, 2, 1);
+    float *input = malloc(2*sizeof(float));
+    input[0] = 1;   // 1
+    input[1] = 2;   // 2
+    float *output = calloc(4, sizeof(float));
+    float *kernel_weights = calloc(8, sizeof(float));
+    float *update_kernel_weights = calloc(8, sizeof(float));
+    float *bias_weights = calloc(4, sizeof(float));
+    float *update_bias_weights = calloc(4, sizeof(float));
+    float *workspace = calloc(l->workspace_size, sizeof(float));
+    float *delta_l = calloc(2, sizeof(float));
+    float *delta_n = calloc(4, sizeof(float));
+    kernel_weights[0] = 0.1;    // 0.1  0.2  1
+    kernel_weights[1] = 0.2;    // 0.3  0.4  2
+    kernel_weights[2] = 0.3;    // 0.5  0.6
+    kernel_weights[3] = 0.4;    // 0.7  0.8
+    kernel_weights[4] = 0.5;
+    kernel_weights[5] = 0.6;
+    kernel_weights[6] = 0.7;
+    kernel_weights[7] = 0.8;
+    memcpy(update_kernel_weights, kernel_weights, 8*sizeof(float));
+    bias_weights[0] = 0.01;
+    bias_weights[1] = 0.01;
+    bias_weights[2] = 0.01;
+    bias_weights[3] = 0.01;
+    memcpy(update_bias_weights, bias_weights, 4*sizeof(float));
+    delta_n[0] = 0.1;           // 0.1
+    delta_n[1] = 0.2;           // 0.2
+    delta_n[2] = 0.3;           // 0.3
+    delta_n[3] = 0.4;           // 0.4
+    l->input = input;
+    l->output = output;
+    l->workspace = workspace;
+    l->kernel_weights = kernel_weights;
+    l->update_kernel_weights = update_kernel_weights;
+    l->bias_weights = bias_weights;
+    l->update_bias_weights = update_bias_weights;
+    l->delta = delta_l;
+    /*
+        0.5  0.51
+        1.1  1.11
+        1.7  1.71
+        2.3  2.31
+    */
+    forward_connect_layer(*l, 1);
+    /*
+        0.5  0.32
+    */
+    backward_connect_layer(*l, 1, delta_n);
+    if (fabs(l->delta[0]-0.5) > 1e-6){
+        test_res(1, "");
+        return;
+    }
+    if (fabs(l->delta[1]-0.32) > 1e-6){
+        test_res(1, "");
+        return;
+    }
+    test_res(0, "");
+}
+
 int main()
 {
     test_connect_layer_make();
     test_connect_layer_init();
     test_forward_connect_layer();
+    test_backward_connect_layer();
 }
