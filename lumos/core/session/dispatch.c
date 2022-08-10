@@ -17,7 +17,7 @@ void session_train(Session *sess, float learning_rate, char *weights_path)
                 load_train_label(sess, j*sess->batch+k*sess->subdivision, sess->subdivision);
                 forward_session(sess);
                 backward_session(sess);
-                update_session(sess);
+                // update_session(sess);
                 final = clock();
                 run_time = (double)(final-start) / CLOCKS_PER_SEC;
                 progress_bar(j*sub_batchs+k+1, sub_epochs*sub_batchs, run_time, sess->loss[0]);
@@ -64,29 +64,30 @@ void backward_session(Session *sess)
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     Layer *l;
-    float *delta = NULL;
-    for (int i = graph->layer_num-1; i >= 0; --i){
-        l = layers[i];
-        l->backward(*l, sess->subdivision, delta);
-        delta = l->delta;
-    }
-}
-
-void update_session(Session *sess)
-{
-    Graph *graph = sess->graph;
-    Layer **layers = graph->layers;
-    Layer *l;
     float rate = -sess->learning_rate / (float)sess->batch;
     float *delta = NULL;
     for (int i = graph->layer_num-1; i >= 0; --i){
         l = layers[i];
-        if (l->update){
-            l->update(*l, rate, sess->subdivision, delta);
-        }
+        l->backward(*l, rate, sess->subdivision, delta);
         delta = l->delta;
     }
 }
+
+// void update_session(Session *sess)
+// {
+//     Graph *graph = sess->graph;
+//     Layer **layers = graph->layers;
+//     Layer *l;
+//     float rate = -sess->learning_rate / (float)sess->batch;
+//     float *delta = NULL;
+//     for (int i = graph->layer_num-1; i >= 0; --i){
+//         l = layers[i];
+//         if (l->update){
+//             l->update(*l, rate, sess->subdivision, delta);
+//         }
+//         delta = l->delta;
+//     }
+// }
 
 void create_train_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file)
 {

@@ -24,7 +24,7 @@ void init_convolutional_layer(Layer *l, int w, int h, int c);
 void init_convolutional_weights(Layer *l);
 
 void forward_convolutional_layer(Layer l, int num);
-void backward_convolutional_layer(Layer l, int num, float *n_delta);
+void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta);
 
 void update_convolutional_layer(Layer l, float rate, int num, float *n_delta);
 
