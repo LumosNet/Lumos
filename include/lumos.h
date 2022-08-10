@@ -11,7 +11,7 @@ extern "C" {
 typedef struct layer Layer;
 
 typedef void (*forward)  (struct layer, int);
-typedef void (*backward) (struct layer, int, float*);
+typedef void (*backward) (struct layer, float, int, float*);
 typedef forward Forward;
 typedef backward Backward;
 
@@ -211,7 +211,7 @@ Layer *make_avgpool_layer_by_cfg(CFGParams *p);
 void init_avgpool_layer(Layer *l, int w, int h, int c);
 
 void forward_avgpool_layer(Layer l, int num);
-void backward_avgpool_layer(Layer l, int num, float *n_delta);
+void backward_avgpool_layer(Layer l, float rate, int num, float *n_delta);
 
 Layer *make_connect_layer(int output, int bias, char *active);
 Layer *make_connect_layer_by_cfg(CFGParams *p);
@@ -220,7 +220,7 @@ void init_connect_layer(Layer *l, int w, int h, int c);
 void init_connect_weights(Layer *l);
 
 void forward_connect_layer(Layer l, int num);
-void backward_connect_layer(Layer l, int num, float *n_delta);
+void backward_connect_layer(Layer l, float rate, int num, float *n_delta);
 
 void update_connect_layer(Layer l, float rate, int num, float *n_delta);
 
@@ -231,7 +231,7 @@ void init_convolutional_layer(Layer *l, int w, int h, int c);
 void init_convolutional_weights(Layer *l);
 
 void forward_convolutional_layer(Layer l, int num);
-void backward_convolutional_layer(Layer l, int num, float *n_delta);
+void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta);
 
 void update_convolutional_layer(Layer l, float rate, int num, float *n_delta);
 Layer *make_im2col_layer(int flag);
@@ -240,7 +240,7 @@ Layer *make_im2col_layer_by_cfg(CFGParams *p);
 void init_im2col_layer(Layer *l, int w, int h, int c);
 
 void forward_im2col_layer(Layer l, int num);
-void backward_im2col_layer(Layer l, int num, float *n_delta);
+void backward_im2col_layer(Layer l, float rate, int num, float *n_delta);
 
 Layer *make_maxpool_layer(int ksize);
 Layer *make_maxpool_layer_by_cfg(CFGParams *p);
@@ -248,7 +248,7 @@ Layer *make_maxpool_layer_by_cfg(CFGParams *p);
 void init_maxpool_layer(Layer *l, int w, int h, int c);
 
 void forward_maxpool_layer(Layer l, int num);
-void backward_maxpool_layer(Layer l, int num, float *n_delta);
+void backward_maxpool_layer(Layer l, float rate, int num, float *n_delta);
 
 Layer *make_mse_layer(int group);
 Layer *make_mse_layer_by_cfg(CFGParams *p);
@@ -256,7 +256,7 @@ Layer *make_mse_layer_by_cfg(CFGParams *p);
 void init_mse_layer(Layer *l, int w, int h, int c);
 
 void forward_mse_layer(Layer l, int num);
-void backward_mse_layer(Layer l, int num, float *n_delta);
+void backward_mse_layer(Layer l, float rate, int num, float *n_delta);
 
 void bind_graph(Session *sess, Graph *graph);
 

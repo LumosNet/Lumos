@@ -32,8 +32,8 @@ void xor()
     Session *sess = create_session();
     bind_graph(sess, graph);
     create_train_scene(sess, 1, 2, 1, 1, 1, xor_label2truth, "/usr/local/lumos/bin/demos/xor/data.txt", "/usr/local/lumos/bin/demos/xor/label.txt");
-    init_train_scene(sess, 4500, 4, 2, NULL);
-    session_train(sess, 0.1, "/home/lumos/lumos.w");
+    init_train_scene(sess, 200, 4, 2, NULL);
+    session_train(sess, 10, "/home/lumos/lumos.w");
 
     Session *t_sess = create_session();
     bind_graph(t_sess, graph);
