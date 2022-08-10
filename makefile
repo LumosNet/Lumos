@@ -1,4 +1,4 @@
-LINUX=0
+LINUX=1
 GPU=0
 DEBUG=0
 TEST=1
@@ -73,7 +73,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		binary_f.o cfg_f.o text_f.o \
 		str_ops.o \
 
-EXECOBJA=connect_layer_test.o
+EXECOBJA=main.o
 
 ifeq ($(TEST), 1)
 OBJ+= utest.o

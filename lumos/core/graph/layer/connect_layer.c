@@ -102,6 +102,11 @@ void forward_connect_layer(Layer l, int num)
         }
         activate_list(output, l.outputs, l.active);
     }
+    fprintf(stderr, "\n\n");
+    for (int i = 0; i < num*l.outputs; ++i){
+	fprintf(stderr, "%f ", l.output[i]);
+    }
+    fprintf(stderr, "\n\n");
 }
 
 void backward_connect_layer(Layer l, int num, float *n_delta)
@@ -117,6 +122,11 @@ void backward_connect_layer(Layer l, int num, float *n_delta)
         gemm(1, 0, l.output_h, l.input_h, l.output_h, l.input_w, 1, 
             l.kernel_weights, delta_n, delta_l);
     }
+    fprintf(stderr, "\n\n");
+    for (int i = 0; i < num*l.inputs; ++i){
+	fprintf(stderr, "%f ", l.delta[i]);
+    }
+    fprintf(stderr, "\n\n");
 }
 
 void update_connect_layer(Layer l, float rate, int num, float *n_delta)
