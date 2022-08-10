@@ -32,7 +32,7 @@ Lumos框架现在只提供了最基本的网络组件，对于一些特定算法
 
 首先您需要下载我们的安装包
 
-最新安装包为：[lumos-v0.2a.run](https://raw.githubusercontent.com/LumosNet/Lumos-Build/main/lumos-v0.2a.run)
+最新安装包为：[lumos-v0.3a.run](https://raw.githubusercontent.com/LumosNet/Lumos-Build/main/lumos-v0.3a.run)
 
 如果需要更早版本的安装包，请到[lumos-build](https://github.com/LumosNet/Lumos-Build)下自行查找
 
@@ -74,21 +74,13 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
 我们提供了丰富的用例demo，您可以尝试运行这些demo，来开启您的lumos之旅
 
-首先您需要在lumos-demo仓库中获取相关的demo，您也可以将该仓库clone到您的本地环境
-
-以xor用例为例，首先将xor示例的文件夹拷贝到您的环境中，进入该文件夹路径，运行make
+以xor用例为例，调用如下命令
 
 ```shell
-make
+sudo lumos --demo xor
 ```
 
-开始编译xor示例
-
-当您编译完成后，命令行运行main.exe
-
-```shell
-./main.exe
-```
+开始xor示例模型的训练和测试
 
 lumos会打印网络结构
 
@@ -147,6 +139,7 @@ Lumos支持cuda加速（虽然现在还没有^_^），如果您拥有支持cuda�
 
 
 ### 发行版
+**[v0.3-a](https://github.com/LumosNet/Lumos/tree/v0.3-a/)**：我们修复了梯度不收敛问题，可以保证全连接网络正确运行
 
 **[v0.2-a](https://github.com/LumosNet/Lumos/tree/v0.2-a/)**：我们对lumos代码进行了全面重构，我们将在这个版本进行全面测试，我们已经提供了安装包，您可以参照上述安装步骤进行安装。我们不再建议您直接使用源码，虽然也可以。当前版本并非正式发行版本，如果您依然愿意使用，我们将非常感激，如果遇到任何问题，请通过邮件知会我们，我们将及时处理
 
