@@ -51,14 +51,14 @@ void lenet() {
 
     Session *sess = create_session();
     bind_graph(sess, graph);
-    create_train_scene(sess, 32, 32, 1, 1, 10, lenet_label2truth, "/usr/local/lumos/data/mnist/train.txt", "/usr/local/lumos/data/mnist/train_label.txt");
+    create_train_scene(sess, 32, 32, 1, 1, 10, lenet_label2truth, "./data/mnist/train.txt", "./data/mnist/train_label.txt");
     init_train_scene(sess, 4000, 16, 16, NULL);
-    session_train(sess, 0.1, "/home/lumos/lumos.w");
+    session_train(sess, 0.1, "./lumos.w");
 
     Session *t_sess = create_session();
     bind_graph(t_sess, graph);
-    create_test_scene(t_sess, 32, 32, 1, 1, 10, lenet_label2truth, "/usr/local/lumos/data/mnist/test.txt", "/usr/local/lumos/data/mnist/test_label.txt");
-    init_test_scene(t_sess, "/home/lumos/lumos.w");
+    create_test_scene(t_sess, 32, 32, 1, 1, 10, lenet_label2truth, "./data/mnist/test.txt", "./data/mnist/test_label.txt");
+    init_test_scene(t_sess, "./lumos.w");
     session_test(t_sess, lenet_process_test_information);
 }
 

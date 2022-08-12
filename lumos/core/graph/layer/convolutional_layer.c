@@ -106,20 +106,19 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
 
 void init_convolutional_weights(Layer *l)
 {
-    float *weights = malloc(l->ksize*l->ksize*l->filters*sizeof(float));
-    random(1, l->inputs, 0.01, l->ksize*l->ksize*l->filters, weights);
+    int offset = 0;
     for (int i = 0; i < l->filters; ++i){
-        for (int j = 0; j < l->input_c; ++j){
-            for (int k = 0; k < l->ksize*l->ksize; ++k){
-                l->kernel_weights[i*l->ksize*l->ksize*l->input_c + j*l->ksize*l->ksize + k] = weights[i*l->ksize*l->ksize + k];
-            }
+        random(1, l->input_h*l->input_w, 0.01, l->ksize*l->ksize, l->kernel_weights+offset);
+        offset += l->ksize*l->ksize;
+        for (int j = 0; j < l->input_c-1; ++j){
+            memcpy(l->kernel_weights+offset, l->kernel_weights, l->ksize*l->ksize*sizeof(float));
+            offset += l->ksize*l->ksize;
         }
     }
     for (int i = 0; i < l->bias_weights_size; ++i)
     {
         l->bias_weights[i] = 0.01;
     }
-    free(weights);
 }
 
 void forward_convolutional_layer(Layer l, int num)

@@ -70,7 +70,6 @@ void forward_mse_layer(Layer l, int num)
         loss += output[0];
     }
     l.loss[0] = loss / num;
-    // fprintf(stderr, "loss: \n%f\n", l.loss[0]);
 }
 
 void backward_mse_layer(Layer l, float rate, int num, float *n_delta)
@@ -84,9 +83,4 @@ void backward_mse_layer(Layer l, float rate, int num, float *n_delta)
         subtract(input, truth, l.inputs, delta_l);
         multy_cpu(delta_l, l.inputs, (float)2/l.group, 1);
     }
-    // fprintf(stderr, "\n\n");
-    // for (int i = 0; i < num*l.inputs; ++i){
-	// fprintf(stderr, "%f ", l.delta[i]);
-    // }
-    // fprintf(stderr, "\n\n");
 }

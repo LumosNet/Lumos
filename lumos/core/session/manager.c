@@ -192,8 +192,11 @@ void get_workspace_size(Session *sess)
         {
             max_workspace_size = l->workspace_size;
         }
-        weights_size += l->kernel_weights_size;
-        weights_size += l->bias_weights_size;
+        if (l->weights)
+        {
+            weights_size += l->kernel_weights_size;
+            weights_size += l->bias_weights_size;
+        }
     }
     sess->workspace_size = max_workspace_size;
     sess->weights_size = weights_size;
