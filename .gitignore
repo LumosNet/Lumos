@@ -8,6 +8,7 @@
 *.w
 main
 .vscode
+data
 obj
 backup
 .idea
