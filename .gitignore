@@ -12,6 +12,6 @@ obj
 backup
 .idea
 utest
-main.*
+main.exe
 ./lumos
 build

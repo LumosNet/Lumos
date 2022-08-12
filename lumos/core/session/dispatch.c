@@ -20,7 +20,6 @@ void session_train(Session *sess, float learning_rate, char *weights_path)
                 load_train_label(sess, j * sess->batch + k * sess->subdivision, sess->subdivision);
                 forward_session(sess);
                 backward_session(sess);
-                // update_session(sess);
                 final = clock();
                 run_time = (double)(final - start) / CLOCKS_PER_SEC;
                 progress_bar(j * sub_batchs + k + 1, sub_epochs * sub_batchs, run_time, sess->loss[0]);
