@@ -96,7 +96,7 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
 
     l->workspace_size = l->ksize * l->ksize * l->input_c * l->output_h * l->output_w + l->filters * l->ksize * l->ksize * l->input_c;
 
-    l->kernel_weights_size = l->ksize * l->ksize * l->input_c;
+    l->kernel_weights_size = l->filters * l->ksize * l->ksize * l->input_c;
     l->bias_weights_size = l->filters;
     l->deltas = l->inputs;
 
@@ -106,11 +106,20 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
 
 void init_convolutional_weights(Layer *l)
 {
-    random(1, l->inputs, 0.01, l->kernel_weights_size, l->kernel_weights);
+    float *weights = malloc(l->ksize*l->ksize*l->filters*sizeof(float));
+    random(1, l->inputs, 0.01, l->ksize*l->ksize*l->filters, weights);
+    for (int i = 0; i < l->filters; ++i){
+        for (int j = 0; j < l->input_c; ++j){
+            for (int k = 0; k < l->ksize*l->ksize; ++k){
+                l->kernel_weights[i*l->ksize*l->ksize*l->input_c + j*l->ksize*l->ksize + k] = weights[i*l->ksize*l->ksize + k];
+            }
+        }
+    }
     for (int i = 0; i < l->bias_weights_size; ++i)
     {
         l->bias_weights[i] = 0.01;
     }
+    free(weights);
 }
 
 void forward_convolutional_layer(Layer l, int num)
@@ -148,6 +157,7 @@ void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta)
              l.kernel_weights, delta_n, l.workspace);
         col2im(l.workspace, l.ksize, l.stride, l.pad, l.input_h, l.input_w, l.input_c, delta_l);
     }
+    l.update(l, rate, num, n_delta);
 }
 
 void update_convolutional_layer(Layer l, float rate, int num, float *n_delta)
