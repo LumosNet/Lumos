@@ -1,4 +1,0 @@
-/usr/local/lumos/bin/demos/xor/data/00.png
-/usr/local/lumos/bin/demos/xor/data/01.png
-/usr/local/lumos/bin/demos/xor/data/11.png
-/usr/local/lumos/bin/demos/xor/data/10.png
