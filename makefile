@@ -117,4 +117,4 @@ backup:
 .PHONY: clean
 
 clean:
-	python clean.py
+	python3 clean.py

@@ -286,6 +286,10 @@ void load_test_data(Session *sess, int index)
     int h[1], w[1], c[1];
     float *im;
     char *data_path = sess->test_data_paths[index];
+    if (-1 == access(data_path, F_OK)){
+        fprintf(stderr, "\nerror: %s is not exist\n", data_path);
+        abort();
+    }
     im = load_image_data(data_path, w, h, c);
     resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input);
     free(im);
@@ -294,6 +298,11 @@ void load_test_data(Session *sess, int index)
 char **load_test_label(Session *sess, int index)
 {
     float *truth = sess->truth;
+    char *label_path = sess->test_label_paths[index];
+    if (-1 == access(label_path, F_OK)){
+        fprintf(stderr, "\nerror: %s is not exist\n", label_path);
+        abort();
+    }
     char **label = load_label_txt(sess->test_label_paths[index], sess->label_num);
     sess->label2truth(label, truth);
     return label;

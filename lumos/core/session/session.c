@@ -15,6 +15,10 @@ void bind_graph(Session *sess, Graph *graph)
 void bind_train_data(Session *sess, char *path)
 {
     FILE *fp = fopen(path, "r");
+    if (fp == NULL) {
+        fprintf(stderr, "\nfopen error: %s is not exist\n", path);
+        abort();
+    }
     char **data_paths = fgetls(fp);
     fclose(fp);
     int lines = atoi(data_paths[0]);
@@ -26,6 +30,10 @@ void bind_train_data(Session *sess, char *path)
 void bind_test_data(Session *sess, char *path)
 {
     FILE *fp = fopen(path, "r");
+    if (fp == NULL) {
+        fprintf(stderr, "\nfopen error: %s is not exist\n", path);
+        abort();
+    }
     char **data_paths = fgetls(fp);
     fclose(fp);
     int lines = atoi(data_paths[0]);
@@ -37,6 +45,9 @@ void bind_test_data(Session *sess, char *path)
 void bind_train_label(Session *sess, int label_num, char *path)
 {
     FILE *fp = fopen(path, "r");
+    if (fp == NULL) {
+        fprintf(stderr, "\nfopen error: %s is not exist\n", path);
+    }
     char **label_paths = fgetls(fp);
     fclose(fp);
     sess->train_label_paths = label_paths + 1;
@@ -56,6 +67,9 @@ void bind_train_label(Session *sess, int label_num, char *path)
 void bind_test_label(Session *sess, int label_num, char *path)
 {
     FILE *fp = fopen(path, "r");
+    if (fp == NULL) {
+        fprintf(stderr, "\nfopen error: %s is not exist\n", path);
+    }
     char **label_paths = fgetls(fp);
     fclose(fp);
     sess->test_label_paths = label_paths + 1;
