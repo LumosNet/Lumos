@@ -11,10 +11,10 @@
 #include "manager.h"
 #include "dispatch.h"
 
-void xor_label2truth(char **label, float *truth)
+void qce_label2truth(char **label, float *truth)
 {
     int x = atoi(label[0]);
-    one_hot_encoding(1, x, truth);
+    truth[0] = (float)x;
 }
 
 void xor_process_test_information(char **label, float *truth, float *predict, float loss, char *data_path)
@@ -26,7 +26,7 @@ void xor_process_test_information(char **label, float *truth, float *predict, fl
     fprintf(stderr, "Loss:    %f\n\n", loss);
 }
 
-void xor () {
+void qce () {
     Graph *graph = create_graph("Lumos", 5);
     Layer *l1 = make_im2col_layer(1);
     Layer *l2 = make_connect_layer(4, 1, "logistic");
@@ -41,19 +41,19 @@ void xor () {
 
     Session *sess = create_session();
     bind_graph(sess, graph);
-    create_train_scene(sess, 1, 2, 1, 1, 1, xor_label2truth, "/usr/local/lumos/data/xor/data.txt", "/usr/local/lumos/data/xor/label.txt");
-    init_train_scene(sess, 200, 4, 2, NULL);
-    session_train(sess, 10, "./lumos.w");
+    create_train_scene(sess, 1, 1, 1, 1, 1, qce_label2truth, "/usr/local/lumos/data/qce/train.txt", "/usr/local/lumos/data/qce/train_label.txt");
+    init_train_scene(sess, 20000, 5, 5, NULL);
+    session_train(sess, 0.1, "./lumos.w");
 
-    Session *t_sess = create_session();
-    bind_graph(t_sess, graph);
-    create_test_scene(t_sess, 1, 2, 1, 1, 1, xor_label2truth, "/usr/local/lumos/data/xor/test.txt", "/usr/local/lumos/data/xor/label.txt");
-    init_test_scene(t_sess, "./lumos.w");
-    session_test(t_sess, xor_process_test_information);
+    // Session *t_sess = create_session();
+    // bind_graph(t_sess, graph);
+    // create_test_scene(t_sess, 1, 2, 1, 1, 1, xor_label2truth, "/usr/local/lumos/data/xor/test.txt", "/usr/local/lumos/data/xor/label.txt");
+    // init_test_scene(t_sess, "./lumos.w");
+    // session_test(t_sess, xor_process_test_information);
 }
 
 int main()
 {
-    xor();
+    qce();
     return 0;
 }
