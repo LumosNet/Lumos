@@ -82,9 +82,17 @@ void init_connect_layer(Layer *l, int w, int h, int c)
 
 void init_connect_weights(Layer *l)
 {
-    random(1, l->inputs, 0.01, l->kernel_weights_size, l->kernel_weights);
-    for (int i = 0; i < l->bias_weights_size; ++i){
-        l->bias_weights[i] = 0.001;
+    // random(1, l->inputs, 0.01, l->kernel_weights_size, l->kernel_weights);
+    // for (int i = 0; i < l->bias_weights_size; ++i){
+    //     l->bias_weights[i] = 0.001;
+    // }
+    for (int i = 0; i < l->output_h*l->input_h; ++i){
+        l->kernel_weights[i] = 2.0*rand()/RAND_MAX-1;
+    }
+    if (l->bias){
+        for (int i = 0; i < l->output_h; ++i){
+            l->bias_weights[i] = 2.0*rand()/RAND_MAX-1;
+        }
     }
 }
 
@@ -131,6 +139,9 @@ void update_connect_layer(Layer l, float rate, int num, float *n_delta)
         int offset_o = i * l.outputs;
         float *input = l.input + offset_i;
         float *delta_n = n_delta + offset_o;
+        // for (int j = 0; j < l.outputs; ++j){
+        //     printf("%f ", delta_n[j]);
+        // }
         gemm(0, 1, l.output_h, l.output_w,
              l.input_h, l.input_w, 1,
              delta_n, input, l.workspace);
