@@ -139,9 +139,6 @@ void update_connect_layer(Layer l, float rate, int num, float *n_delta)
         int offset_o = i * l.outputs;
         float *input = l.input + offset_i;
         float *delta_n = n_delta + offset_o;
-        // for (int j = 0; j < l.outputs; ++j){
-        //     printf("%f ", delta_n[j]);
-        // }
         gemm(0, 1, l.output_h, l.output_w,
              l.input_h, l.input_w, 1,
              delta_n, input, l.workspace);

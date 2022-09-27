@@ -66,37 +66,37 @@ char **load_label_txt(char *path, int num)
         fprintf(stderr, "\nerror file %s can not open\n", path);
         abort();
     }
-    // char *line = fgetl(fp);
-    // fclose(fp);
-    // int n[1];
-    // char **nodes = split(line, ' ', n);
-    // for (int k = 0; k < n[0]; ++k)
-    // {
-    //     strip(nodes[k], ' ');
-    //     if (label_offset >= num)
-    //         return label;
-    //     label[label_offset] = nodes[k];
-    //     label_offset += 1;
-    // }
-
-    char **labels = fgetls(fp);
-    if (fp != NULL){
-        fclose(fp);
-    }
-    int lines = atoi(labels[0]);
-    for (int j = 0; j < lines; ++j)
+    char *line = fgetl(fp);
+    fclose(fp);
+    int n[1];
+    char **nodes = split(line, ' ', n);
+    for (int k = 0; k < n[0]; ++k)
     {
-        char *line = labels[j + 1];
-        int n[1];
-        char **nodes = split(line, ' ', n);
-        for (int k = 0; k < n[0]; ++k)
-        {
-            strip(nodes[k], ' ');
-            if (label_offset >= num)
-                return label;
-            label[label_offset] = nodes[k];
-            label_offset += 1;
-        }
+        strip(nodes[k], ' ');
+        if (label_offset >= num)
+            return label;
+        label[label_offset] = nodes[k];
+        label_offset += 1;
     }
+
+    // char **labels = fgetls(fp);
+    // if (fp != NULL){
+    //     fclose(fp);
+    // }
+    // int lines = atoi(labels[0]);
+    // for (int j = 0; j < lines; ++j)
+    // {
+    //     char *line = labels[j + 1];
+    //     int n[1];
+    //     char **nodes = split(line, ' ', n);
+    //     for (int k = 0; k < n[0]; ++k)
+    //     {
+    //         strip(nodes[k], ' ');
+    //         if (label_offset >= num)
+    //             return label;
+    //         label[label_offset] = nodes[k];
+    //         label_offset += 1;
+    //     }
+    // }
     return label;
 }
