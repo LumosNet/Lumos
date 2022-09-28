@@ -1,15 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "cpu.h"
-#include "graph.h"
-#include "layer.h"
-#include "im2col_layer.h"
-#include "connect_layer.h"
-#include "mse_layer.h"
-#include "session.h"
-#include "manager.h"
-#include "dispatch.h"
+#include "mnist.h"
 
 void mnist_label2truth(char **label, float *truth)
 {
@@ -52,10 +41,4 @@ void full_connect_mnist () {
     create_test_scene(t_sess, 28, 28, 1, 1, 10, mnist_label2truth, "/usr/local/lumos/data/mnist/train.txt", "/usr/local/lumos/data/mnist/train_label.txt");
     init_test_scene(t_sess, "./lumos.w");
     session_test(t_sess, mnist_process_test_information);
-}
-
-int main()
-{
-    full_connect_mnist();
-    return 0;
 }
