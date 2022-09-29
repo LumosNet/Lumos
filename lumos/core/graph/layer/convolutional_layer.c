@@ -107,13 +107,16 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
 void init_convolutional_weights(Layer *l)
 {
     int offset = 0;
+    float *kernel_weights = l->kernel_weights;
     for (int i = 0; i < l->filters; ++i){
-        random(1, l->input_h*l->input_w, 0.01, l->ksize*l->ksize, l->kernel_weights+offset);
+        random(1, l->input_h*l->input_w, 0.01, l->ksize*l->ksize, kernel_weights);
         offset += l->ksize*l->ksize;
         for (int j = 0; j < l->input_c-1; ++j){
-            memcpy(l->kernel_weights+offset, l->kernel_weights, l->ksize*l->ksize*sizeof(float));
+            memcpy(kernel_weights+offset, kernel_weights, l->ksize*l->ksize*sizeof(float));
             offset += l->ksize*l->ksize;
         }
+        kernel_weights += offset;
+        offset = 0;
     }
     for (int i = 0; i < l->bias_weights_size; ++i)
     {

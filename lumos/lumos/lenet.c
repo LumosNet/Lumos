@@ -16,7 +16,7 @@
 void lenet_label2truth(char **label, float *truth)
 {
     int x = atoi(label[0]);
-    one_hot_encoding(1, x, truth);
+    one_hot_encoding(10, x, truth);
 }
 
 void lenet_process_test_information(char **label, float *truth, float *predict, float loss, char *data_path)
