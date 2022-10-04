@@ -73,6 +73,7 @@ void append_layer2grpah(Graph *graph, Layer *l)
 {
     graph->layers[graph->layer_num] = l;
     graph->layer_num += 1;
+    l->index = graph->layer_num;
 }
 
 void init_graph(Graph *g, int w, int h, int c)

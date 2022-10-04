@@ -97,7 +97,10 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
     l->workspace_size = l->ksize * l->ksize * l->input_c * l->output_h * l->output_w + l->filters * l->ksize * l->ksize * l->input_c;
 
     l->kernel_weights_size = l->filters * l->ksize * l->ksize * l->input_c;
-    l->bias_weights_size = l->filters;
+    l->bias_weights_size = 0;
+    if (l->bias){
+        l->bias_weights_size = l->filters;
+    }
     l->deltas = l->inputs;
 
     fprintf(stderr, "Convolutional   Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
@@ -108,12 +111,14 @@ void init_convolutional_weights(Layer *l)
 {
     int offset = 0;
     float *kernel_weights = l->kernel_weights;
-    for (int i = 0; i < l->filters; ++i){
-        random(1, l->input_h*l->input_w, 0.01, l->ksize*l->ksize, kernel_weights);
-        offset += l->ksize*l->ksize;
-        for (int j = 0; j < l->input_c-1; ++j){
-            memcpy(kernel_weights+offset, kernel_weights, l->ksize*l->ksize*sizeof(float));
-            offset += l->ksize*l->ksize;
+    for (int i = 0; i < l->filters; ++i)
+    {
+        random(1, l->input_h * l->input_w, 0.01, l->ksize * l->ksize, kernel_weights);
+        offset += l->ksize * l->ksize;
+        for (int j = 0; j < l->input_c - 1; ++j)
+        {
+            memcpy(kernel_weights + offset, kernel_weights, l->ksize * l->ksize * sizeof(float));
+            offset += l->ksize * l->ksize;
         }
         kernel_weights += offset;
         offset = 0;
@@ -139,6 +144,15 @@ void forward_convolutional_layer(Layer l, int num)
         {
             add_bias(output, l.bias_weights, l.filters, l.output_h * l.output_w);
         }
+        // if (l.index == 5)
+        // {
+        //     printf("\n\n\n");
+        //     for (int j = 0; j < l.outputs; ++j)
+        //     {
+        //         printf("%f ", output[j]);
+        //     }
+        //     printf("\n\n\n");
+        // }
         activate_list(output, l.outputs, l.active);
     }
 }
