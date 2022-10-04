@@ -177,6 +177,12 @@ void test_forward_convolutional_layer()
     test_res(0, "");
 }
 
+
+void test_backward_convolutional_layer()
+{
+    
+}
+
 int main()
 {
     test_convolutional_layer_make();
