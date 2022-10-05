@@ -180,6 +180,20 @@ void test_forward_convolutional_layer()
 
 void test_backward_convolutional_layer()
 {
+    test_run("test_backward_convolutional_layer");
+    Layer *l;
+    l = make_convolutional_layer(3, 3, 1, 0, 1, 0, "logistic");
+    init_convolutional_layer(l, 4, 4, 1);
+    float *output = calloc(l->outputs, sizeof(float));
+    float *delta_n = calloc(l->outputs, sizeof(float));
+    float *delta_l = calloc(l->inputs, sizeof(float));
+    float *workspace = calloc(l->workspace_size, sizeof(float));
+    for (int i = 0; i < l->outputs; ++i){
+        output[i] = i*0.1;
+    }
+    l->output = output;
+    l->delta = delta_l;
+    l->workspace = workspace;
     
 }
 
