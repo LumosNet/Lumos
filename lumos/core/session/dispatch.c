@@ -22,15 +22,8 @@ void session_train(Session *sess, float learning_rate, char *weights_path)
                 backward_session(sess);
                 final = clock();
                 run_time = (double)(final - start) / CLOCKS_PER_SEC;
-                // progress_bar(j * sub_batchs + k + 1, sub_epochs * sub_batchs, run_time, sess->loss[0]);
+                progress_bar(j * sub_batchs + k + 1, sub_epochs * sub_batchs, run_time, sess->loss[0]);
             }
-            Graph *g = sess->graph;
-            Layer *l = g->layers[6];
-            // printf("\n\n\n");
-            // for (int ip = 0; ip < l->filters; ++ip){
-            //     printf("%f ", l->update_bias_weights[ip]);
-            // }
-            // printf("\n\n\n");
             memcpy(sess->weights, sess->update_weights, sess->weights_size * sizeof(float));
         }
     }

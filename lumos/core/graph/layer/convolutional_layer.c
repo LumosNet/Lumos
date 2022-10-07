@@ -144,15 +144,6 @@ void forward_convolutional_layer(Layer l, int num)
         {
             add_bias(output, l.bias_weights, l.filters, l.output_h * l.output_w);
         }
-        // if (l.index == 5)
-        // {
-        //     printf("\n\n\n");
-        //     for (int j = 0; j < l.outputs; ++j)
-        //     {
-        //         printf("%f ", output[j]);
-        //     }
-        //     printf("\n\n\n");
-        // }
         activate_list(output, l.outputs, l.active);
     }
 }
