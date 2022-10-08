@@ -1,5 +1,7 @@
+from math import e
 import os
 import glob
+import math
 
 def main():
     filename1 = glob.glob("obj/*.o")
@@ -13,4 +15,7 @@ def main():
         os.remove(file)
 
 if __name__ == "__main__":
-    main()
+    # main()
+    x = 10
+    res = 1./(1. + math.e**(-x))
+    print(res)

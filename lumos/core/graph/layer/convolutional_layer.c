@@ -123,6 +123,12 @@ void init_convolutional_weights(Layer *l)
         kernel_weights += offset;
         offset = 0;
     }
+    // float oop[] = {
+    //     0.1,  0.2,  0.3,  0.4,  0.5,  0.6,  0.7,  0.8,  0.9
+    // };
+    // for (int m = 0; m < 9; ++m){
+    //     l->kernel_weights[m] = oop[m];
+    // }
     for (int i = 0; i < l->bias_weights_size; ++i)
     {
         l->bias_weights[i] = 0.01;
@@ -137,10 +143,6 @@ void forward_convolutional_layer(Layer l, int num)
         int offset_o = i * l.outputs;
         float *input = l.input + offset_i;
         float *output = l.output + offset_o;
-        for (int j = 0; j < l.inputs; ++j){
-            printf("%f ", input[j]);
-        }
-        printf("\n");
         im2col(input, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, l.workspace);
         gemm(0, 0, l.filters, l.ksize * l.ksize * l.input_c, l.ksize * l.ksize * l.input_c, l.output_h * l.output_w, 1,
              l.kernel_weights, l.workspace, output);
@@ -149,6 +151,12 @@ void forward_convolutional_layer(Layer l, int num)
             add_bias(output, l.bias_weights, l.filters, l.output_h * l.output_w);
         }
         activate_list(output, l.outputs, l.active);
+        if (l.index == 1){
+            for (int j = 0; j < l.outputs; ++j){
+                printf("%f ", output[j]);
+            }
+            printf("\n\n\n");
+        }
     }
 }
 
