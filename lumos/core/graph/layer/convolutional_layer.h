@@ -12,6 +12,7 @@
 #include "bias.h"
 #include "gemm.h"
 #include "cpu.h"
+#include "random.h"
 
 #ifdef __cplusplus
 extern "C"{

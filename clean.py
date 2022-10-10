@@ -15,7 +15,4 @@ def main():
         os.remove(file)
 
 if __name__ == "__main__":
-    # main()
-    x = 10
-    res = 1./(1. + math.e**(-x))
-    print(res)
+    main()

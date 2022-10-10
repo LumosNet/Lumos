@@ -82,31 +82,12 @@ void init_connect_layer(Layer *l, int w, int h, int c)
 
 void init_connect_weights(Layer *l)
 {
-    random(1, l->inputs, 0.01, l->kernel_weights_size, l->kernel_weights);
-    for (int i = 0; i < l->bias_weights_size; ++i){
-        l->bias_weights[i] = 0.001;
-    }
-
-    for (int i = 0; i < l->output_h*l->input_h; ++i){
-        l->kernel_weights[i] = 2.0*rand()/RAND_MAX-1;
-    }
+    guass_list(0, 1, 12345, l->kernel_weights_size, l->kernel_weights);
     if (l->bias){
         for (int i = 0; i < l->output_h; ++i){
-            l->bias_weights[i] = 2.0*rand()/RAND_MAX-1;
+            l->bias_weights[i] = 0.01;
         }
     }
-    // float oop[] = {
-    //     0.1,  0.2,  0.3,  0.4, 
-    //     0.5,  0.6,  0.7,  0.8
-    // };
-    // for (int i = 0; i < l->kernel_weights_size; ++i){
-    //     l->kernel_weights[i] = oop[i];
-    // }
-    // if (l->bias){
-    //     for (int i = 0; i < l->bias_weights_size; ++i){
-    //         l->bias_weights[i] = 0.01;
-    //     }
-    // }
 }
 
 void forward_connect_layer(Layer l, int num)

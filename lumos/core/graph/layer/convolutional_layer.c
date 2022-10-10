@@ -113,25 +113,19 @@ void init_convolutional_weights(Layer *l)
     float *kernel_weights = l->kernel_weights;
     for (int i = 0; i < l->filters; ++i)
     {
-        random(1, l->input_h * l->input_w, 0.01, l->ksize * l->ksize, kernel_weights);
+        guass_list(0, 1, 12345, l->ksize * l->ksize, kernel_weights);
         offset += l->ksize * l->ksize;
-        for (int j = 0; j < l->input_c - 1; ++j)
-        {
+        for (int j = 0; j < l->input_c - 1; ++j){
             memcpy(kernel_weights + offset, kernel_weights, l->ksize * l->ksize * sizeof(float));
             offset += l->ksize * l->ksize;
         }
         kernel_weights += offset;
         offset = 0;
     }
-    // float oop[] = {
-    //     0.1,  0.2,  0.3,  0.4,  0.5,  0.6,  0.7,  0.8,  0.9
-    // };
-    // for (int m = 0; m < 9; ++m){
-    //     l->kernel_weights[m] = oop[m];
-    // }
-    for (int i = 0; i < l->bias_weights_size; ++i)
-    {
-        l->bias_weights[i] = 0.01;
+    if (l->bias){
+        for (int i = 0; i < l->bias_weights_size; ++i){
+            l->bias_weights[i] = 0.01;
+        }
     }
 }
 
@@ -151,12 +145,12 @@ void forward_convolutional_layer(Layer l, int num)
             add_bias(output, l.bias_weights, l.filters, l.output_h * l.output_w);
         }
         activate_list(output, l.outputs, l.active);
-        if (l.index == 1){
-            for (int j = 0; j < l.outputs; ++j){
-                printf("%f ", output[j]);
-            }
-            printf("\n\n\n");
-        }
+        // if (l.index == 1){
+        //     for (int j = 0; j < l.outputs; ++j){
+        //         printf("%f ", output[j]);
+        //     }
+        //     printf("\n\n\n");
+        // }
     }
 }
 
@@ -196,7 +190,8 @@ void update_convolutional_layer(Layer l, float rate, int num, float *n_delta)
         {
             for (int j = 0; j < l.filters; ++j)
             {
-                float bias = sum_cpu(delta_n, l.output_h * l.output_w);
+                int x = l.output_h * l.output_w;
+                float bias = sum_cpu(delta_n, x);
                 l.update_bias_weights[j] += bias * rate;
             }
         }

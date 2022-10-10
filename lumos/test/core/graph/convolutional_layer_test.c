@@ -191,6 +191,9 @@ void test_backward_convolutional_layer()
     for (int i = 0; i < l->outputs; ++i){
         output[i] = i*0.1;
     }
+    for (int i = 0; i < l->outputs; ++i){
+        delta_n[i] = i*0.1;
+    }
     l->output = output;
     l->delta = delta_l;
     l->workspace = workspace;
