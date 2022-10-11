@@ -58,6 +58,7 @@ void init_avgpool_layer(Layer *l, int w, int h, int c)
 
 void forward_avgpool_layer(Layer l, int num)
 {
+    fill_cpu(l.output, l.outputs, 0, 1);
     for (int i = 0; i < num; ++i)
     {
         int offset_i = i * l.inputs;

@@ -82,7 +82,7 @@ void init_connect_layer(Layer *l, int w, int h, int c)
 
 void init_connect_weights(Layer *l)
 {
-    guass_list(0, 1, 12345, l->kernel_weights_size, l->kernel_weights);
+    guass_list(0, 1, l->index*2, l->kernel_weights_size, l->kernel_weights);
     if (l->bias){
         for (int i = 0; i < l->output_h; ++i){
             l->bias_weights[i] = 0.01;

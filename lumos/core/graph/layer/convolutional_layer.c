@@ -113,7 +113,7 @@ void init_convolutional_weights(Layer *l)
     float *kernel_weights = l->kernel_weights;
     for (int i = 0; i < l->filters; ++i)
     {
-        guass_list(0, 1, 12345, l->ksize * l->ksize, kernel_weights);
+        guass_list(0, 1, l->index*2, l->ksize * l->ksize, kernel_weights);
         offset += l->ksize * l->ksize;
         for (int j = 0; j < l->input_c - 1; ++j){
             memcpy(kernel_weights + offset, kernel_weights, l->ksize * l->ksize * sizeof(float));
@@ -144,13 +144,13 @@ void forward_convolutional_layer(Layer l, int num)
         {
             add_bias(output, l.bias_weights, l.filters, l.output_h * l.output_w);
         }
-        activate_list(output, l.outputs, l.active);
-        // if (l.index == 1){
+        // if (l.index == 5){
         //     for (int j = 0; j < l.outputs; ++j){
         //         printf("%f ", output[j]);
         //     }
         //     printf("\n\n\n");
         // }
+        activate_list(output, l.outputs, l.active);
     }
 }
 
@@ -188,10 +188,10 @@ void update_convolutional_layer(Layer l, float rate, int num, float *n_delta)
         saxpy(l.update_kernel_weights, l.workspace + l.ksize * l.ksize * l.input_c * l.output_h * l.output_w, l.filters * l.ksize * l.ksize * l.input_c, rate, l.update_kernel_weights);
         if (l.bias)
         {
+            int offset = l.output_h * l.output_w;
             for (int j = 0; j < l.filters; ++j)
             {
-                int x = l.output_h * l.output_w;
-                float bias = sum_cpu(delta_n, x);
+                float bias = sum_cpu(delta_n+j*offset, offset);
                 l.update_bias_weights[j] += bias * rate;
             }
         }
