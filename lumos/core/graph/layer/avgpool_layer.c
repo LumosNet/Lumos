@@ -58,7 +58,7 @@ void init_avgpool_layer(Layer *l, int w, int h, int c)
 
 void forward_avgpool_layer(Layer l, int num)
 {
-    fill_cpu(l.output, l.outputs, 0, 1);
+    fill_cpu(l.output, l.outputs * num, 0, 1);
     for (int i = 0; i < num; ++i)
     {
         int offset_i = i * l.inputs;
@@ -69,15 +69,11 @@ void forward_avgpool_layer(Layer l, int num)
                l.ksize, l.stride, l.pad, l.workspace);
         for (int c = 0; c < l.output_c; ++c)
         {
-            for (int h = 0; h < l.output_h; ++h)
+            for (int h = 0; h < l.ksize*l.ksize; ++h)
             {
-                for (int w = 0; w < l.output_w; ++w)
+                for (int w = 0; w < l.output_h*l.output_w; ++w)
                 {
-                    for (int k = 0; k < l.ksize * l.ksize; ++k)
-                    {
-                        output[c * l.output_h * l.output_w + h * l.output_w + w] +=
-                            l.workspace[(c * l.ksize * l.ksize + k) * l.output_h * l.output_w + h * l.output_w + w] * (float)(1 / (float)(l.ksize * l.ksize));
-                    }
+                    output[c*l.output_h*l.output_w+w] += l.workspace[c*l.ksize*l.ksize*l.output_h*l.output_w+h*l.output_h*l.output_w+w] / (l.ksize*l.ksize);
                 }
             }
         }

@@ -62,7 +62,6 @@ void init_im2col_layer(Layer *l, int w, int h, int c)
 
 void forward_im2col_layer(Layer l, int num)
 {
-    fill_cpu(l.delta, l.deltas * num, 0, 1);
     for (int i = 0; i < num; ++i)
     {
         int offset_i = i * l.inputs;

@@ -34,9 +34,11 @@ void lenet_process_test_information(char **label, float *truth, float *predict, 
 void lenet() {
     Graph *graph = create_graph("Lumos", 9);
     Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 1, "logistic");
-    Layer *l2 = make_avgpool_layer(2);
+    // Layer *l2 = make_avgpool_layer(2);
+    Layer *l2 = make_convolutional_layer(6, 2, 2, 0, 1, 0, "logistic");
     Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, 1, "logistic");
-    Layer *l4 = make_avgpool_layer(2);
+    // Layer *l4 = make_avgpool_layer(2);
+    Layer *l4 = make_convolutional_layer(16, 2, 2, 0, 1, 0, "logistic");
     Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, 1, "logistic");
     Layer *l6 = make_im2col_layer(1);
     Layer *l7 = make_connect_layer(84, 1, "logistic");

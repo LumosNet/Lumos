@@ -26,16 +26,20 @@ void session_train(Session *sess, float learning_rate, char *weights_path)
             }
             memcpy(sess->weights, sess->update_weights, sess->weights_size * sizeof(float));
         }
-        // Graph *g = sess->graph;
-        // Layer *l = g->layers[4];
-        // // for (int x = 0; x < l->kernel_weights_size; ++x){
-        // //     printf("%f ", l->kernel_weights[x]);
-        // // }
-        // // printf("\n\n\n");
+        Graph *g = sess->graph;
+        Layer *l = g->layers[0];
+        Layer *l2 = g->layers[1];
+        float a = sum_cpu(l->output, l->outputs*sess->subdivision);
+        float b = sum_cpu(l2->output, l2->outputs*sess->subdivision);
+        // for (int x = 0; x < l->kernel_weights_size; ++x){
+        //     printf("%f ", l->kernel_weights[x]);
+        // }
+        // printf("\n\n\n");
         // for (int x = 0; x < l->outputs; ++x){
         //     printf("%f ", l->output[x]);
         // }
-        // printf("\n\n\n\n");
+        printf("\n%f\n\n%f\n", a / l->outputs*sess->subdivision, b / l2->outputs*sess->subdivision);
+        printf("\n\n\n\n");
     }
     fprintf(stderr, "\n\nSession Training Finished\n");
     save_weigths(sess, weights_path);
