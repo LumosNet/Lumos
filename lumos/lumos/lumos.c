@@ -3,8 +3,10 @@
 #include <string.h>
 
 #include "xor.h"
+#include "lenet.h"
+#include "mnist.h"
 
-#define VERSION "0.2-a"
+#define VERSION "0.4-a"
 
 void analysis_argv(int argc, char **argv)
 {
@@ -22,7 +24,14 @@ void analysis_argv(int argc, char **argv)
         if (0 == strcmp(argv[2], "xor"))
         {
             xor();
-            printf("ok\n");
+        }
+        else if (0 == strcmp(argv[2], "mnist"))
+        {
+            full_connect_mnist();
+        }
+        else if (0 == strcmp(argv[2], "lenet5"))
+        {
+            lenet();
         }
     }
     else

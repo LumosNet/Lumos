@@ -38,7 +38,7 @@ COMMON+= -Ilumos-lib/ -std=c99 -fopenmp
 CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors -fPIC
 
 LIBOPSOBJ= 		progress_bar.o binary_f.o cfg_f.o text_f.o str_ops.o \
-		   		active.o bias.o cpu.o gemm.o im2col.o image.o
+		   		active.o bias.o cpu.o gemm.o im2col.o image.o random.o
 
 LIBGRAPHOBJ=  	graph.o layer.o mse_layer.o avgpool_layer.o connect_layer.o \
 		   		convolutional_layer.o im2col_layer.o maxpool_layer.o
