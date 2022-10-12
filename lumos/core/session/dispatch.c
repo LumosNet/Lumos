@@ -22,8 +22,7 @@ void session_train(Session *sess, float learning_rate, char *weights_path)
                 backward_session(sess);
                 final = clock();
                 run_time = (double)(final - start) / CLOCKS_PER_SEC;
-                // progress_bar(j * sub_batchs + k + 1, sub_epochs * sub_batchs, run_time, sess->loss[0]);
-                return;
+                progress_bar(j * sub_batchs + k + 1, sub_epochs * sub_batchs, run_time, sess->loss[0]);
             }
             memcpy(sess->weights, sess->update_weights, sess->weights_size * sizeof(float));
         }
@@ -55,10 +54,6 @@ void forward_session(Session *sess)
     Layer **layers = graph->layers;
     Layer *l;
     float *input = sess->input;
-    // for (int i = 0; i < sess->width*sess->height*sess->channel; ++i){
-    //     printf("%f ", input[i]);
-    // }
-    // printf("\n\n\n\n");
     for (int i = 0; i < graph->layer_num; ++i)
     {
         l = layers[i];

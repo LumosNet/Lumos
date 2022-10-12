@@ -65,13 +65,6 @@ void forward_avgpool_layer(Layer l, int num)
         int offset_o = i * l.outputs;
         float *input = l.input + offset_i;
         float *output = l.output + offset_o;
-        // if (l.index == 4){
-        //     printf("\n\n\n\n");
-        //     for (int j = 0; j < l.inputs; ++j){
-        //         printf("%f ", input[j]);
-        //     }
-        //     printf("\n\n\n\n");
-        // }
         im2col(input, l.input_h, l.input_w, l.input_c,
                l.ksize, l.stride, l.pad, l.workspace);
         for (int c = 0; c < l.output_c; ++c)
@@ -84,13 +77,6 @@ void forward_avgpool_layer(Layer l, int num)
                 }
             }
         }
-        // if (l.index == 4){
-        //     printf("\n\n\n\n");
-        //     for (int j = 0; j < l.outputs; ++j){
-        //         printf("%f ", output[j]);
-        //     }
-        //     printf("\n\n\n\n");
-        // }
     }
 }
 

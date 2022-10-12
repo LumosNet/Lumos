@@ -1,17 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "cpu.h"
-#include "graph.h"
-#include "layer.h"
-#include "im2col_layer.h"
-#include "connect_layer.h"
-#include "convolutional_layer.h"
-#include "avgpool_layer.h"
-#include "mse_layer.h"
-#include "session.h"
-#include "manager.h"
-#include "dispatch.h"
+#include "lenet.h"
 
 void lenet_label2truth(char **label, float *truth)
 {
@@ -23,8 +10,10 @@ void lenet_process_test_information(char **label, float *truth, float *predict, 
 {
     fprintf(stderr, "Test Data Path: %s\n", data_path);
     fprintf(stderr, "Label:   %s\n", label[0]);
-    fprintf(stderr, "Truth:   %f\n", truth[0]);
-    fprintf(stderr, "Predict: %f\n", predict[0]);
+    fprintf(stderr, "Truth:       Predict:\n");
+    for (int i = 0; i < 10; ++i){
+        printf("%f     %f\n", truth[i], predict[i]);
+    }
     fprintf(stderr, "Loss:    %f\n\n", loss);
 }
 
