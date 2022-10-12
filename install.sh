@@ -57,12 +57,12 @@ cp -r ./lumos-build/lib /usr/local/lumos/lib
 cp -r ./lumos-build/data /usr/local/lumos/data
 cp /usr/local/lumos/bin/lumos /usr/local/bin/lumos
 
-# rm -rf ./lumos-build
-# rm -rf ./lumos-include
-# rm -rf ./lumos-lib
-# rm -rf ./lumos-src
-# rm -rf ./lumos-obj
-# rm -f ./lumos-makefile
+rm -rf ./lumos-build
+rm -rf ./lumos-include
+rm -rf ./lumos-lib
+rm -rf ./lumos-src
+rm -rf ./lumos-obj
+rm -f ./lumos-makefile
 
 exit 0
 __ARCHIVE_BOUNDARY__

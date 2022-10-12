@@ -33,8 +33,10 @@ Ubuntu：
 
 首先您需要相关的编译工具，gcc编译器和make工具是您必须安装的工具
 
+```shell
 $ sudo apt update
 $ sudo apt install build-essential
+```
 
 下载我们的安装包
 
@@ -143,6 +145,40 @@ Loss:    0.017824
 Lumos支持cuda加速（虽然现在还没有^_^），如果您拥有支持cuda的GPU，并且希望使用GPU加速您的算法，那么请提前安装cuda，相关安装方法请参考[cuda文档](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html)
 
 
+### 使用
+通过添加头文件: lumos.h
+```
+"lumos.h"
+```
+来调用我们提供的相关接口，接口详细信息请查看我们的接口描述文件
+编译时请添加如下命令
+链接动态库:
+```shell
+-llumgraph -llumops -llumos
+```
+
+头文件引用路径:
+```shell
+-I/usr/local/lumos/include/
+```
+
+编译时如果出现如下错误:
+```shell
+/usr/bin/ld: /usr/local/lumos/lib/../lib/liblumops.so: undefined reference to `omp_get_thread_num'
+/usr/bin/ld: /usr/local/lumos/lib/../lib/liblumops.so: undefined reference to `omp_get_num_threads'
+/usr/bin/ld: /usr/local/lumos/lib/../lib/liblumops.so: undefined reference to `GOMP_parallel'
+collect2: error: ld returned 1 exit status
+```
+
+请添加如下编译参数:
+```shell
+-fopenmp
+```
+
+通常，正确的编译命令应该如下:
+```shell
+gcc -fopenmp main.c -I/usr/local/lumos/include/ -o main -llumgraph -llumops -llumos
+```
 
 ### 发行版
 **[v0.4-a](https://github.com/LumosNet/Lumos/tree/v0.4-a/)**：我们修复了卷积网络问题，可以保证基础全连接网络和卷积网络运行，并提供了LeNet5网络模型demo
