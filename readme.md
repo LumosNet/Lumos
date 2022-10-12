@@ -40,7 +40,7 @@ $ sudo apt install build-essential
 
 下载我们的安装包
 
-最新安装包为：[lumos-v0.4a.run](https://raw.githubusercontent.com/LumosNet/Lumos-Build/main/lumos-v0.4a.run)
+最新安装包为：[lumos-v0.4a.run](https://github.com/LumosNet/Lumos-Build/raw/main/lumos-v0.4a.run)
 
 如果需要更早版本的安装包，请到[lumos-build](https://github.com/LumosNet/Lumos-Build)下自行查找
 
