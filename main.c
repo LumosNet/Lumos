@@ -34,11 +34,9 @@ void lenet_process_test_information(char **label, float *truth, float *predict, 
 void lenet() {
     Graph *graph = create_graph("Lumos", 9);
     Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 1, "logistic");
-    // Layer *l2 = make_avgpool_layer(2);
-    Layer *l2 = make_convolutional_layer(6, 2, 2, 0, 1, 0, "logistic");
+    Layer *l2 = make_avgpool_layer(2);
     Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, 1, "logistic");
-    // Layer *l4 = make_avgpool_layer(2);
-    Layer *l4 = make_convolutional_layer(16, 2, 2, 0, 1, 0, "logistic");
+    Layer *l4 = make_avgpool_layer(2);
     Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, 1, "logistic");
     Layer *l6 = make_im2col_layer(1);
     Layer *l7 = make_connect_layer(84, 1, "logistic");
@@ -57,7 +55,7 @@ void lenet() {
     Session *sess = create_session();
     bind_graph(sess, graph);
     create_train_scene(sess, 32, 32, 1, 1, 10, lenet_label2truth, "/usr/local/lumos/data/mnist/train.txt", "/usr/local/lumos/data/mnist/train_label.txt");
-    init_train_scene(sess, 500, 16, 16, NULL);
+    init_train_scene(sess, 500, 1, 1, NULL);
     session_train(sess, 0.1, "./lumos.w");
 
     // Session *t_sess = create_session();

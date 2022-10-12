@@ -74,7 +74,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		str_ops.o \
 
 # EXECOBJA=convolutional_layer_test.o
-EXECOBJA=main.o
+EXECOBJA=avgpool_layer_test.o
 
 ifeq ($(TEST), 1)
 OBJ+= utest.o

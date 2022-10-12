@@ -68,6 +68,13 @@ void forward_im2col_layer(Layer l, int num)
         int offset_o = i * l.outputs;
         float *input = l.input + offset_i;
         float *output = l.output + offset_o;
+        if (l.index == 6){
+            printf("\n\n\n\n");
+            for (int j = 0; j < l.inputs; ++j){
+                printf("%f ", input[j]);
+            }
+            printf("\n\n\n\n");
+        }
         memcpy(output, input, l.outputs * sizeof(float));
     }
 }

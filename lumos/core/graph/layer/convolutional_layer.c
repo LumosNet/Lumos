@@ -137,6 +137,13 @@ void forward_convolutional_layer(Layer l, int num)
         int offset_o = i * l.outputs;
         float *input = l.input + offset_i;
         float *output = l.output + offset_o;
+        // if (l.index == 5){
+        //     printf("\n\n\n\n");
+        //     for (int j = 0; j < l.inputs; ++j){
+        //         printf("%f ", input[j]);
+        //     }
+        //     printf("\n\n\n\n");
+        // }
         im2col(input, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, l.workspace);
         gemm(0, 0, l.filters, l.ksize * l.ksize * l.input_c, l.ksize * l.ksize * l.input_c, l.output_h * l.output_w, 1,
              l.kernel_weights, l.workspace, output);
@@ -144,13 +151,14 @@ void forward_convolutional_layer(Layer l, int num)
         {
             add_bias(output, l.bias_weights, l.filters, l.output_h * l.output_w);
         }
-        // if (l.index == 5){
-        //     for (int j = 0; j < l.outputs; ++j){
-        //         printf("%f ", output[j]);
-        //     }
-        //     printf("\n\n\n");
-        // }
         activate_list(output, l.outputs, l.active);
+        if (l.index == 5){
+            printf("\n\n\n\n");
+            for (int j = 0; j < l.outputs; ++j){
+                printf("%f ", output[j]);
+            }
+            printf("\n\n\n\n");
+        }
     }
 }
 
