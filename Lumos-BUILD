@@ -45,7 +45,7 @@ LIBGRAPHOBJ=  	graph.o layer.o mse_layer.o avgpool_layer.o connect_layer.o \
 
 LIBLUMOSOBJ= 	dispatch.o manager.o session.o
 
-EXECOBJ=        lumos.o xor.o
+EXECOBJ=        lumos.o lenet.o mnist.o xor.o
 
 LIBOPSOBJS =    $(addprefix $(OBJDIR), $(LIBOPSOBJ))
 LIBGRAPHOBJS =  $(addprefix $(OBJDIR), $(LIBGRAPHOBJ))

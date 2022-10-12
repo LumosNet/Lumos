@@ -29,17 +29,23 @@ Lumos框架现在只提供了最基本的网络组件，对于一些特定算法
 当前Lumos只支持Ubuntu操作系统
 
 **Ubuntu：**
+Ubuntu：
 
-首先您需要下载我们的安装包
+首先您需要相关的编译工具，gcc编译器和make工具是您必须安装的工具
 
-最新安装包为：[lumos-v0.3a.run](https://raw.githubusercontent.com/LumosNet/Lumos-Build/main/lumos-v0.3a.run)
+$ sudo apt update
+$ sudo apt install build-essential
+
+下载我们的安装包
+
+最新安装包为：[lumos-v0.4a.run](https://raw.githubusercontent.com/LumosNet/Lumos-Build/main/lumos-v0.4a.run)
 
 如果需要更早版本的安装包，请到[lumos-build](https://github.com/LumosNet/Lumos-Build)下自行查找
 
 下载完成安装包后，使用如下命令安装
 
 ```shell
-$ sudo sh lumos-v0.2a.run
+$ sudo sh lumos-v0.4a.run
 ```
 
 添加环境变量，在用户目录下~/.bashrc文件末尾添加如下语句
@@ -67,7 +73,7 @@ lumos --version
 若出现以下版本信息，则您已经安装好了lumos
 
 ```shell
-Lumos version: v0.2-a
+Lumos version: v0.4-a
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ```
@@ -139,6 +145,8 @@ Lumos支持cuda加速（虽然现在还没有^_^），如果您拥有支持cuda�
 
 
 ### 发行版
+**[v0.4-a](https://github.com/LumosNet/Lumos/tree/v0.4-a/)**：我们修复了卷积网络问题，可以保证基础全连接网络和卷积网络运行，并提供了LeNet5网络模型demo
+
 **[v0.3-a](https://github.com/LumosNet/Lumos/tree/v0.3-a/)**：我们修复了梯度不收敛问题，可以保证全连接网络正确运行
 
 **[v0.2-a](https://github.com/LumosNet/Lumos/tree/v0.2-a/)**：我们对lumos代码进行了全面重构，我们将在这个版本进行全面测试，我们已经提供了安装包，您可以参照上述安装步骤进行安装。我们不再建议您直接使用源码，虽然也可以。当前版本并非正式发行版本，如果您依然愿意使用，我们将非常感激，如果遇到任何问题，请通过邮件知会我们，我们将及时处理

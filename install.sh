@@ -7,7 +7,6 @@ INCLUDEDIR=$CDIR/lumos-include
 LIBDIR=$CDIR/lumos-lib
 SRCDIR=$CDIR/lumos-src
 INSTALLDIR=/usr/local/lumos
-WORKSPACE=/home/lumos
 
 if [ -d "$BUILDDIR" ]; then
     rm -rf "$BUILDDIR"
@@ -27,10 +26,6 @@ fi
 
 if [ -d "$INSTALLDIR" ]; then
     rm -rf "$INSTALLDIR"
-fi
-
-if [ -d "$WORKSPACE" ]; then
-    rm -rf "$WORKSPACE"
 fi
 
 ARCHIVE=`awk '/^__ARCHIVE_BOUNDARY__/ { print NR + 1; exit 0; }' $0`
@@ -57,19 +52,17 @@ mv ./lumos-include/lumos.h ./lumos-build/include/lumos.h
 
 mkdir /usr/local/lumos
 cp -r ./lumos-build/bin /usr/local/lumos/bin
-cp -r ./lumos-src/lumos/demos /usr/local/lumos/bin/demos
 cp -r ./lumos-build/include /usr/local/lumos/include
 cp -r ./lumos-build/lib /usr/local/lumos/lib
+cp -r ./lumos-build/data /usr/local/lumos/data
 cp /usr/local/lumos/bin/lumos /usr/local/bin/lumos
 
-rm -rf ./lumos-build
-rm -rf ./lumos-include
-rm -rf ./lumos-lib
-rm -rf ./lumos-src
-rm -rf ./lumos-obj
-rm -f ./lumos-makefile
-
-mkdir $WORKSPACE
+# rm -rf ./lumos-build
+# rm -rf ./lumos-include
+# rm -rf ./lumos-lib
+# rm -rf ./lumos-src
+# rm -rf ./lumos-obj
+# rm -f ./lumos-makefile
 
 exit 0
 __ARCHIVE_BOUNDARY__
