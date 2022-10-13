@@ -99,6 +99,10 @@ void set_graph_memory(Session *sess)
         l->output = sess->output + offset_o;
         l->delta = sess->layer_delta + delta_offset;
         l->workspace = sess->workspace;
+        if (l->type == MAXPOOL)
+        {
+            l->maxpool_index = sess->maxpool_index + offset_o;
+        }
         offset_o += l->outputs * sess->subdivision;
         delta_offset += l->deltas * sess->subdivision;
     }
