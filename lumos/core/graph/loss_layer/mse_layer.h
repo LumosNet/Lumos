@@ -18,6 +18,8 @@ void init_mse_layer(Layer *l, int w, int h, int c);
 void forward_mse_layer(Layer l, int num);
 void backward_mse_layer(Layer l, float rate, int num, float *n_delta);
 
+int get_f_calculate_t(Layer l);
+
 #ifdef __cplusplus
 }
 #endif

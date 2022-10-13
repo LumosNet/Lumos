@@ -28,6 +28,9 @@ typedef update Update;
 typedef void (*init_layer_weights) (struct layer*);
 typedef init_layer_weights InitLayerWeights;
 
+typedef int (*get_float_calculate_times) (struct layer*);
+typedef get_float_calculate_times GetFloatCalculateTimes;
+
 struct layer{
     LayerType type;
     int input_h;
@@ -90,6 +93,7 @@ struct layer{
     Update update;
 
     InitLayerWeights init_layer_weights;
+    GetFloatCalculateTimes get_fct;
 };
 
 void restore_layer(Layer *l);

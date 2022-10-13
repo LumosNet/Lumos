@@ -22,6 +22,8 @@ void init_maxpool_layer(Layer *l, int w, int h, int c);
 void forward_maxpool_layer(Layer l, int num);
 void backward_maxpool_layer(Layer l, float rate, int num, float *n_delta);
 
+int get_f_calculate_t(Layer l);
+
 #ifdef __cplusplus
 }
 #endif
