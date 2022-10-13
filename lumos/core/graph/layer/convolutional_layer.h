@@ -18,7 +18,7 @@
 extern "C"{
 #endif
 
-Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalization, char *active);
+Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalization, char *active, char *weights_init);
 Layer *make_convolutional_layer_by_cfg(CFGParams *p);
 
 void init_convolutional_layer(Layer *l, int w, int h, int c);

@@ -211,6 +211,7 @@ void statistics_memory_occupy_size(Session *sess)
     Graph *graph = sess->graph;
     int outputs = 0;
     int deltas = 0;
+    int weights = 0;
     int max_indexes = 0;
     for (int i = 0; i < graph->layer_num; ++i)
     {
@@ -219,6 +220,8 @@ void statistics_memory_occupy_size(Session *sess)
             max_indexes += l->outputs;
         outputs += l->outputs;
         deltas += l->deltas;
+        weights += l->kernel_weights_size;
+        weights += l->bias_weights_size;
     }
     sess->memory_size += outputs * sess->subdivision * sizeof(float);
     sess->memory_size += deltas * sess->subdivision * sizeof(float);

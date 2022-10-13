@@ -46,6 +46,7 @@ struct layer{
     int label_num;
 
     char *active_str;
+    char *weights_init_type;
 
     float *input;
     float *output;

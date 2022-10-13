@@ -1,9 +1,13 @@
 #include "connect_layer.h"
 
-Layer *make_connect_layer(int output, int bias, char *active)
+Layer *make_connect_layer(int output, int bias, char *active, char *weights_init)
 {
     Layer *l = malloc(sizeof(Layer));
     l->type = CONNECT;
+    l->weights_init_type = "guass";
+    if (weights_init){
+        l->weights_init_type = weights_init;
+    }
     l->filters = 1;
     l->weights = 1;
 
@@ -50,7 +54,7 @@ Layer *make_connect_layer_by_cfg(CFGParams *p)
         param = param->next;
     }
 
-    Layer *l = make_connect_layer(output, bias, active);
+    Layer *l = make_connect_layer(output, bias, active, NULL);
     return l;
 }
 
@@ -82,7 +86,9 @@ void init_connect_layer(Layer *l, int w, int h, int c)
 
 void init_connect_weights(Layer *l)
 {
-    guass_list(0, 1, l->index*2, l->kernel_weights_size, l->kernel_weights);
+    if (0 == strcmp(l->weights_init_type, "guass")){
+        guass_list(0, 1, l->index*2, l->kernel_weights_size, l->kernel_weights);
+    }
     if (l->bias){
         for (int i = 0; i < l->output_h; ++i){
             l->bias_weights[i] = 0.01;

@@ -1,9 +1,13 @@
 #include "convolutional_layer.h"
 
-Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalization, char *active)
+Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalization, char *active, char *weights_init)
 {
     Layer *l = malloc(sizeof(Layer));
     l->type = CONVOLUTIONAL;
+    l->weights_init_type = "guass";
+    if (weights_init){
+        l->weights_init_type = weights_init;
+    }
     l->weights = 1;
 
     l->filters = filters;
@@ -78,7 +82,7 @@ Layer *make_convolutional_layer_by_cfg(CFGParams *p)
         param = param->next;
     }
 
-    Layer *l = make_convolutional_layer(filters, ksize, stride, pad, bias, normalization, active);
+    Layer *l = make_convolutional_layer(filters, ksize, stride, pad, bias, normalization, active, NULL);
     return l;
 }
 
@@ -111,16 +115,19 @@ void init_convolutional_weights(Layer *l)
 {
     int offset = 0;
     float *kernel_weights = l->kernel_weights;
-    for (int i = 0; i < l->filters; ++i)
+    if (0 == strcmp(l->weights_init_type, "guass"))
     {
-        guass_list(0, 1, l->index*2*(i+1), l->ksize * l->ksize, kernel_weights);
-        offset += l->ksize * l->ksize;
-        for (int j = 0; j < l->input_c - 1; ++j){
-            memcpy(kernel_weights + offset, kernel_weights, l->ksize * l->ksize * sizeof(float));
+        for (int i = 0; i < l->filters; ++i)
+        {
+            guass_list(0, 1, l->index*2*(i+1), l->ksize * l->ksize, kernel_weights);
             offset += l->ksize * l->ksize;
+            for (int j = 0; j < l->input_c - 1; ++j){
+                memcpy(kernel_weights + offset, kernel_weights, l->ksize * l->ksize * sizeof(float));
+                offset += l->ksize * l->ksize;
+            }
+            kernel_weights += offset;
+            offset = 0;
         }
-        kernel_weights += offset;
-        offset = 0;
     }
     if (l->bias){
         for (int i = 0; i < l->bias_weights_size; ++i){
