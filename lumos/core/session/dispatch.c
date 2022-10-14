@@ -78,22 +78,6 @@ void backward_session(Session *sess)
     }
 }
 
-// void update_session(Session *sess)
-// {
-//     Graph *graph = sess->graph;
-//     Layer **layers = graph->layers;
-//     Layer *l;
-//     float rate = -sess->learning_rate / (float)sess->batch;
-//     float *delta = NULL;
-//     for (int i = graph->layer_num-1; i >= 0; --i){
-//         l = layers[i];
-//         if (l->update){
-//             l->update(*l, rate, sess->subdivision, delta);
-//         }
-//         delta = l->delta;
-//     }
-// }
-
 void create_train_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file)
 {
     set_input_dimension(sess, h, w, c);
