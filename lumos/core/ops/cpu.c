@@ -16,7 +16,7 @@ void multy_cpu(float *data, int len, float x, int offset)
     }
 }
 
-void add_cpu(float *data, int len, float x, int offset)
+void add(float *data, int len, float x, int offset)
 {
     for (int i = 0; i < len; i += offset)
     {
@@ -62,21 +62,7 @@ float mean_cpu(float *data, int num)
     return sum / (float)num;
 }
 
-void one_hot_encoding(int n, int label, float *space)
-{
-    if (n == 1)
-        space[0] = (float)label;
-    else
-    {
-        for (int i = 0; i < n; ++i)
-        {
-            space[i] = (float)0;
-        }
-        space[label] = (float)1;
-    }
-}
-
-void add(float *data_a, float *data_b, int num, float *space)
+void add_cpu(float *data_a, float *data_b, int num, float *space)
 {
     for (int i = 0; i < num; ++i)
     {
@@ -84,7 +70,7 @@ void add(float *data_a, float *data_b, int num, float *space)
     }
 }
 
-void subtract(float *data_a, float *data_b, int num, float *space)
+void subtract_cpu(float *data_a, float *data_b, int num, float *space)
 {
     for (int i = 0; i < num; ++i)
     {
@@ -92,7 +78,7 @@ void subtract(float *data_a, float *data_b, int num, float *space)
     }
 }
 
-void multiply(float *data_a, float *data_b, int num, float *space)
+void multiply_cpu(float *data_a, float *data_b, int num, float *space)
 {
     for (int i = 0; i < num; ++i)
     {
@@ -100,7 +86,7 @@ void multiply(float *data_a, float *data_b, int num, float *space)
     }
 }
 
-void divide(float *data_a, float *data_b, int num, float *space)
+void divide_cpu(float *data_a, float *data_b, int num, float *space)
 {
     for (int i = 0; i < num; ++i)
     {
@@ -108,7 +94,7 @@ void divide(float *data_a, float *data_b, int num, float *space)
     }
 }
 
-void saxpy(float *data_a, float *data_b, int num, float x, float *space)
+void saxpy_cpu(float *data_a, float *data_b, int num, float x, float *space)
 {
     for (int i = 0; i < num; ++i)
     {

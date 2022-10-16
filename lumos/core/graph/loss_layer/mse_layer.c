@@ -63,7 +63,7 @@ void forward_mse_layer(Layer l, int num)
         float *input = l.input+offset_i;
         float *output = l.output+offset_o;
         float *truth = l.truth+offset_t;
-        subtract(truth, input, l.inputs, l.workspace);
+        subtract_cpu(truth, input, l.inputs, l.workspace);
         gemm(1, 0, l.input_h, l.input_w, l.input_h, l.input_w, 1, \
             l.workspace, l.workspace, output);
         multy_cpu(output, l.outputs, 1/(float)l.group, 1);
@@ -80,7 +80,7 @@ void backward_mse_layer(Layer l, float rate, int num, float *n_delta)
         float *input = l.input+offset_i;
         float *delta_l = l.delta+offset_i;
         float *truth = l.truth+offset_t;
-        subtract(input, truth, l.inputs, delta_l);
+        subtract_cpu(input, truth, l.inputs, delta_l);
         multy_cpu(delta_l, l.inputs, (float)2/l.group, 1);
     }
 }

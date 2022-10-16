@@ -150,10 +150,10 @@ void add_bias(float *origin, float *bias, int n, int size)
 | mean_cpu         | 计算数组数据的均值                                   |
 | one_hot_encoding | 独热编码                                             |
 | add              | 两个数组对应元素相加                                 |
-| subtract         | 两个数组对应元素相减                                 |
-| multiply         | 两个数组对应元素相乘                                 |
-| divide           | 两个数组对应元素相除                                 |
-| saxpy            | 一个数组各元素乘一个相同值再与另一个数组元素对应相加 |
+| subtract_cpu         | 两个数组对应元素相减                                 |
+| multiply_cpu         | 两个数组对应元素相乘                                 |
+| divide_cpu           | 两个数组对应元素相除                                 |
+| saxpy_cpu            | 一个数组各元素乘一个相同值再与另一个数组元素对应相加 |
 
 
 

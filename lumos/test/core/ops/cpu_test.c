@@ -189,7 +189,7 @@ void test_one_hot_encoding()
     test_res(0, "");
 }
 
-void test_add()
+void test_add_cpu()
 {
     test_run("test_add");
     float *a = calloc(10, sizeof(float));
@@ -200,7 +200,7 @@ void test_add()
         a[i] = i;
         b[i] = i;
     }
-    add(a, b, 10, res);
+    add_cpu(a, b, 10, res);
     for (int i = 0; i < 10; ++i){
         if (fabs(res[i]-i-i) > 1e-6) flag = 0;
     }
@@ -212,7 +212,7 @@ void test_add()
         a[i] = i;
         b[i] = -i;
     }
-    add(a, b, 10, res);
+    add_cpu(a, b, 10, res);
     for (int i = 0; i < 10; ++i){
         if (fabs(res[i]) > 1e-6) flag = 0;
     }
@@ -223,9 +223,9 @@ void test_add()
     test_res(1, "");
 }
 
-void test_subtract()
+void test_subtract_cpu()
 {
-    test_run("test_subtract");
+    test_run("test_subtract_cpu");
     float *a = calloc(10, sizeof(float));
     float *b = calloc(10, sizeof(float));
     float *res = calloc(10, sizeof(float));
@@ -234,7 +234,7 @@ void test_subtract()
         a[i] = i;
         b[i] = i;
     }
-    subtract(a, b, 10, res);
+    subtract_cpu(a, b, 10, res);
     for (int i = 0; i < 10; ++i){
         if (fabs(res[i]) > 1e-6) flag = 0;
     }
@@ -245,9 +245,9 @@ void test_subtract()
     test_res(1, "");
 }
 
-void test_multiply()
+void test_multiply_cpu()
 {
-    test_run("test_multiply");
+    test_run("test_multiply_cpu");
     float *a = calloc(10, sizeof(float));
     float *b = calloc(10, sizeof(float));
     float *res = calloc(10, sizeof(float));
@@ -256,7 +256,7 @@ void test_multiply()
         a[i] = i;
         b[i] = i;
     }
-    multiply(a, b, 10, res);
+    multiply_cpu(a, b, 10, res);
     for (int i = 0; i < 10; ++i){
         if (fabs(res[i]-i*i) > 1e-6) flag = 0;
     }
@@ -267,9 +267,9 @@ void test_multiply()
     test_res(1, "");
 }
 
-void test_divide()
+void test_divide_cpu()
 {
-    test_run("test_divide");
+    test_run("test_divide_cpu");
     float *a = calloc(10, sizeof(float));
     float *b = calloc(10, sizeof(float));
     float *res = calloc(10, sizeof(float));
@@ -278,7 +278,7 @@ void test_divide()
         a[i] = i;
         b[i] = i;
     }
-    divide(a, b, 10, res);
+    divide_cpu(a, b, 10, res);
     for (int i = 0; i < 10; ++i){
         if (fabs(res[i]-1) > 1e-6) flag = 0;
     }
@@ -289,9 +289,9 @@ void test_divide()
     test_res(1, "");
 }
 
-void test_saxpy()
+void test_saxpy_cpu()
 {
-    test_run("test_saxpy");
+    test_run("test_saxpy_cpu");
     float *a = calloc(10, sizeof(float));
     float *b = calloc(10, sizeof(float));
     float *res = calloc(10, sizeof(float));
@@ -300,7 +300,7 @@ void test_saxpy()
         a[i] = i;
         b[i] = i;
     }
-    saxpy(a, b, 10, -2, res);
+    saxpy_cpu(a, b, 10, -2, res);
     for (int i = 0; i < 10; ++i){
         if (fabs(res[i]+i) > 1e-6) flag = 0;
     }
@@ -325,9 +325,9 @@ int main()
     test_sum_cpu();
     test_mean_cpu();
     test_one_hot_encoding();
-    test_add();
-    test_subtract();
-    test_multiply();
-    test_divide();
-    test_saxpy();
+    test_add_cpu();
+    test_subtract_cpu();
+    test_multiply_cpu();
+    test_divide_cpu();
+    test_saxpy_cpu();
 }

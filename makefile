@@ -1,5 +1,5 @@
 LINUX=1
-GPU=0
+GPU=1
 DEBUG=0
 TEST=1
 AST=0
@@ -12,6 +12,7 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
 # 源代码所在目录（包括所有子目录）
 VPATH=./lumos/: \
 	  ./lumos/core/: \
+	  ./lumos/core/cu/: \
 	  ./lumos/core/cu_ops/: \
 	  ./lumos/core/graph/: \
 	  ./lumos/core/graph/layer/: \
@@ -29,7 +30,9 @@ VPATH=./lumos/: \
 	  ./lumos/test/core/ops \
 	  ./lumos/test/core/graph \
 
-COMMON=-Ilumos/core/graph \
+COMMON=-Ilumos/core/cu \
+	   -Ilumos/core/cu_ops \
+	   -Ilumos/core/graph \
 	   -Ilumos/core/graph/layer \
 	   -Ilumos/core/graph/loss_layer \
 	   -Ilumos/core/ops \
@@ -48,8 +51,8 @@ CPP=g++
 NVCC=nvcc
 
 LDFLAGS= -lm -pthread
-COMMON+= -Iscripts -std=c99 -fopenmp
-CFLAGS=-Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
+COMMON+= -Iscripts
+CFLAGS=-fopenmp -Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 
 ifeq ($(GPU), 1)
 COMMON+= -DGPU -I/usr/local/cuda/include/
@@ -65,15 +68,16 @@ ifeq ($(TEST), 1)
 COMMON+= -Itest
 endif
 
-OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
+OBJ=	cpu_gpu.o \
+		avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
 		mse_layer.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o random.o \
 		session.o manager.o dispatch.o \
 		progress_bar.o \
 		binary_f.o cfg_f.o text_f.o \
 		str_ops.o \
+		kli.o \
 
-# EXECOBJA=convolutional_layer_test.o
 EXECOBJA=main.o
 
 ifeq ($(TEST), 1)

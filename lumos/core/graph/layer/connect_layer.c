@@ -124,7 +124,7 @@ void backward_connect_layer(Layer l, float rate, int num, float *n_delta)
         float *delta_l = l.delta + offset_i;
         float *delta_n = n_delta + offset_o;
         gradient_list(output, l.outputs, l.gradient);
-        multiply(delta_n, output, l.outputs, delta_n);
+        multiply_cpu(delta_n, output, l.outputs, delta_n);
         gemm(1, 0, l.output_h, l.input_h, l.output_h, l.input_w, 1,
              l.kernel_weights, delta_n, delta_l);
     }
@@ -142,10 +142,10 @@ void update_connect_layer(Layer l, float rate, int num, float *n_delta)
         gemm(0, 1, l.output_h, l.output_w,
              l.input_h, l.input_w, 1,
              delta_n, input, l.workspace);
-        saxpy(l.update_kernel_weights, l.workspace, l.output_h * l.input_h, rate, l.update_kernel_weights);
+        saxpy_cpu(l.update_kernel_weights, l.workspace, l.output_h * l.input_h, rate, l.update_kernel_weights);
         if (l.bias)
         {
-            saxpy(l.update_bias_weights, delta_n, l.outputs, rate, l.update_bias_weights);
+            saxpy_cpu(l.update_bias_weights, delta_n, l.outputs, rate, l.update_bias_weights);
         }
     }
 }

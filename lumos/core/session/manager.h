@@ -46,6 +46,10 @@ char **load_test_label(Session *sess, int index);
 void save_weigths(Session *sess, char *path);
 void load_weights(Session *sess, char *path);
 
+// #ifdef GPU
+
+// #endif
+
 #ifdef __cplusplus
 }
 #endif

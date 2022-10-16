@@ -49,7 +49,7 @@ void forward_softmax_layer(Layer l, float *workspace)
 
 void backward_softmax_layer(Layer l, float *n_delta, float *workspace)
 {
-    if (net.delta) saxpy(l.delta, net.delta, net.batch*l.inputs, 1, l.delta);
+    if (net.delta) saxpy_cpu(l.delta, net.delta, net.batch*l.inputs, 1, l.delta);
 }
 
 void softmax_cpu(float *input, int n, int batch, int batch_offset, float *output)

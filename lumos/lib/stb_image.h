@@ -261,7 +261,7 @@ RECENT REVISION HISTORY:
 // you will always just get the native iphone "format" through (which
 // is BGR stored in RGB).
 //
-// Call stbi_set_unpremultiply_on_load(1) as well to force a divide per
+// Call stbi_set_unpremultiply_cpu_on_load(1) as well to force a divide_cpu per
 // pixel to remove any premultiplied alpha *only* if the image file explicitly
 // says there's premultiplied data (currently only happens in iPhone images,
 // and only if iPhone convert-to-rgb processing is on).
@@ -436,8 +436,8 @@ STBIDEF int      stbi_is_16_bit_from_file(FILE *f);
 
 // for image formats that explicitly notate that they have premultiplied alpha,
 // we just return the colors as stored in the file. set this flag to force
-// unpremultiplication. results are undefined if the unpremultiply overflow.
-STBIDEF void stbi_set_unpremultiply_on_load(int flag_true_if_should_unpremultiply);
+// unpremultiplication. results are undefined if the unpremultiply_cpu overflow.
+STBIDEF void stbi_set_unpremultiply_cpu_on_load(int flag_true_if_should_unpremultiply_cpu);
 
 // indicate whether we should process iphone images back to canonical format,
 // or just pass them through "as-is"
@@ -866,7 +866,7 @@ static void *stbi__malloc(size_t size)
 //
 // we do, however, need to make sure our size calculations don't
 // overflow. hence a few helper functions for size calculations that
-// multiply integers together, making sure that they're non-negative
+// multiply_cpu integers together, making sure that they're non-negative
 // and no overflow occurs.
 
 // return 1 if the sum is valid, 0 on overflow.
@@ -4670,12 +4670,12 @@ static int stbi__expand_png_palette(stbi__png *a, stbi_uc *palette, int len, int
    return 1;
 }
 
-static int stbi__unpremultiply_on_load = 0;
+static int stbi__unpremultiply_cpu_on_load = 0;
 static int stbi__de_iphone_flag = 0;
 
-STBIDEF void stbi_set_unpremultiply_on_load(int flag_true_if_should_unpremultiply)
+STBIDEF void stbi_set_unpremultiply_cpu_on_load(int flag_true_if_should_unpremultiply_cpu)
 {
-   stbi__unpremultiply_on_load = flag_true_if_should_unpremultiply;
+   stbi__unpremultiply_cpu_on_load = flag_true_if_should_unpremultiply_cpu;
 }
 
 STBIDEF void stbi_convert_iphone_png_to_rgb(int flag_true_if_should_convert)
@@ -4698,8 +4698,8 @@ static void stbi__de_iphone(stbi__png *z)
       }
    } else {
       STBI_ASSERT(s->img_out_n == 4);
-      if (stbi__unpremultiply_on_load) {
-         // convert bgr to rgb and unpremultiply
+      if (stbi__unpremultiply_cpu_on_load) {
+         // convert bgr to rgb and unpremultiply_cpu
          for (i=0; i < pixel_count; ++i) {
             stbi_uc a = p[3];
             stbi_uc t = p[0];
@@ -7247,7 +7247,7 @@ STBIDEF int stbi_is_16_bit_from_callbacks(stbi_io_callbacks const *c, void *user
       2.16  (2017-07-23) all functions have 16-bit variants;
                          STBI_NO_STDIO works again;
                          compilation fixes;
-                         fix rounding in unpremultiply;
+                         fix rounding in unpremultiply_cpu;
                          optimize vertical flip;
                          disable raw_len validation;
                          documentation fixes

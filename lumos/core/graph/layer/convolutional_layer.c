@@ -165,7 +165,7 @@ void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta)
         float *delta_l = l.delta + offset_i;
         float *delta_n = n_delta + offset_o;
         gradient_list(output, l.outputs, l.gradient);
-        multiply(delta_n, output, l.outputs, delta_n);
+        multiply_cpu(delta_n, output, l.outputs, delta_n);
         gemm(1, 0, l.filters, l.ksize * l.ksize * l.input_c,
              l.filters, l.output_h * l.output_w, 1,
              l.kernel_weights, delta_n, l.workspace);
@@ -186,7 +186,7 @@ void update_convolutional_layer(Layer l, float rate, int num, float *n_delta)
         gemm(0, 1, l.filters, l.output_h * l.output_w,
              l.ksize * l.ksize * l.input_c, l.output_h * l.output_w, 1,
              delta_n, l.workspace, l.workspace + l.ksize * l.ksize * l.input_c * l.output_h * l.output_w);
-        saxpy(l.update_kernel_weights, l.workspace + l.ksize * l.ksize * l.input_c * l.output_h * l.output_w, l.filters * l.ksize * l.ksize * l.input_c, rate, l.update_kernel_weights);
+        saxpy_cpu(l.update_kernel_weights, l.workspace + l.ksize * l.ksize * l.input_c * l.output_h * l.output_w, l.filters * l.ksize * l.ksize * l.input_c, rate, l.update_kernel_weights);
         if (l.bias)
         {
             int offset = l.output_h * l.output_w;
