@@ -11,7 +11,7 @@ extern "C"{
 // offset=1 为正常偏移
 void fill_cpu(float *data, int len, float x, int offset);
 void multy_cpu(float *data, int len, float x, int offset);
-void add(float *data, int len, float x, int offset);
+void add_cpu(float *data, int len, float x, int offset);
 
 float min_cpu(float *data, int num);
 float max_cpu(float *data, int num);

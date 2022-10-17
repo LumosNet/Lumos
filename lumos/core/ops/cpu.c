@@ -16,7 +16,7 @@ void multy_cpu(float *data, int len, float x, int offset)
     }
 }
 
-void add(float *data, int len, float x, int offset)
+void add_cpu(float *data, int len, float x, int offset)
 {
     for (int i = 0; i < len; i += offset)
     {
