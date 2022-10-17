@@ -18,10 +18,10 @@ float max_cpu(float *data, int num);
 float sum_cpu(float *data, int num);
 float mean_cpu(float *data, int num);
 
-void add_cpu(float *data_a, float *data_b, int num, float *space);
-void subtract_cpu(float *data_a, float *data_b, int num, float *space);
-void multiply_cpu(float *data_a, float *data_b, int num, float *space);
-void divide_cpu(float *data_a, float *data_b, int num, float *space);
+void matrix_add_cpu(float *data_a, float *data_b, int num, float *space);
+void matrix_subtract_cpu(float *data_a, float *data_b, int num, float *space);
+void matrix_multiply_cpu(float *data_a, float *data_b, int num, float *space);
+void matrix_divide_cpu(float *data_a, float *data_b, int num, float *space);
 
 void saxpy_cpu(float *data_a, float *data_b, int num, float x, float *space);
 

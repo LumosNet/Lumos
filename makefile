@@ -75,8 +75,7 @@ OBJ=	cpu_gpu.o \
 		session.o manager.o dispatch.o \
 		progress_bar.o \
 		binary_f.o cfg_f.o text_f.o \
-		str_ops.o \
-		kli.o \
+		str_ops.o
 
 EXECOBJA=main.o
 

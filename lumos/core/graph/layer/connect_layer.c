@@ -124,7 +124,7 @@ void backward_connect_layer(Layer l, float rate, int num, float *n_delta)
         float *delta_l = l.delta + offset_i;
         float *delta_n = n_delta + offset_o;
         gradient_list(output, l.outputs, l.gradient);
-        multiply_cpu(delta_n, output, l.outputs, delta_n);
+        matrix_multiply_cpu(delta_n, output, l.outputs, delta_n);
         gemm(1, 0, l.output_h, l.input_h, l.output_h, l.input_w, 1,
              l.kernel_weights, delta_n, delta_l);
     }

@@ -143,16 +143,16 @@ void add_bias(float *origin, float *bias, int n, int size)
 | ---------------- | ---------------------------------------------------- |
 | fill_cpu         | 向数组中填充指定数据                                 |
 | multy_cpu        | 对数组中每一个元素乘一个相同值                       |
-| add_cpu          | 对数组中每一个元素加一个相同值                       |
+| matrix_add_cpu          | 对数组中每一个元素加一个相同值                       |
 | min_cpu          | 获取数组中的最小值                                   |
 | max_cpu          | 获取数组中的最大值                                   |
 | sum_cpu          | 计算数组数据的累加值                                 |
 | mean_cpu         | 计算数组数据的均值                                   |
 | one_hot_encoding | 独热编码                                             |
 | add              | 两个数组对应元素相加                                 |
-| subtract_cpu         | 两个数组对应元素相减                                 |
-| multiply_cpu         | 两个数组对应元素相乘                                 |
-| divide_cpu           | 两个数组对应元素相除                                 |
+| matrix_subtract_cpu         | 两个数组对应元素相减                                 |
+| matrix_multiply_cpu         | 两个数组对应元素相乘                                 |
+| matrix_divide_cpu           | 两个数组对应元素相除                                 |
 | saxpy_cpu            | 一个数组各元素乘一个相同值再与另一个数组元素对应相加 |
 
 

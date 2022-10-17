@@ -77,11 +77,11 @@ void test_multy_cpu_offset()
     test_res(0, "");
 }
 
-void test_add_cpu()
+void test_matrix_add_cpu()
 {
-    test_run("test_add_cpu");
+    test_run("test_matrix_add_cpu");
     float *data = calloc(10, sizeof(float));
-    add_cpu(data, 10, 2, 1);
+    matrix_add_cpu(data, 10, 2, 1);
     for (int i = 0; i < 10; ++i){
         if (data[i] != 2){
             test_res(1, "");
@@ -91,11 +91,11 @@ void test_add_cpu()
     test_res(0, "");
 }
 
-void test_add_cpu_offset()
+void test_matrix_add_cpu_offset()
 {
-    test_run("test_add_cpu_offset");
+    test_run("test_matrix_add_cpu_offset");
     float *data = calloc(10, sizeof(float));
-    add_cpu(data, 10, 2, 2);
+    matrix_add_cpu(data, 10, 2, 2);
     for (int i = 0; i < 10; i+=2){
         if (data[i] != 2){
             test_res(1, "");
@@ -189,7 +189,7 @@ void test_one_hot_encoding()
     test_res(0, "");
 }
 
-void test_add_cpu()
+void test_matrix_add_cpu()
 {
     test_run("test_add");
     float *a = calloc(10, sizeof(float));
@@ -200,7 +200,7 @@ void test_add_cpu()
         a[i] = i;
         b[i] = i;
     }
-    add_cpu(a, b, 10, res);
+    matrix_add_cpu(a, b, 10, res);
     for (int i = 0; i < 10; ++i){
         if (fabs(res[i]-i-i) > 1e-6) flag = 0;
     }
@@ -212,7 +212,7 @@ void test_add_cpu()
         a[i] = i;
         b[i] = -i;
     }
-    add_cpu(a, b, 10, res);
+    matrix_add_cpu(a, b, 10, res);
     for (int i = 0; i < 10; ++i){
         if (fabs(res[i]) > 1e-6) flag = 0;
     }
@@ -223,9 +223,9 @@ void test_add_cpu()
     test_res(1, "");
 }
 
-void test_subtract_cpu()
+void test_matrix_subtract_cpu()
 {
-    test_run("test_subtract_cpu");
+    test_run("test_matrix_subtract_cpu");
     float *a = calloc(10, sizeof(float));
     float *b = calloc(10, sizeof(float));
     float *res = calloc(10, sizeof(float));
@@ -234,7 +234,7 @@ void test_subtract_cpu()
         a[i] = i;
         b[i] = i;
     }
-    subtract_cpu(a, b, 10, res);
+    matrix_subtract_cpu(a, b, 10, res);
     for (int i = 0; i < 10; ++i){
         if (fabs(res[i]) > 1e-6) flag = 0;
     }
@@ -245,9 +245,9 @@ void test_subtract_cpu()
     test_res(1, "");
 }
 
-void test_multiply_cpu()
+void test_matrix_multiply_cpu()
 {
-    test_run("test_multiply_cpu");
+    test_run("test_matrix_multiply_cpu");
     float *a = calloc(10, sizeof(float));
     float *b = calloc(10, sizeof(float));
     float *res = calloc(10, sizeof(float));
@@ -256,7 +256,7 @@ void test_multiply_cpu()
         a[i] = i;
         b[i] = i;
     }
-    multiply_cpu(a, b, 10, res);
+    matrix_multiply_cpu(a, b, 10, res);
     for (int i = 0; i < 10; ++i){
         if (fabs(res[i]-i*i) > 1e-6) flag = 0;
     }
@@ -267,9 +267,9 @@ void test_multiply_cpu()
     test_res(1, "");
 }
 
-void test_divide_cpu()
+void test_matrix_divide_cpu()
 {
-    test_run("test_divide_cpu");
+    test_run("test_matrix_divide_cpu");
     float *a = calloc(10, sizeof(float));
     float *b = calloc(10, sizeof(float));
     float *res = calloc(10, sizeof(float));
@@ -278,7 +278,7 @@ void test_divide_cpu()
         a[i] = i;
         b[i] = i;
     }
-    divide_cpu(a, b, 10, res);
+    matrix_divide_cpu(a, b, 10, res);
     for (int i = 0; i < 10; ++i){
         if (fabs(res[i]-1) > 1e-6) flag = 0;
     }
@@ -318,16 +318,16 @@ int main()
     test_fill_cpu_offset();
     test_multy_cpu();
     test_multy_cpu_offset();
-    test_add_cpu();
-    test_add_cpu_offset();
+    test_matrix_add_cpu();
+    test_matrix_add_cpu_offset();
     test_min_cpu();
     test_max_cpu();
     test_sum_cpu();
     test_mean_cpu();
     test_one_hot_encoding();
-    test_add_cpu();
-    test_subtract_cpu();
-    test_multiply_cpu();
-    test_divide_cpu();
+    test_matrix_add_cpu();
+    test_matrix_subtract_cpu();
+    test_matrix_multiply_cpu();
+    test_matrix_divide_cpu();
     test_saxpy_cpu();
 }

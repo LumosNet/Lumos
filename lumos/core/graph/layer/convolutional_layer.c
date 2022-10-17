@@ -165,7 +165,7 @@ void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta)
         float *delta_l = l.delta + offset_i;
         float *delta_n = n_delta + offset_o;
         gradient_list(output, l.outputs, l.gradient);
-        multiply_cpu(delta_n, output, l.outputs, delta_n);
+        matrix_multiply_cpu(delta_n, output, l.outputs, delta_n);
         gemm(1, 0, l.filters, l.ksize * l.ksize * l.input_c,
              l.filters, l.output_h * l.output_w, 1,
              l.kernel_weights, delta_n, l.workspace);
