@@ -26,8 +26,6 @@ void init_connect_weights(Layer *l);
 void forward_connect_layer(Layer l, int num);
 void backward_connect_layer(Layer l, float rate, int num, float *n_delta);
 
-int get_f_calculate_t(Layer l);
-
 void update_connect_layer(Layer l, float rate, int num, float *n_delta);
 
 #ifdef __cplusplus
