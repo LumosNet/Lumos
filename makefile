@@ -68,7 +68,7 @@ ifeq ($(TEST), 1)
 COMMON+= -Itest
 endif
 
-OBJ=	cpu_gpu.o \
+OBJ=	cpu_gpu.o active_gpu.o\
 		avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
 		mse_layer.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o random.o \

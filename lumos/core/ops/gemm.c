@@ -27,7 +27,7 @@ void gemm(int TA, int TB, int AM, int AN, int BM, int BN, float ALPHA,
 
 void gemm_nn(int AM, int AN, int BM, int BN, float ALPHA, float *A, float *B, float *C)
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < AM; ++i)
     {
         for (int j = 0; j < AN; ++j)
@@ -43,7 +43,7 @@ void gemm_nn(int AM, int AN, int BM, int BN, float ALPHA, float *A, float *B, fl
 
 void gemm_tn(int AM, int AN, int BM, int BN, float ALPHA, float *A, float *B, float *C)
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < AN; ++i)
     {
         for (int j = 0; j < AM; ++j)
@@ -59,7 +59,7 @@ void gemm_tn(int AM, int AN, int BM, int BN, float ALPHA, float *A, float *B, fl
 
 void gemm_nt(int AM, int AN, int BM, int BN, float ALPHA, float *A, float *B, float *C)
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < AM; ++i)
     {
         for (int j = 0; j < AN; ++j)
@@ -75,7 +75,7 @@ void gemm_nt(int AM, int AN, int BM, int BN, float ALPHA, float *A, float *B, fl
 
 void gemm_tt(int AM, int AN, int BM, int BN, float ALPHA, float *A, float *B, float *C)
 {
-#pragma omp parallel for
+    #pragma omp parallel for
     for (int i = 0; i < AN; ++i)
     {
         for (int j = 0; j < AM; ++j)
