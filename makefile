@@ -12,8 +12,6 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
 # 源代码所在目录（包括所有子目录）
 VPATH=./lumos/: \
 	  ./lumos/core/: \
-	  ./lumos/core/cu/: \
-	  ./lumos/core/cu_ops/: \
 	  ./lumos/core/graph/: \
 	  ./lumos/core/graph/layer/: \
 	  ./lumos/core/graph/loss_layer/: \
@@ -25,14 +23,16 @@ VPATH=./lumos/: \
       ./lumos/utils/str/: \
 	  ./lumos/utils/test/: \
       ./ \
+	  ./lumos_cu/: \
+	  ./lumos_cu/core/: \
+	  ./lumos_cu/core/graph_cu/: \
+	  ./lumos_cu/core/ops_cu/: \
 	  ./lumos/test \
 	  ./lumos/test/core \
 	  ./lumos/test/core/ops \
 	  ./lumos/test/core/graph \
 
-COMMON=-Ilumos/core/cu \
-	   -Ilumos/core/cu_ops \
-	   -Ilumos/core/graph \
+COMMON=-Ilumos/core/graph \
 	   -Ilumos/core/graph/layer \
 	   -Ilumos/core/graph/loss_layer \
 	   -Ilumos/core/ops \
@@ -42,6 +42,10 @@ COMMON=-Ilumos/core/cu \
 	   -Ilumos/utils/str \
 	   -Ilumos/utils/test \
 	   -Ilumos/lib \
+	   -Ilumos_cu \
+	   -Ilumos_cu/core \
+	   -Ilumos_cu/core/graph_cu \
+	   -Ilumos_cu/core/ops_cu \
 
 EXEC=main.exe
 OBJDIR=./obj/
@@ -56,7 +60,7 @@ CFLAGS=-fopenmp -Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 
 ifeq ($(GPU), 1)
 COMMON+= -DGPU -I/usr/local/cuda/include/
-CFLAGS+= -DGPU
+CFLAGS+= -DGPU -Wno-deprecated-gpu-targets
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 endif
 

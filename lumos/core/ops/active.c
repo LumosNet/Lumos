@@ -101,18 +101,86 @@ Gradient load_gradient(Activation TYPE)
     return func;
 }
 
-void activate_list(float *origin, int num, Activate a)
+float activate_x(Activation TYPE, float x)
+{
+    float res = 0;
+    if (TYPE == STAIR)
+        res = stair_activate(x);
+    else if (TYPE == HARDTAN)
+        res = hardtan_activate(x);
+    else if (TYPE == LINEAR)
+        res = linear_activate(x);
+    else if (TYPE == LOGISTIC)
+        res = logistic_activate(x);
+    else if (TYPE == LOGGY)
+        res = loggy_activate(x);
+    else if (TYPE == RELU)
+        res = relu_activate(x);
+    else if (TYPE == ELU)
+        res = elu_activate(x);
+    else if (TYPE == SELU)
+        res = selu_activate(x);
+    else if (TYPE == RELIE)
+        res = relie_activate(x);
+    else if (TYPE == RAMP)
+        res = ramp_activate(x);
+    else if (TYPE == LEAKY)
+        res = leaky_activate(x);
+    else if (TYPE == TANH)
+        res = tanh_activate(x);
+    else if (TYPE == PLSE)
+        res = plse_activate(x);
+    else if (TYPE == LHTAN)
+        res = lhtan_activate(x);
+    return res;
+}
+
+void activate_list(float *origin, int num, Activation TYPE)
 {
     for (int i = 0; i < num; ++i)
     {
-        origin[i] = a(origin[i]);
+        origin[i] = activate_x(TYPE, origin[i]);
     }
 }
 
-void gradient_list(float *origin, int num, Gradient g)
+float gradient_x(Activation TYPE, float x)
+{
+    float res = 0;
+    if (TYPE == STAIR)
+        res = stair_gradient(x);
+    else if (TYPE == HARDTAN)
+        res = hardtan_gradient(x);
+    else if (TYPE == LINEAR)
+        res = linear_gradient(x);
+    else if (TYPE == LOGISTIC)
+        res = logistic_gradient(x);
+    else if (TYPE == LOGGY)
+        res = loggy_gradient(x);
+    else if (TYPE == RELU)
+        res = relu_gradient(x);
+    else if (TYPE == ELU)
+        res = elu_gradient(x);
+    else if (TYPE == SELU)
+        res = selu_gradient(x);
+    else if (TYPE == RELIE)
+        res = relie_gradient(x);
+    else if (TYPE == RAMP)
+        res = ramp_gradient(x);
+    else if (TYPE == LEAKY)
+        res = leaky_gradient(x);
+    else if (TYPE == TANH)
+        res = tanh_gradient(x);
+    else if (TYPE == PLSE)
+        res = plse_gradient(x);
+    else if (TYPE == LHTAN)
+        res = lhtan_gradient(x);
+    return res;
+}
+
+void gradient_list(float *origin, int num, Activation TYPE)
 {
     for (int i = 0; i < num; ++i)
     {
-        origin[i] = g(origin[i]);
+        origin[i] = gradient_x(TYPE, origin[i]);
     }
 }
