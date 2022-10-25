@@ -191,7 +191,7 @@ void activate_list_gpu(float *origin, int num, Activation TYPE)
 
 __device__ float gradient_x_kernel(Activation TYPE, float x)
 {
-    res = 0;
+    float res = 0;
     if (TYPE == STAIR)
         res = stair_gradient_kernel(x);
     else if (TYPE == HARDTAN)
