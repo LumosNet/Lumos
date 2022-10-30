@@ -17,7 +17,6 @@ void session_test(Session *sess, ProcessTestInformation process_test_information
 
 void forward_session(Session *sess);
 void backward_session(Session *sess);
-void update_session(Session *sess);
 
 void create_train_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file);
 void init_train_scene(Session *sess, int epoch, int batch, int subdivision, char *weights_file);

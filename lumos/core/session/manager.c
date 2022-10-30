@@ -10,6 +10,9 @@ void create_run_memory(Session *sess)
 
 void create_workspace_memory(Session *sess)
 {
+#ifdef GPU
+    cudaMalloc((void**)&sess->workspace_gpu, sess->workspace_size*sizeof(float));
+#endif
     sess->workspace = calloc(sess->workspace_size, sizeof(float));
     fprintf(stderr, "Apply For The Commond Work Space\n");
 }
@@ -17,6 +20,9 @@ void create_workspace_memory(Session *sess)
 void create_input_memory(Session *sess)
 {
     int inputs = sess->subdivision * sess->height * sess->width * sess->channel;
+#ifdef GPU
+    cudaMalloc((void**)&sess->input_gpu, inputs*sizeof(float));
+#endif
     sess->input = calloc(inputs, sizeof(float));
 }
 
@@ -30,6 +36,9 @@ void create_output_memory(Session *sess)
         outputs += l->outputs;
     }
     sess->output = calloc(outputs * sess->subdivision, sizeof(float));
+#ifdef GPU
+    cudaMalloc((void**)&sess->output_gpu, (outputs*sess->subdivision)*sizeof(float));
+#endif
     fprintf(stderr, "Apply For Layers Output Data Space\n");
 }
 
@@ -37,6 +46,10 @@ void create_weights_memory(Session *sess)
 {
     sess->weights = calloc(sess->weights_size, sizeof(float));
     sess->update_weights = calloc(sess->weights_size, sizeof(float));
+#ifdef GPU
+    cudaMalloc((void**)&sess->weights_gpu, sess->weights_size*sizeof(float));
+    cudaMalloc((void**)&sess->update_weights_gpu, sess->weights_size*sizeof(float));
+#endif
     fprintf(stderr, "Apply For Graph Weights Space\n");
 }
 
@@ -50,6 +63,9 @@ void create_delta_memory(Session *sess)
         deltas += l->deltas;
     }
     sess->layer_delta = calloc(deltas * sess->subdivision, sizeof(float));
+#ifdef GPU
+    cudaMalloc((void**)&sess->layer_delta_gpu, (deltas*sess->subdivision)*sizeof(float));
+#endif
     fprintf(stderr, "APPly For Layers Delta Data Space\n");
 }
 
@@ -61,11 +77,17 @@ void create_label_memory(Session *sess)
 void create_loss_memory(Session *sess)
 {
     sess->loss = calloc(1, sizeof(float));
+#ifdef GPU
+    cudaMalloc((void**)&sess->loss_gpu, sizeof(float));
+#endif
 }
 
 void create_truth_memory(Session *sess)
 {
     sess->truth = calloc(sess->truth_num * sess->subdivision, sizeof(float));
+#ifdef GPU
+    cudaMalloc((void**)&sess->truth_gpu, (sess->truth_num*sess->subdivision)*sizeof(float));
+#endif
 }
 
 void create_maxpool_index_memory(Session *sess)
@@ -84,6 +106,9 @@ void create_maxpool_index_memory(Session *sess)
         return;
     }
     sess->maxpool_index = calloc(max_indexes * sess->subdivision, sizeof(float));
+#ifdef GPU
+    cudaMalloc((void**)&sess->maxpool_index_gpu, (max_indexes*sess->subdivision)*sizeof(float));
+#endif
     fprintf(stderr, "APPly For MAX Pool Layers's MAX Pixel Index Space\n");
 }
 
@@ -91,17 +116,32 @@ void set_graph_memory(Session *sess)
 {
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
+    float *output;
+    float *layer_delta;
+    float *workspace;
+    int *maxpool_index;
+#ifdef GPU
+    output = sess->output_gpu;
+    layer_delta = sess->layer_delta_gpu;
+    workspace = sess->workspace_gpu;
+    maxpool_index = sess->maxpool_index_gpu;
+#else
+    output = sess->output;
+    layer_delta = sess->layer_delta;
+    workspace = sess->workspace;
+    maxpool_index = sess->maxpool_index;
+#endif
     int offset_o = 0;
     int delta_offset = 0;
     for (int i = 0; i < graph->layer_num; ++i)
     {
         Layer *l = layers[i];
-        l->output = sess->output + offset_o;
-        l->delta = sess->layer_delta + delta_offset;
-        l->workspace = sess->workspace;
+        l->output = output + offset_o;
+        l->delta = layer_delta + delta_offset;
+        l->workspace = workspace;
         if (l->type == MAXPOOL)
         {
-            l->maxpool_index = sess->maxpool_index + offset_o;
+            l->maxpool_index = maxpool_index + offset_o;
         }
         offset_o += l->outputs * sess->subdivision;
         delta_offset += l->deltas * sess->subdivision;
@@ -113,19 +153,28 @@ void set_graph_weight(Session *sess)
 {
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
+    float *weights;
+    float *update_weights;
+#ifdef GPU
+    weights = sess->weights_gpu;
+    update_weights = sess->update_weights_gpu;
+#else
+    weights = sess->weights;
+    update_weights = sess->update_weights;
+#endif
     int weights_offset = 0;
     for (int i = 0; i < graph->layer_num; ++i)
     {
         Layer *l = layers[i];
         if (l->weights)
         {
-            l->kernel_weights = sess->weights + weights_offset;
-            l->update_kernel_weights = sess->update_weights + weights_offset;
+            l->kernel_weights = weights + weights_offset;
+            l->update_kernel_weights = update_weights + weights_offset;
             weights_offset += l->kernel_weights_size;
             if (l->bias)
             {
-                l->bias_weights = sess->weights + weights_offset;
-                l->update_bias_weights = sess->update_weights + weights_offset;
+                l->bias_weights = weights + weights_offset;
+                l->update_bias_weights = update_weights + weights_offset;
                 weights_offset += l->bias_weights_size;
             }
         }
@@ -149,7 +198,11 @@ void set_loss_memory(Session *sess)
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     Layer *l = layers[graph->layer_num - 1];
+#ifdef GPU
+    l->loss = sess->loss_gpu;
+#else
     l->loss = sess->loss;
+#endif
 }
 
 void set_truth_memory(Session *sess)
@@ -157,7 +210,11 @@ void set_truth_memory(Session *sess)
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     Layer *l = layers[graph->layer_num - 1];
+#ifdef GPU
+    l->truth = sess->truth_gpu;
+#else
     l->truth = sess->truth;
+#endif
 }
 
 void set_maxpool_index_memory(Session *sess)
@@ -166,13 +223,19 @@ void set_maxpool_index_memory(Session *sess)
         return;
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
+    int maxpool_index;
+#ifdef GPU
+    maxpool_index = sess->maxpool_index_gpu;
+#else
+    maxpool_index = sess->maxpool_index;
+#endif
     int index_offset = 0;
     for (int i = 0; i < graph->layer_num; ++i)
     {
         Layer *l = layers[i];
         if (l->type == MAXPOOL)
         {
-            l->maxpool_index = sess->maxpool_index + index_offset;
+            l->maxpool_index = maxpool_index + index_offset;
             index_offset += l->outputs * sess->subdivision;
         }
         else
