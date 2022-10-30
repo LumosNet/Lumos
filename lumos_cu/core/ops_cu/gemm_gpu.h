@@ -19,6 +19,8 @@ extern "C" {
 
 #ifdef GPU
 
+#define GEMM_BLOCK 16
+
 void gemm_gpu(int TA, int TB, int AM, int AN, int BM, int BN, float ALPHA, 
         float *A, float *B, float *C);
 
