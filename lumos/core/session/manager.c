@@ -324,6 +324,9 @@ void init_weights(Session *sess, char *weights_file)
         fprintf(stderr, "\nInit Weights\n");
     }
     memcpy(sess->update_weights, sess->weights, sess->weights_size * sizeof(float));
+#ifdef GPU
+    cudaMemcpy(sess->update_weights, sess->weights, sess->weights_size*sizeof(float), cudaMemcpyDeviceToDevice);
+#endif
 }
 
 void load_train_data(Session *sess, int index, int num)
@@ -336,6 +339,10 @@ void load_train_data(Session *sess, int index, int num)
         char *data_path = sess->train_data_paths[i];
         im = load_image_data(data_path, w, h, c);
         resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input + offset_i);
+#ifdef GPU
+        cudaMemcpy(sess->input_gpu+offset_i, sess->input+offset_i, \
+                  (sess->height*sess->width*sess->channel)*sizeof(float), cudaMemcpyHostToDevice);
+#endif
         offset_i += sess->height * sess->width * sess->channel;
         free(im);
     }
@@ -362,6 +369,10 @@ void load_test_data(Session *sess, int index)
     }
     im = load_image_data(data_path, w, h, c);
     resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input);
+#ifdef GPU
+    cudaMemcpy(sess->input_gpu+offset_i, sess->input+offset_i, \
+              (sess->height*sess->width*sess->channel)*sizeof(float), cudaMemcpyHostToDevice);
+#endif
     free(im);
 }
 
@@ -381,6 +392,9 @@ char **load_test_label(Session *sess, int index)
 void save_weigths(Session *sess, char *path)
 {
     FILE *fp = fopen(path, "wb");
+#ifdef GPU
+    cudaMemcpy(sess->weights, sess->weights_gpu, sess->weights_size*sizeof(float), cudaMemcpyDeviceToHost);
+#endif
     bfput(fp, sess->weights, sess->weights_size);
     fclose(fp);
 }
@@ -389,5 +403,8 @@ void load_weights(Session *sess, char *path)
 {
     FILE *fp = fopen(path, "rb");
     bfget(fp, sess->weights, sess->weights_size);
+#ifdef GPU
+    cudaMemcpy(sess->weights_gpu, sess->weights, sess->weights_size*sizeof(float), cudaMemcpyHostToDevice);
+#endif
     fclose(fp);
 }

@@ -24,7 +24,11 @@ void session_train(Session *sess, float learning_rate, char *weights_path)
                 run_time = (double)(final - start) / CLOCKS_PER_SEC;
                 progress_bar(j * sub_batchs + k + 1, sub_epochs * sub_batchs, run_time, sess->loss[0]);
             }
+#ifdef GPU
+            cudaMemcpy(sess->weights_gpu, sess->update_weights_gpu, sess->weights_size*sizeof(float), cudaMemcpyDeviceToDevice);
+#else
             memcpy(sess->weights, sess->update_weights, sess->weights_size * sizeof(float));
+#endif
         }
     }
     fprintf(stderr, "\n\nSession Training Finished\n");
