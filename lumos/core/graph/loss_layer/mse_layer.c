@@ -6,7 +6,6 @@ Layer *make_mse_layer(int group)
     l->type = MSE;
     l->group = group;
     l->weights = 0;
-
 #ifdef GPU
     l->forward = forward_mse_layer_gpu;
     l->backward = backward_mse_layer_gpu;
@@ -14,7 +13,6 @@ Layer *make_mse_layer(int group)
     l->forward = forward_mse_layer;
     l->backward = backward_mse_layer;
 #endif
-
     l->update = NULL;
     l->init_layer_weights = NULL;
 

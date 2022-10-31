@@ -24,7 +24,7 @@ void add_cpu(float *data, int len, float x, int offset)
     }
 }
 
-float min_cpu(float *data, int num)
+void min_cpu(float *data, int num, float *space)
 {
     float min = data[0];
     for (int i = 1; i < num; ++i)
@@ -32,10 +32,10 @@ float min_cpu(float *data, int num)
         if (data[i] < min)
             min = data[i];
     }
-    return min;
+    space[0] = min;
 }
 
-float max_cpu(float *data, int num)
+void max_cpu(float *data, int num, float *space)
 {
     float max = data[0];
     for (int i = 1; i < num; ++i)
@@ -43,23 +43,23 @@ float max_cpu(float *data, int num)
         if (data[i] > max)
             max = data[i];
     }
-    return max;
+    space[0] = max;
 }
 
-float sum_cpu(float *data, int num)
+void sum_cpu(float *data, int num, float *space)
 {
     float res = 0;
     for (int i = 0; i < num; ++i)
     {
         res += data[i];
     }
-    return res;
+    space[0] = res;
 }
 
-float mean_cpu(float *data, int num)
+void mean_cpu(float *data, int num, float *space)
 {
-    float sum = sum_cpu(data, num);
-    return sum / (float)num;
+    sum_cpu(data, num, space);
+    space[0] /= (float)num;
 }
 
 void matrix_add_cpu(float *data_a, float *data_b, int num, float *space)

@@ -8,6 +8,10 @@
 #include "cfg_f.h"
 #include "cpu.h"
 
+#ifdef GPU
+#include "im2col_layer_gpu.h"
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

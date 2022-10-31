@@ -198,11 +198,7 @@ void set_loss_memory(Session *sess)
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     Layer *l = layers[graph->layer_num - 1];
-#ifdef GPU
-    l->loss = sess->loss_gpu;
-#else
     l->loss = sess->loss;
-#endif
 }
 
 void set_truth_memory(Session *sess)

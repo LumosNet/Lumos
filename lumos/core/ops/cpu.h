@@ -13,10 +13,10 @@ void fill_cpu(float *data, int len, float x, int offset);
 void multy_cpu(float *data, int len, float x, int offset);
 void add_cpu(float *data, int len, float x, int offset);
 
-float min_cpu(float *data, int num);
-float max_cpu(float *data, int num);
-float sum_cpu(float *data, int num);
-float mean_cpu(float *data, int num);
+void min_cpu(float *data, int num, float *space);
+void max_cpu(float *data, int num, float *space);
+void sum_cpu(float *data, int num, float *space);
+void mean_cpu(float *data, int num, float *space);
 
 void matrix_add_cpu(float *data_a, float *data_b, int num, float *space);
 void matrix_subtract_cpu(float *data_a, float *data_b, int num, float *space);

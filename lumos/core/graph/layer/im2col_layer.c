@@ -7,10 +7,13 @@ Layer *make_im2col_layer(int flag)
     l->weights = 0;
 
     l->im2col_flag = flag;
-
+#ifdef GPU
+    l->forward = forward_im2col_layer_gpu;
+    l->backward = backward_im2col_layer_gpu;
+#else
     l->forward = forward_im2col_layer;
     l->backward = backward_im2col_layer;
-
+#endif
     l->update = NULL;
     l->init_layer_weights = NULL;
 
@@ -21,7 +24,6 @@ Layer *make_im2col_layer(int flag)
 Layer *make_im2col_layer_by_cfg(CFGParams *p)
 {
     int flag = 1;
-
     CFGParam *param = p->head;
     while (param)
     {
@@ -62,24 +64,10 @@ void init_im2col_layer(Layer *l, int w, int h, int c)
 
 void forward_im2col_layer(Layer l, int num)
 {
-    for (int i = 0; i < num; ++i)
-    {
-        int offset_i = i * l.inputs;
-        int offset_o = i * l.outputs;
-        float *input = l.input + offset_i;
-        float *output = l.output + offset_o;
-        memcpy(output, input, l.outputs * sizeof(float));
-    }
+    memcpy(l.output, l.input, num*l.outputs*sizeof(float));
 }
 
 void backward_im2col_layer(Layer l, float rate, int num, float *n_delta)
 {
-    for (int i = 0; i < num; ++i)
-    {
-        int offset_i = i * l.inputs;
-        int offset_o = i * l.outputs;
-        float *delta_l = l.delta + offset_i;
-        float *delta_n = n_delta + offset_o;
-        memcpy(delta_l, delta_n, l.inputs * sizeof(float));
-    }
+    memcpy(l.delta, n_delta, num*l.inputs*sizeof(float));
 }

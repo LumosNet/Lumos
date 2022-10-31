@@ -36,11 +36,6 @@ void add_gpu(float *data, int len, float x, int offset)
     add_kernel<<<(len+BLOCK-1)/BLOCK, BLOCK>>>(data, len, x, offset);
 }
 
-void min_gpu(float *data, int num, float *space);
-void max_gpu(float *data, int num, float *space);
-void sum_gpu(float *data, int num, float *space);
-void mean_gpu(float *data, int num, float *space);
-
 __global__ void matrix_add_kernel(float *data_a, float *data_b, int num, float *space)
 {
     int index = threadIdx.x + blockIdx.x * blockDim.x;

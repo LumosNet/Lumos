@@ -1,5 +1,5 @@
-#ifndef MSE_LAYER_GPU_H
-#define MSE_LAYER_GPU_H
+#ifndef IM2COL_LAYER_GPU_H
+#define IM2COL_LAYER_GPU_H
 
 #ifdef GPU
 #include "cuda_runtime.h"
@@ -10,19 +10,16 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "cpu.h"
 #include "gpu.h"
 #include "layer.h"
-#include "cpu_gpu.h"
-#include "gemm_gpu.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #ifdef GPU
-void forward_mse_layer_gpu(Layer l, int num);
-void backward_mse_layer_gpu(Layer l, float rate, int num, float *n_delta);
+void forward_im2col_layer_gpu(Layer l, int num);
+void backward_im2col_layer_gpu(Layer l, float rate, int num, float *n_delta);
 #endif
 
 #ifdef __cplusplus
