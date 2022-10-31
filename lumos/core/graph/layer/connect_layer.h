@@ -12,6 +12,10 @@
 #include "cpu.h"
 #include "random.h"
 
+#ifdef GPU
+#include "connect_layer_gpu.h"
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

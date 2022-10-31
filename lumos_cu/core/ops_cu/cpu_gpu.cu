@@ -41,9 +41,62 @@ void max_gpu(float *data, int num, float *space);
 void sum_gpu(float *data, int num, float *space);
 void mean_gpu(float *data, int num, float *space);
 
-void matrix_add_gpu(float *data_a, float *data_b, int num, float *space);
-void matrix_subtract_gpu(float *data_a, float *data_b, int num, float *space);
-void matrix_multiply_gpu(float *data_a, float *data_b, int num, float *space);
-void matrix_divide_gpu(float *data_a, float *data_b, int num, float *space);
+__global__ void matrix_add_kernel(float *data_a, float *data_b, int num, float *space)
+{
+    int index = threadIdx.x + blockIdx.x * blockDim.x;
+    if (index >= num) return;
+    space[index] = data_a[index] + data_b[index];
+}
 
-void saxpy_gpu(float *data_a, float *data_b, int num, float x, float *space);
+__global__ void matrix_subtract_kernel(float *data_a, float *data_b, int num, float *space)
+{
+    int index = threadIdx.x + blockIdx.x * blockDim.x;
+    if (index >= num) return;
+    space[index] = data_a[index] - data_b[index];
+}
+
+__global__ void matrix_multiply_kernel(float *data_a, float *data_b, int num, float *space)
+{
+    int index = threadIdx.x + blockIdx.x * blockDim.x;
+    if (index >= num) return;
+    space[index] = data_a[index] * data_b[index];
+}
+
+__global__ void matrix_divide_kernel(float *data_a, float *data_b, int num, float *space)
+{
+    int index = threadIdx.x + blockIdx.x * blockDim.x;
+    if (index >= num) return;
+    space[index] = data_a[index] / data_b[index];
+}
+
+__global__ void saxpy_kernel(float *data_a, float *data_b, int num, float x, float *space)
+{
+    int index = threadIdx.x + blockIdx.x * blockDim.x;
+    if (index >= num) return;
+    space[index] = data_a[index] + x * data_b[index];
+}
+
+void matrix_add_gpu(float *data_a, float *data_b, int num, float *space)
+{
+    matrix_add_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data_a, data_b, num, space);
+}
+
+void matrix_subtract_gpu(float *data_a, float *data_b, int num, float *space)
+{
+    matrix_subtract_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data_a, data_b, num, space);
+}
+
+void matrix_multiply_gpu(float *data_a, float *data_b, int num, float *space)
+{
+    matrix_multiply_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data_a, data_b, num, space);
+}
+
+void matrix_divide_gpu(float *data_a, float *data_b, int num, float *space)
+{
+    matrix_divide_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data_a, data_b, num, space);
+}
+
+void saxpy_gpu(float *data_a, float *data_b, int num, float x, float *space)
+{
+    saxpy_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data_a, data_b, num, x, space);
+}

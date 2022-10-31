@@ -21,8 +21,8 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
 
     l->active_str = active;
     Activation type = load_activate_type(active);
-    l->active = load_activate(type);
-    l->gradient = load_gradient(type);
+    l->active = type;
+    l->gradient = type;
 
     l->forward = forward_convolutional_layer;
     l->backward = backward_convolutional_layer;

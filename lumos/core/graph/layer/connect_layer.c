@@ -15,15 +15,19 @@ Layer *make_connect_layer(int output, int bias, char *active, char *weights_init
 
     l->active_str = active;
     Activation type = load_activate_type(active);
-    l->active = load_activate(type);
-    l->gradient = load_gradient(type);
+    l->active = type;
+    l->gradient = type;
 
     l->bias = bias;
-
+#ifdef GPU
+    l->forward = forward_connect_layer_gpu;
+    l->backward = backward_connect_layer_gpu;
+    l->update = update_connect_layer_gpu;
+#else
     l->forward = forward_connect_layer;
     l->backward = backward_connect_layer;
-
     l->update = update_connect_layer;
+#endif
     l->init_layer_weights = init_connect_weights;
 
     fprintf(stderr, "Connect         Layer    :    [output=%4d, bias=%d, active=%s]\n", l->ksize, l->bias, l->active_str);
