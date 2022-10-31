@@ -90,14 +90,25 @@ void init_connect_layer(Layer *l, int w, int h, int c)
 
 void init_connect_weights(Layer *l)
 {
+#ifdef GPU
+    float *kernel_weights[l->kernel_weights_size];
+    float *bias_weights[l->bias_weights_size];
+#else
+    float *kernel_weights = l->kernel_weights;
+    float *bias_weights = l->bias_weights;
+#endif
     if (0 == strcmp(l->weights_init_type, "guass")){
-        guass_list(0, 1, l->index*2, l->kernel_weights_size, l->kernel_weights);
+        guass_list(0, 1, l->index*2, l->kernel_weights_size, kernel_weights);
     }
     if (l->bias){
         for (int i = 0; i < l->output_h; ++i){
-            l->bias_weights[i] = 0.01;
+            bias_weights[i] = 0.01;
         }
     }
+#ifdef GPU
+    cudaMemcpy((void**)&l->kernel_weights, l->kernel_weights_size*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy((void**)&l->bias_weights, l->bias_weights_size*sizeof(float), cudaMemcpyHostToDevice);
+#endif
 }
 
 void forward_connect_layer(Layer l, int num)
