@@ -27,6 +27,8 @@ VPATH=./lumos/: \
 	  ./lumos_cu/core/: \
 	  ./lumos_cu/core/graph_cu/: \
 	  ./lumos_cu/core/ops_cu/: \
+	  ./lumos_cu/core/graph_cu/layer_cu/: \
+	  ./lumos_cu/core/graph_cu/loss_layer_cu/: \
 	  ./lumos/test \
 	  ./lumos/test/core \
 	  ./lumos/test/core/ops \
@@ -46,6 +48,8 @@ COMMON=-Ilumos/core/graph \
 	   -Ilumos_cu/core \
 	   -Ilumos_cu/core/graph_cu \
 	   -Ilumos_cu/core/ops_cu \
+	   -Ilumos_cu/core/graph_cu/layer_cu \
+	   -Ilumos_cu/core/graph_cu/loss_layer_cu \
 
 EXEC=main.exe
 OBJDIR=./obj/
@@ -72,7 +76,8 @@ ifeq ($(TEST), 1)
 COMMON+= -Itest
 endif
 
-OBJ=	cpu_gpu.o active_gpu.o\
+OBJ=	cpu_gpu.o active_gpu.o gemm_gpu.o \
+		connect_layer_gpu.o im2col_layer_gpu.o \
 		avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
 		mse_layer.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o random.o \
