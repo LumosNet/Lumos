@@ -192,8 +192,9 @@ void update_convolutional_layer(Layer l, float rate, int num, float *n_delta)
             int offset = l.output_h * l.output_w;
             for (int j = 0; j < l.filters; ++j)
             {
-                float bias = sum_cpu(delta_n+j*offset, offset);
-                l.update_bias_weights[j] += bias * rate;
+                float bias[1];
+                sum_cpu(delta_n+j*offset, offset, bias);
+                l.update_bias_weights[j] += bias[0] * rate;
             }
         }
     }

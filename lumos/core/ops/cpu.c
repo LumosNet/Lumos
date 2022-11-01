@@ -101,3 +101,17 @@ void saxpy_cpu(float *data_a, float *data_b, int num, float x, float *space)
         space[i] = data_a[i] + data_b[i] * x;
     }
 }
+
+void one_hot_encoding(int n, int label, float *space)
+{
+    if (n == 1)
+        space[0] = (float)label;
+    else
+    {
+        for (int i = 0; i < n; ++i)
+        {
+            space[i] = (float)0;
+        }
+        space[label] = (float)1;
+    }
+}

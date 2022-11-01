@@ -366,7 +366,7 @@ void load_test_data(Session *sess, int index)
     im = load_image_data(data_path, w, h, c);
     resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input);
 #ifdef GPU
-    cudaMemcpy(sess->input_gpu+offset_i, sess->input+offset_i, \
+    cudaMemcpy(sess->input_gpu, sess->input, \
               (sess->height*sess->width*sess->channel)*sizeof(float), cudaMemcpyHostToDevice);
 #endif
     free(im);

@@ -18,9 +18,9 @@ void xor_process_test_information(char **label, float *truth, float *predict, fl
 void xor () {
     Graph *graph = create_graph("Lumos", 5);
     Layer *l1 = make_im2col_layer(1);
-    Layer *l2 = make_connect_layer(4, 1, "logistic");
-    Layer *l3 = make_connect_layer(2, 1, "logistic");
-    Layer *l4 = make_connect_layer(1, 1, "logistic");
+    Layer *l2 = make_connect_layer(4, 1, "logistic", "guass");
+    Layer *l3 = make_connect_layer(2, 1, "logistic", "guass");
+    Layer *l4 = make_connect_layer(1, 1, "logistic", "guass");
     Layer *l5 = make_mse_layer(1);
     append_layer2grpah(graph, l1);
     append_layer2grpah(graph, l2);

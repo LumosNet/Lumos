@@ -87,8 +87,8 @@ struct layer{
     Forward forward;
     Backward backward;
 
-    Activate active;
-    Gradient gradient;
+    Activation active;
+    Activation gradient;
 
     Update update;
 

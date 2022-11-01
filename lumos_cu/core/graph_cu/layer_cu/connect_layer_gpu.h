@@ -12,6 +12,8 @@
 #include <stdlib.h>
 #include "gpu.h"
 #include "layer.h"
+#include "active_gpu.h"
+#include "bias_gpu.h"
 #include "cpu_gpu.h"
 #include "gemm_gpu.h"
 

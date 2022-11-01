@@ -25,6 +25,8 @@ void matrix_divide_cpu(float *data_a, float *data_b, int num, float *space);
 
 void saxpy_cpu(float *data_a, float *data_b, int num, float x, float *space);
 
+void one_hot_encoding(int n, int label, float *space);
+
 #ifdef __cplusplus
 }
 #endif
