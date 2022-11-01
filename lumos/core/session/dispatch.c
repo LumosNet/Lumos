@@ -47,11 +47,11 @@ void session_test(Session *sess, ProcessTestInformation process_test_information
         Graph *graph = sess->graph;
         Layer **layers = graph->layers;
 #ifdef GPU
-        int outputs = layers[graph->layer_num - 2]->outputs;
         cudaMemcpy(sess->predicts, layers[graph->layer_num - 2]->output, \
-                   outputs*sizeof(float), cudaMemcpyDeviceToHost);
+                   layers[graph->layer_num - 2]->outputs*sizeof(float), cudaMemcpyDeviceToHost);
 #else
-        sess->predicts = layers[graph->layer_num - 2]->output;
+        memcpy(sess->predicts, layers[graph->layer_num - 2]->output, \
+            layers[graph->layer_num - 2]->outputs*sizeof(float));
 #endif
         process_test_information(label, sess->truth, sess->predicts, sess->loss[0], sess->test_data_paths[i]);
     }
@@ -129,6 +129,7 @@ void init_train_scene(Session *sess, int epoch, int batch, int subdivision, char
     set_loss_memory(sess);
     set_label(sess);
     create_truth_memory(sess);
+    create_predicts_memory(sess);
     set_truth_memory(sess);
     set_maxpool_index_memory(sess);
 }
@@ -158,6 +159,7 @@ void init_test_scene(Session *sess, char *weights_file)
     set_loss_memory(sess);
     set_label(sess);
     create_truth_memory(sess);
+    create_predicts_memory(sess);
     set_truth_memory(sess);
     set_maxpool_index_memory(sess);
 }

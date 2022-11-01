@@ -76,16 +76,19 @@ ifeq ($(TEST), 1)
 COMMON+= -Itest
 endif
 
-OBJ=	cpu_gpu.o active_gpu.o bias_gpu.o gemm_gpu.o \
-		connect_layer_gpu.o im2col_layer_gpu.o \
-		mse_layer_gpu.o \
-		avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
+OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
 		mse_layer.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o random.o \
 		session.o manager.o dispatch.o \
 		progress_bar.o \
 		binary_f.o cfg_f.o text_f.o \
 		str_ops.o
+
+ifeq ($(GPU), 1)
+OBJ+= 	cpu_gpu.o active_gpu.o bias_gpu.o gemm_gpu.o \
+	  	connect_layer_gpu.o im2col_layer_gpu.o \
+	  	mse_layer_gpu.o
+endif
 
 EXECOBJA=main.o
 

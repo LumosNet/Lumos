@@ -29,6 +29,7 @@ void create_delta_memory(Session *sess);
 void create_label_memory(Session *sess);
 void create_loss_memory(Session *sess);
 void create_truth_memory(Session *sess);
+void create_predicts_memory(Session *sess);
 void create_maxpool_index_memory(Session *sess);
 
 void set_graph_memory(Session *sess);

@@ -90,6 +90,11 @@ void create_truth_memory(Session *sess)
 #endif
 }
 
+void create_predicts_memory(Session *sess)
+{
+    sess->predicts = calloc(sess->truth_num, sizeof(float));
+}
+
 void create_maxpool_index_memory(Session *sess)
 {
     Graph *graph = sess->graph;
@@ -105,9 +110,9 @@ void create_maxpool_index_memory(Session *sess)
         sess->maxpool_index = NULL;
         return;
     }
-    sess->maxpool_index = calloc(max_indexes * sess->subdivision, sizeof(float));
+    sess->maxpool_index = calloc(max_indexes * sess->subdivision, sizeof(int));
 #ifdef GPU
-    cudaMalloc((void**)&sess->maxpool_index_gpu, (max_indexes*sess->subdivision)*sizeof(float));
+    cudaMalloc((void**)&sess->maxpool_index_gpu, max_indexes*sess->subdivision*sizeof(int));
 #endif
     fprintf(stderr, "APPly For MAX Pool Layers's MAX Pixel Index Space\n");
 }
@@ -219,7 +224,7 @@ void set_maxpool_index_memory(Session *sess)
         return;
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
-    int maxpool_index;
+    int *maxpool_index;
 #ifdef GPU
     maxpool_index = sess->maxpool_index_gpu;
 #else
@@ -321,7 +326,7 @@ void init_weights(Session *sess, char *weights_file)
     }
     memcpy(sess->update_weights, sess->weights, sess->weights_size * sizeof(float));
 #ifdef GPU
-    cudaMemcpy(sess->update_weights, sess->weights, sess->weights_size*sizeof(float), cudaMemcpyDeviceToDevice);
+    cudaMemcpy(sess->update_weights_gpu, sess->weights_gpu, sess->weights_size*sizeof(float), cudaMemcpyDeviceToDevice);
 #endif
 }
 
@@ -335,13 +340,13 @@ void load_train_data(Session *sess, int index, int num)
         char *data_path = sess->train_data_paths[i];
         im = load_image_data(data_path, w, h, c);
         resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input + offset_i);
-#ifdef GPU
-        cudaMemcpy(sess->input_gpu+offset_i, sess->input+offset_i, \
-                  (sess->height*sess->width*sess->channel)*sizeof(float), cudaMemcpyHostToDevice);
-#endif
         offset_i += sess->height * sess->width * sess->channel;
         free(im);
     }
+#ifdef GPU
+    cudaMemcpy(sess->input_gpu, sess->input, \
+              (sess->height*sess->width*sess->channel*num)*sizeof(float), cudaMemcpyHostToDevice);
+#endif
 }
 
 void load_train_label(Session *sess, int index, int num)
@@ -352,6 +357,9 @@ void load_train_label(Session *sess, int index, int num)
         char **label = load_label_txt(sess->train_label_paths[i], sess->label_num);
         sess->label2truth(label, truth);
     }
+#ifdef GPU
+    cudaMemcpy(sess->truth_gpu, sess->truth, sess->truth_num*num*sizeof(float), cudaMemcpyHostToDevice);
+#endif
 }
 
 void load_test_data(Session *sess, int index)

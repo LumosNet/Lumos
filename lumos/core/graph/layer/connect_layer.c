@@ -106,8 +106,8 @@ void init_connect_weights(Layer *l)
         }
     }
 #ifdef GPU
-    cudaMemcpy((void**)&l->kernel_weights, kernel_weights, l->kernel_weights_size*sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy((void**)&l->bias_weights, bias_weights, l->bias_weights_size*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(l->kernel_weights, kernel_weights, l->kernel_weights_size*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(l->bias_weights, bias_weights, l->bias_weights_size*sizeof(float), cudaMemcpyHostToDevice);
 #endif
 }
 
