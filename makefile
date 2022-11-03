@@ -70,6 +70,8 @@ VPATH+=	./lumos/test \
 		./lumos/test/core \
 		./lumos/test/core/ops \
 		./lumos/test/core/graph \
+		./lumos/test/core_cu/graph \
+		./lumos/test/core_cu/ops
 endif
 
 OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
