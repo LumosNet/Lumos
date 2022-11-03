@@ -6,14 +6,9 @@
 *.run
 *.tar.gz
 *.w
-main
+.idea
 .vscode
 data
 obj
-backup
-.idea
-utest
+main
 main.exe
-./lumos
-build
-core

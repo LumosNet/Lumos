@@ -1,5 +1,5 @@
 LINUX=1
-GPU=1
+GPU=0
 DEBUG=0
 TEST=1
 
@@ -76,7 +76,7 @@ endif
 
 OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
 		mse_layer.o \
-		active.o bias.o cpu.o gemm.o im2col.o image.o random.o \
+		active.o bias.o cpu.o gemm.o im2col.o image.o pooling.o random.o \
 		session.o manager.o dispatch.o \
 		progress_bar.o \
 		binary_f.o cfg_f.o text_f.o \
@@ -110,7 +110,7 @@ EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
 OBJS = $(addprefix $(OBJDIR), $(OBJ))
 DEPS = makefile
 
-all: obj backup $(EXEC)
+all: obj $(EXEC)
 
 $(EXEC): $(OBJS) $(EXECOBJ)
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
@@ -126,8 +126,6 @@ $(OBJDIR)%.o: %.cu $(DEPS)
 
 obj:
 	mkdir obj
-backup:
-	mkdir backup
 
 .PHONY: clean
 

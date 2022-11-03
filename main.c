@@ -12,6 +12,7 @@
 #include "dispatch.h"
 
 #include "bias_gpu.h"
+#include "pooling.h"
 
 void mnist_label2truth(char **label, float *truth)
 {
@@ -59,6 +60,16 @@ void full_connect_mnist () {
 
 int main()
 {
-    full_connect_mnist();
+    // full_connect_mnist();
+    int ksize = 2;
+    int pad = 1;
+    int stride = 1;
+    int h[1], w[1], c[1];
+    float *img = load_image_data("./data/1.jpg", w, h, c);
+    int out_h = (h[0] + 2 * pad - ksize) / stride + 1;
+    int out_w = (w[0] + 2 * pad - ksize) / stride + 1;
+    float *space = malloc(out_h*out_w*c[0]*sizeof(float));
+    avgpool(img, h[0], w[0], c[0], ksize, stride, pad, space);
+    save_image_data(space, out_w, out_h, c[0], "./data/t.png");
     return 0;
 }
