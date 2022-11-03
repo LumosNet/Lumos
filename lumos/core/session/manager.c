@@ -319,8 +319,9 @@ void init_weights(Session *sess, char *weights_file)
         for (int i = 0; i < graph->layer_num; ++i)
         {
             Layer *l = layers[i];
-            if (l->weights)
+            if (l->weights){
                 l->init_layer_weights(l);
+            }
         }
         fprintf(stderr, "\nInit Weights\n");
     }

@@ -27,7 +27,7 @@ void session_train(Session *sess, float learning_rate, char *weights_path)
 #ifdef GPU
             cudaMemcpy(sess->weights_gpu, sess->update_weights_gpu, sess->weights_size*sizeof(float), cudaMemcpyDeviceToDevice);
 #else
-            memcpy(sess->weights, sess->update_weights, sess->weights_size * sizeof(float));
+            memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
 #endif
         }
     }
@@ -63,7 +63,11 @@ void forward_session(Session *sess)
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     Layer *l;
+#ifdef GPU
+    float *input = sess->input_gpu;
+#else
     float *input = sess->input;
+#endif
     for (int i = 0; i < graph->layer_num; ++i)
     {
         l = layers[i];

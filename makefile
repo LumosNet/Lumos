@@ -2,7 +2,6 @@ LINUX=1
 GPU=1
 DEBUG=0
 TEST=1
-AST=0
 
 ARCH= 	-gencode arch=compute_35,code=sm_35 \
       	-gencode arch=compute_50,code=[sm_50,compute_50] \
@@ -10,46 +9,39 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
 
 # 源代码所在目录（包括所有子目录）
-VPATH=./lumos/: \
-	  ./lumos/core/: \
-	  ./lumos/core/graph/: \
-	  ./lumos/core/graph/layer/: \
-	  ./lumos/core/graph/loss_layer/: \
-	  ./lumos/core/ops/: \
-	  ./lumos/core/session/: \
-	  ./lumos/utils/: \
-	  ./lumos/utils/cmd/: \
-      ./lumos/utils/file/: \
-      ./lumos/utils/str/: \
-	  ./lumos/utils/test/: \
-      ./ \
-	  ./lumos_cu/: \
-	  ./lumos_cu/core/: \
-	  ./lumos_cu/core/graph_cu/: \
-	  ./lumos_cu/core/ops_cu/: \
-	  ./lumos_cu/core/graph_cu/layer_cu/: \
-	  ./lumos_cu/core/graph_cu/loss_layer_cu/: \
-	  ./lumos/test \
-	  ./lumos/test/core \
-	  ./lumos/test/core/ops \
-	  ./lumos/test/core/graph \
+VPATH=	./lumos/core/: \
+		./lumos/core/graph/: \
+		./lumos/core/graph/layer/: \
+		./lumos/core/graph/loss_layer/: \
+		./lumos/core/ops/: \
+		./lumos/core/session/: \
+		./lumos/utils/: \
+		./lumos/utils/cmd/: \
+		./lumos/utils/file/: \
+		./lumos/utils/str/: \
+		./lumos/utils/test/: \
+		./ \
+		./lumos/core_cu/: \
+		./lumos/core_cu/graph_cu/: \
+		./lumos/core_cu/ops_cu/: \
+		./lumos/core_cu/graph_cu/layer_cu/: \
+		./lumos/core_cu/graph_cu/loss_layer_cu/: \
 
-COMMON=-Ilumos/core/graph \
-	   -Ilumos/core/graph/layer \
-	   -Ilumos/core/graph/loss_layer \
-	   -Ilumos/core/ops \
-	   -Ilumos/core/session \
-	   -Ilumos/utils/cmd \
-	   -Ilumos/utils/file \
-	   -Ilumos/utils/str \
-	   -Ilumos/utils/test \
-	   -Ilumos/lib \
-	   -Ilumos_cu \
-	   -Ilumos_cu/core \
-	   -Ilumos_cu/core/graph_cu \
-	   -Ilumos_cu/core/ops_cu \
-	   -Ilumos_cu/core/graph_cu/layer_cu \
-	   -Ilumos_cu/core/graph_cu/loss_layer_cu \
+COMMON=	-Ilib \
+		-Ilumos/core/graph \
+		-Ilumos/core/graph/layer \
+		-Ilumos/core/graph/loss_layer \
+		-Ilumos/core/ops \
+		-Ilumos/core/session \
+		-Ilumos/utils/cmd \
+		-Ilumos/utils/file \
+		-Ilumos/utils/str \
+		-Ilumos/utils/test \
+		-Ilumos/core_cu \
+		-Ilumos/core_cu/graph_cu \
+		-Ilumos/core_cu/ops_cu \
+		-Ilumos/core_cu/graph_cu/layer_cu \
+		-Ilumos/core_cu/graph_cu/loss_layer_cu \
 
 EXEC=main.exe
 OBJDIR=./obj/
@@ -74,6 +66,10 @@ endif
 
 ifeq ($(TEST), 1)
 COMMON+= -Itest
+VPATH+=	./lumos/test \
+		./lumos/test/core \
+		./lumos/test/core/ops \
+		./lumos/test/core/graph \
 endif
 
 OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \

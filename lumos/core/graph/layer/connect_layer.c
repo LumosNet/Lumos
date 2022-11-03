@@ -121,6 +121,13 @@ void forward_connect_layer(Layer l, int num)
         float *output = l.output + offset_o;
         gemm(0, 0, l.outputs, l.inputs, l.inputs, 1,
              1, l.kernel_weights, input, output);
+        // if (l.index == 2){
+        //     printf("\n\n\n");
+        //     for (int j = 0; j < l.bias_weights_size; ++j){
+        //         printf("%f ", l.bias_weights[j]);
+        //     }
+        //     printf("\n\n\n");
+        // }
         if (l.bias)
         {
             add_bias(output, l.bias_weights, l.ksize, 1);

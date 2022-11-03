@@ -11,6 +11,8 @@
 #include "manager.h"
 #include "dispatch.h"
 
+#include "bias_gpu.h"
+
 void mnist_label2truth(char **label, float *truth)
 {
     int x = atoi(label[0]);
@@ -41,11 +43,12 @@ void full_connect_mnist () {
     append_layer2grpah(graph, l4);
     append_layer2grpah(graph, l5);
 
-    Session *sess = create_session();
-    bind_graph(sess, graph);
-    create_train_scene(sess, 28, 28, 1, 1, 10, mnist_label2truth, "/usr/local/lumos/data/mnist/train.txt", "/usr/local/lumos/data/mnist/train_label.txt");
-    init_train_scene(sess, 500, 20, 4, NULL);
-    session_train(sess, 0.1, "./lumos.w");
+    // Session *sess = create_session();
+    // bind_graph(sess, graph);
+    // // create_train_scene(sess, 28, 28, 1, 1, 10, mnist_label2truth, "./data/train.txt", "./data/train_label.txt");
+    // create_train_scene(sess, 28, 28, 1, 1, 10, mnist_label2truth, "/usr/local/lumos/data/mnist/train.txt", "/usr/local/lumos/data/mnist/train_label.txt");
+    // init_train_scene(sess, 1000, 20, 20, "./lumos.w");
+    // session_train(sess, 0.1, "./lumos.w");
 
     Session *t_sess = create_session();
     bind_graph(t_sess, graph);
@@ -57,5 +60,23 @@ void full_connect_mnist () {
 int main()
 {
     full_connect_mnist();
+    // float *bias;
+    // float bias_cpu[10] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0};
+    // float *data;
+    // float data_cpu[10] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    // for(int i = 0; i < 10; ++i){
+    //     printf("%f ", data_cpu[i]);
+    // }
+    // printf("\n");
+    // cudaMalloc((void**)&bias, 10*sizeof(float));
+    // cudaMalloc((void**)&data, 10*sizeof(float));
+    // cudaMemcpy(bias, bias_cpu, 10*sizeof(float), cudaMemcpyHostToDevice);
+    // add_bias_gpu(data, bias, 2, 5);
+    // // matrix_add_gpu(data, bias, 10, data);
+    // cudaMemcpy(data_cpu, data, 10*sizeof(float), cudaMemcpyDeviceToHost);
+    // for(int i = 0; i < 10; ++i){
+    //     printf("%f ", data_cpu[i]);
+    // }
+    // printf("\n");
     return 0;
 }
