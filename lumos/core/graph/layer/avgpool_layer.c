@@ -65,18 +65,7 @@ void forward_avgpool_layer(Layer l, int num)
         int offset_o = i * l.outputs;
         float *input = l.input + offset_i;
         float *output = l.output + offset_o;
-        im2col(input, l.input_h, l.input_w, l.input_c,
-               l.ksize, l.stride, l.pad, l.workspace);
-        for (int c = 0; c < l.output_c; ++c)
-        {
-            for (int h = 0; h < l.ksize*l.ksize; ++h)
-            {
-                for (int w = 0; w < l.output_h*l.output_w; ++w)
-                {
-                    output[c*l.output_h*l.output_w+w] += l.workspace[c*l.ksize*l.ksize*l.output_h*l.output_w+h*l.output_h*l.output_w+w] / (l.ksize*l.ksize);
-                }
-            }
-        }
+        avgpool(input, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, output);
     }
 }
 
@@ -88,18 +77,6 @@ void backward_avgpool_layer(Layer l, float rate, int num, float *n_delta)
         int offset_o = i * l.outputs;
         float *delta_l = l.delta + offset_i;
         float *delta_n = n_delta + offset_o;
-        for (int c = 0; c < l.input_c; ++c)
-        {
-            for (int h = 0; h < l.input_h; ++h)
-            {
-                for (int w = 0; w < l.input_w; ++w)
-                {
-                    int height_index = h / l.ksize;
-                    int width_index = w / l.ksize;
-                    delta_l[l.input_h * l.input_w * c + l.input_w * h + w] =
-                        delta_n[c * l.output_h * l.output_w + height_index * l.output_w + width_index] * (float)(1 / (float)(l.ksize * l.ksize));
-                }
-            }
-        }
+        avgpool_gradient(delta_l, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, delta_n);
     }
 }

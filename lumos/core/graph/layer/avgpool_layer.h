@@ -5,6 +5,7 @@
 #include "cfg_f.h"
 #include "im2col.h"
 #include "cpu.h"
+#include "pooling.h"
 
 #ifdef __cplusplus
 extern "C" {

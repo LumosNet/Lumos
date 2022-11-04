@@ -114,7 +114,13 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
 void init_convolutional_weights(Layer *l)
 {
     int offset = 0;
+#ifdef GPU
+    float *kernel_weights = malloc(l->kernel_weights_size*sizeof(float));
+    float *bias_weights = malloc(l->bias_weights_size*sizeof(float));
+#else
     float *kernel_weights = l->kernel_weights;
+    float *bias_weights = l->bias_weights;
+#endif
     if (0 == strcmp(l->weights_init_type, "guass"))
     {
         for (int i = 0; i < l->filters; ++i)
@@ -134,6 +140,12 @@ void init_convolutional_weights(Layer *l)
             l->bias_weights[i] = 0.01;
         }
     }
+#ifdef GPU
+    cudaMemcpy(l->kernel_weights, kernel_weights, l->kernel_weights_size*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(l->bias_weights, bias_weights, l->bias_weights_size*sizeof(float), cudaMemcpyHostToDevice);
+    free(kernel_weights);
+    free(bias_weights);
+#endif
 }
 
 void forward_convolutional_layer(Layer l, int num)

@@ -66,26 +66,8 @@ void forward_maxpool_layer(Layer l, int num)
         int offset_o = i * l.outputs;
         float *input = l.input + offset_i;
         float *output = l.output + offset_o;
-        im2col(input, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, l.workspace);
-        for (int c = 0; c < l.input_c; ++c)
-        {
-            for (int h = 0; h < l.output_h * l.output_w; h++)
-            {
-                float max = -999;
-                int max_index = -1;
-                for (int w = 0; w < l.ksize * l.ksize; w++)
-                {
-                    int mindex = c * l.output_h * l.output_w * l.ksize * l.ksize + l.output_h * l.output_w * w + h;
-                    if (l.workspace[mindex] > max)
-                    {
-                        max = l.workspace[mindex];
-                        max_index = (c * l.input_h * l.input_w) + (h / l.output_w * l.ksize + w / l.ksize) * l.input_w + (h % l.output_w * l.ksize + w % l.ksize);
-                    }
-                }
-                output[l.output_h * l.output_w * c + h] = max;
-                l.maxpool_index[l.output_h * l.output_w * c + h] = max_index;
-            }
-        }
+        int *index = l.maxpool_index + offset_o;
+        maxpool(input, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, output, index);
     }
 }
 
@@ -97,9 +79,7 @@ void backward_maxpool_layer(Layer l, float rate, int num, float *n_delta)
         int offset_o = i * l.outputs;
         float *delta_l = l.delta + offset_i;
         float *delta_n = n_delta + offset_o;
-        for (int j = 0; j < l.output_h * l.output_w * l.output_c; ++j)
-        {
-            delta_l[l.maxpool_index[j]] = delta_n[j];
-        }
+        int *index = l.maxpool_index + offset_o;
+        maxpool_gradient(delta_l, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, delta_n, index);
     }
 }
