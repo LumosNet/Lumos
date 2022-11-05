@@ -9,10 +9,13 @@ Layer *make_avgpool_layer(int ksize)
 
     l->ksize = ksize;
     l->stride = l->ksize;
-
+#ifdef GPU
+    l->forward = forward_avgpool_layer_gpu;
+    l->backward = backward_avgpool_layer_gpu;
+#else
     l->forward = forward_avgpool_layer;
     l->backward = backward_avgpool_layer;
-
+#endif
     l->update = NULL;
     l->init_layer_weights = NULL;
 

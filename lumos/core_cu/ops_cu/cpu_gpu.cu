@@ -96,3 +96,22 @@ void saxpy_gpu(float *data_a, float *data_b, int num, float x, float *space)
 {
     saxpy_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data_a, data_b, num, x, space);
 }
+
+__global__ void sum_channel_kernel(float *data, int h, int w, int c, float ALPHA, float *space)
+{
+    int k = blockIdx.x * blockDim.x + threadIdx.x;
+    if (k >= c) return;
+    float sum = 0;
+    for (int i = 0; i < h; ++i){
+        for (int j = 0; j < w; ++j){
+            int offset = k*h*w;
+            sum += data[offset + i*w + j] * ALPHA;
+        }
+    }
+    space[k] = sum;
+}
+
+void sum_channel_gpu(float *data, int h, int w, int c, float ALPHA, float *space)
+{
+    sum_channel_kernel<<<(c+BLOCK-1)/BLOCK, BLOCK>>>(data, h, w, c, ALPHA, space);
+}

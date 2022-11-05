@@ -31,7 +31,7 @@ void im2col_gpu(float *img, int height, int width, int channel, int ksize, int s
     im2col_kernel<<<(height_col*width_col*channels_col+BLOCK-1)/BLOCK, BLOCK>>>(img, height, width, channel, ksize, stride, pad, space);
 }
 
-void col2im_kernel(float *img, int ksize, int stride, int pad, int out_h, int out_w, int out_c, float *space)
+__global__ void col2im_kernel(float *img, int ksize, int stride, int pad, int out_h, int out_w, int out_c, float *space)
 {
     int index = blockIdx.x * blockDim.x + threadIdx.x;
     int height_col = (out_h + 2 * pad - ksize) / stride + 1;

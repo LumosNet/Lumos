@@ -102,6 +102,20 @@ void saxpy_cpu(float *data_a, float *data_b, int num, float x, float *space)
     }
 }
 
+void sum_channel_cpu(float *data, int h, int w, int c, float ALPHA, float *space)
+{
+    for (int k = 0; k < c; ++k){
+        float sum = 0;
+        for (int i = 0; i < h; ++i){
+            for (int j = 0; j < w; ++j){
+                int offset = k*h*w;
+                sum += data[offset + i*w + j] * ALPHA;
+            }
+        }
+        space[k] = sum;
+    }
+}
+
 void one_hot_encoding(int n, int label, float *space)
 {
     if (n == 1)

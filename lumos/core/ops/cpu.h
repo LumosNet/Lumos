@@ -24,6 +24,7 @@ void matrix_multiply_cpu(float *data_a, float *data_b, int num, float *space);
 void matrix_divide_cpu(float *data_a, float *data_b, int num, float *space);
 
 void saxpy_cpu(float *data_a, float *data_b, int num, float x, float *space);
+void sum_channel_cpu(float *data, int h, int w, int c, float ALPHA, float *space);
 
 void one_hot_encoding(int n, int label, float *space);
 

@@ -23,11 +23,15 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
     Activation type = load_activate_type(active);
     l->active = type;
     l->gradient = type;
-
+#ifdef GPU
+    l->forward = forward_convolutional_layer_gpu;
+    l->backward = backward_convolutional_layer_gpu;
+    l->update = update_convolutional_layer_gpu;
+#else
     l->forward = forward_convolutional_layer;
     l->backward = backward_convolutional_layer;
-
     l->update = update_convolutional_layer;
+#endif
     l->init_layer_weights = init_convolutional_weights;
 
     fprintf(stderr, "Convolutional   Layer    :    [filters=%2d, ksize=%2d, stride=%2d, pad=%2d, bias=%d, normalization=%d, active=%s]\n",
@@ -117,6 +121,8 @@ void init_convolutional_weights(Layer *l)
 #ifdef GPU
     float *kernel_weights = malloc(l->kernel_weights_size*sizeof(float));
     float *bias_weights = malloc(l->bias_weights_size*sizeof(float));
+    float *kernel_weights_h = kernel_weights;
+    float *bias_weights_h = bias_weights;
 #else
     float *kernel_weights = l->kernel_weights;
     float *bias_weights = l->bias_weights;
@@ -137,14 +143,14 @@ void init_convolutional_weights(Layer *l)
     }
     if (l->bias){
         for (int i = 0; i < l->bias_weights_size; ++i){
-            l->bias_weights[i] = 0.01;
+            bias_weights[i] = 0.01;
         }
     }
 #ifdef GPU
-    cudaMemcpy(l->kernel_weights, kernel_weights, l->kernel_weights_size*sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy(l->bias_weights, bias_weights, l->bias_weights_size*sizeof(float), cudaMemcpyHostToDevice);
-    free(kernel_weights);
-    free(bias_weights);
+    cudaMemcpy(l->kernel_weights, kernel_weights_h, l->kernel_weights_size*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(l->bias_weights, bias_weights_h, l->bias_weights_size*sizeof(float), cudaMemcpyHostToDevice);
+    free(kernel_weights_h);
+    free(bias_weights_h);
 #endif
 }
 
@@ -201,13 +207,8 @@ void update_convolutional_layer(Layer l, float rate, int num, float *n_delta)
         saxpy_cpu(l.update_kernel_weights, l.workspace + l.ksize * l.ksize * l.input_c * l.output_h * l.output_w, l.filters * l.ksize * l.ksize * l.input_c, rate, l.update_kernel_weights);
         if (l.bias)
         {
-            int offset = l.output_h * l.output_w;
-            for (int j = 0; j < l.filters; ++j)
-            {
-                float bias[1];
-                sum_cpu(delta_n+j*offset, offset, bias);
-                l.update_bias_weights[j] += bias[0] * rate;
-            }
+            sum_channel_cpu(delta_n, l.output_h, l.output_w, l.output_c, rate, l.workspace);
+            add_bias(l.update_bias_weights, l.workspace, l.output_c, l.output_h*l.output_w);
         }
     }
 }

@@ -1,5 +1,5 @@
-#ifndef CPU_GPU_H
-#define CPU_GPU_H
+#ifndef IM2COL_GPU_H
+#define IM2COL_GPU_H
 
 #ifdef GPU
 #include "cuda_runtime.h"
