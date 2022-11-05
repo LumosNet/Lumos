@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "gpu.h"
+#include "cpu_gpu.h"
 
 #ifdef __cplusplus
 extern "C" {

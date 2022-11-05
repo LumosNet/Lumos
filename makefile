@@ -83,7 +83,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		str_ops.o
 
 ifeq ($(GPU), 1)
-OBJ+= 	cpu_gpu.o active_gpu.o bias_gpu.o gemm_gpu.o \
+OBJ+= 	cpu_gpu.o active_gpu.o bias_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o\
 	  	connect_layer_gpu.o im2col_layer_gpu.o \
 	  	mse_layer_gpu.o
 endif
