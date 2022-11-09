@@ -2,103 +2,8 @@
 #include <stdlib.h>
 
 #include "layer.h"
-#include "convolutional_layer.h"
+#include "convolutional_layer_gpu.h"
 #include "utest.h"
-
-void test_convolutional_layer_make()
-{
-    test_run("test_convolutional_layer_make");
-    Layer *l;
-    l = make_convolutional_layer(3, 3, 1, 0, 1, 0, "logistic", "guass");
-    if (l->type != CONVOLUTIONAL){
-        test_msg("convolutional layer type error");
-        test_res(1, "test_convolutional_layer_make.test_type");
-        return;
-    }
-    if (l->bias != 1){
-        test_msg("convolutional layer bias set error");
-        test_res(1, "test_convolutional_layer_make.test_bias");
-    }
-    if (l->filters != 3){
-        test_msg("convolutional layer filters set error");
-        test_res(1, "test_convolutional_layer_make.test_filters");
-        return;
-    }
-    if (0 != strcmp(l->active_str, "logistic")){
-        test_msg("convolutional layer active func set error");
-        test_res(1, "test_convolutional_layer_make.test_active");
-        return;
-    }
-    if (l->forward == NULL){
-        test_msg("load forward func error");
-        test_res(1, "");
-        return;
-    }
-    if (l->backward == NULL){
-        test_msg("load backward func error");
-        test_res(1, "");
-        return;
-    }
-    if (l->update == NULL){
-        test_msg("load update func error");
-        test_res(1, "");
-        return;
-    }
-    if (l->init_layer_weights == NULL){
-        test_msg("load init_layer_weights func error");
-        test_res(1, "");
-        return;
-    }
-    free(l);
-    l = make_convolutional_layer(3, 3, 1, 0, 0, 0, "logistic", "guass");
-    if (l->bias != 0){
-        test_msg("convolutional set bias error");
-        test_res(1, "");
-    }
-    test_res(0, "");
-}
-
-
-void test_convolutional_layer_init()
-{
-    test_run("test_convolutional_layer_init");
-    Layer *l;
-    l = make_convolutional_layer(3, 3, 1, 0, 1, 0, "logistic", "guass");
-    init_convolutional_layer(l, 4, 4, 1);
-    if (l->input_h != 4 || l->input_w != 4 || l->input_c != 1){
-        test_res(1, "convolutional inputs error");
-        return;
-    }
-    if (l->inputs != 16){
-        test_res(1, "convolutional inputs error");
-        return;
-    }
-    if (l->outputs != 4*l->filters || l->ksize != 3){
-        test_res(1, "convolutional outputs error");
-        return;
-    }
-    if (l->kernel_weights_size != l->filters*l->ksize*l->ksize*l->input_c){
-        test_res(1, "convolutional kernel weights size error");
-        return;
-    }
-    if (l->bias_weights_size != l->filters){
-        test_res(1, "convolutional bias weights size error");
-        return;
-    }
-    if (l->deltas != l->inputs){
-        test_res(1, "convolutional deltas size error");
-        return;
-    }
-    free(l);
-    l = make_convolutional_layer(3, 3, 1, 0, 0, 0, "logistic", "guass");
-    init_convolutional_layer(l, 4, 4, 1);
-    if (l->bias_weights_size != 0){
-        test_res(1, "convolutional bias weights size error");
-        return;
-    }
-    test_res(0, "");
-}
-
 
 void test_forward_convolutional_layer()
 {
@@ -278,12 +183,7 @@ void test_update_convolutional_layer()
     test_res(0, "");
 }
 
-
 int main()
 {
-    test_convolutional_layer_make();
-    test_convolutional_layer_init();
-    test_forward_convolutional_layer();
-    test_update_convolutional_layer();
     return 0;
 }

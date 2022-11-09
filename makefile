@@ -1,5 +1,5 @@
 LINUX=1
-GPU=1
+GPU=0
 DEBUG=0
 TEST=1
 
@@ -88,7 +88,7 @@ OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o \
 	  	mse_layer_gpu.o
 endif
 
-EXECOBJA=main.o
+EXECOBJA=im2col_test.o
 
 ifeq ($(TEST), 1)
 OBJ+= utest.o

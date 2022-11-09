@@ -56,7 +56,7 @@ void lenet() {
     bind_graph(sess, graph);
     create_train_scene(sess, 32, 32, 1, 1, 10, lenet_label2truth, "/usr/local/lumos/data/mnist/train.txt", "/usr/local/lumos/data/mnist/train_label.txt");
     init_train_scene(sess, 500, 16, 16, NULL);
-    session_train(sess, 0.1, "./lumos.w");
+    // session_train(sess, 0.1, "./lumos.w");
 
     // Session *t_sess = create_session();
     // bind_graph(t_sess, graph);
