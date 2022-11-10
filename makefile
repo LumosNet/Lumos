@@ -19,7 +19,6 @@ VPATH=	./lumos/core/: \
 		./lumos/utils/cmd/: \
 		./lumos/utils/file/: \
 		./lumos/utils/str/: \
-		./lumos/utils/test/: \
 		./ \
 		./lumos/core_cu/: \
 		./lumos/core_cu/graph_cu/: \
@@ -36,7 +35,6 @@ COMMON=	-Ilib \
 		-Ilumos/utils/cmd \
 		-Ilumos/utils/file \
 		-Ilumos/utils/str \
-		-Ilumos/utils/test \
 		-Ilumos/core_cu \
 		-Ilumos/core_cu/graph_cu \
 		-Ilumos/core_cu/ops_cu \
@@ -65,13 +63,13 @@ COMMON+= -g
 endif
 
 ifeq ($(TEST), 1)
-COMMON+= -Itest
-VPATH+=	./lumos/test \
-		./lumos/test/core \
-		./lumos/test/core/ops \
-		./lumos/test/core/graph \
-		./lumos/test/core_cu/graph \
-		./lumos/test/core_cu/ops
+COMMON+= -Ilumos_t
+VPATH+=	./lumos_t \
+		./lumos_t/core \
+		./lumos_t/core/ops \
+		./lumos_t/core/graph \
+		./lumos_t/core_cu/graph \
+		./lumos_t/core_cu/ops
 endif
 
 OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
