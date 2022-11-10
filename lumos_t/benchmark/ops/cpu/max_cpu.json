@@ -1,0 +1,26 @@
+{
+    "BenchMark 1": {
+        "data": [
+            -99, -2, -0.1, 0, 0.1, 1, 99
+        ],
+        "num": 7,
+        "space": [
+            0.0
+        ],
+        "benchmark": [
+            99
+        ]
+    },
+    "BenchMark 2": {
+        "data": [
+            99
+        ],
+        "num": 1,
+        "space": [
+            0.0
+        ],
+        "benchmark": [
+            99
+        ]
+    }
+}
