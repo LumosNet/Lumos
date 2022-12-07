@@ -14,6 +14,8 @@
 #include "bias_gpu.h"
 #include "pooling.h"
 
+#include "binary_benchmark.h"
+
 void lenet_label2truth(char **label, float *truth)
 {
     int x = atoi(label[0]);
@@ -68,7 +70,7 @@ void lenet() {
 
 int main()
 {
-    lenet();
+    // lenet();
     // int ksize = 2;
     // int pad = 0;
     // int stride = ksize;
@@ -81,5 +83,11 @@ int main()
     // // avgpool(img, h[0], w[0], c[0], ksize, stride, pad, space);
     // maxpool(img, h[0], w[0], c[0], ksize, stride, pad, space, index);
     // save_image_data(space, out_w, out_h, c[0], "./data/t.png");
+    // int head[1] = {12};
+    // FILE *fp = fopen("test.bin", "wb");
+    // fwrite(head, sizeof(int), 1, fp);
+    // fclose(fp);
+    void *buffer;
+    buffer = get_binary_benchmark("file_name.bin");
     return 0;
 }

@@ -63,7 +63,8 @@ COMMON+= -g
 endif
 
 ifeq ($(TEST), 1)
-COMMON+= -Ilumos_t
+COMMON+= -Ilumos_t \
+		 -Ilumos_t/tool
 VPATH+=	./lumos_t \
 		./lumos_t/tool \
 		./lumos_t/core \
@@ -87,10 +88,10 @@ OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o \
 	  	mse_layer_gpu.o
 endif
 
-EXECOBJA=im2col_test.o
+EXECOBJA=main.o
 
 ifeq ($(TEST), 1)
-OBJ+= utest.o
+OBJ+= utest.o binary_benchmark.o
 endif
 
 ifeq ($(GPU), 1)
