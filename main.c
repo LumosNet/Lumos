@@ -1,93 +1,91 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include "cJSON.h"
 
-#include "cpu.h"
-#include "graph.h"
-#include "layer.h"
-#include "im2col_layer.h"
-#include "connect_layer.h"
-#include "mse_layer.h"
-#include "session.h"
-#include "manager.h"
-#include "dispatch.h"
+char *message = 
+"{                              \
+    \"name\":\"mculover666\",   \
+    \"age\": 22,                \
+    \"weight\": 55.5,           \
+    \"address\":                \
+        {                       \
+            \"country\": \"China\",\
+            \"zip-code\": 111111\
+        },                      \
+    \"skill\": [\"c\", \"Java\", \"Python\"],\
+    \"array\": [0.1, 0.2, 0.3],\
+    \"student\": false         \
+}";
 
-#include "bias_gpu.h"
-#include "pooling.h"
-
-#include "binary_benchmark.h"
-
-void lenet_label2truth(char **label, float *truth)
+int main(void)
 {
-    int x = atoi(label[0]);
-    one_hot_encoding(10, x, truth);
-}
+    cJSON* cjson_test = NULL;
+    cJSON* cjson_name = NULL;
+    cJSON* cjson_age = NULL;
+    cJSON* cjson_weight = NULL;
+    cJSON* cjson_address = NULL;
+    cJSON* cjson_address_country = NULL;
+    cJSON* cjson_address_zipcode = NULL;
+    cJSON* cjson_array = NULL;
+    cJSON* cjson_skill = NULL;
+    cJSON* cjson_student = NULL;
+    int    skill_array_size = 0, i = 0;
+    cJSON* cjson_skill_item = NULL;
+    cJSON* cjson_array_item = NULL;
 
-void lenet_process_test_information(char **label, float *truth, float *predict, float loss, char *data_path)
-{
-    fprintf(stderr, "Test Data Path: %s\n", data_path);
-    fprintf(stderr, "Label:   %s\n", label[0]);
-    fprintf(stderr, "Truth:       Predict:\n");
-    for (int i = 0; i < 10; ++i){
-        printf("%f     %f\n", truth[i], predict[i]);
+    /* 解析整段JSO数据 */
+    cjson_test = cJSON_Parse(message);
+    if(cjson_test == NULL)
+    {
+        printf("parse fail.\n");
+        return -1;
     }
-    fprintf(stderr, "Loss:    %f\n\n", loss);
-}
 
-void lenet() {
-    Graph *graph = create_graph("Lumos", 9);
-    Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 1, "logistic", "guass");
-    Layer *l2 = make_avgpool_layer(2);
-    Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, 1, "logistic", "guass");
-    Layer *l4 = make_avgpool_layer(2);
-    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, 1, "logistic", "guass");
-    Layer *l6 = make_im2col_layer(1);
-    Layer *l7 = make_connect_layer(84, 1, "logistic", "guass");
-    Layer *l8 = make_connect_layer(10, 1, "logistic", "guass");
-    Layer *l9 = make_mse_layer(10);
-    append_layer2grpah(graph, l1);
-    append_layer2grpah(graph, l2);
-    append_layer2grpah(graph, l3);
-    append_layer2grpah(graph, l4);
-    append_layer2grpah(graph, l5);
-    append_layer2grpah(graph, l6);
-    append_layer2grpah(graph, l7);
-    append_layer2grpah(graph, l8);
-    append_layer2grpah(graph, l9);
+    /* 依次根据名称提取JSON数据（键值对） */
+    cjson_name = cJSON_GetObjectItem(cjson_test, "name");
+    cjson_age = cJSON_GetObjectItem(cjson_test, "age");
+    cjson_weight = cJSON_GetObjectItem(cjson_test, "weight");
 
-    Session *sess = create_session();
-    bind_graph(sess, graph);
-    create_train_scene(sess, 32, 32, 1, 1, 10, lenet_label2truth, "/usr/local/lumos/data/mnist/train.txt", "/usr/local/lumos/data/mnist/train_label.txt");
-    init_train_scene(sess, 500, 16, 16, NULL);
-    // session_train(sess, 0.1, "./lumos.w");
+    printf("name: %s\n", cjson_name->valuestring);
+    printf("age:%d\n", cjson_age->valueint);
+    printf("weight:%.1f\n", cjson_weight->valuedouble);
 
-    // Session *t_sess = create_session();
-    // bind_graph(t_sess, graph);
-    // create_test_scene(t_sess, 32, 32, 1, 1, 10, lenet_label2truth, "/usr/local/lumos/data/mnist/test.txt", "/usr/local/lumos/data/mnist/test_label.txt");
-    // init_test_scene(t_sess, "./lumos.w");
-    // session_test(t_sess, lenet_process_test_information);
-}
+    /* 解析嵌套json数据 */
+    cjson_address = cJSON_GetObjectItem(cjson_test, "address");
+    cjson_address_country = cJSON_GetObjectItem(cjson_address, "country");
+    cjson_address_zipcode = cJSON_GetObjectItem(cjson_address, "zip-code");
+    printf("address-country:%s\naddress-zipcode:%d\n", cjson_address_country->valuestring, cjson_address_zipcode->valueint);
 
+    /* 解析数组 */
+    cjson_skill = cJSON_GetObjectItem(cjson_test, "skill");
+    skill_array_size = cJSON_GetArraySize(cjson_skill);
+    printf("skill:[");
+    for(i = 0; i < skill_array_size; i++)
+    {
+        cjson_skill_item = cJSON_GetArrayItem(cjson_skill, i);
+        printf("%s,", cjson_skill_item->valuestring);
+    }
+    printf("\b]\n");
 
-int main()
-{
-    // lenet();
-    // int ksize = 2;
-    // int pad = 0;
-    // int stride = ksize;
-    // int h[1], w[1], c[1];
-    // float *img = load_image_data("./data/1.jpg", w, h, c);
-    // int out_h = (h[0] + 2 * pad - ksize) / stride + 1;
-    // int out_w = (w[0] + 2 * pad - ksize) / stride + 1;
-    // float *space = malloc(out_h*out_w*c[0]*sizeof(float));
-    // int *index = malloc(out_h*out_w*c[0]*sizeof(int));
-    // // avgpool(img, h[0], w[0], c[0], ksize, stride, pad, space);
-    // maxpool(img, h[0], w[0], c[0], ksize, stride, pad, space, index);
-    // save_image_data(space, out_w, out_h, c[0], "./data/t.png");
-    // int head[1] = {12};
-    // FILE *fp = fopen("test.bin", "wb");
-    // fwrite(head, sizeof(int), 1, fp);
-    // fclose(fp);
-    void *buffer;
-    buffer = get_binary_benchmark("file_name.bin");
+    /* 解析布尔型数据 */
+    cjson_student = cJSON_GetObjectItem(cjson_test, "student");
+    if(cjson_student->valueint == 0)
+    {
+        printf("student: false\n");
+    }
+    else
+    {
+        printf("student:error\n");
+    }
+
+    cjson_array = cJSON_GetObjectItem(cjson_test, "array");
+    int float_array_size = cJSON_GetArraySize(cjson_array);
+    printf("array:[");
+    for(i = 0; i < float_array_size; i++)
+    {
+        cjson_array_item = cJSON_GetArrayItem(cjson_array, i);
+        double x = cjson_array_item->valuedouble;
+        printf("%f,", x);
+    }
+    printf("\b]\n");
     return 0;
 }

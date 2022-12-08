@@ -1,7 +1,7 @@
 LINUX=1
 GPU=0
 DEBUG=0
-TEST=1
+TEST=0
 
 ARCH= 	-gencode arch=compute_35,code=sm_35 \
       	-gencode arch=compute_50,code=[sm_50,compute_50] \
@@ -9,7 +9,8 @@ ARCH= 	-gencode arch=compute_35,code=sm_35 \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
 
 # 源代码所在目录（包括所有子目录）
-VPATH=	./lumos/core/: \
+VPATH=	./lib/: \
+		./lumos/core/: \
 		./lumos/core/graph/: \
 		./lumos/core/graph/layer/: \
 		./lumos/core/graph/loss_layer/: \
@@ -80,7 +81,8 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		session.o manager.o dispatch.o \
 		progress_bar.o \
 		binary_f.o cfg_f.o text_f.o \
-		str_ops.o
+		str_ops.o \
+		cJSON_Utils.o cJSON.o
 
 ifeq ($(GPU), 1)
 OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o \
@@ -91,7 +93,7 @@ endif
 EXECOBJA=main.o
 
 ifeq ($(TEST), 1)
-OBJ+= utest.o binary_benchmark.o
+OBJ+= utest.o
 endif
 
 ifeq ($(GPU), 1)
