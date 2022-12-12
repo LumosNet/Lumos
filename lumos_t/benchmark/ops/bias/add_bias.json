@@ -1,9 +1,14 @@
 {
     "Public": {
-        "benchmark num": 3,
+        "interface": "add_bias",
+        "type": "ops",
+        "benchmarks": [
+            "BenchMark 1", "BenchMark 2", "BenchMark 3"
+        ],
         "params": [
             "origin", "bias", "n", "size"
-        ]
+        ],
+        "compare": "origin"
     },
     "BenchMark 1": {
         "origin": {
