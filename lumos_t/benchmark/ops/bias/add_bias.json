@@ -8,7 +8,7 @@
         "params": [
             "origin", "bias", "n", "size"
         ],
-        "compare": "origin"
+        "compare_type": "float"
     },
     "BenchMark 1": {
         "origin": {

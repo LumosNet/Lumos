@@ -13,6 +13,13 @@ char *load_from_json_file(char *path)
     return tmp;
 }
 
+void load_params(cJSON *cjson_benchmark, char **param_names, void **space, int num)
+{
+    for (int i = 0; i < num; ++i){
+        load_param(cjson_benchmark, param_names[i], space, i);
+    }
+}
+
 void load_param(cJSON *cjson_benchmark, char *param_name, void **space, int index)
 {
     void *value = NULL;

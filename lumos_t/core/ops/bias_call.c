@@ -7,4 +7,5 @@ void call_add_bias(void **params, void **ret)
     int *n = (int*)params[2];
     int *size = (int*)params[3];
     add_bias(origin, bias, n[0], size[0]);
+    ret[0] = (void*)origin;
 }

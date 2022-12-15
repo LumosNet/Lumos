@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-void do_single_interface_test(char **benchmark, char **bnames);
+void do_single_interface_test(char *benchmark);
 
 #ifdef __cplusplus
 }

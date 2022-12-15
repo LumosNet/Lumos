@@ -14,6 +14,7 @@ extern "C" {
 
 char *load_from_json_file(char *path);
 
+void load_params(cJSON *cjson_benchmark, char **param_names, void **space, int num);
 void load_param(cJSON *cjson_benchmark, char *param_name, void **space, int index);
 void load_float_array(cJSON *cjson_value, void *space, int num);
 void load_int_array(cJSON *cjson_value, void *space, int num);
