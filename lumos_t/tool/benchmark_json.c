@@ -20,7 +20,7 @@ void load_params(cJSON *cjson_benchmark, char **param_names, void **space, int n
     }
 }
 
-void load_param(cJSON *cjson_benchmark, char *param_name, void **space, int index)
+int load_param(cJSON *cjson_benchmark, char *param_name, void **space, int index)
 {
     void *value = NULL;
     cJSON *cjson_param = NULL;
@@ -39,6 +39,7 @@ void load_param(cJSON *cjson_benchmark, char *param_name, void **space, int inde
         load_int_array(cjson_value, value, size);
     }
     space[index] = value;
+    return size;
 }
 
 void load_float_array(cJSON *cjson_value, void *space, int num)
@@ -58,5 +59,12 @@ void load_int_array(cJSON *cjson_value, void *space, int num)
     for (int i = 0; i < num; ++i){
         cjson_array_item = cJSON_GetArrayItem(cjson_value, i);
         values[i] = cjson_array_item->valueint;
+    }
+}
+
+void release_params_space(void **space, int num)
+{
+    for (int i = 0; i < num; ++i){
+        free(space[i]);
     }
 }

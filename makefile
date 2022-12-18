@@ -1,5 +1,5 @@
 LINUX=1
-GPU=1
+GPU=0
 DEBUG=0
 TEST=1
 
@@ -65,12 +65,12 @@ endif
 
 ifeq ($(TEST), 1)
 COMMON+= -Ilumos_t \
+		 -Ilumos_t/core/ops \
 		 -Ilumos_t/tool
 VPATH+=	./lumos_t \
 		./lumos_t/tool \
 		./lumos_t/core \
 		./lumos_t/core/ops \
-		./lumos_t/core/graph \
 		./lumos_t/core_cu/graph \
 		./lumos_t/core_cu/ops
 endif
@@ -93,7 +93,11 @@ endif
 EXECOBJA=main.o
 
 ifeq ($(TEST), 1)
-OBJ+= utest.o benchmark_json.o
+OBJ+= bias_call.o
+endif
+
+ifeq ($(TEST), 1)
+OBJ+= utest.o benchmark_json.o call.o compare.o tsession.o
 endif
 
 ifeq ($(GPU), 1)

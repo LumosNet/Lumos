@@ -5,10 +5,7 @@
 #include <stdlib.h>
 
 #define SUCCESS            0
-#define ERROR_NUM          1
-#define ERROR_MEM_APPLY    2
-#define ERROR_MEM_SET      3
-#define ERROR_PARAM_INIT   4
+#define ERROR              1
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,6 +14,8 @@ extern "C" {
 void test_run(char *msg);
 void test_res(int flag, char *msg);
 void test_msg(char *msg);
+void test_msg_pass(char *msg);
+void test_msg_error(char *msg);
 
 #ifdef __cplusplus
 }

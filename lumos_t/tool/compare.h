@@ -15,7 +15,7 @@ extern "C" {
 
 int compare_float_array(float *a, float *b, int num);
 int compare_int_array(int *a, int *b, int num);
-int compare_string_array(int *a, int *b, int num);
+int compare_string_array(char **a, char **b, int num);
 
 #ifdef __cplusplus
 }

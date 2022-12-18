@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-void call_ops_bias(char *interface, void **params, void **ret);
+void call_ops(char *interface, void **params, void **ret);
 
 #ifdef __cplusplus
 }

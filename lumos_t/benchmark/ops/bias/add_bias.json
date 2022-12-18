@@ -59,11 +59,15 @@
         },
         "n": {
             "type": "int",
-            "value": 8
+            "value": [
+                8
+            ]
         },
         "size": {
             "type": "int",
-            "value": 8
+            "value": [
+                1
+            ]
         },
         "benchmark": {
             "type": "float",
@@ -99,11 +103,15 @@
         },
         "n": {
             "type": "int",
-            "value": 16
+            "value": [
+                3
+            ]
         },
         "size": {
             "type": "int",
-            "value": 3
+            "value": [
+                16
+            ]
         },
         "benchmark": {
             "type": "float",

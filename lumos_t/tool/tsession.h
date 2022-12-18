@@ -7,13 +7,16 @@
 
 #include "cJSON.h"
 #include "cJSON_Utils.h"
+#include "utest.h"
+#include "call.h"
 #include "benchmark_json.h"
+#include "compare.h"
 
 #ifdef  __cplusplus
 extern "C" {
 #endif
 
-void do_single_interface_test(char *benchmark);
+void run_benchmarks(char *benchmark);
 
 #ifdef __cplusplus
 }

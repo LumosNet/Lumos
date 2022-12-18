@@ -20,7 +20,7 @@ int compare_int_array(int *a, int *b, int num)
     return PASS;
 }
 
-int compare_string_array(int *a, int *b, int num)
+int compare_string_array(char **a, char **b, int num)
 {
     for (int i = 0; i < num; ++i){
         if (0 != strcmp(a[i], b[i])){
