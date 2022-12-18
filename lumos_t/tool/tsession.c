@@ -70,6 +70,6 @@ void run_benchmarks(char *benchmark)
             test_msg_error(benchmarks[i]);
         }
     }
-    // release_params_space(space, param_num+1);
+    release_params_space(space, param_num+1);
     test_res(all_pass, " ");
 }

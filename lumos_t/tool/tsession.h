@@ -16,6 +16,8 @@
 extern "C" {
 #endif
 
+// 返回值只有一个，默认拥有返回值，ret最后一个恒定为返回值
+// 当release内存时，params全部release，ret最后一个release
 void run_benchmarks(char *benchmark);
 
 #ifdef __cplusplus
