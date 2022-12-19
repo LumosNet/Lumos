@@ -1,36 +1,78 @@
 {
-    "BenchMark 1": {
-        "data": [
-            -99, -2, -0.1, 0, 0.1, 1, 99
+    "Public": {
+        "interface": "sum_cpu",
+        "core": "cpu",
+        "type": "ops",
+        "benchmarks": [
+            "BenchMark 1", "BenchMark 2", "BenchMark 3"
         ],
-        "num": 7,
-        "space": [
-            0.0
+        "params": [
+            "data", "num", "space"
         ],
-        "benchmark": [
-            -1
+        "compares": [
+            "space"
         ]
+    },
+    "BenchMark 1": {
+        "data": {
+            "type": "float",
+            "value": [
+                -99, -2, -0.1, 0, 0.1, 1, 99
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [7]
+        },
+        "space": {
+            "type": "float",
+            "value": [0.0]
+        },
+        "benchmark": {
+            "space": {
+                "type": "float",
+                "value": [-1]
+            }
+        }
     },
     "BenchMark 2": {
-        "data": [
-            99
-        ],
-        "num": 1,
-        "space": [
-            0.0
-        ],
-        "benchmark": [
-            99
-        ]
+        "data": {
+            "type": "float",
+            "value": [99]
+        },
+        "num": {
+            "type": "int",
+            "value": [1]
+        },
+        "space": {
+            "type": "float",
+            "value": [0.0]
+        },
+        "benchmark": {
+            "space": {
+                "type": "float",
+                "value": [99]
+            }
+        }
     },
     "BenchMark 3": {
-        "data": null,
-        "num": 0,
-        "space": [
-            0.0
-        ],
-        "benchmark": [
-            0.0
-        ]
+        "data": {
+            "type": "float",
+            "value": []
+        },
+        "num": {
+            "type": "int",
+            "value": [0]
+        },
+        "space": {
+            "type": "float",
+            "value": [0.0]
+        },
+        "benchmark": {
+            "space": {
+                "type": "float",
+                "value": [0.0]
+            }
+        }
     }
 }

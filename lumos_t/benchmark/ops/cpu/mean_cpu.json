@@ -1,14 +1,38 @@
 {
-    "BenchMark 1": {
-        "data": [
-            -1, -2, 0, 0.9, 0.1, 2, 7
+    "Public": {
+        "interface": "mean_cpu",
+        "core": "cpu",
+        "type": "ops",
+        "benchmarks": [
+            "BenchMark 1"
         ],
-        "num": 7,
-        "space": [
-            0
+        "params": [
+            "data", "num", "space"
         ],
-        "benchmark": [
-            1
+        "compares": [
+            "space"
         ]
+    },
+    "BenchMark 1": {
+        "data": {
+            "type": "float",
+            "value": [
+                -1, -2, 0, 0.9, 0.1, 2, 7
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [7]
+        },
+        "space": {
+            "type": "int",
+            "value": [0]
+        },
+        "benchmark": {
+            "space": {
+                "type": "int",
+                "value": [1]
+            }
+        }
     }
 }
