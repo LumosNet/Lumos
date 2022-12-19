@@ -24,7 +24,8 @@ void call_maxpool(void **params, void **ret)
     int *stride = (int*)params[5];
     int *pad = (int*)params[6];
     float *space = (float*)params[7];
-    maxpool(im, h[0], w[0], c[0], ksize[0], stride[0], pad[0], space);
+    int *index = (int*)params[8];
+    maxpool(im, h[0], w[0], c[0], ksize[0], stride[0], pad[0], space, index);
     ret[0] = (void*)space;
 }
 

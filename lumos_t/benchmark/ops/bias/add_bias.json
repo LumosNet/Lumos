@@ -1,6 +1,7 @@
 {
     "Public": {
         "interface": "add_bias",
+        "core": "cpu",
         "type": "ops",
         "benchmarks": [
             "BenchMark 1", "BenchMark 2", "BenchMark 3"

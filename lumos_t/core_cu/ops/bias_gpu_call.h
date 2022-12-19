@@ -11,7 +11,9 @@
 extern "C" {
 #endif
 
+#ifdef GPU
 void call_add_bias_gpu(void **params, void **ret);
+#endif
 
 #ifdef __cplusplus
 }

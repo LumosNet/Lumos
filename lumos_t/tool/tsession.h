@@ -20,6 +20,8 @@ extern "C" {
 // 当release内存时，params全部release，ret最后一个release
 void run_benchmarks(char *benchmark);
 
+void release_params_space(void **space, int num);
+
 #ifdef __cplusplus
 }
 #endif

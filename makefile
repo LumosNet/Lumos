@@ -93,7 +93,7 @@ endif
 EXECOBJA=main.o
 
 ifeq ($(TEST), 1)
-OBJ+= bias_call.o
+OBJ+= bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call.o
 endif
 
 ifeq ($(TEST), 1)

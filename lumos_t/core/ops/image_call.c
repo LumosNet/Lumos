@@ -27,8 +27,11 @@ void call_load_image_data(void **params, void **ret)
     int *w = (int*)params[1];
     int *h = (int*)params[2];
     int *c = (int*)params[3];
-    float *rvalue = load_image_data(img_path, w[0], h[0], c[0]);
-    ret[0] = (void*)rvalue;
+    float *rvalue = load_image_data(img_path, w, h, c);
+    ret[0] = (void*)w;
+    ret[1] = (void*)h;
+    ret[2] = (void*)c;
+    ret[3] = (void*)rvalue;
 }
 
 void call_save_image_data(void **params, void **ret)
@@ -39,8 +42,11 @@ void call_save_image_data(void **params, void **ret)
     int *c = (int*)params[3];
     char *savepath = (char*)params[4];
     save_image_data(img, w[0], h[0], c[0], savepath);
-    float *rvalue = load_image_data(savepath, w[0], h[0], c[0]);
-    ret[0] = (void*)rvalue;
+    float *rvalue = load_image_data(savepath, w, h, c);
+    ret[0] = (void*)w;
+    ret[1] = (void*)h;
+    ret[2] = (void*)c;
+    ret[3] = (void*)rvalue;
 }
 
 void call_resize_im(void **params, void **ret)

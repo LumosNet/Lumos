@@ -11,8 +11,10 @@
 extern "C" {
 #endif
 
+#ifdef GPU
 void call_im2col_gpu(void **params, void **ret);
 void call_col2im_gpu(void **params, void **ret);
+#endif
 
 #ifdef __cplusplus
 }

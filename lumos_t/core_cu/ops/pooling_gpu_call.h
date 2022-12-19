@@ -11,11 +11,13 @@
 extern "C" {
 #endif
 
+#ifdef GPU
 void call_avgpool_gpu(void **params, void **ret);
 void call_maxpool_gpu(void **params, void **ret);
 
 void call_avgpool_gradient_gpu(void **params, void **ret);
 void call_maxpool_gradient_gpu(void **params, void **ret);
+#endif
 
 #ifdef __cplusplus
 }
