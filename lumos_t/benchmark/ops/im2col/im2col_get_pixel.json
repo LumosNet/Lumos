@@ -1,0 +1,16 @@
+{
+    "Public": {
+        "interface": "im2col_get_pixel",
+        "core": "cpu",
+        "type": "ops",
+        "benchmarks": [
+            "BenchMark 1", "BenchMark 2", "BenchMark 3", "BenchMark 4"
+        ],
+        "params": [
+            "data", "len", "x", "offset"
+        ],
+        "compares": [
+            "data"
+        ]
+    },
+}
