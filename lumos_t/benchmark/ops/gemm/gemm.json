@@ -1,0 +1,19 @@
+{
+    "Public": {
+        "interface": "add_cpu",
+        "core": "cpu",
+        "type": "ops",
+        "benchmarks": [
+            "BenchMark 1", "BenchMark 2", "BenchMark 3", "BenchMark 4"
+        ],
+        "params": [
+            "data", "len", "x", "offset"
+        ],
+        "compares": [
+            "data"
+        ]
+    },
+    "BenchMark 1": {
+        
+    }
+}

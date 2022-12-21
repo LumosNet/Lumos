@@ -8,7 +8,7 @@ void call_gemm(void **params, void **ret)
     int *AN = (int*)params[3];
     int *BM = (int*)params[4];
     int *BN = (int*)params[5];
-    int *ALPHA = (int*)params[6];
+    float *ALPHA = (float*)params[6];
     float *A = (float*)params[7];
     float *B = (float*)params[8];
     float *C = (float*)params[9];
@@ -23,7 +23,7 @@ void call_gemm_nn(void **params, void **ret)
     int *AN = (int*)params[1];
     int *BM = (int*)params[2];
     int *BN = (int*)params[3];
-    int *ALPHA = (int*)params[4];
+    float *ALPHA = (float*)params[4];
     float *A = (float*)params[5];
     float *B = (float*)params[6];
     float *C = (float*)params[7];
@@ -37,7 +37,7 @@ void call_gemm_tn(void **params, void **ret)
     int *AN = (int*)params[1];
     int *BM = (int*)params[2];
     int *BN = (int*)params[3];
-    int *ALPHA = (int*)params[4];
+    float *ALPHA = (float*)params[4];
     float *A = (float*)params[5];
     float *B = (float*)params[6];
     float *C = (float*)params[7];
@@ -51,7 +51,7 @@ void call_gemm_nt(void **params, void **ret)
     int *AN = (int*)params[1];
     int *BM = (int*)params[2];
     int *BN = (int*)params[3];
-    int *ALPHA = (int*)params[4];
+    float *ALPHA = (float*)params[4];
     float *A = (float*)params[5];
     float *B = (float*)params[6];
     float *C = (float*)params[7];
@@ -65,7 +65,7 @@ void call_gemm_tt(void **params, void **ret)
     int *AN = (int*)params[1];
     int *BM = (int*)params[2];
     int *BN = (int*)params[3];
-    int *ALPHA = (int*)params[4];
+    float *ALPHA = (float*)params[4];
     float *A = (float*)params[5];
     float *B = (float*)params[6];
     float *C = (float*)params[7];

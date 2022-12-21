@@ -66,6 +66,7 @@ endif
 ifeq ($(TEST), 1)
 COMMON+= -Ilumos_t \
 		 -Ilumos_t/core/ops \
+		 -Ilumos_t/core_cu/ops \
 		 -Ilumos_t/tool
 VPATH+=	./lumos_t \
 		./lumos_t/tool \

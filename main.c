@@ -6,6 +6,6 @@
 
 int main(void)
 {
-    run_benchmarks("./lumos_t/benchmark/ops/bias/add_bias.json");
+    run_benchmarks("./lumos_t/benchmark/ops/gemm/gemm_nn.json");
     return 0;
 }
