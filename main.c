@@ -6,6 +6,6 @@
 
 int main(void)
 {
-    run_benchmarks("./lumos_t/benchmark/ops/gemm/gemm_nn.json");
+    run_benchmarks("./lumos_t/benchmark/ops/gemm/gemm.json");
     return 0;
 }

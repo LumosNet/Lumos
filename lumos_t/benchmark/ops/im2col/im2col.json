@@ -1,0 +1,19 @@
+{
+    "Public": {
+        "interface": "gemm",
+        "core": "cpu",
+        "type": "ops",
+        "benchmarks": [
+            "BenchMark 1", "BenchMark 2", "BenchMark 3", "BenchMark 4", "BenchMark 5",
+            "BenchMark 6", "BenchMark 7", "BenchMark 8", "BenchMark 9", "BenchMark 10",
+            "BenchMark 11", "BenchMark 12", "BenchMark 13", "BenchMark 14", "BenchMark 15",
+            "BenchMark 16", "BenchMark 17", "BenchMark 18", "BenchMark 19", "BenchMark 20"
+        ],
+        "params": [
+            "TA", "TB", "AM", "AN", "BM", "BN", "ALPHA", "A", "B", "C"
+        ],
+        "compares": [
+            "C"
+        ]
+    }
+}
