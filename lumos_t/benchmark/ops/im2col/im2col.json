@@ -11,7 +11,9 @@
             "BenchMark 21", "BenchMark 22", "BenchMark 23", "BenchMark 24", "BenchMark 25",
             "BenchMark 26", "BenchMark 27", "BenchMark 28", "BenchMark 29", "BenchMark 30",
             "BenchMark 31", "BenchMark 32", "BenchMark 33", "BenchMark 34", "BenchMark 35",
-            "BenchMark 36", "BenchMark 37", "BenchMark 38", "BenchMark 39", "BenchMark 40"
+            "BenchMark 36", "BenchMark 37", "BenchMark 38", "BenchMark 39", "BenchMark 40",
+            "BenchMark 41", "BenchMark 42", "BenchMark 43", "BenchMark 44", "BenchMark 45",
+            "BenchMark 46"
         ],
         "params": [
             "img", "height", "width", "channel", "ksize", "stride", "pad", "space"
@@ -2692,7 +2694,7 @@
                     0, 0, -6, -9,
                     0, 0.7, 0, -0.7,
                     0, 0.8, 0, -0.8,
-                    0.6, 0.9, -0.6, -0.9,
+                    0.6, 0.9, -0.6, -0.9
                 ]
             }
         }
@@ -3003,7 +3005,24 @@
                     1, 2, 2, 1,
                     2, 1, 1, 2,
                     1, 2, 2, 1,
-                    
+                    2, 3, 3, 2,
+                    3, 3, 2, 2,
+                    3, 2, 2, 3,
+                    3, 2, 2, 3,
+                    2, 2, 3, 3,
+                    2, 3, 3, 2,
+                    2, 3, 3, 2,
+                    3, 3, 2, 2,
+                    3, 2, 2, 3,
+                    4, 3, 4, 3,
+                    3, 2, 3, 2,
+                    2, 1, 2, 1,
+                    4, 3, 4, 3,
+                    3, 2, 3, 2,
+                    2, 1, 2, 1,
+                    4, 3, 4, 3,
+                    3, 2, 3, 2,
+                    2, 1, 2, 1
                 ]
             }
         }
