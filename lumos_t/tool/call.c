@@ -56,6 +56,8 @@ void call_cu_ops(char *interface, void **params, void **ret)
 {
     if (0 == strcmp(interface, "add_bias_gpu")){
         call_add_bias_gpu(params, ret);
+    } else if (0 == strcmp(interface, "im2col_gpu")){
+        call_im2col_gpu(params, ret);
     }
 }
 #endif

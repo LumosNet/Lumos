@@ -12,5 +12,4 @@ void add_bias_gpu(float *origin, float *bias, int n, int size)
 {
     int num = n*size;
     add_bias_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(origin, bias, n, size);
-    printf("gpu finish\n");
 }

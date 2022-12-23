@@ -10,10 +10,10 @@ void call_add_bias_gpu(void **params, void **ret)
     float *bias_gpu = NULL;
     cudaMalloc((void**)&origin_gpu, size[0]*n[0]*sizeof(float));
     cudaMalloc((void**)&bias_gpu, n[0]*sizeof(float));
-    cudaMemcpy(origin, origin_gpu, size[0]*n[0]*sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy(bias, bias_gpu, n[0]*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(origin_gpu, origin, size[0]*n[0]*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(bias_gpu, bias, n[0]*sizeof(float), cudaMemcpyHostToDevice);
     add_bias_gpu(origin_gpu, bias_gpu, n[0], size[0]);
-    cudaMemcpy(origin_gpu, origin, size[0]*n[0]*sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(origin, origin_gpu, size[0]*n[0]*sizeof(float), cudaMemcpyDeviceToHost);
     cudaFree(origin_gpu);
     cudaFree(bias_gpu);
     ret[0] = (void*)origin;
