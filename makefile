@@ -1,5 +1,5 @@
 LINUX=1
-GPU=0
+GPU=1
 DEBUG=0
 TEST=1
 
@@ -95,6 +95,12 @@ EXECOBJA=main.o
 
 ifeq ($(TEST), 1)
 OBJ+= bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call.o
+endif
+
+ifeq ($(TEST), 1)
+ifeq ($(GPU), 1)
+OBJ+= bias_gpu_call.o im2col_gpu_call.o pooling_gpu_call.o
+endif
 endif
 
 ifeq ($(TEST), 1)

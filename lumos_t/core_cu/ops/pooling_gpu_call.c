@@ -16,6 +16,7 @@ void call_avgpool_gpu(void **params, void **ret)
 
 void call_maxpool_gpu(void **params, void **ret)
 {
+    float *im = (float*)params[0];
     int *h = (int*)params[1];
     int *w = (int*)params[2];
     int *c = (int*)params[3];
@@ -35,7 +36,7 @@ void call_avgpool_gradient_gpu(void **params, void **ret)
     int *h = (int*)params[1];
     int *w = (int*)params[2];
     int *c = (int*)params[3];
-    int *kszie = (int*)params[4];
+    int *ksize = (int*)params[4];
     int *stride = (int*)params[5];
     int *pad = (int*)params[6];
     float *delta_n = (float*)params[7];
@@ -49,7 +50,7 @@ void call_maxpool_gradient_gpu(void **params, void **ret)
     int *h = (int*)params[1];
     int *w = (int*)params[2];
     int *c = (int*)params[3];
-    int *kszie = (int*)params[4];
+    int *ksize = (int*)params[4];
     int *stride = (int*)params[5];
     int *pad = (int*)params[6];
     float *delta_n = (float*)params[7];
