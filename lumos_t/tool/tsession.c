@@ -59,11 +59,7 @@ void run_benchmarks(char *benchmark)
     for (int i = 0; i < benchmark_num; ++i){
         int compare_flag = 1;
         cjson_single_benchmark = cJSON_GetObjectItem(cjson_benchmark, benchmarks[i]);
-#ifdef GPU
-        load_params_gpu(cjson_single_benchmark, params, space, param_num);
-#else
         load_params(cjson_single_benchmark, params, space, param_num);
-#endif
         cjson_benchmark_value = cJSON_GetObjectItem(cjson_single_benchmark, "benchmark");
         if (0 == strcmp(type, "ops")){
 #ifdef GPU
@@ -72,12 +68,7 @@ void run_benchmarks(char *benchmark)
             call_ops(interface, space, ret);
 #endif
         }
-
-#ifdef GPU
-        compare_flag = compare_test_gpu(cjson_benchmark_value, ret, compares, compare_num);
-#else
         compare_flag = compare_test(cjson_benchmark_value, ret, compares, compare_num);
-#endif
         if (compare_flag == 0){
             test_msg_pass(benchmarks[i]);
         }

@@ -73,7 +73,8 @@ int load_param_gpu(cJSON *cjson_benchmark, char *param_name, void **space, int i
         load_int_array(cjson_value, value, size);
         cudaMemcpy(value, value_gpu, size*sizeof(int), cudaMemcpyHostToDevice);
     }
-    space[index] = value;
+    space[index] = value_gpu;
+    free(value);
     return size;
 }
 #endif
