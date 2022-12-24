@@ -13,6 +13,6 @@
 
 int main(void)
 {
-    run_benchmarks("./lumos_t/benchmark/core_cu/ops/im2col/im2col_gpu.json");
+    run_benchmarks("./lumos_t/benchmark/core_cu/ops/gemm/gemm_gpu.json");
     return 0;
 }

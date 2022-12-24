@@ -56,8 +56,20 @@ void call_cu_ops(char *interface, void **params, void **ret)
 {
     if (0 == strcmp(interface, "add_bias_gpu")){
         call_add_bias_gpu(params, ret);
+    } else if (0 == strcmp(interface, "gemm_gpu")){
+        call_gemm_gpu(params, ret);
+    } else if (0 == strcmp(interface, "gemm_nn_gpu")){
+        call_gemm_nn_gpu(params, ret);
+    } else if (0 == strcmp(interface, "gemm_nt_gpu")){
+        call_gemm_nt_gpu(params, ret);
+    } else if (0 == strcmp(interface, "gemm_tn_gpu")){
+        call_gemm_tn_gpu(params, ret);
+    } else if (0 == strcmp(interface, "gemm_tt_gpu")){
+        call_gemm_tt_gpu(params, ret);
     } else if (0 == strcmp(interface, "im2col_gpu")){
         call_im2col_gpu(params, ret);
+    } else if (0 == strcmp(interface, "col2im_gpu")){
+        call_col2im_gpu(params, ret);
     }
 }
 #endif
