@@ -1,7 +1,7 @@
 {
     "Public": {
-        "interface": "maxpool_gpu",
-        "core": "gpu",
+        "interface": "maxpool",
+        "core": "cpu",
         "type": "ops",
         "benchmarks": [
             "BenchMark 1", "BenchMark 2"

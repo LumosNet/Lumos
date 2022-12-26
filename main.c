@@ -2,17 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
-#include "curand.h"
-#include "cublas_v2.h"
-
-#include "bias_gpu.h"
-#include "cpu_gpu.h"
 #include "tsession.h"
 
 int main(void)
 {
-    run_benchmarks("./lumos_t/benchmark/core_cu/ops/gemm/gemm_gpu.json");
+    run_benchmarks("./lumos_t/benchmark/core/ops/pooling/avgpool.json");
+    run_benchmarks("./lumos_t/benchmark/core/ops/pooling/avgpool_gradient.json");
+    run_benchmarks("./lumos_t/benchmark/core/ops/pooling/maxpool.json");
+    run_benchmarks("./lumos_t/benchmark/core/ops/pooling/maxpool_gradient.json");
     return 0;
 }

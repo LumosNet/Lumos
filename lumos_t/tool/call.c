@@ -48,6 +48,14 @@ void call_ops(char *interface, void **params, void **ret)
         call_im2col(params, ret);
     } else if (0 == strcmp(interface, "col2im")){
         call_col2im(params, ret);
+    } else if (0 == strcmp(interface, "avgpool")){
+        call_avgpool(params, ret);
+    } else if (0 == strcmp(interface, "maxpool")){
+        call_maxpool(params, ret);
+    } else if (0 == strcmp(interface, "avgpool_gradient")){
+        call_avgpool_gradient(params, ret);
+    } else if (0 == strcmp(interface, "maxpool_gradient")){
+        call_maxpool_gradient(params, ret);
     }
 }
 
@@ -70,6 +78,14 @@ void call_cu_ops(char *interface, void **params, void **ret)
         call_im2col_gpu(params, ret);
     } else if (0 == strcmp(interface, "col2im_gpu")){
         call_col2im_gpu(params, ret);
+    } else if (0 == strcmp(interface, "avgpool_gpu")){
+        call_avgpool_gpu(params, ret);
+    } else if (0 == strcmp(interface, "maxpool_gpu")){
+        call_maxpool_gpu(params, ret);
+    } else if (0 == strcmp(interface, "avgpool_gradient_gpu")){
+        call_avgpool_gradient_gpu(params, ret);
+    } else if (0 == strcmp(interface, "maxpool_gradient_gpu")){
+        call_maxpool_gradient_gpu(params, ret);
     }
 }
 #endif
