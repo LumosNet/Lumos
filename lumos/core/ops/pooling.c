@@ -62,7 +62,7 @@ void maxpool(float *im, int h, int w, int c, int ksize, int stride, int pad, flo
                         int index_i = x + ksize_i - pad;
                         int index_j = y + ksize_j - pad;
                         if (index_i <= -1 || index_i >= h || index_j <= -1 || index_j >= w) continue;
-                        if (im[k*h*w + ksize_i*w + ksize_j] > max){
+                        if (im[k*h*w + index_i*w + index_j] > max){
                             max = im[k*h*w + index_i*w + index_j];
                             max_index = k*h*w + index_i*w + index_j;
                         }

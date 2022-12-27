@@ -27,6 +27,7 @@ void call_maxpool(void **params, void **ret)
     int *index = (int*)params[8];
     maxpool(im, h[0], w[0], c[0], ksize[0], stride[0], pad[0], space, index);
     ret[0] = (void*)space;
+    ret[1] = (void*)index;
 }
 
 void call_avgpool_gradient(void **params, void **ret)
