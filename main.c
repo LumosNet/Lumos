@@ -6,9 +6,7 @@
 
 int main(void)
 {
-    // run_benchmarks("./lumos_t/benchmark/core/ops/pooling/avgpool.json");
-    // run_benchmarks("./lumos_t/benchmark/core/ops/pooling/avgpool_gradient.json");
-    run_benchmarks("./lumos_t/benchmark/core/ops/pooling/maxpool.json");
-    run_benchmarks("./lumos_t/benchmark/core/ops/pooling/maxpool_gradient.json");
+    // run_benchmarks("./lumos_t/benchmark/core_cu/ops/im2col/im2col_gpu.json");
+    run_benchmarks("./lumos_t/benchmark/core_cu/ops/im2col/col2im_gpu.json");
     return 0;
 }

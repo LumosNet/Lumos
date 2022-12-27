@@ -43,10 +43,10 @@ void call_col2im_gpu(void **params, void **ret)
     int channels_col = out_c[0] * ksize[0] * ksize[0];
     cudaMalloc((void**)&img_g, height_col*width_col*channels_col*sizeof(float));
     cudaMalloc((void**)&space_g, out_h[0]*out_w[0]*out_c[0]*sizeof(float));
-    cudaMemcpy(img, img_g, height_col*width_col*channels_col*sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy(space, space_g, out_h[0]*out_w[0]*out_c[0]*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(img_g, img, height_col*width_col*channels_col*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(space_g, space, out_h[0]*out_w[0]*out_c[0]*sizeof(float), cudaMemcpyHostToDevice);
     col2im_gpu(img_g, ksize[0], stride[0], pad[0], out_h[0], out_w[0], out_c[0], space_g);
-    cudaMemcpy(space_g, space, out_h[0]*out_w[0]*out_c[0]*sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(space, space_g, out_h[0]*out_w[0]*out_c[0]*sizeof(float), cudaMemcpyDeviceToHost);
     cudaFree(img_g);
     cudaFree(space_g);
     ret[0] = (void*)space;

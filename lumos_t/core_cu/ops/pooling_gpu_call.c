@@ -97,7 +97,7 @@ void call_maxpool_gradient_gpu(void **params, void **ret)
     int out_w = (w[0] + 2 * pad[0] - ksize[0]) / stride[0] + 1;
     float *delta_l_g = NULL;
     float *delta_n_g = NULL;
-    float *index_g = NULL;
+    int *index_g = NULL;
     cudaMalloc((void**)&delta_l_g, h[0]*w[0]*c[0]*sizeof(float));
     cudaMalloc((void**)&delta_n_g, out_h*out_w*c[0]*sizeof(float));
     cudaMalloc((void**)&index_g, out_h*out_w*c[0]*sizeof(int));

@@ -16,11 +16,11 @@ __global__ void im2col_kernel(float *img, int height, int width, int channel, in
     int im_row = h_offset + h * stride - pad;
     int im_col = w_offset + w * stride - pad;
     int col_index = (height_col * width_col) * c + h * width_col + w;
-    if (im_row < 0 || im_col < 0 || im_row >= h || im_col >= w){
+    if (im_row < 0 || im_col < 0 || im_row >= height || im_col >= width){
         space[col_index] = 0;
         return;
     }
-    space[col_index] = img[im_col + w * (im_row + h * c_offset)];
+    space[col_index] = img[im_col + width * (im_row + height * c_offset)];
 }
 
 void im2col_gpu(float *img, int height, int width, int channel, int ksize, int stride, int pad, float *space)
@@ -50,8 +50,9 @@ __global__ void col2im_kernel(float *img, int ksize, int stride, int pad, int ou
     }
     if (h_index + 1 > ksize)
         o_flag = 1;
-    if (o_flag)
+    if (o_flag){
         space[c * out_h * out_w + i * out_w + j] = 0;
+    }
     else
     {
         int kernel_w_index = (j + pad) / stride;
@@ -61,8 +62,9 @@ __global__ void col2im_kernel(float *img, int ksize, int stride, int pad, int ou
             w_index = (kernel_w_index - width_col + 1) * stride + w_index;
             kernel_w_index = width_col - 1;
         }
-        if (w_index + 1 > ksize)
+        if (w_index + 1 > ksize){
             space[c * out_h * out_w + i * out_w + j] = 0;
+        }
         else
         {
             int index_w = kernel_h_index * width_col + kernel_w_index;
