@@ -60,7 +60,7 @@
         },
         "num": {
             "type": "int",
-            "value": [1]
+            "value": [4]
         },
         "x": {
             "type": "float",
@@ -68,7 +68,7 @@
         },
         "space": {
             "type": "float",
-            "value": [0]
+            "value": [0, 0, 0, 0]
         },
         "benchmark": {
             "space": {

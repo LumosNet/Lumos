@@ -172,7 +172,7 @@ void call_sum_channel_gpu(void **params, void **ret)
     float *data_g = NULL;
     float *space_g = NULL;
     cudaMalloc((void**)&data_g, h[0]*w[0]*c[0]*sizeof(float));
-    cudaMalloc((void**)space_g, c[0]*sizeof(float));
+    cudaMalloc((void**)&space_g, c[0]*sizeof(float));
     cudaMemcpy(data_g, data, h[0]*w[0]*c[0]*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(space_g, space, c[0]*sizeof(float), cudaMemcpyHostToDevice);
     sum_channel_gpu(data_g, h[0], w[0], c[0], ALPHA[0], space_g);

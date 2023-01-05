@@ -82,7 +82,7 @@ void call_cu_ops(char *interface, void **params, void **ret)
         call_saxpy_gpu(params, ret);
     } else if (0 == strcmp(interface, "sum_channel_gpu")){
         call_sum_channel_gpu(params, ret);
-    } else if (0 == strcmp(interface, "gemm_gpu")){
+    }else if (0 == strcmp(interface, "gemm_gpu")){
         call_gemm_gpu(params, ret);
     } else if (0 == strcmp(interface, "gemm_nn_gpu")){
         call_gemm_nn_gpu(params, ret);
