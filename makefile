@@ -99,7 +99,7 @@ endif
 
 ifeq ($(TEST), 1)
 ifeq ($(GPU), 1)
-OBJ+= bias_gpu_call.o gemm_gpu_call.o im2col_gpu_call.o pooling_gpu_call.o
+OBJ+= bias_gpu_call.o cpu_gpu_call.o gemm_gpu_call.o im2col_gpu_call.o pooling_gpu_call.o
 endif
 endif
 

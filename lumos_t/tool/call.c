@@ -64,6 +64,24 @@ void call_cu_ops(char *interface, void **params, void **ret)
 {
     if (0 == strcmp(interface, "add_bias_gpu")){
         call_add_bias_gpu(params, ret);
+    } else if (0 == strcmp(interface, "add_gpu")){
+        call_add_gpu(params, ret);
+    } else if (0 == strcmp(interface, "fill_gpu")){
+        call_fill_gpu(params, ret);
+    } else if (0 == strcmp(interface, "matrix_add_gpu")){
+        call_matrix_add_gpu(params, ret);
+    } else if (0 == strcmp(interface, "matrix_divide_gpu")){
+        call_matrix_divide_gpu(params, ret);
+    } else if (0 == strcmp(interface, "matrix_multiply_gpu")){
+        call_matrix_multiply_gpu(params, ret);
+    } else if (0 == strcmp(interface, "matrix_subtract_gpu")){
+        call_matrix_subtract_gpu(params, ret);
+    } else if (0 == strcmp(interface, "multy_gpu")){
+        call_multy_gpu(params, ret);
+    } else if (0 == strcmp(interface, "saxpy_gpu")){
+        call_saxpy_gpu(params, ret);
+    } else if (0 == strcmp(interface, "sum_channel_gpu")){
+        call_sum_channel_gpu(params, ret);
     } else if (0 == strcmp(interface, "gemm_gpu")){
         call_gemm_gpu(params, ret);
     } else if (0 == strcmp(interface, "gemm_nn_gpu")){

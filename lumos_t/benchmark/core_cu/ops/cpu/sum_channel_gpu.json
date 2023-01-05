@@ -1,0 +1,166 @@
+{
+    "Public": {
+        "interface": "sum_channel_gpu",
+        "core": "gpu",
+        "type": "ops",
+        "benchmarks": [
+            "BenchMark 1", "BenchMark 2", "BenchMark 3", "BenchMark 4"
+        ],
+        "params": [
+            "data", "h", "w", "c", "ALPHA", "space"
+        ],
+        "compares": [
+            "space"
+        ]
+    },
+    "BenchMark 1": {
+        "data": {
+            "type": "float",
+            "value": [
+                1, 2, 3, 4,
+                0.1, 0.2, 0.3, 0.4,
+                1, -2, 3, -4,
+                -0.1, 0.2, -0.3, 0.4
+            ]
+        },
+        "h": {
+            "type": "int",
+            "value": [4]
+        },
+        "w": {
+            "type": "int",
+            "value": [4]
+        },
+        "c": {
+            "type": "int",
+            "value": [1]
+        },
+        "ALPHA": {
+            "type": "float",
+            "value": [1]
+        },
+        "space": {
+            "type": "float",
+            "value": [0]
+        },
+        "benchmark": {
+            "space": {
+                "type": "float",
+                "value": [9.2]
+            }
+        }
+    },
+    "BenchMark 2": {
+        "data": {
+            "type": "float",
+            "value": [
+                1, 2, 3, 4,
+                0.1, 0.2, 0.3, 0.4,
+                1, -2, 3, -4,
+                -0.1, 0.2, -0.3, 0.4,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                0, 0, 0, 0,
+                -1, -2, -3, -4,
+                1, 2, 3, 4,
+                0.1, 0.2, 0.3, 0.4,
+                0.1, 0.2, 0.3, 0.4
+            ]
+        },
+        "h": {
+            "type": "int",
+            "value": [4]
+        },
+        "w": {
+            "type": "int",
+            "value": [4]
+        },
+        "c": {
+            "type": "int",
+            "value": [3]
+        },
+        "ALPHA": {
+            "type": "float",
+            "value": [1]
+        },
+        "space": {
+            "type": "float",
+            "value": [0, 0, 0]
+        },
+        "benchmark": {
+            "space": {
+                "type": "float",
+                "value": [9.2, 0, 2]
+            }
+        }
+    },
+    "BenchMark 3": {
+        "data": {
+            "type": "float",
+            "value": [
+                1
+            ]
+        },
+        "h": {
+            "type": "int",
+            "value": [1]
+        },
+        "w": {
+            "type": "int",
+            "value": [1]
+        },
+        "c": {
+            "type": "int",
+            "value": [1]
+        },
+        "ALPHA": {
+            "type": "float",
+            "value": [1]
+        },
+        "space": {
+            "type": "float",
+            "value": [0]
+        },
+        "benchmark": {
+            "space": {
+                "type": "float",
+                "value": [1]
+            }
+        }
+    },
+    "BenchMark 4": {
+        "data": {
+            "type": "float",
+            "value": [
+                1, 0, -0.1
+            ]
+        },
+        "h": {
+            "type": "int",
+            "value": [1]
+        },
+        "w": {
+            "type": "int",
+            "value": [1]
+        },
+        "c": {
+            "type": "int",
+            "value": [3]
+        },
+        "ALPHA": {
+            "type": "float",
+            "value": [1]
+        },
+        "space": {
+            "type": "float",
+            "value": [0, 0, 0]
+        },
+        "benchmark": {
+            "space": {
+                "type": "float",
+                "value": [1, 0, -0.1]
+            }
+        }
+    }
+}
