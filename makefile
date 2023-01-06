@@ -1,7 +1,7 @@
 LINUX=1
 GPU=0
 DEBUG=0
-TEST=1
+TEST=0
 
 ARCH= 	-gencode arch=compute_35,code=sm_35 \
       	-gencode arch=compute_50,code=[sm_50,compute_50] \
@@ -87,7 +87,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 
 ifeq ($(GPU), 1)
 OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o \
-	  	avgpool_layer_gpu.o connect_layer_gpu.o convolutional_layer_gpu.o im2col_layer_gpu.o \
+	  	avgpool_layer_gpu.o maxpool_layer_gpu.o connect_layer_gpu.o convolutional_layer_gpu.o im2col_layer_gpu.o \
 	  	mse_layer_gpu.o
 endif
 

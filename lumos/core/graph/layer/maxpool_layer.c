@@ -10,8 +10,13 @@ Layer *make_maxpool_layer(int ksize)
     l->ksize = ksize;
     l->stride = ksize;
 
+#ifdef GPU
+    l->forward = forward_maxpool_layer_gpu;
+    l->backward = backward_maxpool_layer_gpu;
+#else
     l->forward = forward_maxpool_layer;
     l->backward = backward_maxpool_layer;
+#endif
 
     l->update = NULL;
     l->init_layer_weights = NULL;
