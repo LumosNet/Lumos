@@ -8,8 +8,6 @@
 extern "C"{
 #endif
 
-float im2col_get_pixel(float *img, int h, int w, int row, int col, int channel, int pad);
-
 void im2col(float *img, int h, int w, int c, int ksize, int stride, int pad, float *space);
 void col2im(float *img, int ksize, int stride, int pad, int out_h, int out_w, int out_c, float *space);
 

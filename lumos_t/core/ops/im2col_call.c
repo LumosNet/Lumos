@@ -1,19 +1,5 @@
 #include "im2col_call.h"
 
-void call_im2col_get_pixel(void **params, void **ret)
-{
-    float *img = (float*)params[0];
-    int *h = (int*)params[1];
-    int *w = (int*)params[2];
-    int *row = (int*)params[3];
-    int *col = (int*)params[4];
-    int *channel = (int*)params[5];
-    int *pad = (int*)params[6];
-    float *rvalue = malloc(sizeof(float));
-    rvalue[0] = im2col_get_pixel(img, h[0], w[0], row[0], col[0], channel[0], pad[0]);
-    ret[0] = (void*)rvalue;
-}
-
 void call_im2col(void **params, void **ret)
 {
     float *img = (float*)params[0];

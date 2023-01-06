@@ -11,8 +11,6 @@
 extern "C" {
 #endif
 
-void call_im2col_get_pixel(void **params, void **ret);
-
 void call_im2col(void **params, void **ret);
 void call_col2im(void **params, void **ret);
 

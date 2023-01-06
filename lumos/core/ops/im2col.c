@@ -1,16 +1,5 @@
 #include "im2col.h"
 
-float im2col_get_pixel(float *img, int h, int w, int row, int col, int channel, int pad)
-{
-    row -= pad;
-    col -= pad;
-
-    if (row < 0 || col < 0 ||
-        row >= h || col >= w)
-        return 0;
-    return img[col + w * (row + h * channel)];
-}
-
 void im2col(float *img, int height, int width, int channel, int ksize, int stride, int pad, float *space)
 {
     int height_col = (height + 2 * pad - ksize) / stride + 1;
@@ -29,7 +18,11 @@ void im2col(float *img, int height, int width, int channel, int ksize, int strid
                 int im_row = h_offset + h * stride;
                 int im_col = w_offset + w * stride;
                 int col_index = (height_col * width_col) * c + h * width_col + w;
-                space[col_index] = im2col_get_pixel(img, height, width, im_row, im_col, c_offset, pad);
+                if (im_row < 0 || im_col < 0 || im_row >= height || im_col >= width){
+                    space[col_index] = 0;
+                    continue;
+                }
+                space[col_index] = img[im_col + width * (im_row + height * c_offset)];
             }
         }
     }

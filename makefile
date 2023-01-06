@@ -1,7 +1,7 @@
 LINUX=1
-GPU=0
+GPU=1
 DEBUG=0
-TEST=0
+TEST=1
 
 ARCH= 	-gencode arch=compute_35,code=sm_35 \
       	-gencode arch=compute_50,code=[sm_50,compute_50] \

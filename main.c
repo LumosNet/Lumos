@@ -13,6 +13,8 @@
 #include "manager.h"
 #include "dispatch.h"
 
+#include "tsession.h"
+
 void lenet_label2truth(char **label, float *truth)
 {
     int x = atoi(label[0]);
@@ -66,6 +68,10 @@ void lenet() {
 
 int main()
 {
-    lenet();
+    // lenet();
+    // run_all_benchmarks("./lumos_t/benchmark/benchmarks.txt");
+    run_all_benchmarks("./lumos_t/benchmark/benchmarks_cu.txt");
+    // run_benchmarks("./lumos_t/benchmark/core/ops/bias/add_bias.json");
+    return 0;
 }
 

@@ -42,8 +42,6 @@ void call_ops(char *interface, void **params, void **ret)
         call_gemm_tn(params, ret);
     } else if (0 == strcmp(interface, "gemm_tt")){
         call_gemm_tt(params, ret);
-    } else if (0 == strcmp(interface, "im2col_get_pixel")){
-        call_im2col_get_pixel(params, ret);
     } else if (0 == strcmp(interface, "im2col")){
         call_im2col(params, ret);
     } else if (0 == strcmp(interface, "col2im")){

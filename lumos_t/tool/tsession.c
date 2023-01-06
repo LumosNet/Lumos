@@ -80,6 +80,26 @@ void run_benchmarks(char *benchmark)
     test_res(all_pass, " ");
 }
 
+void run_all_benchmarks(char *benchmarks)
+{
+    FILE *fp = fopen(benchmarks, "r");
+    fseek(fp, 0, SEEK_END);
+    int file_size = ftell(fp);
+    char *tmp = (char*)malloc(file_size * sizeof(char));
+    memset(tmp, '\0', file_size * sizeof(char));
+    fseek(fp, 0, SEEK_SET);
+    fread(tmp, sizeof(char), file_size, fp);
+    fclose(fp);
+    int head = 0;
+    for (int i = 0; i < file_size; ++i){
+        if (tmp[i] == '\n'){
+            tmp[i] = '\0';
+            run_benchmarks(tmp+head);
+            head = i+1;
+        }
+    }
+}
+
 void release_params_space(void **space, int num)
 {
     for (int i = 0; i < num; ++i){
