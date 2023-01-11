@@ -1,0 +1,467 @@
+{
+    "Public": {
+        "interface": "activate_list_gpu",
+        "core": "gpu",
+        "type": "ops",
+        "benchmarks": [
+            "BenchMark 1", "BenchMark 2", "BenchMark 3", "BenchMark 4",
+            "BenchMark 5", "BenchMark 6", "BenchMark 7", "BenchMark 8",
+            "BenchMark 9", "BenchMark 10", "BenchMark 11", "BenchMark 12",
+            "BenchMark 13", "BenchMark 14"
+        ],
+        "params": [
+            "origin", "num", "type"
+        ],
+        "compares": [
+            "origin"
+        ]
+    },
+    "BenchMark 1": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "stair"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+
+                ]
+            }
+        }
+    },
+    "BenchMark 2": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "hardtan"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    },
+    "BenchMark 3": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "linear"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    },
+    "BenchMark 4": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "logistic"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    },
+    "BenchMark 5": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "loggy"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    },
+    "BenchMark 6": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "relu"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    },
+    "BenchMark 7": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "elu"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    },
+    "BenchMark 8": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "selu"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    },
+    "BenchMark 9": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "relie"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    },
+    "BenchMark 10": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "ramp"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    },
+    "BenchMark 11": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "leaky"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    },
+    "BenchMark 12": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "tanh"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    },
+    "BenchMark 13": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "plse"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    },
+    "BenchMark 14": {
+        "origin": {
+            "type": "float",
+            "value": [
+                -102,
+                -13,
+                -6,
+                -0.3,
+                0,
+                0.3,
+                6,
+                13,
+                102
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [9]
+        },
+        "type": {
+            "type": "string",
+            "value": "lhtan"
+        },
+        "benchmark": {
+            "origin": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    }
+}
