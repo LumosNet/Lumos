@@ -1,6 +1,15 @@
 #ifndef IM2COL_LAYER_GPU_CALL_H
 #define IM2COL_LAYER_GPU_CALL_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "cuda_runtime.h"
+#include "device_launch_parameters.h"
+#include "curand.h"
+#include "cublas_v2.h"
+
 #include "layer.h"
 #include "im2col_layer.h"
 
