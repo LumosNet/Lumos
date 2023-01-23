@@ -22,6 +22,7 @@ void load_params(cJSON *cjson_benchmark, char **param_names, void **space, int n
 
 int load_param(cJSON *cjson_benchmark, char *param_name, void **space, int index)
 {
+    int size = 0;
     void *value = NULL;
     cJSON *cjson_param = NULL;
     cJSON *cjson_type = NULL;
@@ -29,14 +30,19 @@ int load_param(cJSON *cjson_benchmark, char *param_name, void **space, int index
     cjson_param = cJSON_GetObjectItem(cjson_benchmark, param_name);
     cjson_type = cJSON_GetObjectItem(cjson_param, "type");
     cjson_value = cJSON_GetObjectItem(cjson_param, "value");
-    int size = cJSON_GetArraySize(cjson_value);
     char *type = cjson_type->valuestring;
-    if (0 == strcmp(type, "float")){
-        value = (void*)malloc(size*sizeof(float));
-        load_float_array(cjson_value, value, size);
-    } else if (0 == strcmp(type, "int")){
-        value = (void*)malloc(size*sizeof(int));
-        load_int_array(cjson_value, value, size);
+    if (0 == strcmp(type, "string")){
+        value = cJSON_GetStringValue(cjson_value);
+        size = 1;
+    } else {
+        size = cJSON_GetArraySize(cjson_value);
+        if (0 == strcmp(type, "float")){
+            value = (void*)malloc(size*sizeof(float));
+            load_float_array(cjson_value, value, size);
+        } else if (0 == strcmp(type, "int")){
+            value = (void*)malloc(size*sizeof(int));
+            load_int_array(cjson_value, value, size);
+        }
     }
     space[index] = value;
     return size;
