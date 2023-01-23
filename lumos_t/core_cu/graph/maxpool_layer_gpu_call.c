@@ -50,8 +50,18 @@ void call_backward_maxpool_layer_gpu(void **params, void **ret)
     int *index_g = NULL;
     Layer *l = make_maxpool_layer(ksize[0]);
     init_maxpool_layer(l, w[0], h[0], c[0]);
-    l->delta = l_delta;
-    l->index = index;
-    l->backward(*l, rate[0], num[0], n_delta);
-    ret[0] = l->delta;
+    cudaMalloc(l_delta_g, l->inputs*sizeof(float));
+    cudaMalloc(n_delta_g, l->outputs*sizeof(float));
+    cudaMalloc(index_g, l->outputs*sizeof(int));
+    cudaMemcpy(l_delta_g, l_delta, l->inputs*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(n_delta_g, n_delta, l->outputs*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(index_g, index, l->outputs*sizeof(float), cudaMemcpyHostToDevice);
+    l->delta = l_delta_g;
+    l->index = index_g;
+    l->backward(*l, rate[0], num[0], n_delta_g);
+    cudaMemcpy(l_delta, l_delta_g, l->inputs*sizeof(float), cudaMemcpyDeviceToDevice);
+    cudaFree(l_delta_g);
+    cudaFree(n_delta_g);
+    cudaFree(index_g);
+    ret[0] = l_delta;
 }
