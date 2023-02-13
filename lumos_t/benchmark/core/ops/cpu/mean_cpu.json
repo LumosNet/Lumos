@@ -25,12 +25,12 @@
             "value": [7]
         },
         "space": {
-            "type": "int",
+            "type": "float",
             "value": [0]
         },
         "benchmark": {
             "space": {
-                "type": "int",
+                "type": "float",
                 "value": [1]
             }
         }

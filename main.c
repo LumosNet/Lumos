@@ -11,6 +11,8 @@
 #include "manager.h"
 #include "dispatch.h"
 
+#include "tsession.h"
+
 void mnist_label2truth(char **label, float *truth)
 {
     int x = atoi(label[0]);
@@ -56,6 +58,7 @@ void full_connect_mnist () {
 
 int main()
 {
-    full_connect_mnist();
+    // full_connect_mnist();
+    run_all_benchmarks("./lumos_t/benchmark/benchmarks.txt");
     return 0;
 }

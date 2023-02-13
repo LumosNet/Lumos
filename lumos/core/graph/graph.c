@@ -17,28 +17,6 @@ Graph *create_graph_by_cfg(CFGPiece *p, int layer_n)
     return graph;
 }
 
-Graph *load_graph_from_cfg(char *cfg_path)
-{
-    fprintf(stderr, "Load Graph From CFG File '%s'\n", cfg_path);
-    CFG *cfg = load_conf_cfg(cfg_path);
-    CFGPieces *pieces = cfg->pieces;
-    CFGPiece *net_params = pieces->head;
-    Graph *graph = create_graph_by_cfg(net_params, cfg->piece_num - 1);
-    CFGPiece *piece = net_params->next;
-    int index = 0;
-    while (piece)
-    {
-        fprintf(stderr, "%3d ", index + 1);
-        Layer *layer = create_layer_by_cfg(piece);
-        graph->layers[index] = layer;
-        graph->layer_num += 1;
-        index += 1;
-        piece = piece->next;
-    }
-    fprintf(stderr, "Load Graph From CFG File '%s' Succeed\n", cfg_path);
-    return graph;
-}
-
 void append_layer2grpah(Graph *graph, Layer *l)
 {
     graph->layers[graph->layer_num] = l;

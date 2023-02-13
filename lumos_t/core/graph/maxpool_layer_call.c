@@ -14,7 +14,7 @@ void call_forward_maxpool_layer(void **params, void **ret)
     init_maxpool_layer(l, w[0], h[0], c[0]);
     l->input = input;
     l->output = output;
-    l->index = index;
+    l->maxpool_index = index;
     l->forward(*l, num[0]);
     ret[0] = l->output;
     ret[1] = index;
@@ -34,7 +34,7 @@ void call_backward_maxpool_layer(void **params, void **ret)
     Layer *l = make_maxpool_layer(ksize[0]);
     init_maxpool_layer(l, w[0], h[0], c[0]);
     l->delta = l_delta;
-    l->index = index;
+    l->maxpool_index = index;
     l->backward(*l, rate[0], num[0], n_delta);
     ret[0] = l->delta;
 }
