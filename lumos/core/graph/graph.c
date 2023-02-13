@@ -39,36 +39,6 @@ Graph *load_graph_from_cfg(char *cfg_path)
     return graph;
 }
 
-Layer *create_layer_by_cfg(CFGPiece *p)
-{
-    Layer *layer;
-    if (0 == strcmp(p->name, "convolutional"))
-    {
-        layer = make_convolutional_layer_by_cfg(p->params);
-    }
-    else if (0 == strcmp(p->name, "avgpool"))
-    {
-        layer = make_avgpool_layer_by_cfg(p->params);
-    }
-    else if (0 == strcmp(p->name, "maxpool"))
-    {
-        layer = make_maxpool_layer_by_cfg(p->params);
-    }
-    else if (0 == strcmp(p->name, "connect"))
-    {
-        layer = make_connect_layer_by_cfg(p->params);
-    }
-    else if (0 == strcmp(p->name, "im2col"))
-    {
-        layer = make_im2col_layer_by_cfg(p->params);
-    }
-    else if (0 == strcmp(p->name, "mse"))
-    {
-        layer = make_mse_layer_by_cfg(p->params);
-    }
-    return layer;
-}
-
 void append_layer2grpah(Graph *graph, Layer *l)
 {
     graph->layers[graph->layer_num] = l;
@@ -110,15 +80,5 @@ void init_graph(Graph *g, int w, int h, int c)
         w = l->output_w;
         h = l->output_h;
         c = l->output_c;
-    }
-}
-
-void restore_graph(Graph *g)
-{
-    Layer *l;
-    for (int i = 0; i < g->layer_num; ++i)
-    {
-        l = g->layers[i];
-        restore_layer(l);
     }
 }

@@ -21,23 +21,6 @@ Layer *make_im2col_layer(int flag)
     return l;
 }
 
-Layer *make_im2col_layer_by_cfg(CFGParams *p)
-{
-    int flag = 1;
-    CFGParam *param = p->head;
-    while (param)
-    {
-        if (0 == strcmp(param->key, "flag"))
-        {
-            flag = atoi(param->val);
-        }
-        param = param->next;
-    }
-
-    Layer *l = make_im2col_layer(flag);
-    return l;
-}
-
 void init_im2col_layer(Layer *l, int w, int h, int c)
 {
     l->input_h = h,

@@ -20,22 +20,6 @@ Layer *make_mse_layer(int group)
     return l;
 }
 
-Layer *make_mse_layer_by_cfg(CFGParams *p)
-{
-    int group = 0;
-
-    CFGParam *param = p->head;
-    while (param){
-        if (0 == strcmp(param->key, "group")){
-            group = atoi(param->val);
-        }
-        param = param->next;
-    }
-
-    Layer *l = make_mse_layer(group);
-    return l;
-}
-
 void init_mse_layer(Layer *l, int w, int h, int c)
 {
     l->input_h = h;

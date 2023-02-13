@@ -81,7 +81,6 @@ typedef struct session{
 } Session;
 
 Session *create_session();
-void del_session();
 
 void bind_graph(Session *sess, Graph *graph);
 void bind_train_data(Session *sess, char *path);

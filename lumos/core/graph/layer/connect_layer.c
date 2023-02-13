@@ -34,34 +34,6 @@ Layer *make_connect_layer(int output, int bias, char *active, char *weights_init
     return l;
 }
 
-Layer *make_connect_layer_by_cfg(CFGParams *p)
-{
-    int output = 0;
-    int bias = 0;
-    char *active = NULL;
-
-    CFGParam *param = p->head;
-    while (param)
-    {
-        if (0 == strcmp(param->key, "output"))
-        {
-            output = atoi(param->val);
-        }
-        else if (0 == strcmp(param->key, "active"))
-        {
-            active = param->val;
-        }
-        else if (0 == strcmp(param->key, "bias"))
-        {
-            bias = atoi(param->val);
-        }
-        param = param->next;
-    }
-
-    Layer *l = make_connect_layer(output, bias, active, NULL);
-    return l;
-}
-
 void init_connect_layer(Layer *l, int w, int h, int c)
 {
     l->input_h = h;

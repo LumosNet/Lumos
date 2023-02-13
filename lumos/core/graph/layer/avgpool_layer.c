@@ -23,23 +23,6 @@ Layer *make_avgpool_layer(int ksize)
     return l;
 }
 
-Layer *make_avgpool_layer_by_cfg(CFGParams *p)
-{
-    CFGParam *param = p->head;
-    int ksize = 0;
-    while (param)
-    {
-        if (0 == strcmp(param->key, "ksize"))
-        {
-            ksize = atoi(param->val);
-        }
-        param = param->next;
-    }
-    Layer *l = make_avgpool_layer(ksize);
-
-    return l;
-}
-
 void init_avgpool_layer(Layer *l, int w, int h, int c)
 {
     l->input_h = h;

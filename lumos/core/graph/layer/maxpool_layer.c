@@ -25,24 +25,6 @@ Layer *make_maxpool_layer(int ksize)
     return l;
 }
 
-Layer *make_maxpool_layer_by_cfg(CFGParams *p)
-{
-    int ksize = 0;
-
-    CFGParam *param = p->head;
-    while (param)
-    {
-        if (0 == strcmp(param->key, "ksize"))
-        {
-            ksize = atoi(param->val);
-        }
-        param = param->next;
-    }
-
-    Layer *l = make_maxpool_layer(ksize);
-    return l;
-}
-
 void init_maxpool_layer(Layer *l, int w, int h, int c)
 {
     l->input_h = h;

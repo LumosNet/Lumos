@@ -22,7 +22,6 @@ extern "C" {
 
 
 Layer *make_connect_layer(int output, int bias, char *active, char *weights_init);
-Layer *make_connect_layer_by_cfg(CFGParams *p);
 
 void init_connect_layer(Layer *l, int w, int h, int c);
 void init_connect_weights(Layer *l);
