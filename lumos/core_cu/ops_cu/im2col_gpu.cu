@@ -16,11 +16,11 @@ __global__ void im2col_kernel(float *img, int height, int width, int channel, in
     int im_row = h_offset + h * stride - pad;
     int im_col = w_offset + w * stride - pad;
     int col_index = (height_col * width_col) * c + h * width_col + w;
-    if (im_row < 0 || im_col < 0 || im_row >= height || im_col >= width){
+    if (im_row-pad < 0 || im_col-pad < 0 || im_row-pad >= height || im_col-pad >= width){
         space[col_index] = 0;
         return;
     }
-    space[col_index] = img[im_col + width * (im_row + height * c_offset)];
+    space[col_index] = img[im_col + width * (im_row + height * c_offset - pad) - pad];
 }
 
 void im2col_gpu(float *img, int height, int width, int channel, int ksize, int stride, int pad, float *space)

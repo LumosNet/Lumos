@@ -59,6 +59,6 @@ void full_connect_mnist () {
 int main()
 {
     // full_connect_mnist();
-    run_all_benchmarks("./lumos_t/benchmark/benchmarks.txt");
+    run_benchmarks("./lumos_t/benchmark/core/ops/im2col/im2col.json");
     return 0;
 }

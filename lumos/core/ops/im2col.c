@@ -18,11 +18,11 @@ void im2col(float *img, int height, int width, int channel, int ksize, int strid
                 int im_row = h_offset + h * stride;
                 int im_col = w_offset + w * stride;
                 int col_index = (height_col * width_col) * c + h * width_col + w;
-                if (im_row < 0 || im_col < 0 || im_row >= height || im_col >= width){
+                if (im_row-pad < 0 || im_col-pad < 0 || im_row-pad >= height || im_col-pad >= width){
                     space[col_index] = 0;
                     continue;
                 }
-                space[col_index] = img[im_col + width * (im_row + height * c_offset)];
+                space[col_index] = img[im_col + width * (im_row + height * c_offset - pad) - pad];
             }
         }
     }
