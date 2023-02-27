@@ -67,6 +67,12 @@ void run_benchmarks(char *benchmark)
 #else
             call_ops(interface, space, ret);
 #endif
+        } else if (0 == strcmp(type, "graph")){
+#ifdef GPU
+            call_cu_graph(interface, space, ret);
+#else
+            call_graph(interface, space, ret);
+#endif
         }
         compare_flag = compare_test(cjson_benchmark_value, ret, compares, compare_num);
         if (compare_flag == 0){

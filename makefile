@@ -98,7 +98,7 @@ EXECOBJA=main.o
 
 ifeq ($(TEST), 1)
 OBJ+= bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call.o \
-	  avgpool_layer_call.o connect_layer_call.o convolutional_layer_call.o im2col_layer_call.o maxpool_layer_call.o
+	  avgpool_layer_call.o batchnorm_layer_call.o connect_layer_call.o convolutional_layer_call.o im2col_layer_call.o maxpool_layer_call.o
 endif
 
 ifeq ($(TEST), 1)

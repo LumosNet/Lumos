@@ -12,6 +12,13 @@
 #include "image_call.h"
 #include "pooling_call.h"
 
+#include "avgpool_layer_call.h"
+#include "batchnorm_layer_call.h"
+#include "connect_layer_call.h"
+#include "convolutional_layer_call.h"
+#include "im2col_layer_call.h"
+#include "maxpool_layer_call.h"
+
 #ifdef GPU
 #include "bias_gpu_call.h"
 #include "cpu_gpu_call.h"
@@ -25,9 +32,11 @@ extern "C" {
 #endif
 
 void call_ops(char *interface, void **params, void **ret);
+void call_graph(char *interface, void **params, void **ret);
 
 #ifdef GPU
 void call_cu_ops(char *interface, void **params, void **ret);
+void call_cu_graph(char *interface, void **params, void **ret);
 #endif
 
 #ifdef __cplusplus
