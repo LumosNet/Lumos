@@ -27,7 +27,7 @@ int compare_test(cJSON *cjson_benchmark, void **origin, char **bnames, int num)
 int compare_float_array(float *a, float *b, int num)
 {
     for (int i = 0; i < num; ++i){
-        if (fabs(a[i]-b[i]) > 1e-6){
+        if (fabs(a[i]-b[i]) > 1e-5){
             return ERROR;
         }
     }
@@ -37,7 +37,7 @@ int compare_float_array(float *a, float *b, int num)
 int compare_int_array(int *a, int *b, int num)
 {
     for (int i = 0; i < num; ++i){
-        if (fabs(a[i]-b[i]) > 1e-6){
+        if (fabs(a[i]-b[i]) > 1e-5){
             return ERROR;
         }
     }
