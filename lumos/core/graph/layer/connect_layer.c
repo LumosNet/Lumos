@@ -46,14 +46,10 @@ void init_connect_layer(Layer *l, int w, int h, int c)
     l->output_c = 1;
     l->outputs = l->output_h * l->output_w * l->output_c;
 
-    l->workspace_size = l->input_c * l->input_h * l->input_w * l->output_c * l->output_h * l->output_w;
+    l->workspace_size = l->inputs * l->outputs;
 
     l->kernel_weights_size = l->inputs * l->outputs;
-    l->bias_weights_size = 0;
-    if (l->bias)
-    {
-        l->bias_weights_size = l->outputs;
-    }
+    l->bias_weights_size = l->outputs;
     l->deltas = l->inputs;
 
     fprintf(stderr, "Connect         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
