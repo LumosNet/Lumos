@@ -1,5 +1,5 @@
 LINUX=1
-GPU=0
+GPU=1
 DEBUG=0
 TEST=1
 

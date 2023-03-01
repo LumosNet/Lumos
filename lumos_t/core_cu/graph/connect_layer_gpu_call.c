@@ -2,7 +2,7 @@
 
 void call_forward_connect_layer_gpu(void **params, void **ret)
 {
-    int *output = (int*)params[0];
+    int *ksize = (int*)params[0];
     int *bias = (int*)params[1];
     char *active = (char*)params[2];
     char *weights_init = (char*)params[3];
@@ -18,7 +18,7 @@ void call_forward_connect_layer_gpu(void **params, void **ret)
     float *output_g = NULL;
     float *kernel_weights_g = NULL;
     float *bias_weights_g = NULL;
-    Layer *l = make_connect_layer(output[0], bias[0], active, weights_init);
+    Layer *l = make_connect_layer(ksize[0], bias[0], active, weights_init);
     init_connect_layer(l, w[0], h[0], c[0]);
     cudaMalloc((void**)&input_g, l->inputs*sizeof(float));
     cudaMalloc((void**)&output_g, l->outputs*sizeof(float));
@@ -43,7 +43,7 @@ void call_forward_connect_layer_gpu(void **params, void **ret)
 
 void call_backward_connect_layer_gpu(void **params, void **ret)
 {
-    int *output = (int*)params[0];
+    int *ksize = (int*)params[0];
     int *bias = (int*)params[1];
     char *active = (char*)params[2];
     char *weights_init = (char*)params[3];
@@ -70,7 +70,7 @@ void call_backward_connect_layer_gpu(void **params, void **ret)
     float *bias_weights_g = NULL;
     float *update_bias_weights_g = NULL;
     float *workspace_g = NULL;
-    Layer *l = make_connect_layer(output[0], bias[0], active, weights_init);
+    Layer *l = make_connect_layer(ksize[0], bias[0], active, weights_init);
     init_connect_layer(l, w[0], h[0], c[0]);
     cudaMalloc((void**)&l_delta_g, l->inputs*sizeof(float));
     cudaMalloc((void**)&n_delta_g, l->outputs*sizeof(float));
