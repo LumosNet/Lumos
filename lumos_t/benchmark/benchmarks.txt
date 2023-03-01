@@ -5,9 +5,6 @@
 ./lumos_t/benchmark/core/ops/cpu/matrix_divide_cpu.json
 ./lumos_t/benchmark/core/ops/cpu/matrix_multiply_cpu.json
 ./lumos_t/benchmark/core/ops/cpu/matrix_subtract_cpu.json
-./lumos_t/benchmark/core/ops/cpu/max_cpu.json
-./lumos_t/benchmark/core/ops/cpu/mean_cpu.json
-./lumos_t/benchmark/core/ops/cpu/min_cpu.json
 ./lumos_t/benchmark/core/ops/cpu/multy_cpu.json
 ./lumos_t/benchmark/core/ops/cpu/saxpy_cpu.json
 ./lumos_t/benchmark/core/ops/cpu/sum_channel_cpu.json

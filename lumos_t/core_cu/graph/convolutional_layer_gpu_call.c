@@ -101,7 +101,7 @@ void call_backward_convolutional_layer_gpu(void **params, void **ret)
     cudaMemcpy(output_g, output, l->outputs*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(kernel_weights_g, kernel_weights, l->kernel_weights_size*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(update_kernel_weights_g, update_kernel_weights, l->kernel_weights_size*sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy(bias_weights_g, bias_weights_g, l->bias_weights_size*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(bias_weights_g, bias_weights, l->bias_weights_size*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(update_bias_weights_g, update_bias_weights, l->bias_weights_size*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(workspace_g, workspace, l->workspace_size*sizeof(float), cudaMemcpyHostToDevice);
     l->input = input_g;
