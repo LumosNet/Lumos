@@ -11,7 +11,7 @@
 void lumos(int argc, char **argv)
 {
     if (argc <= 1){
-        fprintf(stderr, "Lumos fatal: No input option; use option --help for more information")
+        fprintf(stderr, "Lumos fatal: No input option; use option --help for more information");
     }
     if (0 == strcmp(argv[1], "--version") || 0 == strcmp(argv[1], "-v"))
     {
@@ -38,8 +38,8 @@ void lumos(int argc, char **argv)
     else if (0 == strcmp(argv[1], "--help") || 0 == strcmp(argv[1], "-h"))
     {
         fprintf(stderr, "Usage commands:\n");
-        fprintf(stderr, "    --version : To get version\n");
-        fprintf(stderr, "    --demo : To run the demos\n");
+        fprintf(stderr, "    --version or -v : To get version\n");
+        fprintf(stderr, "    --demo or -d : To run the demos\n");
         fprintf(stderr, "        xor : Run the basic net\n");
         fprintf(stderr, "        mnist : Run the mnist demo created by all connect layer\n");
         fprintf(stderr, "        lenet5 : Run the classic convolutional net LeNet5\n");

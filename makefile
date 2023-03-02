@@ -1,5 +1,5 @@
 LINUX=1
-GPU=1
+GPU=0
 DEBUG=0
 TEST=1
 
@@ -19,6 +19,7 @@ VPATH=	./lib/: \
 		./lumos/utils/cmd/: \
 		./lumos/utils/file/: \
 		./lumos/utils/str/: \
+		./lumos/lumos/: \
 		./ \
 		./lumos/core_cu/: \
 		./lumos/core_cu/graph_cu/: \
@@ -35,13 +36,14 @@ COMMON=	-Ilib \
 		-Ilumos/utils/cmd \
 		-Ilumos/utils/file \
 		-Ilumos/utils/str \
+		-Ilumos/lumos \
 		-Ilumos/core_cu \
 		-Ilumos/core_cu/graph_cu \
 		-Ilumos/core_cu/ops_cu \
 		-Ilumos/core_cu/graph_cu/layer_cu \
 		-Ilumos/core_cu/graph_cu/loss_layer_cu \
 
-EXEC=main.exe
+EXEC=lumos.exe
 OBJDIR=./obj/
 
 CC=gcc
@@ -85,7 +87,8 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		progress_bar.o \
 		binary_f.o cfg_f.o text_f.o \
 		str_ops.o \
-		cJSON_Utils.o cJSON.o
+		cJSON_Utils.o cJSON.o \
+		lenet.o mnist.o xor.o
 
 ifeq ($(GPU), 1)
 OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o \
@@ -93,7 +96,7 @@ OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o \
 	  	mse_layer_gpu.o
 endif
 
-EXECOBJA=main.o
+EXECOBJA=lumos.o
 
 ifeq ($(TEST), 1)
 OBJ+= bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call.o \
