@@ -8,18 +8,19 @@
 
 #define VERSION "0.4-a"
 
-void analysis_argv(int argc, char **argv)
+void lumos(int argc, char **argv)
 {
-    if (argc <= 1)
-        return;
-    if (0 == strcmp(argv[1], "--version"))
+    if (argc <= 1){
+        fprintf(stderr, "Lumos fatal: No input option; use option --help for more information")
+    }
+    if (0 == strcmp(argv[1], "--version") || 0 == strcmp(argv[1], "-v"))
     {
         char version[] = VERSION;
         fprintf(stderr, "Lumos version: v%s\n", version);
         fprintf(stderr, "This is free software; see the source for copying conditions.  There is NO\n");
         fprintf(stderr, "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n");
     }
-    else if (0 == strcmp(argv[1], "--demo"))
+    else if (0 == strcmp(argv[1], "--demo") || 0 == strcmp(argv[1], "-d"))
     {
         if (0 == strcmp(argv[2], "xor"))
         {
@@ -55,6 +56,6 @@ void analysis_argv(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-    analysis_argv(argc, argv);
+    lumos(argc, argv);
     return 0;
 }

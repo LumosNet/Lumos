@@ -59,6 +59,7 @@ void full_connect_mnist () {
 int main()
 {
     // full_connect_mnist();
-    run_benchmarks("./lumos_t/benchmark/core/ops/im2col/im2col.json");
+    // run_benchmarks("./lumos_t/benchmark/core/ops/im2col/im2col.json");
+    run_benchmarks("./lumos_t/benchmark/core_cu/ops/bias/add_bias_gpu.json");
     return 0;
 }
