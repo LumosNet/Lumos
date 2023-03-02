@@ -1,0 +1,1707 @@
+{
+    "Public": {
+        "interface": "backward_connect_layer_gpu",
+        "core": "gpu",
+        "type": "graph",
+        "benchmarks": [
+            "BenchMark 1", "BenchMark 2", "BenchMark 3", "BenchMark 4",
+            "BenchMark 5", "BenchMark 6", "BenchMark 7", "BenchMark 8",
+            "BenchMark 9", "BenchMark 10", "BenchMark 11", "BenchMark 12"
+        ],
+        "params": [
+            "ksize", "bias", "active", "weights_init",
+            "h", "w", "c", "rate", "num", "l_delta", "n_delta",
+            "input", "output", "kernel_weights", "update_kernel_weights",
+            "bias_weights", "update_bias_weights", "workspace"
+        ],
+        "compares": [
+            "l_delta", "update_kernel_weights", "update_bias_weights"
+        ]
+    },
+    "BenchMark 1": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                0
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "weights_init": {
+            "type": "string",
+            "value": "guass"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "l_delta": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "n_delta": {
+            "type": "float",
+            "value": [
+                3.251
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                218.292
+            ]
+        },
+        "kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "update_kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "bias_weights": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "update_bias_weights": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float",
+                "value": [
+                    -0.120287, -4.271814, 0.750981, -1043.570923, -68.271,
+                    -22.757, 0.0, 22.757, 68.271, 1043.570923
+                ]
+            },
+            "update_kernel_weights": {
+                "type": "float",
+                "value": [
+                    104.3201, 5.5131, 2.5067, -321.0, -23.2757,
+                    -13.8271, -104.3571, 7.0750981, 20.5728186, 320.9879713
+                ]
+            },
+            "update_bias_weights": {
+                "type": "float",
+                "value": [
+                    0.1
+                ]
+            }
+        }
+    },
+    "BenchMark 2": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                0
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "weights_init": {
+            "type": "string",
+            "value": "guass"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                2
+            ]
+        },
+        "l_delta": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "n_delta": {
+            "type": "float",
+            "value": [
+                3.251, 3.251
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                218.292, 218.292
+            ]
+        },
+        "kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "update_kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "bias_weights": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "update_bias_weights": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float",
+                "value": [
+                    -0.120287, -4.271814, 0.750981, -1043.570923, -68.271,
+                    -22.757, 0.0, 22.757, 68.271, 1043.570923,
+                    -0.120287, -4.271814, 0.750981, -1043.570923, -68.271,
+                    -22.757, 0.0, 22.757, 68.271, 1043.570923
+                ]
+            },
+            "update_kernel_weights": {
+                "type": "float",
+                "value": [
+                    208.677185, 12.3402, 4.7824, -321.0, -25.5514,
+                    -20.6542, -208.714188, 7.1501962, 20.1456372, 320.9759426
+                ]
+            },
+            "update_bias_weights": {
+                "type": "float",
+                "value": [
+                    0.1
+                ]
+            }
+        }
+    },
+    "BenchMark 3": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                0
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "weights_init": {
+            "type": "string",
+            "value": "guass"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "l_delta": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "n_delta": {
+            "type": "float",
+            "value": [
+                3.251, 3.251, 3.251
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                218.292, 218.292, 218.292
+            ]
+        },
+        "kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "update_kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "bias_weights": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "update_bias_weights": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float",
+                "value": [
+                    -0.120287, -4.271814, 0.750981, -1043.570923, -68.271,
+                    -22.757, 0.0, 22.757, 68.271, 1043.570923,
+                    -0.120287, -4.271814, 0.750981, -1043.570923, -68.271,
+                    -22.757, 0.0, 22.757, 68.271, 1043.570923,
+                    -0.120287, -4.271814, 0.750981, -1043.570923, -68.271,
+                    -22.757, 0.0, 22.757, 68.271, 1043.570923
+                ]
+            },
+            "update_kernel_weights": {
+                "type": "float",
+                "value": [
+                    313.034271, 19.1673, 7.0581, -321.0, -27.8271,
+                    -27.4813, -313.0713, 7.2252943, 19.7184558, 320.9639139
+                ]
+            },
+            "update_bias_weights": {
+                "type": "float",
+                "value": [
+                    0.1
+                ]
+            }
+        }
+    },
+    "BenchMark 4": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "weights_init": {
+            "type": "string",
+            "value": "guass"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "l_delta": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "n_delta": {
+            "type": "float",
+            "value": [
+                3.251
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                218.392014
+            ]
+        },
+        "kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "update_kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "bias_weights": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "update_bias_weights": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float",
+                "value": [
+                    -0.120287, -4.271814, 0.750981, -1043.570923, -68.271,
+                    -22.757, 0.0, 22.757, 68.271, 1043.570923
+                ]
+            },
+            "update_kernel_weights": {
+                "type": "float",
+                "value": [
+                    104.3201, 5.5131, 2.5067, -321.0, -23.2757,
+                    -13.8271, -104.3571, 7.0750981, 20.5728186, 320.9879713
+                ]
+            },
+            "update_bias_weights": {
+                "type": "float",
+                "value": [
+                    0.4251
+                ]
+            }
+        }
+    },
+    "BenchMark 5": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "weights_init": {
+            "type": "string",
+            "value": "guass"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                2
+            ]
+        },
+        "l_delta": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "n_delta": {
+            "type": "float",
+            "value": [
+                3.251, 3.251
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                218.392014, 218.392014
+            ]
+        },
+        "kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "update_kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "bias_weights": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "update_bias_weights": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float",
+                "value": [
+                    -0.120287, -4.271814, 0.750981, -1043.570923, -68.271,
+                    -22.757, 0.0, 22.757, 68.271, 1043.570923,
+                    -0.120287, -4.271814, 0.750981, -1043.570923, -68.271,
+                    -22.757, 0.0, 22.757, 68.271, 1043.570923
+                ]
+            },
+            "update_kernel_weights": {
+                "type": "float",
+                "value": [
+                    208.677185, 12.3402, 4.7824, -321.0, -25.5514,
+                    -20.6542, -208.714188, 7.1501962, 20.1456372, 320.9759426
+                ]
+            },
+            "update_bias_weights": {
+                "type": "float",
+                "value": [
+                    0.7502
+                ]
+            }
+        }
+    },
+    "BenchMark 6": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "weights_init": {
+            "type": "string",
+            "value": "guass"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "l_delta": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "n_delta": {
+            "type": "float",
+            "value": [
+                3.251, 3.251, 3.251
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                218.392014, 218.392014, 218.392014
+            ]
+        },
+        "kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "update_kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "bias_weights": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "update_bias_weights": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float",
+                "value": [
+                    -0.120287, -4.271814, 0.750981, -1043.570923, -68.271,
+                    -22.757, 0.0, 22.757, 68.271, 1043.570923,
+                    -0.120287, -4.271814, 0.750981, -1043.570923, -68.271,
+                    -22.757, 0.0, 22.757, 68.271, 1043.570923,
+                    -0.120287, -4.271814, 0.750981, -1043.570923, -68.271,
+                    -22.757, 0.0, 22.757, 68.271, 1043.570923
+                ]
+            },
+            "update_kernel_weights": {
+                "type": "float",
+                "value": [
+                    313.034271, 19.1673, 7.0581, -321.0, -27.8271,
+                    -27.4813, -313.0713, 7.2252943, 19.7184558, 320.9639139
+                ]
+            },
+            "update_bias_weights": {
+                "type": "float",
+                "value": [
+                    1.0753
+                ]
+            }
+        }
+    },
+    "BenchMark 7": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                0
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "weights_init": {
+            "type": "string",
+            "value": "guass"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                5
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "l_delta": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "n_delta": {
+            "type": "float",
+            "value": [
+                3.251, -2.591, -0.0731
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                321, 0, -7, 0.231, -1.314
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                -60.051,
+                -2712.9428,
+                -6788.657587
+            ]
+        },
+        "kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "update_kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "bias_weights": {
+            "type": "float",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "update_bias_weights": {
+            "type": "float",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float",
+                "value": [
+                    19.551813,
+                    -4.1757606,
+                    -17.897719,
+                    -1097.9909913,
+                    -899.9089
+                ]
+            },
+            "update_kernel_weights": {
+                "type": "float",
+                "value": [
+                    104.3201, -1.314, -2.0447, -320.9249019, -21.4271814,
+                    -90.1711, 0.0, 8.8137, 20.9401479, 321.3404574,
+                    -23.34651, -1.314, 7.05117, 0.12131139, -0.99039466
+                ]
+            },
+            "update_bias_weights": {
+                "type": "float",
+                "value": [
+                    0.1, 0, -0.1
+                ]
+            }
+        }
+    },
+    "BenchMark 8": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                0
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "weights_init": {
+            "type": "string",
+            "value": "guass"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                5
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                2
+            ]
+        },
+        "l_delta": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "n_delta": {
+            "type": "float",
+            "value": [
+                3.251, -2.591, -0.0731,
+                3.251, -2.591, -0.0731
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 0.231, -1.314
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                -60.051,
+                -2712.9428,
+                -6788.657587,
+                -60.051,
+                -2712.9428,
+                -6788.657587
+            ]
+        },
+        "kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "update_kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "bias_weights": {
+            "type": "float",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "update_bias_weights": {
+            "type": "float",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float",
+                "value": [
+                    19.551813,
+                    -4.1757606,
+                    -17.897719,
+                    -1097.9909913,
+                    -899.9089,
+                    19.551813,
+                    -4.1757606,
+                    -17.897719,
+                    -1097.9909913,
+                    -899.9089
+                ]
+            },
+            "update_kernel_weights": {
+                "type": "float",
+                "value": [
+                    208.677185, -1.314, -4.3204, -320.8498038, -21.8543628,
+                    -173.342209, 0.0, 10.6274, 20.8802958, 321.6809148,
+                    -25.69302, -1.314, 7.10234, 0.11962278, -0.98078932
+                ]
+            },
+            "update_bias_weights": {
+                "type": "float",
+                "value": [
+                    0.1, 0, -0.1
+                ]
+            }
+        }
+    },
+    "BenchMark 9": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                0
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "weights_init": {
+            "type": "string",
+            "value": "guass"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                5
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "l_delta": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "n_delta": {
+            "type": "float",
+            "value": [
+                3.251, -2.591, -0.0731,
+                3.251, -2.591, -0.0731,
+                3.251, -2.591, -0.0731
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 0.231, -1.314
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                -60.051,
+                -2712.9428,
+                -6788.657587,
+                -60.051,
+                -2712.9428,
+                -6788.657587,
+                -60.051,
+                -2712.9428,
+                -6788.657587
+            ]
+        },
+        "kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "update_kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "bias_weights": {
+            "type": "float",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "update_bias_weights": {
+            "type": "float",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float",
+                "value": [
+                    19.551813,
+                    -4.1757606,
+                    -17.897719,
+                    -1097.9909913,
+                    -899.9089,
+                    19.551813,
+                    -4.1757606,
+                    -17.897719,
+                    -1097.9909913,
+                    -899.9089,
+                    19.551813,
+                    -4.1757606,
+                    -17.897719,
+                    -1097.9909913,
+                    -899.9089
+                ]
+            },
+            "update_kernel_weights": {
+                "type": "float",
+                "value": [
+                    313.034271, -1.314, -6.5961, -320.774689, -22.2815442,
+                    -256.5133, 0.0, 12.4411, 20.8204437, 322.0213722,
+                    -28.03953, -1.314, 7.15351, 0.11793417, -0.97118398
+                ]
+            },
+            "update_bias_weights": {
+                "type": "float",
+                "value": [
+                    0.1, 0, -0.1
+                ]
+            }
+        }
+    },
+    "BenchMark 10": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "weights_init": {
+            "type": "string",
+            "value": "guass"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                5
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "l_delta": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "n_delta": {
+            "type": "float",
+            "value": [
+                3.251, -2.591, -0.0731
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                321, 0, -7, 0.231, -1.314
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                -59.951,
+                -2712.9428,
+                -6788.757587
+            ]
+        },
+        "kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "update_kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "bias_weights": {
+            "type": "float",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "update_bias_weights": {
+            "type": "float",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float",
+                "value": [
+                    19.551813,
+                    -4.1757606,
+                    -17.897719,
+                    -1097.9909913,
+                    -899.9089
+                ]
+            },
+            "update_kernel_weights": {
+                "type": "float",
+                "value": [
+                    104.3201, -1.314, -2.0447, -320.9249019, -21.4271814,
+                    -90.1711, 0.0, 8.8137, 20.9401479, 321.3404574,
+                    -23.34651, -1.314, 7.05117, 0.12131139, -0.99039466
+                ]
+            },
+            "update_bias_weights": {
+                "type": "float",
+                "value": [
+                    0.4251, -0.2591, -0.10731
+                ]
+            }
+        }
+    },
+    "BenchMark 11": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "weights_init": {
+            "type": "string",
+            "value": "guass"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                5
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                2
+            ]
+        },
+        "l_delta": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "n_delta": {
+            "type": "float",
+            "value": [
+                3.251, -2.591, -0.0731,
+                3.251, -2.591, -0.0731
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 0.231, -1.314
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                -59.951,
+                -2712.9428,
+                -6788.757587,
+                -59.951,
+                -2712.9428,
+                -6788.757587
+            ]
+        },
+        "kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "update_kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "bias_weights": {
+            "type": "float",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "update_bias_weights": {
+            "type": "float",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float",
+                "value": [
+                    19.551813,
+                    -4.1757606,
+                    -17.897719,
+                    -1097.9909913,
+                    -899.9089,
+                    19.551813,
+                    -4.1757606,
+                    -17.897719,
+                    -1097.9909913,
+                    -899.9089
+                ]
+            },
+            "update_kernel_weights": {
+                "type": "float",
+                "value": [
+                    208.677185, -1.314, -4.3204, -320.8498038, -21.8543628,
+                    -173.342209, 0.0, 10.6274, 20.8802958, 321.6809148,
+                    -25.69302, -1.314, 7.10234, 0.11962278, -0.98078932
+                ]
+            },
+            "update_bias_weights": {
+                "type": "float",
+                "value": [
+                    0.7502, -0.5182, -0.11462
+                ]
+            }
+        }
+    },
+    "BenchMark 12": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "weights_init": {
+            "type": "string",
+            "value": "guass"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                5
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "l_delta": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "n_delta": {
+            "type": "float",
+            "value": [
+                3.251, -2.591, -0.0731,
+                3.251, -2.591, -0.0731,
+                3.251, -2.591, -0.0731
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 0.231, -1.314
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                -59.951,
+                -2712.9428,
+                -6788.757587,
+                -59.951,
+                -2712.9428,
+                -6788.757587,
+                -59.951,
+                -2712.9428,
+                -6788.757587
+            ]
+        },
+        "kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "update_kernel_weights": {
+            "type": "float",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "bias_weights": {
+            "type": "float",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "update_bias_weights": {
+            "type": "float",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float",
+                "value": [
+                    19.551813,
+                    -4.1757606,
+                    -17.897719,
+                    -1097.9909913,
+                    -899.9089,
+                    19.551813,
+                    -4.1757606,
+                    -17.897719,
+                    -1097.9909913,
+                    -899.9089,
+                    19.551813,
+                    -4.1757606,
+                    -17.897719,
+                    -1097.9909913,
+                    -899.9089
+                ]
+            },
+            "update_kernel_weights": {
+                "type": "float",
+                "value": [
+                    313.034271, -1.314, -6.5961, -320.774689, -22.2815442,
+                    -256.5133, 0.0, 12.4411, 20.8204437, 322.0213722,
+                    -28.03953, -1.314, 7.15351, 0.11793417, -0.97118398
+                ]
+            },
+            "update_bias_weights": {
+                "type": "float",
+                "value": [
+                    1.0753, -0.7773, -0.12193
+                ]
+            }
+        }
+    }
+}

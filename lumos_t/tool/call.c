@@ -134,6 +134,26 @@ void call_graph(char *interface, void **params, void **ret)
 #ifdef GPU
 void call_cu_graph(char *interface, void **params, void **ret)
 {
-
+    if (0 == strcmp(interface, "forward_avgpool_layer_gpu")){
+        call_forward_avgpool_layer_gpu(params, ret);
+    } else if (0 == strcmp(interface, "backward_avgpool_layer_gpu")){
+        call_backward_avgpool_layer_gpu(params, ret);
+    } else if (0 == strcmp(interface, "forward_connect_layer_gpu")){
+        call_forward_connect_layer_gpu(params, ret);
+    } else if (0 == strcmp(interface, "backward_connect_layer_gpu")){
+        call_backward_connect_layer_gpu(params, ret);
+    } else if (0 == strcmp(interface, "forward_convolutional_layer_gpu")){
+        call_forward_convolutional_layer_gpu(params, ret);
+    } else if (0 == strcmp(interface, "backward_convolutional_layer_gpu")){
+        call_backward_convolutional_layer_gpu(params, ret);
+    } else if (0 == strcmp(interface, "forward_im2col_layer_gpu")){
+        call_forward_im2col_layer_gpu(params, ret);
+    } else if (0 == strcmp(interface, "backward_im2col_layer_gpu")){
+        call_backward_im2col_layer_gpu(params, ret);
+    } else if (0 == strcmp(interface, "forward_maxpool_layer_gpu")){
+        call_forward_maxpool_layer_gpu(params, ret);
+    } else if (0 == strcmp(interface, "backward_maxpool_layer_gpu")){
+        call_backward_maxpool_layer_gpu(params, ret);
+    }
 }
 #endif

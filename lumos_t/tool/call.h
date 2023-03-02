@@ -25,6 +25,13 @@
 #include "gemm_gpu_call.h"
 #include "im2col_gpu_call.h"
 #include "pooling_gpu_call.h"
+
+#include "avgpool_layer_gpu_call.h"
+#include "batchnorm_layer_gpu_call.h"
+#include "connect_layer_gpu_call.h"
+#include "convolutional_layer_gpu_call.h"
+#include "im2col_layer_gpu_call.h"
+#include "maxpool_layer_gpu_call.h"
 #endif
 
 #ifdef  __cplusplus

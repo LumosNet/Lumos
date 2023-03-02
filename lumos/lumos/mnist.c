@@ -33,8 +33,8 @@ void full_connect_mnist () {
     Session *sess = create_session();
     bind_graph(sess, graph);
     create_train_scene(sess, 28, 28, 1, 1, 10, mnist_label2truth, "./data/mnist/train.txt", "./data/mnist/train_label.txt");
-    init_train_scene(sess, 5000, 20, 4, NULL);
-    session_train(sess, 0.1, "./lumos.w");
+    init_train_scene(sess, 500, 20, 4, NULL);
+    session_train(sess, 1, "./lumos.w");
 
     Session *t_sess = create_session();
     bind_graph(t_sess, graph);
