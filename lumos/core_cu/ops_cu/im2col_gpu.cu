@@ -13,8 +13,8 @@ __global__ void im2col_kernel(float *img, int height, int width, int channel, in
     int w_offset = c % ksize;
     int h_offset = (c / ksize) % ksize;
     int c_offset = c / ksize / ksize;
-    int im_row = h_offset + h * stride - pad;
-    int im_col = w_offset + w * stride - pad;
+    int im_row = h_offset + h * stride;
+    int im_col = w_offset + w * stride;
     int col_index = (height_col * width_col) * c + h * width_col + w;
     if (im_row-pad < 0 || im_col-pad < 0 || im_row-pad >= height || im_col-pad >= width){
         space[col_index] = 0;

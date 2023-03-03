@@ -1,7 +1,7 @@
 LINUX=1
-GPU=0
+GPU=1
 DEBUG=0
-TEST=1
+TEST=0
 
 ARCH=	-gencode arch=compute_50,code=[sm_50,compute_50] \
       	-gencode arch=compute_52,code=[sm_52,compute_52] \
@@ -88,7 +88,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		binary_f.o cfg_f.o text_f.o \
 		str_ops.o \
 		cJSON_Utils.o cJSON.o \
-		lenet.o mnist.o xor.o
+		dogvscat.o lenet.o mnist.o xor.o
 
 ifeq ($(GPU), 1)
 OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o \

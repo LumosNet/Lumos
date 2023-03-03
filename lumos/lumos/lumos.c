@@ -5,6 +5,7 @@
 #include "xor.h"
 #include "lenet.h"
 #include "mnist.h"
+#include "dogvscat.h"
 
 #define VERSION "0.4-a"
 
@@ -33,6 +34,10 @@ void lumos(int argc, char **argv)
         else if (0 == strcmp(argv[2], "lenet5"))
         {
             lenet();
+        }
+        else if (0 == strcmp(argv[2], "dogvscat"))
+        {
+            dogvscat();
         }
     }
     else if (0 == strcmp(argv[1], "--help") || 0 == strcmp(argv[1], "-h"))

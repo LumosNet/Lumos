@@ -40,7 +40,6 @@ __global__ void matrix_add_kernel(float *data_a, float *data_b, int num, float *
 {
     int index = threadIdx.x + blockIdx.x * blockDim.x;
     if (index >= num) return;
-    printf("%d\n", index);
     space[index] = data_a[index] + data_b[index];
 }
 

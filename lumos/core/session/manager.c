@@ -339,6 +339,7 @@ void load_train_data(Session *sess, int index, int num)
     for (int i = index; i < index + num; ++i)
     {
         char *data_path = sess->train_data_paths[i];
+        strip(data_path, ' ');
         im = load_image_data(data_path, w, h, c);
         resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input + offset_i);
         offset_i += sess->height * sess->width * sess->channel;
@@ -355,7 +356,9 @@ void load_train_label(Session *sess, int index, int num)
     for (int i = index; i < index + num; ++i)
     {
         float *truth = sess->truth + (i - index) * sess->truth_num;
-        char **label = load_label_txt(sess->train_label_paths[i], sess->label_num);
+        char *label_path = sess->train_label_paths[i];
+        strip(label_path, ' ');
+        char **label = load_label_txt(label_path, sess->label_num);
         sess->label2truth(label, truth);
     }
 #ifdef GPU
@@ -368,6 +371,7 @@ void load_test_data(Session *sess, int index)
     int h[1], w[1], c[1];
     float *im;
     char *data_path = sess->test_data_paths[index];
+    strip(data_path, ' ');
     if (-1 == access(data_path, F_OK)){
         fprintf(stderr, "\nerror: %s is not exist\n", data_path);
         abort();
@@ -385,11 +389,12 @@ char **load_test_label(Session *sess, int index)
 {
     float *truth = sess->truth;
     char *label_path = sess->test_label_paths[index];
+    strip(label_path, ' ');
     if (-1 == access(label_path, F_OK)){
         fprintf(stderr, "\nerror: %s is not exist\n", label_path);
         abort();
     }
-    char **label = load_label_txt(sess->test_label_paths[index], sess->label_num);
+    char **label = load_label_txt(label_path, sess->label_num);
     sess->label2truth(label, truth);
     return label;
 }

@@ -81,7 +81,7 @@ void call_gemm_tn_gpu(void **params, void **ret)
     float *C_g = NULL;
     cudaMalloc((void**)&A_g, AM[0]*AN[0]*sizeof(float));
     cudaMalloc((void**)&B_g, BM[0]*BN[0]*sizeof(float));
-    cudaMalloc((void**)&C_g, AM[0]*BN[0]*sizeof(float));
+    cudaMalloc((void**)&C_g, AN[0]*BN[0]*sizeof(float));
     cudaMemcpy(A_g, A, AM[0]*AN[0]*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(B_g, B, BM[0]*BN[0]*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(C_g, C, AN[0]*BN[0]*sizeof(float), cudaMemcpyHostToDevice);
@@ -108,7 +108,7 @@ void call_gemm_nt_gpu(void **params, void **ret)
     float *C_g = NULL;
     cudaMalloc((void**)&A_g, AM[0]*AN[0]*sizeof(float));
     cudaMalloc((void**)&B_g, BM[0]*BN[0]*sizeof(float));
-    cudaMalloc((void**)&C_g, AM[0]*BN[0]*sizeof(float));
+    cudaMalloc((void**)&C_g, AM[0]*BM[0]*sizeof(float));
     cudaMemcpy(A_g, A, AM[0]*AN[0]*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(B_g, B, BM[0]*BN[0]*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(C_g, C, AM[0]*BM[0]*sizeof(float), cudaMemcpyHostToDevice);
@@ -135,7 +135,7 @@ void call_gemm_tt_gpu(void **params, void **ret)
     float *C_g = NULL;
     cudaMalloc((void**)&A_g, AM[0]*AN[0]*sizeof(float));
     cudaMalloc((void**)&B_g, BM[0]*BN[0]*sizeof(float));
-    cudaMalloc((void**)&C_g, AM[0]*BN[0]*sizeof(float));
+    cudaMalloc((void**)&C_g, AN[0]*BM[0]*sizeof(float));
     cudaMemcpy(A_g, A, AM[0]*AN[0]*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(B_g, B, BM[0]*BN[0]*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(C_g, C, AN[0]*BM[0]*sizeof(float), cudaMemcpyHostToDevice);

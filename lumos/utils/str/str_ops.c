@@ -8,7 +8,7 @@ void strip(char *line, char c)
     for (i = 0; i < len; ++i)
     {
         char x = line[i];
-        if (x == ' ' || x == '\t' || x == '\n' || x == c)
+        if (x == ' ' || x == '\t' || x == '\n' || x == '\r' || x == c)
             ++offset;
         else
             line[i - offset] = x;
