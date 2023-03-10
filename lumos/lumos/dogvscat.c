@@ -42,6 +42,6 @@ void dogvscat()
     Session *sess = create_session();
     bind_graph(sess, graph);
     create_train_scene(sess, 200, 200, 3, 1, 2, dogvscat_label2truth, "./data/dogvscat/train.txt", "./data/dogvscat/train_label.txt");
-    init_train_scene(sess, 500, 16, 16, NULL);
-    session_train(sess, 1, "./lumos.w");
+    init_train_scene(sess, 5000, 16, 16, NULL);
+    session_train(sess, 0.01, "./lumos.w");
 }

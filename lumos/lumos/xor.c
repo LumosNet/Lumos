@@ -31,7 +31,7 @@ void xor () {
     Session *sess = create_session();
     bind_graph(sess, graph);
     create_train_scene(sess, 1, 2, 1, 1, 1, xor_label2truth, "./data/xor/data.txt", "./data/xor/label.txt");
-    init_train_scene(sess, 200, 4, 2, NULL);
+    init_train_scene(sess, 500, 4, 2, NULL);
     session_train(sess, 10, "./lumos.w");
 
     Session *t_sess = create_session();
