@@ -12,7 +12,7 @@
 #include "bias.h"
 #include "gemm.h"
 #include "cpu.h"
-#include "random.h"
+#include "weights.h"
 
 #ifdef GPU
 #include "convolutional_layer_gpu.h"

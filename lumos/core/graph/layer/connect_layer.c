@@ -65,8 +65,14 @@ void init_connect_weights(Layer *l)
     float *kernel_weights = l->kernel_weights;
     float *bias_weights = l->bias_weights;
 #endif
-    if (0 == strcmp(l->weights_init_type, "guass")){
-        guass_list(0, 1, l->index*2, l->kernel_weights_size, kernel_weights);
+    if (0 == strcmp(l->weights_init_type, "uniform")){
+        uniform_init(l->index*2, -1, 1, l->kernel_weights_size, kernel_weights);
+    } else if (0 == strcmp(l->weights_init_type, "guass")){
+        guass_init(l->index*2, 0, 1, l->kernel_weights_size, kernel_weights);
+    } else if (0 == strcmp(l->weights_init_type, "xavier")){
+        xavier_init(l->index*2, l->inputs, l->outputs, kernel_weights);
+    } else {
+        kaiming_init(l->index*2, l->inputs, l->outputs, kernel_weights);
     }
     if (l->bias){
         for (int i = 0; i < l->output_h; ++i){

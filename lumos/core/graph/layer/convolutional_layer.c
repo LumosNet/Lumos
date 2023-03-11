@@ -76,19 +76,24 @@ void init_convolutional_weights(Layer *l)
     float *kernel_weights = l->kernel_weights;
     float *bias_weights = l->bias_weights;
 #endif
-    if (0 == strcmp(l->weights_init_type, "guass"))
+    for (int i = 0; i < l->filters; ++i)
     {
-        for (int i = 0; i < l->filters; ++i)
-        {
-            guass_list(0, 1, l->index*2*(i+1), l->ksize * l->ksize, kernel_weights);
-            offset += l->ksize * l->ksize;
-            for (int j = 0; j < l->input_c - 1; ++j){
-                memcpy(kernel_weights + offset, kernel_weights, l->ksize * l->ksize * sizeof(float));
-                offset += l->ksize * l->ksize;
-            }
-            kernel_weights += offset;
-            offset = 0;
+        if (0 == strcmp(l->weights_init_type, "uniform")){
+            uniform_init(l->index*2*(i+1), -1, 1, l->ksize * l->ksize, kernel_weights);
+        } else if (0 == strcmp(l->weights_init_type, "guass")){
+            guass_init(l->index*2*(i+1), 0, 1, l->ksize * l->ksize, kernel_weights);
+        } else if (0 == strcmp(l->weights_init_type, "xavier")){
+            xavier_init(l->index*2*(i+1), l->ksize, l->ksize, kernel_weights);
+        } else {
+            kaiming_init(l->index*2*(i+1), l->ksize, l->ksize, kernel_weights);
         }
+        offset += l->ksize * l->ksize;
+        for (int j = 0; j < l->input_c - 1; ++j){
+            memcpy(kernel_weights + offset, kernel_weights, l->ksize * l->ksize * sizeof(float));
+            offset += l->ksize * l->ksize;
+        }
+        kernel_weights += offset;
+        offset = 0;
     }
     if (l->bias){
         for (int i = 0; i < l->bias_weights_size; ++i){

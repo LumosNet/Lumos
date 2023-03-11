@@ -10,7 +10,7 @@
 #include "active.h"
 #include "gemm.h"
 #include "cpu.h"
-#include "random.h"
+#include "weights.h"
 
 #ifdef GPU
 #include "connect_layer_gpu.h"

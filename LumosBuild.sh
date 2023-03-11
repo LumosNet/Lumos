@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VERSION=v0.4a
-GPU=0
+GPU=1
 CDIR=`pwd`
 
 BUILDDIR=$CDIR/lumos-$VERSION
