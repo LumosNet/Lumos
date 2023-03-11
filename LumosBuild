@@ -1,6 +1,7 @@
 #!/bin/bash
 
 VERSION=v0.4a
+GPU=0
 CDIR=`pwd`
 
 BUILDDIR=$CDIR/lumos-$VERSION
@@ -17,7 +18,8 @@ mkdir $BUILDDIR/data
 mkdir $BUILDDIR/obj
 wait
 
-make -f LumosMake LINUX=1
+make -f LumosMake LINUX=1 GPU=$GPU
+wait
 
 if [ -d "$BUILDDIR/obj" ]; then
     rm -rf "$BUILDDIR/obj"
@@ -29,6 +31,7 @@ cp -r ./data/xor ./lumos-$VERSION/data/xor
 wait
 
 tar zcvf lumos-$VERSION.tar.gz lumos-$VERSION
+wait
 
 if [ -d "$BUILDDIR" ]; then
     rm -rf "$BUILDDIR"
