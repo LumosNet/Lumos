@@ -1,0 +1,24 @@
+{
+    "Public": {
+        "interface": "forward_mse_layer",
+        "core": "cpu",
+        "type": "graph",
+        "benchmarks": [
+            "BenchMark 1"
+        ],
+        "params": [
+            "group", "h", "w", "c", "num"
+        ],
+        "compares": [
+            "output", "loss"
+        ]
+    },
+    "BenchMark 1": {
+        "group": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        }
+    }
+}
