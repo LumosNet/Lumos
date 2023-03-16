@@ -10,14 +10,6 @@ Layer *make_maxpool_layer(int ksize)
     l->ksize = ksize;
     l->stride = ksize;
 
-#ifdef GPU
-    l->forward = forward_maxpool_layer_gpu;
-    l->backward = backward_maxpool_layer_gpu;
-#else
-    l->forward = forward_maxpool_layer;
-    l->backward = backward_maxpool_layer;
-#endif
-
     l->update = NULL;
     l->init_layer_weights = NULL;
 
@@ -38,8 +30,10 @@ void init_maxpool_layer(Layer *l, int w, int h, int c)
     l->outputs = l->output_h * l->output_w * l->output_c;
 
     l->workspace_size = l->output_h * l->output_w * l->ksize * l->ksize * l->output_c;
-
     l->deltas = l->inputs;
+
+    l->forward = forward_maxpool_layer;
+    l->backward = backward_maxpool_layer;
 
     fprintf(stderr, "Max Pooling     Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);

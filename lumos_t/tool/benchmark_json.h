@@ -19,11 +19,6 @@
 extern "C" {
 #endif
 
-#ifdef GPU
-void load_params_gpu(cJSON *cjson_benchmark, char **param_names, void **space, int num);
-int load_param_gpu(cJSON *cjson_benchmark, char *param_name, void **space, int index);
-#endif
-
 char *load_from_json_file(char *path);
 void load_params(cJSON *cjson_benchmark, char **param_names, void **space, int num);
 int load_param(cJSON *cjson_benchmark, char *param_name, void **space, int index);

@@ -24,11 +24,7 @@ void session_train(Session *sess, float learning_rate, char *weights_path)
                 run_time = (double)(final - start) / CLOCKS_PER_SEC;
                 progress_bar(j * sub_batchs + k + 1, sub_epochs * sub_batchs, run_time, sess->loss[0]);
             }
-#ifdef GPU
-            cudaMemcpy(sess->weights_gpu, sess->update_weights_gpu, sess->weights_size*sizeof(float), cudaMemcpyDeviceToDevice);
-#else
             memcpy(sess->weights, sess->update_weights, sess->weights_size*sizeof(float));
-#endif
         }
     }
     fprintf(stderr, "\n\nSession Training Finished\n");
@@ -46,13 +42,8 @@ void session_test(Session *sess, ProcessTestInformation process_test_information
         forward_session(sess);
         Graph *graph = sess->graph;
         Layer **layers = graph->layers;
-#ifdef GPU
-        cudaMemcpy(sess->predicts, layers[graph->layer_num - 2]->output, \
-                   layers[graph->layer_num - 2]->outputs*sizeof(float), cudaMemcpyDeviceToHost);
-#else
         memcpy(sess->predicts, layers[graph->layer_num - 2]->output, \
             layers[graph->layer_num - 2]->outputs*sizeof(float));
-#endif
         process_test_information(label, sess->truth, sess->predicts, sess->loss[0], sess->test_data_paths[i]);
     }
     fprintf(stderr, "\nSession Testing Finished\n\n");
@@ -63,11 +54,7 @@ void forward_session(Session *sess)
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     Layer *l;
-#ifdef GPU
-    float *input = sess->input_gpu;
-#else
     float *input = sess->input;
-#endif
     for (int i = 0; i < graph->layer_num; ++i)
     {
         l = layers[i];
@@ -116,10 +103,6 @@ void init_train_scene(Session *sess, int epoch, int batch, int subdivision, char
     sess->batch = batch;
     sess->subdivision = subdivision;
     sess->input = calloc(sess->subdivision * sess->height * sess->width * sess->channel, sizeof(float));
-#ifdef GPU
-    cudaMalloc((void**)&sess->input_gpu, \
-               sess->subdivision*sess->height*sess->width*sess->channel*sizeof(float));
-#endif
     init_graph(sess->graph, sess->width, sess->height, sess->channel);
     get_workspace_size(sess);
     statistics_memory_occupy_size(sess);
@@ -146,10 +129,6 @@ void init_test_scene(Session *sess, char *weights_file)
     sess->batch = 1;
     sess->subdivision = 1;
     sess->input = calloc(sess->subdivision * sess->height * sess->width * sess->channel, sizeof(float));
-#ifdef GPU
-    cudaMalloc((void**)&sess->input_gpu, \
-               sess->subdivision*sess->height*sess->width*sess->channel*sizeof(float));
-#endif
     init_graph(sess->graph, sess->width, sess->height, sess->channel);
     get_workspace_size(sess);
     statistics_memory_occupy_size(sess);

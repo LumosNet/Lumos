@@ -19,15 +19,6 @@ Layer *make_connect_layer(int output, int bias, char *active, char *weights_init
     l->gradient = type;
 
     l->bias = bias;
-#ifdef GPU
-    l->forward = forward_connect_layer_gpu;
-    l->backward = backward_connect_layer_gpu;
-    l->update = update_connect_layer_gpu;
-#else
-    l->forward = forward_connect_layer;
-    l->backward = backward_connect_layer;
-    l->update = update_connect_layer;
-#endif
     l->init_layer_weights = init_connect_weights;
 
     fprintf(stderr, "Connect         Layer    :    [output=%4d, bias=%d, active=%s]\n", l->ksize, l->bias, l->active_str);
@@ -52,19 +43,18 @@ void init_connect_layer(Layer *l, int w, int h, int c)
     l->bias_weights_size = l->outputs;
     l->deltas = l->inputs;
 
+    l->forward = forward_connect_layer;
+    l->backward = backward_connect_layer;
+    l->update = update_connect_layer;
+
     fprintf(stderr, "Connect         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
 }
 
 void init_connect_weights(Layer *l)
 {
-#ifdef GPU
-    float kernel_weights[l->kernel_weights_size];
-    float bias_weights[l->bias_weights_size];
-#else
     float *kernel_weights = l->kernel_weights;
     float *bias_weights = l->bias_weights;
-#endif
     if (0 == strcmp(l->weights_init_type, "uniform")){
         uniform_init(l->index*2, -1, 1, l->kernel_weights_size, kernel_weights);
     } else if (0 == strcmp(l->weights_init_type, "guass")){
@@ -79,10 +69,6 @@ void init_connect_weights(Layer *l)
             bias_weights[i] = 0.01;
         }
     }
-#ifdef GPU
-    cudaMemcpy(l->kernel_weights, kernel_weights, l->kernel_weights_size*sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy(l->bias_weights, bias_weights, l->bias_weights_size*sizeof(float), cudaMemcpyHostToDevice);
-#endif
 }
 
 void forward_connect_layer(Layer l, int num)

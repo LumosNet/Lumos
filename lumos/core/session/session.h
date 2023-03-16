@@ -65,19 +65,6 @@ typedef struct session{
     int memory_size;
 
     Label2Truth label2truth;
-
-#ifdef GPU
-    float *workspace_gpu;
-    float *input_gpu;
-    float *output_gpu;
-    float *weights_gpu;
-    float *update_weights_gpu;
-    float *layer_delta_gpu;
-    float *loss_gpu;
-    float *truth_gpu;
-    int *maxpool_index_gpu;
-#endif
-
 } Session;
 
 Session *create_session();

@@ -10,9 +10,6 @@ void create_run_memory(Session *sess)
 
 void create_workspace_memory(Session *sess)
 {
-#ifdef GPU
-    cudaMalloc((void**)&sess->workspace_gpu, sess->workspace_size*sizeof(float));
-#endif
     sess->workspace = calloc(sess->workspace_size, sizeof(float));
     fprintf(stderr, "Apply For The Commond Work Space\n");
 }
@@ -20,9 +17,6 @@ void create_workspace_memory(Session *sess)
 void create_input_memory(Session *sess)
 {
     int inputs = sess->subdivision * sess->height * sess->width * sess->channel;
-#ifdef GPU
-    cudaMalloc((void**)&sess->input_gpu, inputs*sizeof(float));
-#endif
     sess->input = calloc(inputs, sizeof(float));
 }
 
@@ -36,9 +30,6 @@ void create_output_memory(Session *sess)
         outputs += l->outputs;
     }
     sess->output = calloc(outputs * sess->subdivision, sizeof(float));
-#ifdef GPU
-    cudaMalloc((void**)&sess->output_gpu, (outputs*sess->subdivision)*sizeof(float));
-#endif
     fprintf(stderr, "Apply For Layers Output Data Space\n");
 }
 
@@ -46,10 +37,6 @@ void create_weights_memory(Session *sess)
 {
     sess->weights = calloc(sess->weights_size, sizeof(float));
     sess->update_weights = calloc(sess->weights_size, sizeof(float));
-#ifdef GPU
-    cudaMalloc((void**)&sess->weights_gpu, sess->weights_size*sizeof(float));
-    cudaMalloc((void**)&sess->update_weights_gpu, sess->weights_size*sizeof(float));
-#endif
     fprintf(stderr, "Apply For Graph Weights Space\n");
 }
 
@@ -63,9 +50,6 @@ void create_delta_memory(Session *sess)
         deltas += l->deltas;
     }
     sess->layer_delta = calloc(deltas * sess->subdivision, sizeof(float));
-#ifdef GPU
-    cudaMalloc((void**)&sess->layer_delta_gpu, (deltas*sess->subdivision)*sizeof(float));
-#endif
     fprintf(stderr, "APPly For Layers Delta Data Space\n");
 }
 
@@ -77,17 +61,11 @@ void create_label_memory(Session *sess)
 void create_loss_memory(Session *sess)
 {
     sess->loss = calloc(1, sizeof(float));
-#ifdef GPU
-    cudaMalloc((void**)&sess->loss_gpu, sizeof(float));
-#endif
 }
 
 void create_truth_memory(Session *sess)
 {
     sess->truth = calloc(sess->truth_num * sess->subdivision, sizeof(float));
-#ifdef GPU
-    cudaMalloc((void**)&sess->truth_gpu, (sess->truth_num*sess->subdivision)*sizeof(float));
-#endif
 }
 
 void create_predicts_memory(Session *sess)
@@ -111,9 +89,6 @@ void create_maxpool_index_memory(Session *sess)
         return;
     }
     sess->maxpool_index = calloc(max_indexes * sess->subdivision, sizeof(int));
-#ifdef GPU
-    cudaMalloc((void**)&sess->maxpool_index_gpu, max_indexes*sess->subdivision*sizeof(int));
-#endif
     fprintf(stderr, "APPly For MAX Pool Layers's MAX Pixel Index Space\n");
 }
 
@@ -125,17 +100,10 @@ void set_graph_memory(Session *sess)
     float *layer_delta;
     float *workspace;
     int *maxpool_index;
-#ifdef GPU
-    output = sess->output_gpu;
-    layer_delta = sess->layer_delta_gpu;
-    workspace = sess->workspace_gpu;
-    maxpool_index = sess->maxpool_index_gpu;
-#else
     output = sess->output;
     layer_delta = sess->layer_delta;
     workspace = sess->workspace;
     maxpool_index = sess->maxpool_index;
-#endif
     int offset_o = 0;
     int delta_offset = 0;
     for (int i = 0; i < graph->layer_num; ++i)
@@ -160,13 +128,8 @@ void set_graph_weight(Session *sess)
     Layer **layers = graph->layers;
     float *weights;
     float *update_weights;
-#ifdef GPU
-    weights = sess->weights_gpu;
-    update_weights = sess->update_weights_gpu;
-#else
     weights = sess->weights;
     update_weights = sess->update_weights;
-#endif
     int weights_offset = 0;
     for (int i = 0; i < graph->layer_num; ++i)
     {
@@ -211,11 +174,7 @@ void set_truth_memory(Session *sess)
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     Layer *l = layers[graph->layer_num - 1];
-#ifdef GPU
-    l->truth = sess->truth_gpu;
-#else
     l->truth = sess->truth;
-#endif
 }
 
 void set_maxpool_index_memory(Session *sess)
@@ -225,11 +184,7 @@ void set_maxpool_index_memory(Session *sess)
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     int *maxpool_index;
-#ifdef GPU
-    maxpool_index = sess->maxpool_index_gpu;
-#else
     maxpool_index = sess->maxpool_index;
-#endif
     int index_offset = 0;
     for (int i = 0; i < graph->layer_num; ++i)
     {
@@ -326,9 +281,6 @@ void init_weights(Session *sess, char *weights_file)
         fprintf(stderr, "\nInit Weights\n");
     }
     memcpy(sess->update_weights, sess->weights, sess->weights_size * sizeof(float));
-#ifdef GPU
-    cudaMemcpy(sess->update_weights_gpu, sess->weights_gpu, sess->weights_size*sizeof(float), cudaMemcpyDeviceToDevice);
-#endif
 }
 
 void load_train_data(Session *sess, int index, int num)
@@ -345,10 +297,6 @@ void load_train_data(Session *sess, int index, int num)
         offset_i += sess->height * sess->width * sess->channel;
         free(im);
     }
-#ifdef GPU
-    cudaMemcpy(sess->input_gpu, sess->input, \
-              (sess->height*sess->width*sess->channel*num)*sizeof(float), cudaMemcpyHostToDevice);
-#endif
 }
 
 void load_train_label(Session *sess, int index, int num)
@@ -361,9 +309,6 @@ void load_train_label(Session *sess, int index, int num)
         char **label = load_label_txt(label_path, sess->label_num);
         sess->label2truth(label, truth);
     }
-#ifdef GPU
-    cudaMemcpy(sess->truth_gpu, sess->truth, sess->truth_num*num*sizeof(float), cudaMemcpyHostToDevice);
-#endif
 }
 
 void load_test_data(Session *sess, int index)
@@ -378,10 +323,6 @@ void load_test_data(Session *sess, int index)
     }
     im = load_image_data(data_path, w, h, c);
     resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input);
-#ifdef GPU
-    cudaMemcpy(sess->input_gpu, sess->input, \
-              (sess->height*sess->width*sess->channel)*sizeof(float), cudaMemcpyHostToDevice);
-#endif
     free(im);
 }
 
@@ -402,9 +343,6 @@ char **load_test_label(Session *sess, int index)
 void save_weigths(Session *sess, char *path)
 {
     FILE *fp = fopen(path, "wb");
-#ifdef GPU
-    cudaMemcpy(sess->weights, sess->weights_gpu, sess->weights_size*sizeof(float), cudaMemcpyDeviceToHost);
-#endif
     bfput(fp, sess->weights, sess->weights_size);
     fclose(fp);
 }
@@ -413,8 +351,5 @@ void load_weights(Session *sess, char *path)
 {
     FILE *fp = fopen(path, "rb");
     bfget(fp, sess->weights, sess->weights_size);
-#ifdef GPU
-    cudaMemcpy(sess->weights_gpu, sess->weights, sess->weights_size*sizeof(float), cudaMemcpyHostToDevice);
-#endif
     fclose(fp);
 }
