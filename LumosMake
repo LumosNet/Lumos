@@ -1,4 +1,5 @@
 VERSION=v0.4a
+BYTE32 = 0
 LINUX=0
 GPU=0
 ARCH=	-gencode arch=compute_50,code=[sm_50,compute_50] \
@@ -53,6 +54,12 @@ NVCC=nvcc
 
 LDFLAGS= -lm -pthread
 CFLAGS=-fopenmp -Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
+
+ifeq ($(BYTE32),1)
+CFLAGS += -m32
+else
+CFLAGS += -m64
+endif
 
 ifeq ($(LINUX),1)
 CFLAGS += -fPIC

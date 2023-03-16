@@ -6,7 +6,9 @@
 #include "lenet.h"
 #include "mnist.h"
 
+#ifdef LUMOST
 #include "tsession.h"
+#endif
 
 #define VERSION "0.4-a"
 
@@ -37,7 +39,7 @@ void lumos(int argc, char **argv)
             lenet();
         }
     }
-#ifdef TEST
+#ifdef LUMOST
     else if (0 == strcmp(argv[1], "--test") || 0 == strcmp(argv[1], "-t"))
     {
         
@@ -46,15 +48,15 @@ void lumos(int argc, char **argv)
     else if (0 == strcmp(argv[1], "--help") || 0 == strcmp(argv[1], "-h"))
     {
         fprintf(stderr, "Usage commands:\n");
-        fprintf(stderr, "    --version or -v : To get version\n");
+        fprintf(stderr, "    --version or -v : To get version\n\n");
         fprintf(stderr, "    --demo or -d : To run the demos\n");
         fprintf(stderr, "        xor : Run the basic net\n");
         fprintf(stderr, "        mnist : Run the mnist demo created by all connect layer\n");
         fprintf(stderr, "        lenet5 : Run the classic convolutional net LeNet5\n");
-        fprintf(stderr, "    Run demo command such as : lumos --demo xor\n");
-#ifdef TEST
+        fprintf(stderr, "    Run demo command such as : lumos --demo xor\n\n");
+#ifdef LUMOST
         fprintf(stderr, "    --test or -t : To run the unit testing\n");
-        fprintf(stderr, "    Run test command such as : lumos --test testfile\n");
+        fprintf(stderr, "    Run test command such as : lumos --test testfile\n\n");
 #endif
         fprintf(stderr, "Thank you for using Lumos deeplearning framework.\n");
     }

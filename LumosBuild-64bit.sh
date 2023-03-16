@@ -1,7 +1,5 @@
 #!/bin/bash
-
 VERSION=v0.4a
-GPU=1
 CDIR=`pwd`
 
 BUILDDIR=$CDIR/lumos-$VERSION
@@ -18,7 +16,7 @@ mkdir $BUILDDIR/data
 mkdir $BUILDDIR/obj
 wait
 
-make -f LumosMake LINUX=1 GPU=$GPU
+make -f LumosMake VERSION=$VERSION LINUX=1
 wait
 
 if [ -d "$BUILDDIR/obj" ]; then
