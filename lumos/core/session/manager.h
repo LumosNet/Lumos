@@ -1,13 +1,6 @@
 #ifndef MANAGER_H
 #define MANAGER_H
 
-#ifdef GPU
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
-#include "curand.h"
-#include "cublas_v2.h"
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
