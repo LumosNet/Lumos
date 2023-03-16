@@ -7,6 +7,7 @@
 
 #include "cJSON.h"
 #include "cJSON_Utils.h"
+#include "str_ops.h"
 #include "utest.h"
 #include "call.h"
 #include "benchmark_json.h"
@@ -20,6 +21,8 @@ extern "C" {
 // 当release内存时，params全部release，ret最后一个release
 void run_benchmarks(char *benchmark);
 void run_all_benchmarks(char *benchmarks);
+
+void run_unit_test(char *interface);
 
 void release_params_space(void **space, int num);
 

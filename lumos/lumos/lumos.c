@@ -6,6 +6,8 @@
 #include "lenet.h"
 #include "mnist.h"
 
+#include "tsession.h"
+
 #define VERSION "0.4-a"
 
 void lumos(int argc, char **argv)
@@ -35,6 +37,12 @@ void lumos(int argc, char **argv)
             lenet();
         }
     }
+#ifdef TEST
+    else if (0 == strcmp(argv[1], "--test") || 0 == strcmp(argv[1], "-t"))
+    {
+        
+    }
+#endif
     else if (0 == strcmp(argv[1], "--help") || 0 == strcmp(argv[1], "-h"))
     {
         fprintf(stderr, "Usage commands:\n");
@@ -44,6 +52,10 @@ void lumos(int argc, char **argv)
         fprintf(stderr, "        mnist : Run the mnist demo created by all connect layer\n");
         fprintf(stderr, "        lenet5 : Run the classic convolutional net LeNet5\n");
         fprintf(stderr, "    Run demo command such as : lumos --demo xor\n");
+#ifdef TEST
+        fprintf(stderr, "    --test or -t : To run the unit testing\n");
+        fprintf(stderr, "    Run test command such as : lumos --test testfile\n");
+#endif
         fprintf(stderr, "Thank you for using Lumos deeplearning framework.\n");
     }
     else

@@ -11,6 +11,7 @@ extern "C" {
 
 void strip(char *line, char c);
 char **split(char *line, char c, int *num);
+void padding_string(char *space, char *str, int index);
 
 char *inten2str(int x);
 char *int2str(int x);

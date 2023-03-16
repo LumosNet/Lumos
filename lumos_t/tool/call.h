@@ -18,6 +18,7 @@
 #include "convolutional_layer_call.h"
 #include "im2col_layer_call.h"
 #include "maxpool_layer_call.h"
+#include "mse_layer_call.h"
 
 #ifdef GPU
 #include "bias_gpu_call.h"

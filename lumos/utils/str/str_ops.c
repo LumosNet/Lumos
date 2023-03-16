@@ -62,6 +62,12 @@ char **split(char *line, char c, int *num)
     return res;
 }
 
+void padding_string(char *space, char *str, int index)
+{
+    strcpy(space+index, str);
+    space[index+strlen(str)] = '\0';
+}
+
 char *int2str(int x)
 {
     char *res;

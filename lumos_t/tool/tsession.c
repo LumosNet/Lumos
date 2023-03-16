@@ -106,6 +106,63 @@ void run_all_benchmarks(char *benchmarks)
     }
 }
 
+void run_unit_test(char *interface)
+{
+    if (0 == strcmp(interface, "add_bias")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/bias/add_bias.json");
+    } else if (0 == strcmp(interface, "add_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/add_cpu.json");
+    } else if (0 == strcmp(interface, "fill_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/fill_cpu.json");
+    } else if (0 == strcmp(interface, "matrix_add_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/matrix_add_cpu.json");
+    } else if (0 == strcmp(interface, "matrix_divide_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/matrix_divide_cpu.json");
+    } else if (0 == strcmp(interface, "matrix_multiply_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/matrix_multiply_cpu.json");
+    } else if (0 == strcmp(interface, "matrix_subtract_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/matrix_subtract_cpu.json");
+    } else if (0 == strcmp(interface, "max_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/max_cpu.json");
+    } else if (0 == strcmp(interface, "mean_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/mean_cpu.json");
+    } else if (0 == strcmp(interface, "min_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/min_cpu.json");
+    } else if (0 == strcmp(interface, "multy_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/multy_cpu.json");
+    } else if (0 == strcmp(interface, "one_hot_encoding")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/one_hot_encoding.json");
+    } else if (0 == strcmp(interface, "saxpy_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/saxpy_cpu.json");
+    } else if (0 == strcmp(interface, "sum_channel_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/sum_channel_cpu.json");
+    } else if (0 == strcmp(interface, "sum_cpu")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/cpu/sum_cpu.json");
+    } else if (0 == strcmp(interface, "gemm")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/gemm/gemm.json");
+    } else if (0 == strcmp(interface, "gemm_nn")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/gemm/gemm_nn.json");
+    } else if (0 == strcmp(interface, "gemm_nt")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/gemm/gemm_nt.json");
+    } else if (0 == strcmp(interface, "gemm_tn")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/gemm/gemm_tn.json");
+    } else if (0 == strcmp(interface, "gemm_tt")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/gemm/gemm_tt.json");
+    } else if (0 == strcmp(interface, "col2im")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/im2col/col2im.json");
+    } else if (0 == strcmp(interface, "im2col")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/im2col/im2col.json");
+    } else if (0 == strcmp(interface, "avgpool_gradient")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/pooling/avgpool_gradient.json");
+    } else if (0 == strcmp(interface, "avgpool")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/pooling/avgpool.json");
+    } else if (0 == strcmp(interface, "maxpool_gradient")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/pooling/maxpool_gradient.json");
+    } else if (0 == strcmp(interface, "maxpool")){
+        run_benchmarks("./lumos_t/benchmark/core/ops/pooling/maxpool.json");
+    }
+}
+
 void release_params_space(void **space, int num)
 {
     for (int i = 0; i < num; ++i){

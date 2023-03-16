@@ -128,6 +128,8 @@ void call_graph(char *interface, void **params, void **ret)
         call_forward_maxpool_layer(params, ret);
     } else if (0 == strcmp(interface, "backward_maxpool_layer")){
         call_backward_maxpool_layer(params, ret);
+    } else if (0 == strcmp(interface, "forward_mse_layer")){
+        call_forward_mse_layer(params, ret);
     }
 }
 

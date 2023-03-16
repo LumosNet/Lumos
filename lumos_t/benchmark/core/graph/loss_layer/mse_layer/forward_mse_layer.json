@@ -7,7 +7,7 @@
             "BenchMark 1"
         ],
         "params": [
-            "group", "h", "w", "c", "num"
+            "group", "h", "w", "c", "num", "input", "output", "truth", "workspace", "loss"
         ],
         "compares": [
             "output", "loss"
@@ -19,6 +19,74 @@
             "value": [
                 1
             ]
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "input": {
+            "type": "float",
+            "value": [
+                0.9
+            ]
+        },
+        "output": {
+            "type": "float",
+            "value": [
+                0
+            ]
+        },
+        "truth": {
+            "type": "float",
+            "value": [
+                1
+            ]
+        },
+        "workspace": {
+            "type": "float",
+            "value": [
+                1
+            ]
+        },
+        "loss": {
+            "type": "float",
+            "value": [
+                0
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float",
+                "value": [
+                    0.01
+                ]
+            },
+            "loss": {
+                "type": "float",
+                "value": [
+                    0.01
+                ]
+            }
         }
     }
 }
