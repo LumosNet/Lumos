@@ -70,8 +70,10 @@ void init_convolutional_weights(Layer *l)
             uniform_init(l->index*2*(i+1), -1, 1, l->ksize * l->ksize, kernel_weights);
         } else if (0 == strcmp(l->weights_init_type, "guass")){
             guass_init(l->index*2*(i+1), 0, 1, l->ksize * l->ksize, kernel_weights);
-        } else if (0 == strcmp(l->weights_init_type, "xavier")){
-            xavier_init(l->index*2*(i+1), l->ksize, l->ksize, kernel_weights);
+        } else if (0 == strcmp(l->weights_init_type, "xavier_uniform")){
+            xavier_uniform(l->index*2*(i+1), l->ksize, l->ksize, kernel_weights);
+        } else if (0 == strcmp(l->weights_init_type, "xavier_normal")){
+            xavier_normal(l->index*2*(i+1), l->ksize, l->ksize, kernel_weights);
         } else {
             kaiming_init(l->index*2*(i+1), l->ksize, l->ksize, kernel_weights);
         }

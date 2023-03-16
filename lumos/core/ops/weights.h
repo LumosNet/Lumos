@@ -17,6 +17,9 @@ void guass_init(int seed, float mean, float variance, int num, float *space);
 void xavier_init(int seed, int inp, int out, float *space);
 void kaiming_init(int seed, int inp, int out, float *space);
 
+void xavier_uniform(int seed, int inp, int out, float *space);
+void xavier_normal(int seed, int inp, int out, float *space);
+
 #ifdef  __cplusplus
 }
 #endif

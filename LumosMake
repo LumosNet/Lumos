@@ -1,12 +1,7 @@
 VERSION=v0.4a
 BYTE32 = 0
 LINUX=0
-GPU=0
-ARCH=	-gencode arch=compute_50,code=[sm_50,compute_50] \
-      	-gencode arch=compute_52,code=[sm_52,compute_52] \
-		-gencode arch=compute_61,code=[sm_61,compute_61]
 
-# 源代码所在目录（包括所有子目录）
 VPATH=	./lib/: \
 		./lumos/core/: \
 		./lumos/core/graph/: \
@@ -18,12 +13,7 @@ VPATH=	./lib/: \
 		./lumos/utils/cmd/: \
 		./lumos/utils/file/: \
 		./lumos/utils/str/: \
-		./lumos/lumos/: \
-		./lumos/core_cu/: \
-		./lumos/core_cu/graph_cu/: \
-		./lumos/core_cu/ops_cu/: \
-		./lumos/core_cu/graph_cu/layer_cu/: \
-		./lumos/core_cu/graph_cu/loss_layer_cu/: \
+		./lumos/lumos/
 
 COMMON=	-Ilib \
 		-Ilumos/core/graph \
@@ -34,12 +24,7 @@ COMMON=	-Ilib \
 		-Ilumos/utils/cmd \
 		-Ilumos/utils/file \
 		-Ilumos/utils/str \
-		-Ilumos/lumos \
-		-Ilumos/core_cu \
-		-Ilumos/core_cu/graph_cu \
-		-Ilumos/core_cu/ops_cu \
-		-Ilumos/core_cu/graph_cu/layer_cu \
-		-Ilumos/core_cu/graph_cu/loss_layer_cu \
+		-Ilumos/lumos
 
 EXEC=lumos
 
@@ -65,16 +50,6 @@ ifeq ($(LINUX),1)
 CFLAGS += -fPIC
 endif
 
-ifeq ($(GPU), 1)
-COMMON+= -DGPU -I/usr/local/cuda/include/
-CFLAGS+= -DGPU -Wno-deprecated-gpu-targets
-LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
-endif
-
-ifeq ($(GPU), 1)
-LDFLAGS+= -lstdc++
-endif
-
 LIBLUMOSOBJ= 	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
 				mse_layer.o \
 				active.o bias.o cpu.o gemm.o im2col.o image.o pooling.o random.o weights.o \
@@ -83,12 +58,6 @@ LIBLUMOSOBJ= 	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2c
 				binary_f.o cfg_f.o text_f.o \
 				str_ops.o \
 				lenet.o mnist.o xor.o
-
-ifeq ($(GPU), 1)
-LIBLUMOSOBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o \
-	  			avgpool_layer_gpu.o maxpool_layer_gpu.o connect_layer_gpu.o convolutional_layer_gpu.o im2col_layer_gpu.o \
-	  			mse_layer_gpu.o
-endif
 
 EXECOBJ=        lumos.o
 
@@ -115,5 +84,3 @@ $(EXECS): $(OBJS)
 $(OBJDIR)%.o: %.c $(DEPS)
 	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@
 
-$(OBJDIR)%.o: %.cu $(DEPS)
-	$(NVCC) $(ARCH) $(COMMON) --compiler-options "$(CFLAGS)" -c $< -o $@

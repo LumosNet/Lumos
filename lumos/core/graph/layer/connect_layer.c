@@ -59,8 +59,10 @@ void init_connect_weights(Layer *l)
         uniform_init(l->index*2, -1, 1, l->kernel_weights_size, kernel_weights);
     } else if (0 == strcmp(l->weights_init_type, "guass")){
         guass_init(l->index*2, 0, 1, l->kernel_weights_size, kernel_weights);
-    } else if (0 == strcmp(l->weights_init_type, "xavier")){
-        xavier_init(l->index*2, l->inputs, l->outputs, kernel_weights);
+    } else if (0 == strcmp(l->weights_init_type, "xavier_uniform")){
+        xavier_uniform(l->index*2, l->inputs, l->outputs, kernel_weights);
+    } else if (0 == strcmp(l->weights_init_type, "xavier_normal")){
+        xavier_normal(l->index*2, l->inputs, l->outputs, kernel_weights);
     } else {
         kaiming_init(l->index*2, l->inputs, l->outputs, kernel_weights);
     }
@@ -85,6 +87,10 @@ void forward_connect_layer(Layer l, int num)
         {
             add_bias(output, l.bias_weights, l.ksize, 1);
         }
+        // for (int j = 0; j < l.outputs; ++j){
+        //     printf("%f ", output[j]);
+        // }
+        // printf("\n\n");
         activate_list(output, l.outputs, l.active);
     }
 }
