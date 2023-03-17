@@ -8,6 +8,7 @@
 #include "session.h"
 #include "graph.h"
 #include "layer.h"
+#include "weights_init.h"
 
 #ifdef __cplusplus
 extern "C" {

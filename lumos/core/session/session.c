@@ -1,9 +1,10 @@
 #include "session.h"
 
-Session *create_session()
+Session *create_session(Initializer w_init)
 {
     Session *sess = malloc(sizeof(Session));
     sess->memory_size = 0;
+    sess->w_init = w_init;
     return sess;
 }
 

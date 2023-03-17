@@ -8,7 +8,6 @@ Layer *make_im2col_layer(int flag)
 
     l->im2col_flag = flag;
     l->update = NULL;
-    l->init_layer_weights = NULL;
 
     fprintf(stderr, "Im2col          Layer    :    [flag=%d]\n", l->im2col_flag);
     return l;

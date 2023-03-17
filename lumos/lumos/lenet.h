@@ -7,6 +7,7 @@
 #include "cpu.h"
 #include "graph.h"
 #include "layer.h"
+#include "weights_init.h"
 #include "im2col_layer.h"
 #include "connect_layer.h"
 #include "convolutional_layer.h"

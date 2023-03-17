@@ -19,14 +19,14 @@ void lenet_process_test_information(char **label, float *truth, float *predict, 
 
 void lenet() {
     Graph *graph = create_graph("Lumos", 9);
-    Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 1, "logistic", "guass");
+    Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 1, "relu");
     Layer *l2 = make_avgpool_layer(2);
-    Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, 1, "logistic", "guass");
+    Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, 1, "relu");
     Layer *l4 = make_avgpool_layer(2);
-    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, 1, "logistic", "guass");
+    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, 1, "relu");
     Layer *l6 = make_im2col_layer(1);
-    Layer *l7 = make_connect_layer(84, 1, "logistic", "guass");
-    Layer *l8 = make_connect_layer(10, 1, "logistic", "guass");
+    Layer *l7 = make_connect_layer(84, 1, "relu");
+    Layer *l8 = make_connect_layer(10, 1, "relu");
     Layer *l9 = make_mse_layer(10);
     append_layer2grpah(graph, l1);
     append_layer2grpah(graph, l2);
@@ -38,15 +38,16 @@ void lenet() {
     append_layer2grpah(graph, l8);
     append_layer2grpah(graph, l9);
 
-    Session *sess = create_session();
+    Initializer init = kaiming_uniform_initializer(1, "fan_in");
+    Session *sess = create_session(init);
     bind_graph(sess, graph);
     create_train_scene(sess, 32, 32, 1, 1, 10, lenet_label2truth, "/usr/local/lumos/data/mnist/train.txt", "/usr/local/lumos/data/mnist/train_label.txt");
-    init_train_scene(sess, 500, 16, 16, NULL);
-    session_train(sess, 1, "./lumos.w");
+    init_train_scene(sess, 1000, 16, 16, NULL);
+    session_train(sess, 0.01, "./weights/lumos.w");
 
-    Session *t_sess = create_session();
+    Session *t_sess = create_session(init);
     bind_graph(t_sess, graph);
     create_test_scene(t_sess, 32, 32, 1, 1, 10, lenet_label2truth, "/usr/local/lumos/data/mnist/test.txt", "/usr/local/lumos/data/mnist/test_label.txt");
-    init_test_scene(t_sess, "./lumos.w");
+    init_test_scene(t_sess, "./weights/lumos.w");
     session_test(t_sess, lenet_process_test_information);
 }

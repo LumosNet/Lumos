@@ -1,13 +1,9 @@
 #include "connect_layer.h"
 
-Layer *make_connect_layer(int output, int bias, char *active, char *weights_init)
+Layer *make_connect_layer(int output, int bias, char *active)
 {
     Layer *l = malloc(sizeof(Layer));
     l->type = CONNECT;
-    l->weights_init_type = "guass";
-    if (weights_init){
-        l->weights_init_type = weights_init;
-    }
     l->filters = 1;
     l->weights = 1;
 
@@ -19,7 +15,6 @@ Layer *make_connect_layer(int output, int bias, char *active, char *weights_init
     l->gradient = type;
 
     l->bias = bias;
-    l->init_layer_weights = init_connect_weights;
 
     fprintf(stderr, "Connect         Layer    :    [output=%4d, bias=%d, active=%s]\n", l->ksize, l->bias, l->active_str);
     return l;
@@ -49,28 +44,6 @@ void init_connect_layer(Layer *l, int w, int h, int c)
 
     fprintf(stderr, "Connect         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
-}
-
-void init_connect_weights(Layer *l)
-{
-    float *kernel_weights = l->kernel_weights;
-    float *bias_weights = l->bias_weights;
-    if (0 == strcmp(l->weights_init_type, "uniform")){
-        uniform_init(l->index*2, -1, 1, l->kernel_weights_size, kernel_weights);
-    } else if (0 == strcmp(l->weights_init_type, "guass")){
-        guass_init(l->index*2, 0, 1, l->kernel_weights_size, kernel_weights);
-    } else if (0 == strcmp(l->weights_init_type, "xavier_uniform")){
-        xavier_uniform(l->index*2, l->inputs, l->outputs, kernel_weights);
-    } else if (0 == strcmp(l->weights_init_type, "xavier_normal")){
-        xavier_normal(l->index*2, l->inputs, l->outputs, kernel_weights);
-    } else {
-        kaiming_init(l->index*2, l->inputs, l->outputs, kernel_weights);
-    }
-    if (l->bias){
-        for (int i = 0; i < l->output_h; ++i){
-            bias_weights[i] = 0.01;
-        }
-    }
 }
 
 void forward_connect_layer(Layer l, int num)

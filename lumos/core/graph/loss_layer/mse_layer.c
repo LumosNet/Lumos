@@ -7,7 +7,6 @@ Layer *make_mse_layer(int group)
     l->group = group;
     l->weights = 0;
     l->update = NULL;
-    l->init_layer_weights = NULL;
 
     fprintf(stderr, "Mse             Layer    :    [output=%4d]\n", 1);
     return l;

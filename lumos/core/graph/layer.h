@@ -25,9 +25,6 @@ typedef backward Backward;
 typedef void (*update) (struct layer, float, int, float*);
 typedef update Update;
 
-typedef void (*init_layer_weights) (struct layer*);
-typedef init_layer_weights InitLayerWeights;
-
 typedef int (*get_float_calculate_times) (struct layer*);
 typedef get_float_calculate_times GetFloatCalculateTimes;
 
@@ -49,7 +46,6 @@ struct layer{
     int label_num;
 
     char *active_str;
-    char *weights_init_type;
 
     float *input;
     float *output;
@@ -91,8 +87,6 @@ struct layer{
     Activation gradient;
 
     Update update;
-
-    InitLayerWeights init_layer_weights;
     GetFloatCalculateTimes get_fct;
 };
 

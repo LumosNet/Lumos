@@ -275,7 +275,28 @@ void init_weights(Session *sess, char *weights_file)
         {
             Layer *l = layers[i];
             if (l->weights){
-                l->init_layer_weights(l);
+                Initializer init = sess->w_init;
+                if (0 == strcmp(init.type, "val_init")){
+                    val_init(l, init.val, init.scale);
+                } else if (0 == strcmp(init.type, "uniform_init")){
+                    uniform_init(l, init.mean, init.variance, init.scale);
+                } else if (0 == strcmp(init.type, "normal_init")){
+                    normal_init(l, init.mean, init.variance, init.scale);
+                } else if (0 == strcmp(init.type, "xavier_uniform_init")){
+                    xavier_uniform_init(l, init.scale);
+                } else if (0 == strcmp(init.type, "xavier_normal_init")){
+                    xavier_normal_init(l, init.scale);
+                } else if (0 == strcmp(init.type, "kaiming_uniform_init")){
+                    kaiming_uniform_init(l, init.scale, init.mode);
+                } else if (0 == strcmp(init.type, "kaiming_normal_init")){
+                    kaiming_normal_init(l, init.scale, init.mode);
+                } else {
+                    fprintf(stderr, "\nInitializer Error: no such kind of nInitializer\n");
+                    return ;
+                }
+            }
+            if (l->bias){
+                fill_cpu(l->bias_weights, l->bias_weights_size, 0.01, 1);
             }
         }
         fprintf(stderr, "\nInit Weights\n");

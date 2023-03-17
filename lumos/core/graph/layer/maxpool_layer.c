@@ -11,7 +11,6 @@ Layer *make_maxpool_layer(int ksize)
     l->stride = ksize;
 
     l->update = NULL;
-    l->init_layer_weights = NULL;
 
     fprintf(stderr, "Max Pooling     Layer    :    [ksize=%2d]\n", l->ksize);
     return l;

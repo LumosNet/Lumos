@@ -10,7 +10,6 @@ Layer *make_avgpool_layer(int ksize)
     l->ksize = ksize;
     l->stride = l->ksize;
     l->update = NULL;
-    l->init_layer_weights = NULL;
 
     fprintf(stderr, "Avg Pooling     Layer    :    [ksize=%2d]\n", l->ksize);
     return l;

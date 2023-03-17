@@ -8,6 +8,7 @@
 #include "text_f.h"
 #include "binary_f.h"
 #include "image.h"
+#include "weights_init.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -65,9 +66,10 @@ typedef struct session{
     int memory_size;
 
     Label2Truth label2truth;
+    Initializer w_init;
 } Session;
 
-Session *create_session();
+Session *create_session(Initializer w_init);
 
 void bind_graph(Session *sess, Graph *graph);
 void bind_train_data(Session *sess, char *path);
