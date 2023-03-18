@@ -290,13 +290,15 @@ void init_weights(Session *sess, char *weights_file)
                     kaiming_uniform_init(l, init.scale, init.mode);
                 } else if (0 == strcmp(init.type, "kaiming_normal_init")){
                     kaiming_normal_init(l, init.scale, init.mode);
+                } else if (0 == strcmp(init.type, "he_init")){
+                    he_init(l);
                 } else {
                     fprintf(stderr, "\nInitializer Error: no such kind of nInitializer\n");
                     return ;
                 }
             }
             if (l->bias){
-                fill_cpu(l->bias_weights, l->bias_weights_size, 0.01, 1);
+                fill_cpu(l->bias_weights, l->bias_weights_size, 0, 1);
             }
         }
         fprintf(stderr, "\nInit Weights\n");

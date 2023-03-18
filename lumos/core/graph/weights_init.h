@@ -31,6 +31,7 @@ void xavier_uniform_init(Layer *l, float scale);
 void xavier_normal_init(Layer *l, float scale);
 void kaiming_uniform_init(Layer *l, float scale, char *mode);
 void kaiming_normal_init(Layer *l, float scale, char *mode);
+void he_init(Layer *l);
 
 Initializer val_initializer(float val, float scale);
 Initializer uniform_initializer(float mean, float variance, float scale);
@@ -39,6 +40,7 @@ Initializer xavier_uniform_initializer(float scale);
 Initializer xavier_normal_initializer(float scale);
 Initializer kaiming_uniform_initializer(float scale, char *mode);
 Initializer kaiming_normal_initializer(float scale, char *mode);
+Initializer he_initializer();
 
 #ifdef __cplusplus
 }

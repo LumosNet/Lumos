@@ -28,12 +28,11 @@ void xor () {
     append_layer2grpah(graph, l4);
     append_layer2grpah(graph, l5);
 
-    // Initializer init = kaiming_uniform_initializer(1, "fan_in");
-    Initializer init = xavier_normal_initializer(1);
+    Initializer init = he_initializer();
     Session *sess = create_session(init);
     bind_graph(sess, graph);
     create_train_scene(sess, 1, 2, 1, 1, 1, xor_label2truth, "/usr/local/lumos/data/xor/data.txt", "/usr/local/lumos/data/xor/label.txt");
-    init_train_scene(sess, 50000, 4, 2, NULL);
+    init_train_scene(sess, 500, 4, 2, NULL);
     session_train(sess, 0.01, "./weights/lumos.w");
 
     Session *t_sess = create_session(init);

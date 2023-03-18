@@ -9,8 +9,7 @@ void val_init(Layer *l, float val, float scale)
 
 void uniform_init(Layer *l, float mean, float variance, float scale)
 {
-    int seed = (unsigned)time(NULL);
-    uniform_list(-variance, variance, seed, l->kernel_weights_size, l->kernel_weights);
+    uniform_list(-variance, variance, l->kernel_weights_size, l->kernel_weights);
     multy_cpu(l->kernel_weights, l->kernel_weights_size, scale, 1);
 }
 
@@ -23,9 +22,8 @@ void normal_init(Layer *l, float mean, float variance, float scale)
 
 void xavier_uniform_init(Layer *l, float scale)
 {
-    int seed = (unsigned)time(NULL);
     float x = sqrt((float)6/(l->inputs+l->outputs));
-    uniform_list(-x, x, seed, l->kernel_weights_size, l->kernel_weights);
+    uniform_list(-x, x, l->kernel_weights_size, l->kernel_weights);
     multy_cpu(l->kernel_weights, l->kernel_weights_size, scale, 1);
 }
 
@@ -40,27 +38,58 @@ void xavier_normal_init(Layer *l, float scale)
 void kaiming_uniform_init(Layer *l, float scale, char *mode)
 {
     float x = 0;
-    if (0 == strcmp(mode, "fan_in")){
-        x = sqrt((float)6/l->inputs);
+    float inp = 0;
+    float out = 0;
+    if (l->type == CONVOLUTIONAL){
+        inp = l->ksize*l->ksize*l->input_c;
+        out = l->ksize*l->ksize*l->output_c;
     } else {
-        x = sqrt((float)6/l->outputs);
+        inp = l->inputs;
+        out = l->outputs;
     }
-    int seed = (unsigned)time(NULL);
-    uniform_list(-x, x, seed, l->kernel_weights_size, l->kernel_weights);
+    if (0 == strcmp(mode, "fan_in")){
+        x = sqrt((float)6/inp);
+    } else {
+        x = sqrt((float)6/out);
+    }
+    uniform_list(-x, x, l->kernel_weights_size, l->kernel_weights);
     multy_cpu(l->kernel_weights, l->kernel_weights_size, scale, 1);
 }
 
 void kaiming_normal_init(Layer *l, float scale, char *mode)
 {
     float x = 0;
-    if (0 == strcmp(mode, "fan_in")){
-        x = (float)2/l->inputs;
+    float inp = 0;
+    float out = 0;
+    if (l->type == CONVOLUTIONAL){
+        inp = l->ksize*l->ksize*l->input_c;
+        out = l->ksize*l->ksize*l->output_c;
     } else {
-        x = (float)2/l->outputs;
+        inp = l->inputs;
+        out = l->outputs;
+    }
+    if (0 == strcmp(mode, "fan_in")){
+        x = sqrt((float)6/inp);
+    } else {
+        x = sqrt((float)6/out);
     }
     int seed = (unsigned)time(NULL);
     guass_list(0, x, seed, l->kernel_weights_size, l->kernel_weights);
     multy_cpu(l->kernel_weights, l->kernel_weights_size, scale, 1);
+}
+
+void he_init(Layer *l)
+{
+    float scale;
+    if (l->type == CONNECT){
+        scale = sqrt((float)2 / l->inputs);
+        uniform_list(-1, 1, l->kernel_weights_size, l->kernel_weights);
+        multy_cpu(l->kernel_weights, l->kernel_weights_size, scale, 1);
+    } else if (l->type == CONVOLUTIONAL){
+        scale = sqrt((float)2 / (l->ksize*l->ksize*l->input_c));
+        normal_list(l->kernel_weights_size, l->kernel_weights);
+        multy_cpu(l->kernel_weights, l->kernel_weights_size, scale, 1);
+    }
 }
 
 Initializer val_initializer(float val, float scale)
@@ -123,5 +152,12 @@ Initializer kaiming_normal_initializer(float scale, char *mode)
     init.type = "kaiming_normal_init";
     init.scale = scale;
     init.mode = mode;
+    return init;
+}
+
+Initializer he_initializer()
+{
+    Initializer init = {0};
+    init.type = "he_init";
     return init;
 }
