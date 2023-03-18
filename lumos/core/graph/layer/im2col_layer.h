@@ -5,7 +5,6 @@
 #include <stdio.h>
 
 #include "layer.h"
-#include "cfg_f.h"
 #include "cpu.h"
 
 #ifdef __cplusplus

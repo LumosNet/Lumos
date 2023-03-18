@@ -2,7 +2,6 @@
 #define MSE_LAYER_H
 
 #include "layer.h"
-#include "cfg_f.h"
 #include "cpu.h"
 #include "gemm.h"
 

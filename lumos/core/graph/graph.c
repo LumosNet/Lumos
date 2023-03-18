@@ -11,12 +11,6 @@ Graph *create_graph(char *name, int layer_n)
     return graph;
 }
 
-Graph *create_graph_by_cfg(CFGPiece *p, int layer_n)
-{
-    Graph *graph = create_graph(p->name, layer_n);
-    return graph;
-}
-
 void append_layer2grpah(Graph *graph, Layer *l)
 {
     graph->layers[graph->layer_num] = l;

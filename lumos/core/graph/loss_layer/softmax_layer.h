@@ -5,7 +5,6 @@
 #include <float.h>
 
 #include "layer.h"
-#include "cfg_f.h"
 #include "gemm.h"
 #include "cpu.h"
 
