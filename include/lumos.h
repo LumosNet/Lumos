@@ -8,6 +8,7 @@
 extern "C" {
 #endif
 
+typedef struct initializer Initializer;
 typedef struct layer Layer;
 
 typedef void (*forward)  (struct layer, int);
@@ -18,8 +19,13 @@ typedef backward Backward;
 typedef void (*update) (struct layer, float, int, float*);
 typedef update Update;
 
-typedef void (*init_layer_weights) (struct layer*);
-typedef init_layer_weights InitLayerWeights;
+typedef int (*get_float_calculate_times) (struct layer*);
+typedef get_float_calculate_times GetFloatCalculateTimes;
+
+typedef float   (*activate)(float);
+typedef float   (*gradient)(float);
+typedef activate Activate;
+typedef gradient Gradient;
 
 typedef void (*label2truth) (char **, float *);
 typedef label2truth Label2Truth;
@@ -27,43 +33,35 @@ typedef label2truth Label2Truth;
 typedef void (*process_test_information) (char **, float *, float *, float, char *);
 typedef process_test_information ProcessTestInformation;
 
-typedef float   (*activate)(float);
-typedef float   (*gradient)(float);
-typedef activate Activate;
-typedef gradient Gradient;
-
-typedef struct CFGParam{
-    char *key;
-    char *val;
-    struct CFGParam *next;
-} CFGParam;
-
-typedef struct CFGParams{
-    struct CFGParam *head;
-    struct CFGParam *tail;
-} CFGParams;
-
-typedef struct CFGPiece{
-    int param_num;
-    char *name;
-    struct CFGParams *params;
-    struct CFGPiece *next;
-} CFGPiece;
-
-typedef struct CFGPieces{
-    struct CFGPiece *head;
-    struct CFGPiece *tail;
-} CFGPieces;
-
-typedef struct CFG{
-    int piece_num;
-    struct CFGPieces *pieces;
-} CFG;
-
 typedef enum {
     CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MAXPOOL, AVGPOOL, \
     MSE
 } LayerType;
+
+typedef enum {
+    STAIR,
+    HARDTAN,
+    LINEAR,
+    LOGISTIC,
+    LOGGY,
+    RELU,
+    ELU,
+    SELU,
+    RELIE,
+    RAMP,
+    LEAKY,
+    TANH,
+    PLSE,
+    LHTAN
+} Activation;
+
+struct initializer{
+    char *type;
+    float val;
+    float mean;
+    float variance;
+    char *mode;
+};
 
 struct layer{
     LayerType type;
@@ -120,12 +118,11 @@ struct layer{
     Forward forward;
     Backward backward;
 
-    Activate active;
-    Gradient gradient;
+    Activation active;
+    Activation gradient;
 
     Update update;
-
-    InitLayerWeights init_layer_weights;
+    GetFloatCalculateTimes get_fct;
 };
 
 typedef struct graph{
@@ -144,8 +141,6 @@ typedef struct graph{
 
     int num;
     char **data;
-
-    CFG *cfg;
 } graph, Graph;
 
 typedef struct session{
@@ -194,18 +189,43 @@ typedef struct session{
     int memory_size;
 
     Label2Truth label2truth;
+    Initializer w_init;
 } Session;
 
+void val_init(Layer *l, float val);
+void uniform_init(Layer *l, float mean, float variance);
+void normal_init(Layer *l, float mean, float variance);
+void xavier_uniform_init(Layer *l);
+void xavier_normal_init(Layer *l);
+void kaiming_uniform_init(Layer *l, char *mode);
+void kaiming_normal_init(Layer *l, char *mode);
+void he_init(Layer *l);
+
+Initializer val_initializer(float val);
+Initializer uniform_initializer(float mean, float variance);
+Initializer normal_initializer(float mean, float variance);
+Initializer xavier_uniform_initializer();
+Initializer xavier_normal_initializer();
+Initializer kaiming_uniform_initializer(char *mode);
+Initializer kaiming_normal_initializer(char *mode);
+Initializer he_initializer();
+
 Graph *create_graph(char *name, int layer_n);
-Graph *create_graph_by_cfg(CFGPiece *p, int layer_n);
-Graph *load_graph_from_cfg(char *cfg_path);
 
 void append_layer2grpah(Graph *graph, Layer *l);
-
 void init_graph(Graph *g, int w, int h, int c);
 
+Activation load_activate_type(char *activate);
+
+Activate load_activate(Activation TYPE);
+Gradient load_gradient(Activation TYPE);
+
+float activate_x(Activation TYPE, float x);
+float gradient_x(Activation TYPE, float x);
+void activate_list(float *origin, int num, Activation TYPE);
+void gradient_list(float *origin, int num, Activation TYPE);
+
 Layer *make_avgpool_layer(int ksize);
-Layer *make_avgpool_layer_by_cfg(CFGParams *p);
 
 void init_avgpool_layer(Layer *l, int w, int h, int c);
 
@@ -213,10 +233,7 @@ void forward_avgpool_layer(Layer l, int num);
 void backward_avgpool_layer(Layer l, float rate, int num, float *n_delta);
 
 Layer *make_connect_layer(int output, int bias, char *active);
-Layer *make_connect_layer_by_cfg(CFGParams *p);
-
 void init_connect_layer(Layer *l, int w, int h, int c);
-void init_connect_weights(Layer *l);
 
 void forward_connect_layer(Layer l, int num);
 void backward_connect_layer(Layer l, float rate, int num, float *n_delta);
@@ -224,17 +241,14 @@ void backward_connect_layer(Layer l, float rate, int num, float *n_delta);
 void update_connect_layer(Layer l, float rate, int num, float *n_delta);
 
 Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalization, char *active);
-Layer *make_convolutional_layer_by_cfg(CFGParams *p);
-
 void init_convolutional_layer(Layer *l, int w, int h, int c);
-void init_convolutional_weights(Layer *l);
 
 void forward_convolutional_layer(Layer l, int num);
 void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta);
 
 void update_convolutional_layer(Layer l, float rate, int num, float *n_delta);
+
 Layer *make_im2col_layer(int flag);
-Layer *make_im2col_layer_by_cfg(CFGParams *p);
 
 void init_im2col_layer(Layer *l, int w, int h, int c);
 
@@ -242,7 +256,6 @@ void forward_im2col_layer(Layer l, int num);
 void backward_im2col_layer(Layer l, float rate, int num, float *n_delta);
 
 Layer *make_maxpool_layer(int ksize);
-Layer *make_maxpool_layer_by_cfg(CFGParams *p);
 
 void init_maxpool_layer(Layer *l, int w, int h, int c);
 
@@ -250,17 +263,73 @@ void forward_maxpool_layer(Layer l, int num);
 void backward_maxpool_layer(Layer l, float rate, int num, float *n_delta);
 
 Layer *make_mse_layer(int group);
-Layer *make_mse_layer_by_cfg(CFGParams *p);
 
 void init_mse_layer(Layer *l, int w, int h, int c);
 
 void forward_mse_layer(Layer l, int num);
 void backward_mse_layer(Layer l, float rate, int num, float *n_delta);
 
-void bind_graph(Session *sess, Graph *graph);
+void add_bias(float *origin, float *bias, int n, int size);
+void fill_cpu(float *data, int len, float x, int offset);
+void multy_cpu(float *data, int len, float x, int offset);
+void add_cpu(float *data, int len, float x, int offset);
+
+void min_cpu(float *data, int num, float *space);
+void max_cpu(float *data, int num, float *space);
+void sum_cpu(float *data, int num, float *space);
+void mean_cpu(float *data, int num, float *space);
+
+void matrix_add_cpu(float *data_a, float *data_b, int num, float *space);
+void matrix_subtract_cpu(float *data_a, float *data_b, int num, float *space);
+void matrix_multiply_cpu(float *data_a, float *data_b, int num, float *space);
+void matrix_divide_cpu(float *data_a, float *data_b, int num, float *space);
+
+void saxpy_cpu(float *data_a, float *data_b, int num, float x, float *space);
+void sum_channel_cpu(float *data, int h, int w, int c, float ALPHA, float *space);
+
+void one_hot_encoding(int n, int label, float *space);
+void gemm(int TA, int TB, int AM, int AN, int BM, int BN, float ALPHA, 
+        float *A, float *B, float *C);
+
+void gemm_nn(int AM, int AN, int BM, int BN, float ALPHA, float *A, float *B, float *C);
+void gemm_tn(int AM, int AN, int BM, int BN, float ALPHA, float *A, float *B, float *C);
+void gemm_nt(int AM, int AN, int BM, int BN, float ALPHA, float *A, float *B, float *C);
+void gemm_tt(int AM, int AN, int BM, int BN, float ALPHA, float *A, float *B, float *C);
+void im2col(float *img, int h, int w, int c, int ksize, int stride, int pad, float *space);
+void col2im(float *img, int ksize, int stride, int pad, int out_h, int out_w, int out_c, float *space);
+
+// 统计图像中不同灰度等级的像素点数量
+int *census_image_pixel(float *img, int w, int h, int c);
+// 统计通道中不同灰度等级的像素点数量
+int *census_channel_pixel(float *img, int w, int h, int c, int index_c);
+float *load_image_data(char *img_path, int *w, int *h, int *c);
+void save_image_data(float *img, int w, int h, int c, char *savepath);
+// 双线性内插值
+void resize_im(float *img, int height, int width, int channel, int row, int col, float *space);
+
+void avgpool(float *im, int h, int w, int c, int ksize, int stride, int pad, float *space);
+void maxpool(float *im, int h, int w, int c, int ksize, int stride, int pad, float *space, int *index);
+
+void avgpool_gradient(float *delta_l, int h, int w, int c, int ksize, int stride, int pad, float *delta_n);
+void maxpool_gradient(float *delta_l, int h, int w, int c, int ksize, int stride, int pad, float *delta_n, int *index);
+
+float uniform_data(float a, float b, int *seed);
+float guass_data(float mean, float sigma, int *seed);
+
+void uniform_list(float a, float b, int num, float *space);
+void guass_list(float mean, float sigma, int seed, int num, float *space);
+void normal_list(int num, float *space);
+
+float rand_normal();
+float rand_uniform(float min, float max);
+
+float rand_normal();
 
 void session_train(Session *sess, float learning_rate, char *weights_path);
 void session_test(Session *sess, ProcessTestInformation process_test_information);
+
+void forward_session(Session *sess);
+void backward_session(Session *sess);
 
 void create_train_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file);
 void init_train_scene(Session *sess, int epoch, int batch, int subdivision, char *weights_file);
@@ -268,10 +337,58 @@ void init_train_scene(Session *sess, int epoch, int batch, int subdivision, char
 void create_test_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file);
 void init_test_scene(Session *sess, char *weights_file);
 
-Session *create_session();
-void del_session();
+void create_run_memory(Session *sess);
+void create_workspace_memory(Session *sess);
+void create_input_memory(Session *sess);
+void create_output_memory(Session *sess);
+void create_weights_memory(Session *sess);
+void create_delta_memory(Session *sess);
+void create_label_memory(Session *sess);
+void create_loss_memory(Session *sess);
+void create_truth_memory(Session *sess);
+void create_predicts_memory(Session *sess);
+void create_maxpool_index_memory(Session *sess);
 
-void one_hot_encoding(int n, int label, float *space);
+void set_graph_memory(Session *sess);
+void set_graph_weight(Session *sess);
+void set_label(Session *sess);
+void set_loss_memory(Session *sess);
+void set_truth_memory(Session *sess);
+void set_maxpool_index_memory(Session *sess);
+
+void get_workspace_size(Session *sess);
+void statistics_memory_occupy_size(Session *sess);
+
+void init_weights(Session *sess, char *weights_file);
+
+// 从index读取num个数据
+void load_train_data(Session *sess, int index, int num);
+void load_train_label(Session *sess, int index, int num);
+
+void load_test_data(Session *sess, int index);
+char **load_test_label(Session *sess, int index);
+
+void save_weigths(Session *sess, char *path);
+void load_weights(Session *sess, char *path);
+
+Session *create_session(Initializer w_init);
+
+void bind_graph(Session *sess, Graph *graph);
+void bind_train_data(Session *sess, char *path);
+void bind_test_data(Session *sess, char *path);
+void bind_train_label(Session *sess, int label_num, char *path);
+void bind_test_label(Session *sess, int label_num, char *path);
+void bind_label2truth_func(Session *sess, int truth_num, Label2Truth func);
+
+void set_input_dimension(Session *sess, int h, int w, int c);
+void set_train_params(Session *sess, int epoch, int batch, int subdivision, float learning_rate);
+
+void strip(char *line, char c);
+char **split(char *line, char c, int *num);
+void padding_string(char *space, char *str, int index);
+
+char *inten2str(int x);
+char *int2str(int x);
 
 #ifdef __cplusplus
 }

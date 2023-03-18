@@ -90,8 +90,6 @@ struct layer{
     GetFloatCalculateTimes get_fct;
 };
 
-void restore_layer(Layer *l);
-
 #ifdef __cplusplus
 }
 #endif
