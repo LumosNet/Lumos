@@ -277,19 +277,19 @@ void init_weights(Session *sess, char *weights_file)
             if (l->weights){
                 Initializer init = sess->w_init;
                 if (0 == strcmp(init.type, "val_init")){
-                    val_init(l, init.val, init.scale);
+                    val_init(l, init.val);
                 } else if (0 == strcmp(init.type, "uniform_init")){
-                    uniform_init(l, init.mean, init.variance, init.scale);
+                    uniform_init(l, init.mean, init.variance);
                 } else if (0 == strcmp(init.type, "normal_init")){
-                    normal_init(l, init.mean, init.variance, init.scale);
+                    normal_init(l, init.mean, init.variance);
                 } else if (0 == strcmp(init.type, "xavier_uniform_init")){
-                    xavier_uniform_init(l, init.scale);
+                    xavier_uniform_init(l);
                 } else if (0 == strcmp(init.type, "xavier_normal_init")){
-                    xavier_normal_init(l, init.scale);
+                    xavier_normal_init(l);
                 } else if (0 == strcmp(init.type, "kaiming_uniform_init")){
-                    kaiming_uniform_init(l, init.scale, init.mode);
+                    kaiming_uniform_init(l, init.mode);
                 } else if (0 == strcmp(init.type, "kaiming_normal_init")){
-                    kaiming_normal_init(l, init.scale, init.mode);
+                    kaiming_normal_init(l, init.mode);
                 } else if (0 == strcmp(init.type, "he_init")){
                     he_init(l);
                 } else {

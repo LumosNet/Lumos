@@ -21,25 +21,24 @@ struct initializer{
     float mean;
     float variance;
     char *mode;
-    float scale;
 };
 
-void val_init(Layer *l, float val, float scale);
-void uniform_init(Layer *l, float mean, float variance, float scale);
-void normal_init(Layer *l, float mean, float variance, float scale);
-void xavier_uniform_init(Layer *l, float scale);
-void xavier_normal_init(Layer *l, float scale);
-void kaiming_uniform_init(Layer *l, float scale, char *mode);
-void kaiming_normal_init(Layer *l, float scale, char *mode);
+void val_init(Layer *l, float val);
+void uniform_init(Layer *l, float mean, float variance);
+void normal_init(Layer *l, float mean, float variance);
+void xavier_uniform_init(Layer *l);
+void xavier_normal_init(Layer *l);
+void kaiming_uniform_init(Layer *l, char *mode);
+void kaiming_normal_init(Layer *l, char *mode);
 void he_init(Layer *l);
 
-Initializer val_initializer(float val, float scale);
-Initializer uniform_initializer(float mean, float variance, float scale);
-Initializer normal_initializer(float mean, float variance, float scale);
-Initializer xavier_uniform_initializer(float scale);
-Initializer xavier_normal_initializer(float scale);
-Initializer kaiming_uniform_initializer(float scale, char *mode);
-Initializer kaiming_normal_initializer(float scale, char *mode);
+Initializer val_initializer(float val);
+Initializer uniform_initializer(float mean, float variance);
+Initializer normal_initializer(float mean, float variance);
+Initializer xavier_uniform_initializer();
+Initializer xavier_normal_initializer();
+Initializer kaiming_uniform_initializer(char *mode);
+Initializer kaiming_normal_initializer(char *mode);
 Initializer he_initializer();
 
 #ifdef __cplusplus
