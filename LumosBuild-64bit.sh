@@ -1,5 +1,5 @@
 #!/bin/bash
-VERSION=v0.4a
+VERSION=v0.1
 CDIR=`pwd`
 
 BUILDDIR=$CDIR/lumos-$VERSION

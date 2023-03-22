@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define VERSION "0.4-a"
+#define VERSION "0.1"
 
 void lumos(int argc, char **argv)
 {
