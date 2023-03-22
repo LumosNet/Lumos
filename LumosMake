@@ -49,14 +49,13 @@ ifeq ($(LINUX),1)
 CFLAGS += -fPIC
 endif
 
-LIBLUMOSOBJ= 	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o layer.o maxpool_layer.o \
+LIBLUMOSOBJ= 	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o maxpool_layer.o \
 				mse_layer.o weights_init.o \
 				active.o bias.o cpu.o gemm.o im2col.o image.o pooling.o random.o \
 				session.o manager.o dispatch.o \
 				progress_bar.o \
 				binary_f.o text_f.o \
-				str_ops.o \
-				lenet.o mnist.o xor.o
+				str_ops.o
 
 EXECOBJ=        lumos.o
 
@@ -70,7 +69,7 @@ EXECS =         $(addprefix $(EXECDIR), $(EXEC))
 OBJS = $(LIBLUMOSOBJS)
 OBJS +=$(EXECOBJS)
 
-DEPS = LumosBuild
+DEPS = LumosMake
 
 all: $(EXECS) $(EXELUMOS)
 

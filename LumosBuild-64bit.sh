@@ -24,8 +24,6 @@ if [ -d "$BUILDDIR/obj" ]; then
 fi
 
 cp $CDIR/include/lumos.h $BUILDDIR/include/lumos.h
-cp -r ./data/mnist ./lumos-$VERSION/data/mnist
-cp -r ./data/xor ./lumos-$VERSION/data/xor
 wait
 
 tar zcvf lumos-$VERSION.tar.gz lumos-$VERSION
