@@ -54,7 +54,8 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		progress_bar.o \
 		binary_f.o text_f.o \
 		str_ops.o \
-		cJSON_Utils.o cJSON.o
+		cJSON_Utils.o cJSON.o \
+		xor.o
 
 EXECOBJA=lumos.o
 

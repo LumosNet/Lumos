@@ -8,7 +8,6 @@
 *.w
 .idea
 .vscode
-data
 obj
 main
 main.exe
