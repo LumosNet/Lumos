@@ -146,7 +146,7 @@ collect2: error: ld returned 1 exit status
 
 通常，正确的编译命令应该如下:
 ```shell
-gcc -fopenmp main.c -I/usr/local/lumos/include/ -o main -llumos
+gcc -fopenmp main.c -I/usr/local/lumos/include/ -o main -L/usr/local/lumos/lib -llumos
 ```
 
 
