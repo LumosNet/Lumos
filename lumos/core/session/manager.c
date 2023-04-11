@@ -6,6 +6,7 @@ void create_run_memory(Session *sess)
     create_output_memory(sess);
     create_delta_memory(sess);
     create_maxpool_index_memory(sess);
+    create_dropout_rand_memory(sess);
 }
 
 void create_workspace_memory(Session *sess)
@@ -90,6 +91,22 @@ void create_maxpool_index_memory(Session *sess)
     }
     sess->maxpool_index = calloc(max_indexes * sess->subdivision, sizeof(int));
     fprintf(stderr, "APPly For MAX Pool Layers's MAX Pixel Index Space\n");
+}
+
+void create_dropout_rand_memory(Session *sess)
+{
+    Graph *graph = sess->graph;
+    int rand_num = 0;
+    for (int i = 0; i < graph->layer_num; ++i){
+        Layer *l = graph->layers[i];
+        if (l->type == DROPOUT) rand_num += l->inputs;
+    }
+    if (rand_num == 0){
+        sess->dropout_rand = NULL;
+        return;
+    }
+    sess->dropout_rand = calloc(rand_num * sess->subdivision, sizeof(int));
+    fprintf(stderr, "APPly For Dropout Layers's Rand Space\n");
 }
 
 void set_graph_memory(Session *sess)
@@ -200,6 +217,26 @@ void set_maxpool_index_memory(Session *sess)
         }
     }
     fprintf(stderr, "\nDistribut MAX Pool Layers's MAX Pixel Index To Each Layer\n");
+}
+
+void set_dropout_rand_memory(Session *sess)
+{
+    if (sess->dropout_rand == NULL) return;
+    Graph *graph = sess->graph;
+    Layer **layers = graph->layers;
+    int *dropout_rand;
+    dropout_rand = sess->dropout_rand;
+    int rand_offset = 0;
+    for (int i = 0; i < graph->layer_num; ++i){
+        Layer *l = layers[i];
+        if (l->type == DROPOUT){
+            l->dropout_rand = dropout_rand + rand_offset;
+            rand_offset += l->inputs * sess->subdivision;
+        } else {
+            l->dropout_rand = NULL;
+        }
+    }
+    fprintf(stderr, "\nDropout Layers's Rand To Each Layer\n");
 }
 
 void get_workspace_size(Session *sess)

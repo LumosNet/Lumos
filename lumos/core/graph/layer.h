@@ -12,7 +12,7 @@ extern "C" {
 
 typedef enum {
     CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MAXPOOL, AVGPOOL, \
-    MSE, SOFTMAX
+    DROPOUT, MSE, SOFTMAX
 } LayerType;
 
 typedef struct layer Layer;
@@ -57,6 +57,7 @@ struct layer{
     float *workspace;
 
     int *maxpool_index;
+    int *dropout_rand;
 
     int filters;
     int ksize;
@@ -73,6 +74,9 @@ struct layer{
     int index;
     // 浮点数操作数
     int fops;
+    // dropout 占比
+    float probability;
+    int train;
 
     float *kernel_weights;
     float *bias_weights;

@@ -24,6 +24,8 @@ void init_train_scene(Session *sess, int epoch, int batch, int subdivision, char
 void create_test_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file);
 void init_test_scene(Session *sess, char *weights_file);
 
+void set_run_type(Session *sess, int train);
+
 #ifdef __cplusplus
 }
 #endif

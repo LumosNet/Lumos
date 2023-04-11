@@ -25,6 +25,7 @@ void create_loss_memory(Session *sess);
 void create_truth_memory(Session *sess);
 void create_predicts_memory(Session *sess);
 void create_maxpool_index_memory(Session *sess);
+void create_dropout_rand_memory(Session *sess);
 
 void set_graph_memory(Session *sess);
 void set_graph_weight(Session *sess);
@@ -32,6 +33,7 @@ void set_label(Session *sess);
 void set_loss_memory(Session *sess);
 void set_truth_memory(Session *sess);
 void set_maxpool_index_memory(Session *sess);
+void set_dropout_rand_memory(Session *sess);
 
 void get_workspace_size(Session *sess);
 void statistics_memory_occupy_size(Session *sess);

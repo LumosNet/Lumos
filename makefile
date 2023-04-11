@@ -48,7 +48,7 @@ VPATH+=	./lumos_t \
 		./lumos_t/core/ops
 endif
 
-OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o maxpool_layer.o softmax_layer.o \
+OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o maxpool_layer.o softmax_layer.o dropout_layer.o \
 		mse_layer.o weights_init.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o pooling.o random.o softmax.o \
 		session.o manager.o dispatch.o \

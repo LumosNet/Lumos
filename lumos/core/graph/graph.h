@@ -11,9 +11,10 @@
 #include "convolutional_layer.h"
 #include "im2col_layer.h"
 #include "maxpool_layer.h"
+#include "softmax_layer.h"
+#include "dropout_layer.h"
 
 #include "mse_layer.h"
-#include "softmax_layer.h"
 
 #ifdef __cplusplus
 extern "C" {

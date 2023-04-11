@@ -51,6 +51,7 @@ typedef struct session{
     float *predicts;
 
     int *maxpool_index;
+    int *dropout_rand;
 
     float *weights;
     float *update_weights;

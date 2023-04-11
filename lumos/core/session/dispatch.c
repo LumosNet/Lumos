@@ -119,6 +119,8 @@ void init_train_scene(Session *sess, int epoch, int batch, int subdivision, char
     create_predicts_memory(sess);
     set_truth_memory(sess);
     set_maxpool_index_memory(sess);
+    set_dropout_rand_memory(sess);
+    set_run_type(sess, 1);
 }
 
 void init_test_scene(Session *sess, char *weights_file)
@@ -145,4 +147,16 @@ void init_test_scene(Session *sess, char *weights_file)
     create_predicts_memory(sess);
     set_truth_memory(sess);
     set_maxpool_index_memory(sess);
+    set_dropout_rand_memory(sess);
+    set_run_type(sess, 0);
+}
+
+void set_run_type(Session *sess, int train)
+{
+    Graph *graph = sess->graph;
+    Layer *l = NULL;
+    for (int i = 0; i < graph->layer_num; ++i){
+        l = graph->layers[i];
+        l->train = train;
+    }
 }
