@@ -1,25 +1,23 @@
 #ifndef SOFTMAX_LAYER_H
 #define SOFTMAX_LAYER_H
 
-#include <math.h>
-#include <float.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "layer.h"
-#include "gemm.h"
+#include "softmax.h"
 #include "cpu.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-Layer make_softmax_layer(CFGParams *p, int h, int w, int c);
+Layer *make_softmax_layer(int group);
 
-void forward_softmax_layer(Layer l, float *workspace);
-void backward_softmax_layer(Layer l, float *n_delta, float *workspace);
+void init_softmax_layer(Layer *l, int w, int h, int c);
 
-void softmax_cpu(float *input, int n, int batch, int batch_offset, float *output);
-void softmax(float *input, int n, float *output);
-void softmax_x_ent_cpu(int n, float *pred, float *truth, float *delta, float *error);
+void forward_softmax_layer(Layer l, int num);
+void backward_softmax_layer(Layer l, float rate, int num, float *n_delta);
 
 #ifdef __cplusplus
 }

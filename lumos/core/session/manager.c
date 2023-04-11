@@ -298,7 +298,7 @@ void init_weights(Session *sess, char *weights_file)
                 }
             }
             if (l->bias){
-                fill_cpu(l->bias_weights, l->bias_weights_size, 0, 1);
+                fill_cpu(l->bias_weights, l->bias_weights_size, 0.001, 1);
             }
         }
         fprintf(stderr, "\nInit Weights\n");

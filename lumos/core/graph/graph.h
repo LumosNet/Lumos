@@ -13,6 +13,7 @@
 #include "maxpool_layer.h"
 
 #include "mse_layer.h"
+#include "softmax_layer.h"
 
 #ifdef __cplusplus
 extern "C" {

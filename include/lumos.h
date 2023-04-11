@@ -269,6 +269,13 @@ void init_mse_layer(Layer *l, int w, int h, int c);
 void forward_mse_layer(Layer l, int num);
 void backward_mse_layer(Layer l, float rate, int num, float *n_delta);
 
+Layer *make_softmax_layer(int group);
+
+void init_softmax_layer(Layer *l, int w, int h, int c);
+
+void forward_softmax_layer(Layer l, int num);
+void backward_softmax_layer(Layer l, float rate, int num, float *n_delta);
+
 void add_bias(float *origin, float *bias, int n, int size);
 void fill_cpu(float *data, int len, float x, int offset);
 void multy_cpu(float *data, int len, float x, int offset);

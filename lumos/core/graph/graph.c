@@ -46,6 +46,9 @@ void init_graph(Graph *g, int w, int h, int c)
         case MSE:
             init_mse_layer(l, w, h, c);
             break;
+        case SOFTMAX:
+            init_softmax_layer(l, w, h, c);
+            break;
         default:
             break;
         }

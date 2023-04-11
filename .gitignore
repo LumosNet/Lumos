@@ -9,6 +9,8 @@
 .idea
 .vscode
 obj
+main.c
 main
 main.exe
 weights
+data

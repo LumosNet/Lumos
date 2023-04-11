@@ -16,6 +16,7 @@ VPATH=	./lib/: \
 		./
 
 COMMON=	-Ilib \
+		-Iinclude \
 		-Ilumos/core/graph \
 		-Ilumos/core/graph/layer \
 		-Ilumos/core/graph/loss_layer \
@@ -26,7 +27,7 @@ COMMON=	-Ilib \
 		-Ilumos/utils/str \
 		-Ilumos/lumos
 
-EXEC=lumos.exe
+EXEC=main.exe
 OBJDIR=./obj/
 
 CC=gcc
@@ -47,9 +48,9 @@ VPATH+=	./lumos_t \
 		./lumos_t/core/ops
 endif
 
-OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o maxpool_layer.o \
+OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o maxpool_layer.o softmax_layer.o \
 		mse_layer.o weights_init.o \
-		active.o bias.o cpu.o gemm.o im2col.o image.o pooling.o random.o \
+		active.o bias.o cpu.o gemm.o im2col.o image.o pooling.o random.o softmax.o \
 		session.o manager.o dispatch.o \
 		progress_bar.o \
 		binary_f.o text_f.o \
@@ -57,7 +58,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		cJSON_Utils.o cJSON.o \
 		xor.o
 
-EXECOBJA=lumos.o
+EXECOBJA=main.o
 
 ifeq ($(TEST), 1)
 OBJ+= bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call.o \
