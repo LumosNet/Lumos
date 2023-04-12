@@ -243,3 +243,15 @@ void mean_gpu(float *data, int num, float *space)
 {
     mean_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data, num, space);
 }
+
+__global__ void exp_list_kernel(float *data, int num, float *space, float ALPHA)
+{
+    int index = threadIdx.x + blockIdx.x * blockDim.x;
+    if (index >= num) return;
+    space[index] = exp(data[index]-ALPHA);
+}
+
+void exp_list_gpu(float *data, int num, float *space, float ALPHA)
+{
+    exp_list_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data, num, space, ALPHA);
+}
