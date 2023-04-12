@@ -16,8 +16,8 @@
 extern "C" {
 #endif
 
-void softmax_gpu(float *data, int num, float *space, float ALPHA);
-void softmax_grident_gpu(float *data, int num, float *space, float ALPHA);
+void softmax_gpu(float *data, int num, float *space, float *ALPHA);
+void softmax_grident_gpu(float *data, int num, float *space, float *ALPHA);
 void softmax_exp_sum_gpu(float *data, int num, float *workspace, float *space);
 
 #ifdef __cplusplus

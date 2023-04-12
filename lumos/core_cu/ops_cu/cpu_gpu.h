@@ -32,7 +32,7 @@ void matrix_divide_gpu(float *data_a, float *data_b, int num, float *space);
 void saxpy_gpu(float *data_a, float *data_b, int num, float x, float *space);
 void sum_channel_gpu(float *data, int h, int w, int c, float ALPHA, float *space);
 
-void exp_list_gpu(float *data, int num, float *space, float ALPHA);
+void exp_list_gpu(float *data, int num, float *space, float *ALPHA);
 
 #ifdef __cplusplus
 }
