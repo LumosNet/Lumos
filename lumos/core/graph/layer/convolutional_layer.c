@@ -46,9 +46,15 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
     }
     l->deltas = l->inputs;
 
-    l->forward = forward_convolutional_layer;
-    l->backward = backward_convolutional_layer;
-    l->update = update_convolutional_layer;
+    if (l->coretype == GPU){
+        l->forward = forward_convolutional_layer_gpu;
+        l->backward = backward_convolutional_layer_gpu;
+        l->update = update_convolutional_layer_gpu;
+    } else {
+        l->forward = forward_convolutional_layer;
+        l->backward = backward_convolutional_layer;
+        l->update = update_convolutional_layer;
+    }
 
     fprintf(stderr, "Convolutional   Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);

@@ -1,16 +1,25 @@
 #include "session.h"
 
-Session *create_session(Initializer w_init)
+Session *create_session(char *type, Initializer w_init)
 {
     Session *sess = malloc(sizeof(Session));
     sess->memory_size = 0;
     sess->w_init = w_init;
+    if (0 == strcmp(type, "gpu")){
+        sess->coretype = GPU;
+    } else {
+        sess->coretype = CPU;
+    }
     return sess;
 }
 
 void bind_graph(Session *sess, Graph *graph)
 {
     sess->graph = graph;
+    for (int i = 0; i < graph->layer_num; ++i){
+        Layer *l = graph->layers[i];
+        l->coretype = sess->coretype;
+    }
 }
 
 void bind_train_data(Session *sess, char *path)

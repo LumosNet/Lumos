@@ -12,6 +12,8 @@
 #include "gemm.h"
 #include "cpu.h"
 
+#include "convolutional_layer_gpu.h"
+
 #ifdef __cplusplus
 extern "C"{
 #endif

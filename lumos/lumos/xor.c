@@ -29,13 +29,13 @@ void xor () {
     append_layer2grpah(graph, l5);
 
     Initializer init = he_initializer();
-    Session *sess = create_session(init);
+    Session *sess = create_session("cpu", init);
     bind_graph(sess, graph);
     create_train_scene(sess, 1, 2, 1, 1, 1, xor_label2truth, "./data/xor/data.txt", "./data/xor/label.txt");
     init_train_scene(sess, 500, 4, 2, NULL);
     session_train(sess, 0.01, "./xorw.w");
 
-    Session *t_sess = create_session(init);
+    Session *t_sess = create_session("cpu", init);
     bind_graph(t_sess, graph);
     create_test_scene(t_sess, 1, 2, 1, 1, 1, xor_label2truth, "./data/xor/test.txt", "./data/xor/label.txt");
     init_test_scene(t_sess, "./xorw.w");

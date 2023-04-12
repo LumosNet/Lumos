@@ -1,6 +1,10 @@
 LINUX=1
 TEST=0
 
+ARCH=	-gencode arch=compute_50,code=[sm_50,compute_50] \
+      	-gencode arch=compute_52,code=[sm_52,compute_52] \
+		-gencode arch=compute_61,code=[sm_61,compute_61]
+
 VPATH=	./lib/: \
 		./lumos/core/: \
 		./lumos/core/graph/: \
@@ -13,7 +17,12 @@ VPATH=	./lib/: \
 		./lumos/utils/file/: \
 		./lumos/utils/str/: \
 		./lumos/lumos/: \
-		./
+		./: \
+		./lumos/core_cu/: \
+		./lumos/core_cu/graph_cu/: \
+		./lumos/core_cu/ops_cu/: \
+		./lumos/core_cu/graph_cu/layer_cu/: \
+		./lumos/core_cu/graph_cu/loss_layer_cu/
 
 COMMON=	-Ilib \
 		-Iinclude \
@@ -25,16 +34,26 @@ COMMON=	-Ilib \
 		-Ilumos/utils/cmd \
 		-Ilumos/utils/file \
 		-Ilumos/utils/str \
-		-Ilumos/lumos
+		-Ilumos/lumos \
+		-Ilumos/core_cu \
+		-Ilumos/core_cu/graph_cu \
+		-Ilumos/core_cu/ops_cu \
+		-Ilumos/core_cu/graph_cu/layer_cu \
+		-Ilumos/core_cu/graph_cu/loss_layer_cu
 
 EXEC=main.exe
 OBJDIR=./obj/
 
 CC=gcc
+NVCC=nvcc
 
 LDFLAGS= -lm -pthread
 COMMON+= -Iscripts
 CFLAGS=-fopenmp -Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
+
+COMMON+= -DGPU -I/usr/local/cuda/include/
+CFLAGS+= -DGPU -Wno-deprecated-gpu-targets
+LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 
 ifeq ($(TEST), 1)
 COMMON+= -Ilumos_t \
@@ -58,6 +77,10 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		cJSON_Utils.o cJSON.o \
 		xor.o
 
+OBJ+= 	gpu.o active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o \
+	  	avgpool_layer_gpu.o maxpool_layer_gpu.o connect_layer_gpu.o convolutional_layer_gpu.o im2col_layer_gpu.o \
+	  	mse_layer_gpu.o
+
 EXECOBJA=main.o
 
 ifeq ($(TEST), 1)
@@ -65,6 +88,9 @@ OBJ+= bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call
 	  avgpool_layer_call.o batchnorm_layer_call.o connect_layer_call.o convolutional_layer_call.o im2col_layer_call.o maxpool_layer_call.o \
 	  mse_layer_call.o \
 	  utest.o benchmark_json.o call.o compare.o tsession.o
+
+OBJ+= bias_gpu_call.o cpu_gpu_call.o gemm_gpu_call.o im2col_gpu_call.o pooling_gpu_call.o \
+	  avgpool_layer_gpu_call.o connect_layer_gpu_call.o convolutional_layer_gpu_call.o im2col_layer_gpu_call.o maxpool_layer_gpu_call.o
 endif
 
 ifeq ($(TEST),1)
@@ -75,6 +101,8 @@ endif
 ifeq ($(LINUX),1)
 CFLAGS += -fPIC
 endif
+
+LDFLAGS+= -lstdc++
 
 EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
 OBJS = $(addprefix $(OBJDIR), $(OBJ))
@@ -87,6 +115,9 @@ $(EXEC): $(OBJS) $(EXECOBJ)
 
 $(OBJDIR)%.o: %.c $(DEPS)
 	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)%.o: %.cu $(DEPS)
+	$(NVCC) $(ARCH) $(COMMON) --compiler-options "$(CFLAGS)" -c $< -o $@
 
 obj:
 	mkdir obj

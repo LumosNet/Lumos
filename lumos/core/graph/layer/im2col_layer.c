@@ -31,8 +31,13 @@ void init_im2col_layer(Layer *l, int w, int h, int c)
     l->workspace_size = 0;
     l->deltas = l->inputs;
 
-    l->forward = forward_im2col_layer;
-    l->backward = backward_im2col_layer;
+    if (l->coretype == GPU){
+        l->forward = forward_im2col_layer_gpu;
+        l->backward = backward_im2col_layer_gpu;
+    } else {
+        l->forward = forward_im2col_layer;
+        l->backward = backward_im2col_layer;
+    }
 
     fprintf(stderr, "Im2col          Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);

@@ -38,9 +38,15 @@ void init_connect_layer(Layer *l, int w, int h, int c)
     l->bias_weights_size = l->outputs;
     l->deltas = l->inputs;
 
-    l->forward = forward_connect_layer;
-    l->backward = backward_connect_layer;
-    l->update = update_connect_layer;
+    if (l->coretype == GPU){
+        l->forward = forward_connect_layer_gpu;
+        l->backward = backward_connect_layer_gpu;
+        l->update = update_connect_layer_gpu;
+    } else {
+        l->forward = forward_connect_layer;
+        l->backward = backward_connect_layer;
+        l->update = update_connect_layer;
+    }
 
     fprintf(stderr, "Connect         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
@@ -60,10 +66,6 @@ void forward_connect_layer(Layer l, int num)
         {
             add_bias(output, l.bias_weights, l.ksize, 1);
         }
-        // for (int j = 0; j < l.outputs; ++j){
-        //     printf("%f ", output[j]);
-        // }
-        // printf("\n\n");
         activate_list(output, l.outputs, l.active);
     }
 }

@@ -6,6 +6,8 @@
 #include "cpu.h"
 #include "pooling.h"
 
+#include "avgpool_layer_gpu.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

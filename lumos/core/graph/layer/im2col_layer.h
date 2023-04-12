@@ -7,6 +7,8 @@
 #include "layer.h"
 #include "cpu.h"
 
+#include "im2col_layer_gpu.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

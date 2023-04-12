@@ -385,7 +385,7 @@ char **load_test_label(Session *sess, int index);
 void save_weigths(Session *sess, char *path);
 void load_weights(Session *sess, char *path);
 
-Session *create_session(Initializer w_init);
+Session *create_session(char *type, Initializer w_init);
 
 void bind_graph(Session *sess, Graph *graph);
 void bind_train_data(Session *sess, char *path);

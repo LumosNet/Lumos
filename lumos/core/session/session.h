@@ -14,6 +14,9 @@
 extern "C" {
 #endif
 
+#define CPU 0
+#define GPU 1
+
 typedef void (*label2truth) (char **, float *);
 typedef label2truth Label2Truth;
 
@@ -23,6 +26,7 @@ typedef process_test_information ProcessTestInformation;
 typedef struct session{
     Graph *graph;
 
+    int coretype;
     int epoch;
     int batch;
     int subdivision;
@@ -68,9 +72,20 @@ typedef struct session{
 
     Label2Truth label2truth;
     Initializer w_init;
+
+    float *workspace_gpu;
+    float *input_gpu;
+    float *output_gpu;
+    float *weights_gpu;
+    float *update_weights_gpu;
+    float *layer_delta_gpu;
+    float *loss_gpu;
+    float *truth_gpu;
+    int *maxpool_index_gpu;
+    int *dropout_rand_gpu;
 } Session;
 
-Session *create_session(Initializer w_init);
+Session *create_session(char *type, Initializer w_init);
 
 void bind_graph(Session *sess, Graph *graph);
 void bind_train_data(Session *sess, char *path);

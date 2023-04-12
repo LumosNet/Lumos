@@ -10,6 +10,9 @@
 extern "C" {
 #endif
 
+#define CPU 0
+#define GPU 1
+
 typedef enum {
     CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MAXPOOL, AVGPOOL, \
     DROPOUT, MSE, SOFTMAX
@@ -30,6 +33,7 @@ typedef get_float_calculate_times GetFloatCalculateTimes;
 
 struct layer{
     LayerType type;
+    int coretype;
     int input_h;
     int input_w;
     int input_c;
@@ -83,6 +87,12 @@ struct layer{
 
     float *update_kernel_weights;
     float *update_bias_weights;
+
+    float *kernel_weights_gpu;
+    float *bias_weights_gpu;
+
+    float *update_kernel_weights_gpu;
+    float *update_bias_weights_gpu;
 
     Forward forward;
     Backward backward;

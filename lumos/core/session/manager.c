@@ -11,6 +11,9 @@ void create_run_memory(Session *sess)
 
 void create_workspace_memory(Session *sess)
 {
+    if (sess->coretype == GPU){
+        cudaMalloc((void**)&sess->workspace_gpu, sess->workspace_size*sizeof(float));
+    }
     sess->workspace = calloc(sess->workspace_size, sizeof(float));
     fprintf(stderr, "Apply For The Commond Work Space\n");
 }
@@ -18,6 +21,9 @@ void create_workspace_memory(Session *sess)
 void create_input_memory(Session *sess)
 {
     int inputs = sess->subdivision * sess->height * sess->width * sess->channel;
+    if (sess->coretype == GPU){
+        cudaMalloc((void**)&sess->input_gpu, inputs*sizeof(float));
+    }
     sess->input = calloc(inputs, sizeof(float));
 }
 
@@ -31,6 +37,9 @@ void create_output_memory(Session *sess)
         outputs += l->outputs;
     }
     sess->output = calloc(outputs * sess->subdivision, sizeof(float));
+    if (sess->coretype == GPU){
+        cudaMalloc((void**)&sess->output_gpu, (outputs*sess->subdivision)*sizeof(float));
+    }
     fprintf(stderr, "Apply For Layers Output Data Space\n");
 }
 
@@ -38,6 +47,10 @@ void create_weights_memory(Session *sess)
 {
     sess->weights = calloc(sess->weights_size, sizeof(float));
     sess->update_weights = calloc(sess->weights_size, sizeof(float));
+    if (sess->coretype == GPU){
+        cudaMalloc((void**)&sess->weights_gpu, sess->weights_size*sizeof(float));
+        cudaMalloc((void**)&sess->update_weights_gpu, sess->weights_size*sizeof(float));
+    }
     fprintf(stderr, "Apply For Graph Weights Space\n");
 }
 
@@ -51,6 +64,9 @@ void create_delta_memory(Session *sess)
         deltas += l->deltas;
     }
     sess->layer_delta = calloc(deltas * sess->subdivision, sizeof(float));
+    if (sess->coretype == GPU){
+        cudaMalloc((void**)&sess->layer_delta_gpu, (deltas*sess->subdivision)*sizeof(float));
+    }
     fprintf(stderr, "APPly For Layers Delta Data Space\n");
 }
 
@@ -62,11 +78,17 @@ void create_label_memory(Session *sess)
 void create_loss_memory(Session *sess)
 {
     sess->loss = calloc(1, sizeof(float));
+    if (sess->coretype == GPU){
+        cudaMalloc((void**)&sess->loss_gpu, sizeof(float));
+    }
 }
 
 void create_truth_memory(Session *sess)
 {
     sess->truth = calloc(sess->truth_num * sess->subdivision, sizeof(float));
+    if (sess->coretype == GPU){
+        cudaMalloc((void**)&sess->truth_gpu, (sess->truth_num*sess->subdivision)*sizeof(float));
+    }
 }
 
 void create_predicts_memory(Session *sess)
@@ -90,6 +112,9 @@ void create_maxpool_index_memory(Session *sess)
         return;
     }
     sess->maxpool_index = calloc(max_indexes * sess->subdivision, sizeof(int));
+    if (sess->coretype == GPU){
+        cudaMalloc((void**)&sess->maxpool_index_gpu, max_indexes*sess->subdivision*sizeof(int));
+    }
     fprintf(stderr, "APPly For MAX Pool Layers's MAX Pixel Index Space\n");
 }
 
@@ -106,6 +131,9 @@ void create_dropout_rand_memory(Session *sess)
         return;
     }
     sess->dropout_rand = calloc(rand_num * sess->subdivision, sizeof(int));
+    if (sess->coretype == GPU){
+        cudaMalloc((void**)&sess->dropout_rand_gpu, rand_num*sess->subdivision*sizeof(int));
+    }
     fprintf(stderr, "APPly For Dropout Layers's Rand Space\n");
 }
 
@@ -117,10 +145,17 @@ void set_graph_memory(Session *sess)
     float *layer_delta;
     float *workspace;
     int *maxpool_index;
-    output = sess->output;
-    layer_delta = sess->layer_delta;
-    workspace = sess->workspace;
-    maxpool_index = sess->maxpool_index;
+    if (sess->coretype == GPU){
+        output = sess->output_gpu;
+        layer_delta = sess->layer_delta_gpu;
+        workspace = sess->workspace_gpu;
+        maxpool_index = sess->maxpool_index_gpu;  
+    } else {
+        output = sess->output;
+        layer_delta = sess->layer_delta;
+        workspace = sess->workspace;
+        maxpool_index = sess->maxpool_index;
+    }
     int offset_o = 0;
     int delta_offset = 0;
     for (int i = 0; i < graph->layer_num; ++i)
@@ -145,8 +180,12 @@ void set_graph_weight(Session *sess)
     Layer **layers = graph->layers;
     float *weights;
     float *update_weights;
+    float *weights_g;
+    float *update_weights_g;
     weights = sess->weights;
     update_weights = sess->update_weights;
+    weights_g = sess->weights_gpu;
+    update_weights_g = sess->update_weights_gpu;
     int weights_offset = 0;
     for (int i = 0; i < graph->layer_num; ++i)
     {
@@ -155,11 +194,15 @@ void set_graph_weight(Session *sess)
         {
             l->kernel_weights = weights + weights_offset;
             l->update_kernel_weights = update_weights + weights_offset;
+            l->kernel_weights_gpu = weights_g + weights_offset;
+            l->update_kernel_weights_gpu = update_weights_g + weights_offset;
             weights_offset += l->kernel_weights_size;
             if (l->bias)
             {
                 l->bias_weights = weights + weights_offset;
                 l->update_bias_weights = update_weights + weights_offset;
+                l->bias_weights_gpu = weights_g + weights_offset;
+                l->update_bias_weights_gpu = update_weights_g + weights_offset;
                 weights_offset += l->bias_weights_size;
             }
         }
@@ -191,7 +234,11 @@ void set_truth_memory(Session *sess)
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     Layer *l = layers[graph->layer_num - 1];
-    l->truth = sess->truth;
+    if (sess->coretype == GPU){
+        l->truth = sess->truth_gpu;  
+    } else {
+        l->truth = sess->truth;
+    }
 }
 
 void set_maxpool_index_memory(Session *sess)
@@ -201,7 +248,11 @@ void set_maxpool_index_memory(Session *sess)
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     int *maxpool_index;
-    maxpool_index = sess->maxpool_index;
+    if (sess->coretype == GPU){
+        maxpool_index = sess->maxpool_index_gpu;
+    } else {
+        maxpool_index = sess->maxpool_index;
+    }
     int index_offset = 0;
     for (int i = 0; i < graph->layer_num; ++i)
     {
@@ -225,7 +276,11 @@ void set_dropout_rand_memory(Session *sess)
     Graph *graph = sess->graph;
     Layer **layers = graph->layers;
     int *dropout_rand;
-    dropout_rand = sess->dropout_rand;
+    if (sess->coretype == GPU){
+        dropout_rand = sess->dropout_rand_gpu;
+    } else {
+        dropout_rand = sess->dropout_rand;
+    }
     int rand_offset = 0;
     for (int i = 0; i < graph->layer_num; ++i){
         Layer *l = layers[i];
@@ -341,6 +396,10 @@ void init_weights(Session *sess, char *weights_file)
         fprintf(stderr, "\nInit Weights\n");
     }
     memcpy(sess->update_weights, sess->weights, sess->weights_size * sizeof(float));
+    if (sess->coretype == GPU){
+        cudaMemcpy(sess->weights_gpu, sess->weights, sess->weights_size * sizeof(float), cudaMemcpyHostToDevice);
+        cudaMemcpy(sess->update_weights_gpu, sess->weights_gpu, sess->weights_size*sizeof(float), cudaMemcpyDeviceToDevice);
+    }
 }
 
 void load_train_data(Session *sess, int index, int num)
@@ -357,6 +416,10 @@ void load_train_data(Session *sess, int index, int num)
         offset_i += sess->height * sess->width * sess->channel;
         free(im);
     }
+    if (sess->coretype == GPU){
+        cudaMemcpy(sess->input_gpu, sess->input, \
+              (sess->height*sess->width*sess->channel*num)*sizeof(float), cudaMemcpyHostToDevice);
+    }
 }
 
 void load_train_label(Session *sess, int index, int num)
@@ -368,6 +431,9 @@ void load_train_label(Session *sess, int index, int num)
         strip(label_path, ' ');
         char **label = load_label_txt(label_path, sess->label_num);
         sess->label2truth(label, truth);
+    }
+    if (sess->coretype == GPU){
+        cudaMemcpy(sess->truth_gpu, sess->truth, sess->truth_num*num*sizeof(float), cudaMemcpyHostToDevice);
     }
 }
 
@@ -383,6 +449,10 @@ void load_test_data(Session *sess, int index)
     }
     im = load_image_data(data_path, w, h, c);
     resize_im(im, h[0], w[0], c[0], sess->height, sess->width, sess->input);
+    if (sess->coretype == GPU){
+        cudaMemcpy(sess->input_gpu, sess->input, \
+              (sess->height*sess->width*sess->channel)*sizeof(float), cudaMemcpyHostToDevice);
+    }
     free(im);
 }
 
@@ -403,6 +473,9 @@ char **load_test_label(Session *sess, int index)
 void save_weigths(Session *sess, char *path)
 {
     FILE *fp = fopen(path, "wb");
+    if (sess->coretype == GPU){
+        cudaMemcpy(sess->weights, sess->weights_gpu, sess->weights_size*sizeof(float), cudaMemcpyDeviceToHost);
+    }
     bfput(fp, sess->weights, sess->weights_size);
     fclose(fp);
 }
@@ -411,5 +484,8 @@ void load_weights(Session *sess, char *path)
 {
     FILE *fp = fopen(path, "rb");
     bfget(fp, sess->weights, sess->weights_size);
+    if (sess->coretype == GPU){
+        cudaMemcpy(sess->weights_gpu, sess->weights, sess->weights_size*sizeof(float), cudaMemcpyHostToDevice);
+    }
     fclose(fp);
 }
