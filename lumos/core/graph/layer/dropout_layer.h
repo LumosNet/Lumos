@@ -7,6 +7,8 @@
 #include "layer.h"
 #include "random.h"
 
+#include "dropout_layer_gpu.h"
+
 #ifdef __cplusplus
 extern "C"{
 #endif

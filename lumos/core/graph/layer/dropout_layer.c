@@ -28,8 +28,13 @@ void init_dropout_layer(Layer *l, int w, int h, int c)
     l->deltas = l->inputs;
     l->workspace_size = l->inputs;
 
-    l->forward = forward_dropout_layer;
-    l->backward = backward_dropout_layer;
+    if (l->coretype == GPU){
+        l->forward = forward_dropout_layer_gpu;
+        l->backward = backward_dropout_layer_gpu;
+    } else {
+        l->forward = forward_dropout_layer;
+        l->backward = backward_dropout_layer;
+    }
 
     fprintf(stderr, "Dropout         Layer\n");
 }

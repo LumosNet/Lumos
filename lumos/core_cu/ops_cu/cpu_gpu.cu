@@ -115,118 +115,131 @@ void sum_channel_gpu(float *data, int h, int w, int c, float ALPHA, float *space
     sum_channel_kernel<<<(c+BLOCK-1)/BLOCK, BLOCK>>>(data, h, w, c, ALPHA, space);
 }
 
-__global__ void  mean_kernel(float *x, int batch, int filters, int spatial, float *mean)
+__global__ void min_kernel(float *data, int num, float *space)
 {
-    float scale = 1.f/(batch * spatial);
-    int i = (blockIdx.x + blockIdx.y*gridDim.x) * blockDim.x + threadIdx.x;
-    if (i >= filters) return;
-    int j,k;
-    mean[i] = 0;
-    for(j = 0; j < batch; ++j){
-        for(k = 0; k < spatial; ++k){
-            int index = j*filters*spatial + i*spatial + k;
-            mean[i] += x[index];
-        }
+    int gid = blockIdx.x * blockDim.x + threadIdx.x;
+    __shared__ float tmp[BLOCK];
+    if(gid < num)
+    {
+        tmp[threadIdx.x] = data[gid];
     }
-    mean[i] *= scale;
-}
-
-__global__ void variance_kernel(float *x, float *mean, int batch, int filters, int spatial, float *variance)
-{
-    float scale = 1.f/(batch * spatial - 1);
-    int j,k;
-    int i = (blockIdx.x + blockIdx.y*gridDim.x) * blockDim.x + threadIdx.x;
-    if (i >= filters) return;
-    variance[i] = 0;
-    for(j = 0; j < batch; ++j){
-        for(k = 0; k < spatial; ++k){
-            int index = j*filters*spatial + i*spatial + k;
-            variance[i] += powf((x[index] - mean[i]), 2);
-        }
+    else
+    {
+        tmp[threadIdx.x] = MAXFLOAT;
     }
-    variance[i] *= scale;
-}
-
-__global__ void  fast_mean_kernel(float *x, int batch, int filters, int spatial, float *mean)
-{
-    const int threads = BLOCK;
-    __shared__ float local[threads];
-
-    int id = threadIdx.x;
-    local[id] = 0;
-
-    int filter = blockIdx.x;
-
-    int i, j;
-    for(j = 0; j < batch; ++j){
-        for(i = 0; i < spatial; i += threads){
-            int index = j*spatial*filters + filter*spatial + i + id;
-            local[id] += (i+id < spatial) ? x[index] : 0;
-        }
-    }
-
     __syncthreads();
 
-    if(id == 0){
-        mean[filter] = 0;
-        for(i = 0; i < threads; ++i){
-            mean[filter] += local[i];
-        }
-        mean[filter] /= spatial * batch;
+    for(int strip = blockDim.x / 2; strip > 0; strip = strip / 2)
+    {
+        if(threadIdx.x < strip)
+            tmp[threadIdx.x] = (tmp[threadIdx.x + strip] < tmp[threadIdx.x]) ? tmp[threadIdx.x + strip] : tmp[threadIdx.x];
+        __syncthreads();
+    }
+
+    if(threadIdx.x == 0)
+    {
+        space[blockIdx.x] = tmp[0];
     }
 }
 
-__global__ void  fast_variance_kernel(float *x, float *mean, int batch, int filters, int spatial, float *variance)
+__global__ void max_kernel(float *data, int num, float *space)
 {
-    const int threads = BLOCK;
-    __shared__ float local[threads];
-
-    int id = threadIdx.x;
-    local[id] = 0;
-
-    int filter = blockIdx.x;
-
-    int i, j;
-    for(j = 0; j < batch; ++j){
-        for(i = 0; i < spatial; i += threads){
-            int index = j*spatial*filters + filter*spatial + i + id;
-
-            local[id] += (i+id < spatial) ? powf((x[index] - mean[filter]), 2) : 0;
-        }
+    int gid = blockIdx.x * blockDim.x + threadIdx.x;
+    __shared__ float tmp[BLOCK];
+    if(gid < num)
+    {
+        tmp[threadIdx.x] = data[gid];
     }
-
+    else
+    {
+        tmp[threadIdx.x] = -MAXFLOAT;
+    }
     __syncthreads();
 
-    if(id == 0){
-        variance[filter] = 0;
-        for(i = 0; i < threads; ++i){
-            variance[filter] += local[i];
-        }
-        variance[filter] /= (spatial * batch - 1);
+    for(int strip = blockDim.x / 2; strip > 0; strip = strip / 2)
+    {
+        if(threadIdx.x < strip)
+            tmp[threadIdx.x] = (tmp[threadIdx.x + strip] > tmp[threadIdx.x]) ? tmp[threadIdx.x + strip] : tmp[threadIdx.x];
+        __syncthreads();
+    }
+
+    if(threadIdx.x == 0)
+    {
+        space[blockIdx.x] = tmp[0];
     }
 }
 
-extern "C" void fast_mean_gpu(float *x, int batch, int filters, int spatial, float *mean)
+__global__ void sum_kernel(float *data, int num, float *space)
 {
-    fast_mean_kernel<<<filters, BLOCK>>>(x, batch, filters, spatial, mean);
-    check_error(cudaPeekAtLastError());
+    int gid = blockIdx.x * blockDim.x + threadIdx.x;
+    __shared__ float tmp[BLOCK];
+    if(gid < num)
+    {
+        tmp[threadIdx.x] = data[gid];
+    }
+    else
+    {
+        tmp[threadIdx.x] = 0.0f;
+    }
+    __syncthreads();
+
+    for(int strip = blockDim.x / 2; strip > 0; strip = strip / 2)
+    {
+        if(threadIdx.x < strip)
+            tmp[threadIdx.x] += tmp[threadIdx.x + strip];
+        __syncthreads();
+    }
+
+    if(threadIdx.x == 0)
+    {
+        space[blockIdx.x] = tmp[0];
+    }
 }
 
-extern "C" void fast_variance_gpu(float *x, float *mean, int batch, int filters, int spatial, float *variance)
+__global__ void mean_kernel(float *data, int num, float *space)
 {
-    fast_variance_kernel<<<filters, BLOCK>>>(x, mean, batch, filters, spatial, variance);
-    check_error(cudaPeekAtLastError());
+    int gid = blockIdx.x * blockDim.x + threadIdx.x;
+    float scale = 1. / num;
+    __shared__ float tmp[BLOCK];
+    if(gid < num)
+    {
+        tmp[threadIdx.x] = data[gid];
+    }
+    else
+    {
+        tmp[threadIdx.x] = 0.0f;
+    }
+    __syncthreads();
+
+    for(int strip = blockDim.x / 2; strip > 0; strip = strip / 2)
+    {
+        if(threadIdx.x < strip)
+            tmp[threadIdx.x] += tmp[threadIdx.x + strip];
+        __syncthreads();
+    }
+
+    if(threadIdx.x == 0)
+    {
+        space[blockIdx.x] = tmp[0] * scale;
+    }
 }
 
-
-extern "C" void mean_gpu(float *x, int batch, int filters, int spatial, float *mean)
+void min_gpu(float *data, int num, float *space)
 {
-    mean_kernel<<<cuda_gridsize(filters), BLOCK>>>(x, batch, filters, spatial, mean);
-    check_error(cudaPeekAtLastError());
+    min_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data, num, space);
 }
 
-extern "C" void variance_gpu(float *x, float *mean, int batch, int filters, int spatial, float *variance)
+void max_gpu(float *data, int num, float *space)
 {
-    variance_kernel<<<cuda_gridsize(filters), BLOCK>>>(x, mean, batch, filters, spatial, variance);
-    check_error(cudaPeekAtLastError());
+    max_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data, num, space);
+}
+
+void sum_gpu(float *data, int num, float *space)
+{
+    sum_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data, num, space);
+}
+
+void mean_gpu(float *data, int num, float *space)
+{
+    mean_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data, num, space);
 }
