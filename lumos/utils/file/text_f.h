@@ -22,7 +22,9 @@ char **fgetls(FILE *fp);
 void fputl(FILE *fp, char *line);
 void fputls(FILE *fp, char **lines, int n);
 
-char **load_label_txt(char *path, int num);
+void **load_label_txt(char *path);
+
+char *fget(char *file);
 
 #ifdef __cplusplus
 }

@@ -16,7 +16,7 @@ void strip(char *line, char c)
     line[len - offset] = '\0';
 }
 
-char **split(char *line, char c, int *num)
+int *split(char *line, char c)
 {
     int len = strlen(line);
     int n = 0;
@@ -33,8 +33,8 @@ char **split(char *line, char c, int *num)
     }
     if (i != head)
         n += 1;
-    char **res = malloc(n * sizeof(char *));
-    num[0] = n;
+    int *index = malloc((n+1)*sizeof(int));
+    index[0] = n;
     head = 0;
     n = 0;
     for (i = 0; i < len; ++i)
@@ -43,23 +43,18 @@ char **split(char *line, char c, int *num)
         {
             if (i != head)
             {
-                char *A = malloc((i - head + 1) * sizeof(char));
-                memcpy(A, line + head, (i - head) * sizeof(char));
-                A[i - head] = '\0';
-                res[n] = A;
+                index[n+1] = head;
                 n += 1;
             }
             head = i + 1;
+            line[i] = '\0';
         }
     }
     if (i != head)
     {
-        char *A = malloc((i - head + 1) * sizeof(char));
-        memcpy(A, line + head, (i - head) * sizeof(char));
-        A[i - head] = '\0';
-        res[n] = A;
+        index[n+1] = head;
     }
-    return res;
+    return index;
 }
 
 void padding_string(char *space, char *str, int index)

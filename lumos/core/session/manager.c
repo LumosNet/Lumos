@@ -429,8 +429,18 @@ void load_train_label(Session *sess, int index, int num)
         float *truth = sess->truth + (i - index) * sess->truth_num;
         char *label_path = sess->train_label_paths[i];
         strip(label_path, ' ');
-        char **label = load_label_txt(label_path, sess->label_num);
+        void **labels = load_label_txt(label_path);
+        int *lindex = (int*)labels[0];
+        char *tmp = (char*)labels[1];
+        char **label = malloc(lindex[0]*sizeof(char*));
+        for (int i = 0; i < lindex[0]; ++i){
+            label[i] = tmp+lindex[i+1];
+        }
         sess->label2truth(label, truth);
+        free(lindex);
+        free(tmp);
+        free(labels);
+        free(label);
     }
     if (sess->coretype == GPU){
         cudaMemcpy(sess->truth_gpu, sess->truth, sess->truth_num*num*sizeof(float), cudaMemcpyHostToDevice);
@@ -465,8 +475,16 @@ char **load_test_label(Session *sess, int index)
         fprintf(stderr, "\nerror: %s is not exist\n", label_path);
         abort();
     }
-    char **label = load_label_txt(label_path, sess->label_num);
+    void **labels = load_label_txt(label_path);
+    int *lindex = (int*)labels[0];
+    char *tmp = (char*)labels[1];
+    char **label = malloc(lindex[0]*sizeof(char*));
+    for (int i = 0; i < lindex[0]; ++i){
+        label[i] = tmp+lindex[i+1];
+    }
     sess->label2truth(label, truth);
+    free(lindex);
+    free(labels);
     return label;
 }
 

@@ -57,46 +57,55 @@ void fputls(FILE *fp, char **lines, int n)
     }
 }
 
-char **load_label_txt(char *path, int num)
+// char **load_label_txt(char *path, int num)
+// {
+//     char **label = calloc(num, sizeof(char *));
+//     int label_offset = 0;
+//     FILE *fp = fopen(path, "r");
+//     if (fp == NULL){
+//         fprintf(stderr, "\nerror file %s can not open\n", path);
+//         abort();
+//     }
+//     char *line = fgetl(fp);
+//     fclose(fp);
+//     int n[1];
+//     char **nodes = split(line, ' ', n);
+//     for (int k = 0; k < n[0]; ++k)
+//     {
+//         strip(nodes[k], ' ');
+//         if (label_offset >= num)
+//             return label;
+//         label[label_offset] = nodes[k];
+//         label_offset += 1;
+//     }
+
+    
+//     return label;
+// }
+
+void **load_label_txt(char *path)
 {
-    char **label = calloc(num, sizeof(char *));
-    int label_offset = 0;
-    FILE *fp = fopen(path, "r");
-    if (fp == NULL){
-        fprintf(stderr, "\nerror file %s can not open\n", path);
+    char *tmp = fget(path);
+    int *index = split(tmp, ' ');
+    void **res = malloc(2*sizeof(void*));
+    res[0] = (void*)index;
+    res[1] = (void*)tmp;
+    return res;
+}
+
+char *fget(char *file)
+{
+    FILE *fp = fopen(file, "r");
+    if (fp == NULL) {
+        fprintf(stderr, "\nfopen error: %s is not exist\n", file);
         abort();
     }
-    char *line = fgetl(fp);
+    fseek(fp, 0, SEEK_END);
+    int file_size = ftell(fp);
+    char *tmp = (char*)malloc(file_size * sizeof(char));
+    memset(tmp, '\0', file_size * sizeof(char));
+    fseek(fp, 0, SEEK_SET);
+    fread(tmp, sizeof(char), file_size, fp);
     fclose(fp);
-    int n[1];
-    char **nodes = split(line, ' ', n);
-    for (int k = 0; k < n[0]; ++k)
-    {
-        strip(nodes[k], ' ');
-        if (label_offset >= num)
-            return label;
-        label[label_offset] = nodes[k];
-        label_offset += 1;
-    }
-
-    // char **labels = fgetls(fp);
-    // if (fp != NULL){
-    //     fclose(fp);
-    // }
-    // int lines = atoi(labels[0]);
-    // for (int j = 0; j < lines; ++j)
-    // {
-    //     char *line = labels[j + 1];
-    //     int n[1];
-    //     char **nodes = split(line, ' ', n);
-    //     for (int k = 0; k < n[0]; ++k)
-    //     {
-    //         strip(nodes[k], ' ');
-    //         if (label_offset >= num)
-    //             return label;
-    //         label[label_offset] = nodes[k];
-    //         label_offset += 1;
-    //     }
-    // }
-    return label;
+    return tmp;
 }

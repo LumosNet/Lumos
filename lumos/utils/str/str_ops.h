@@ -10,7 +10,7 @@ extern "C" {
 #endif
 
 void strip(char *line, char c);
-char **split(char *line, char c, int *num);
+int *split(char *line, char c);
 void padding_string(char *space, char *str, int index);
 
 char *inten2str(int x);
