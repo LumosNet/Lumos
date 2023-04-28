@@ -29,7 +29,8 @@ int *census_channel_pixel(float *img, int w, int h, int c, int index_c)
 float *load_image_data(char *img_path, int *w, int *h, int *c)
 {
     unsigned char *data = stbi_load(img_path, w, h, c, 0);
-    float *im_new = malloc((w[0] * h[0] * c[0]) * sizeof(float));
+    if (c[0] > 3) c[0] = 3;
+    float *im_new = malloc(w[0] * h[0] * c[0] * sizeof(float));
     for (int k = 0; k < c[0]; ++k)
     {
         for (int j = 0; j < h[0]; ++j)
