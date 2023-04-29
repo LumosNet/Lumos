@@ -49,7 +49,7 @@ NVCC=nvcc
 
 LDFLAGS= -lm -pthread
 COMMON+= -Iscripts
-CFLAGS=-fopenmp -Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
+CFLAGS=-fopenmp -Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors -m64
 
 COMMON+= -DGPU -I/usr/local/cuda/include/
 CFLAGS+= -DGPU -Wno-deprecated-gpu-targets
@@ -126,4 +126,4 @@ obj:
 
 clean:
 	rm -rf obj
-	rm -rf lumos.exe
+	rm -rf $(EXEC)
