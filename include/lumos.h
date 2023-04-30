@@ -407,7 +407,7 @@ Session *load_session_json(char *graph_path, char *coretype);
 Initializer load_initializer_json(cJSON *cjson_init);
 Graph *load_graph_json(cJSON *cjson_graph);
 
-void test_information(float *truth, float *predict, float loss, char *data_path);
+void test_information(float *truth, float *predict, int label_num, float loss, char *data_path);
 
 #ifdef __cplusplus
 }

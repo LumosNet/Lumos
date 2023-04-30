@@ -49,10 +49,6 @@ void forward_mse_layer(Layer l, int num)
         float *input = l.input+offset_i;
         float *output = l.output+offset_o;
         float *truth = l.truth+offset_t;
-        // for (int j = 0; j < 10; ++j){
-        //     printf("%f ", truth[j]);
-        // }
-        // printf("\n\n");
         matrix_subtract_cpu(truth, input, l.inputs, l.workspace);
         gemm(1, 0, l.input_h, l.input_w, l.input_h, l.input_w, 1, \
             l.workspace, l.workspace, output);

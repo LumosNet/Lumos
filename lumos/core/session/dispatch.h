@@ -23,7 +23,7 @@ void init_test_scene(Session *sess, char *weights_file);
 
 void set_run_type(Session *sess, int train);
 
-void test_information(float *truth, float *predict, float loss, char *data_path);
+void test_information(float *truth, float *predict, int label_num, float loss, char *data_path);
 
 #ifdef __cplusplus
 }

@@ -53,7 +53,7 @@ void session_test(Session *sess)
             memcpy(sess->predicts, layers[graph->layer_num - 2]->output, \
                     layers[graph->layer_num - 2]->outputs*sizeof(float));
         }
-        test_information(sess->truth, sess->predicts, sess->loss[0], sess->test_data_paths[i]);
+        test_information(sess->truth, sess->predicts, sess->label_num, sess->loss[0], sess->test_data_paths[i]);
         float max_pre = -1;
         int index = -1;
         for (int j = 0; j < sess->label_num; ++j){
@@ -174,11 +174,11 @@ void set_run_type(Session *sess, int train)
     }
 }
 
-void test_information(float *truth, float *predict, float loss, char *data_path)
+void test_information(float *truth, float *predict, int label_num, float loss, char *data_path)
 {
     fprintf(stderr, "Test Data Path: %s\n", data_path);
     fprintf(stderr, "Truth:       Predict:\n");
-    for (int i = 0; i < 10; ++i){
+    for (int i = 0; i < label_num; ++i){
         printf("%f     %f\n", truth[i], predict[i]);
     }
     fprintf(stderr, "Loss:    %f\n\n", loss);
