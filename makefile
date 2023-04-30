@@ -41,7 +41,7 @@ COMMON=	-Ilib \
 		-Ilumos/core_cu/graph_cu/layer_cu \
 		-Ilumos/core_cu/graph_cu/loss_layer_cu
 
-EXEC=main.exe
+EXEC=lumos.exe
 OBJDIR=./obj/
 
 CC=gcc
@@ -74,14 +74,13 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		progress_bar.o \
 		binary_f.o text_f.o \
 		str_ops.o \
-		cJSON_Utils.o cJSON.o \
-		xor.o
+		cJSON_Utils.o cJSON.o
 
 OBJ+= 	gpu.o active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o softmax_gpu.o \
 	  	avgpool_layer_gpu.o maxpool_layer_gpu.o connect_layer_gpu.o convolutional_layer_gpu.o im2col_layer_gpu.o \
 	  	mse_layer_gpu.o dropout_layer_gpu.o softmax_layer_gpu.o
 
-EXECOBJA=main.o
+EXECOBJA=lumos.o
 
 ifeq ($(TEST), 1)
 OBJ+= bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call.o \

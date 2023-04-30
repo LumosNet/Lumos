@@ -50,7 +50,7 @@ void bind_test_data(Session *sess, char *path)
     fprintf(stderr, "\nGet Test Data List From %s\n", path);
 }
 
-void bind_train_label(Session *sess, int label_num, char *path)
+void bind_train_label(Session *sess, char *path)
 {
     char *tmp = fget(path);
     int *index = split(tmp, '\n');
@@ -60,20 +60,10 @@ void bind_train_label(Session *sess, int label_num, char *path)
         sess->train_label_paths[i] = tmp+index[i+1];
     }
     free(index);
-    sess->label_num = label_num;
-    Graph *graph = sess->graph;
-    Layer **layers = graph->layers;
-    for (int i = 0; i < graph->layer_num; ++i)
-    {
-        Layer *l = layers[i];
-        l->label_num = label_num;
-    }
-    Layer *l = layers[graph->layer_num - 1];
-    l->truth = sess->truth;
     fprintf(stderr, "\nGet Label List From %s\n", path);
 }
 
-void bind_test_label(Session *sess, int label_num, char *path)
+void bind_test_label(Session *sess, char *path)
 {
     char *tmp = fget(path);
     int *index = split(tmp, '\n');
@@ -83,16 +73,6 @@ void bind_test_label(Session *sess, int label_num, char *path)
         sess->test_label_paths[i] = tmp+index[i+1];
     }
     free(index);
-    sess->label_num = label_num;
-    Graph *graph = sess->graph;
-    Layer **layers = graph->layers;
-    for (int i = 0; i < graph->layer_num; ++i)
-    {
-        Layer *l = layers[i];
-        l->label_num = label_num;
-    }
-    Layer *l = layers[graph->layer_num - 1];
-    l->truth = sess->truth;
     fprintf(stderr, "\nGet Label List From %s\n", path);
 }
 

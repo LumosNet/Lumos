@@ -6,6 +6,9 @@
 #include "curand.h"
 #include "cublas_v2.h"
 
+#include "cJSON.h"
+#include "cJSON_Utils.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -50,10 +53,14 @@ void load_train_data(Session *sess, int index, int num);
 void load_train_label(Session *sess, int index, int num);
 
 void load_test_data(Session *sess, int index);
-char **load_test_label(Session *sess, int index);
+void load_test_label(Session *sess, int index);
 
 void save_weigths(Session *sess, char *path);
 void load_weights(Session *sess, char *path);
+
+Session *load_session_json(char *graph_path, char *coretype);
+Initializer load_initializer_json(cJSON *cjson_init);
+Graph *load_graph_json(cJSON *cjson_graph);
 
 #ifdef __cplusplus
 }

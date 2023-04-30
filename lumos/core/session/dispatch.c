@@ -1,11 +1,10 @@
 #include "dispatch.h"
 
-void session_train(Session *sess, float learning_rate, char *weights_path)
+void session_train(Session *sess, char *weights_path)
 {
     fprintf(stderr, "\nSession Start To Running\n");
     clock_t start, final;
     double run_time = 0;
-    sess->learning_rate = learning_rate;
     for (int i = 0; i < sess->epoch; ++i)
     {
         fprintf(stderr, "\n\nEpoch %d/%d\n", i + 1, sess->epoch);
@@ -36,13 +35,13 @@ void session_train(Session *sess, float learning_rate, char *weights_path)
     fprintf(stderr, "\nWeights Saved To: %s\n\n", weights_path);
 }
 
-void session_test(Session *sess, ProcessTestInformation process_test_information)
+void session_test(Session *sess)
 {
     fprintf(stderr, "\nSession Start To Detect Test Cases\n");
     for (int i = 0; i < sess->test_data_num; ++i)
     {
         load_test_data(sess, i);
-        char **label = load_test_label(sess, i);
+        load_test_label(sess, i);+
         forward_session(sess);
         Graph *graph = sess->graph;
         Layer **layers = graph->layers;
@@ -53,7 +52,7 @@ void session_test(Session *sess, ProcessTestInformation process_test_information
             memcpy(sess->predicts, layers[graph->layer_num - 2]->output, \
                     layers[graph->layer_num - 2]->outputs*sizeof(float));
         }
-        process_test_information(label, sess->truth, sess->predicts, sess->loss[0], sess->test_data_paths[i]);
+        test_information(sess->truth, sess->predicts, sess->loss[0], sess->test_data_paths[i]);
     }
     fprintf(stderr, "\nSession Testing Finished\n\n");
 }
@@ -93,29 +92,8 @@ void backward_session(Session *sess)
     }
 }
 
-void create_train_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file)
+void init_train_scene(Session *sess, char *weights_file)
 {
-    set_input_dimension(sess, h, w, c);
-    bind_train_data(sess, dataset_list_file);
-    bind_train_label(sess, label_num, label_list_file);
-    bind_label2truth_func(sess, truth_num, func);
-}
-
-void create_test_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file)
-{
-    set_input_dimension(sess, h, w, c);
-    bind_test_data(sess, dataset_list_file);
-    bind_test_label(sess, label_num, label_list_file);
-    bind_label2truth_func(sess, truth_num, func);
-}
-
-void init_train_scene(Session *sess, int epoch, int batch, int subdivision, char *weights_file)
-{
-    fprintf(stderr, "\nEpoch   Batch   Subdivision\n");
-    fprintf(stderr, "%3d     %3d     %3d\n", epoch, batch, subdivision);
-    sess->epoch = epoch;
-    sess->batch = batch;
-    sess->subdivision = subdivision;
     sess->input = calloc(sess->subdivision * sess->height * sess->width * sess->channel, sizeof(float));
     if (sess->coretype == GPU){
         cudaMalloc((void**)&sess->input_gpu, \
@@ -181,4 +159,14 @@ void set_run_type(Session *sess, int train)
         l = graph->layers[i];
         l->train = train;
     }
+}
+
+void test_information(float *truth, float *predict, float loss, char *data_path)
+{
+    fprintf(stderr, "Test Data Path: %s\n", data_path);
+    fprintf(stderr, "Truth:       Predict:\n");
+    for (int i = 0; i < 10; ++i){
+        printf("%f     %f\n", truth[i], predict[i]);
+    }
+    fprintf(stderr, "Loss:    %f\n\n", loss);
 }

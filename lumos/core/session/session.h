@@ -90,8 +90,8 @@ Session *create_session(char *type, Initializer w_init);
 void bind_graph(Session *sess, Graph *graph);
 void bind_train_data(Session *sess, char *path);
 void bind_test_data(Session *sess, char *path);
-void bind_train_label(Session *sess, int label_num, char *path);
-void bind_test_label(Session *sess, int label_num, char *path);
+void bind_train_label(Session *sess, char *path);
+void bind_test_label(Session *sess, char *path);
 void bind_label2truth_func(Session *sess, int truth_num, Label2Truth func);
 
 void set_input_dimension(Session *sess, int h, int w, int c);

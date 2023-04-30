@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "cJSON.h"
+#include "cJSON_Utils.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -339,16 +342,13 @@ float rand_uniform(float min, float max);
 
 float rand_normal();
 
-void session_train(Session *sess, float learning_rate, char *weights_path);
-void session_test(Session *sess, ProcessTestInformation process_test_information);
+void session_train(Session *sess, char *weights_path);
+void session_test(Session *sess);
 
 void forward_session(Session *sess);
 void backward_session(Session *sess);
 
-void create_train_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file);
-void init_train_scene(Session *sess, int epoch, int batch, int subdivision, char *weights_file);
-
-void create_test_scene(Session *sess, int h, int w, int c, int label_num, int truth_num, Label2Truth func, char *dataset_list_file, char *label_list_file);
+void init_train_scene(Session *sess, char *weights_file);
 void init_test_scene(Session *sess, char *weights_file);
 
 void create_run_memory(Session *sess);
@@ -380,7 +380,7 @@ void load_train_data(Session *sess, int index, int num);
 void load_train_label(Session *sess, int index, int num);
 
 void load_test_data(Session *sess, int index);
-char **load_test_label(Session *sess, int index);
+void load_test_label(Session *sess, int index);
 
 void save_weigths(Session *sess, char *path);
 void load_weights(Session *sess, char *path);
@@ -390,19 +390,24 @@ Session *create_session(char *type, Initializer w_init);
 void bind_graph(Session *sess, Graph *graph);
 void bind_train_data(Session *sess, char *path);
 void bind_test_data(Session *sess, char *path);
-void bind_train_label(Session *sess, int label_num, char *path);
-void bind_test_label(Session *sess, int label_num, char *path);
+void bind_train_label(Session *sess, char *path);
+void bind_test_label(Session *sess, char *path);
 void bind_label2truth_func(Session *sess, int truth_num, Label2Truth func);
 
 void set_input_dimension(Session *sess, int h, int w, int c);
 void set_train_params(Session *sess, int epoch, int batch, int subdivision, float learning_rate);
 
 void strip(char *line, char c);
-char **split(char *line, char c, int *num);
 void padding_string(char *space, char *str, int index);
 
 char *inten2str(int x);
 char *int2str(int x);
+
+Session *load_session_json(char *graph_path, char *coretype);
+Initializer load_initializer_json(cJSON *cjson_init);
+Graph *load_graph_json(cJSON *cjson_graph);
+
+void test_information(float *truth, float *predict, float loss, char *data_path);
 
 #ifdef __cplusplus
 }

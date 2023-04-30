@@ -85,15 +85,15 @@ void create_loss_memory(Session *sess)
 
 void create_truth_memory(Session *sess)
 {
-    sess->truth = calloc(sess->truth_num * sess->subdivision, sizeof(float));
+    sess->truth = calloc(sess->label_num * sess->subdivision, sizeof(float));
     if (sess->coretype == GPU){
-        cudaMalloc((void**)&sess->truth_gpu, (sess->truth_num*sess->subdivision)*sizeof(float));
+        cudaMalloc((void**)&sess->truth_gpu, (sess->label_num*sess->subdivision)*sizeof(float));
     }
 }
 
 void create_predicts_memory(Session *sess)
 {
-    sess->predicts = calloc(sess->truth_num, sizeof(float));
+    sess->predicts = calloc(sess->label_num, sizeof(float));
 }
 
 void create_maxpool_index_memory(Session *sess)
@@ -426,24 +426,21 @@ void load_train_label(Session *sess, int index, int num)
 {
     for (int i = index; i < index + num; ++i)
     {
-        float *truth = sess->truth + (i - index) * sess->truth_num;
+        float *truth = sess->truth + (i - index) * sess->label_num;
         char *label_path = sess->train_label_paths[i];
         strip(label_path, ' ');
         void **labels = load_label_txt(label_path);
         int *lindex = (int*)labels[0];
         char *tmp = (char*)labels[1];
-        char **label = malloc(lindex[0]*sizeof(char*));
-        for (int i = 0; i < lindex[0]; ++i){
-            label[i] = tmp+lindex[i+1];
+        for (int j = 0; j < sess->label_num; ++j){
+            truth[j] = (float)atoi(tmp+lindex[j+1]);
         }
-        sess->label2truth(label, truth);
         free(lindex);
         free(tmp);
         free(labels);
-        free(label);
     }
     if (sess->coretype == GPU){
-        cudaMemcpy(sess->truth_gpu, sess->truth, sess->truth_num*num*sizeof(float), cudaMemcpyHostToDevice);
+        cudaMemcpy(sess->truth_gpu, sess->truth, sess->label_num*num*sizeof(float), cudaMemcpyHostToDevice);
     }
 }
 
@@ -466,7 +463,7 @@ void load_test_data(Session *sess, int index)
     free(im);
 }
 
-char **load_test_label(Session *sess, int index)
+void load_test_label(Session *sess, int index)
 {
     float *truth = sess->truth;
     char *label_path = sess->test_label_paths[index];
@@ -478,14 +475,11 @@ char **load_test_label(Session *sess, int index)
     void **labels = load_label_txt(label_path);
     int *lindex = (int*)labels[0];
     char *tmp = (char*)labels[1];
-    char **label = malloc(lindex[0]*sizeof(char*));
     for (int i = 0; i < lindex[0]; ++i){
-        label[i] = tmp+lindex[i+1];
+        truth[i] = (float)atoi(tmp+lindex[i+1]);
     }
-    sess->label2truth(label, truth);
     free(lindex);
     free(labels);
-    return label;
 }
 
 void save_weigths(Session *sess, char *path)
@@ -506,4 +500,213 @@ void load_weights(Session *sess, char *path)
         cudaMemcpy(sess->weights_gpu, sess->weights, sess->weights_size*sizeof(float), cudaMemcpyHostToDevice);
     }
     fclose(fp);
+}
+
+Session *load_session_json(char *graph_path, char *coretype)
+{
+    Session *sess = NULL;
+    cJSON *cjson_graph = NULL;
+    cJSON *cjson_public = NULL;
+    cJSON *cjson_initializer = NULL;
+    cJSON *cjson_layers = NULL;
+    cJSON *cjson_width = NULL;
+    cJSON *cjson_height = NULL;
+    cJSON *cjson_channel = NULL;
+    cJSON *cjson_batch = NULL;
+    cJSON *cjson_subdivision = NULL;
+    cJSON *cjson_epoch = NULL;
+    cJSON *cjson_learning_rate = NULL;
+    cJSON *cjson_label_num = NULL;
+    Graph *graph = NULL;
+    Initializer init = {0};
+    int width = 0;
+    int height = 0;
+    int channel = 0;
+    int batch = 0;
+    int subdivision = 0;
+    int epoch = 0;
+    float learning_rate = 0;
+    int label_num = 0;
+    FILE *fp = fopen(graph_path, "r");
+    fseek(fp, 0, SEEK_END);
+    int file_size = ftell(fp);
+    char *tmp = (char*)malloc(file_size * sizeof(char));
+    memset(tmp, '\0', file_size * sizeof(char));
+    fseek(fp, 0, SEEK_SET);
+    fread(tmp, sizeof(char), file_size, fp);
+    fclose(fp);
+    cjson_graph = cJSON_Parse(tmp);
+    cjson_public = cJSON_GetObjectItem(cjson_graph, "Public");
+    cjson_initializer = cJSON_GetObjectItem(cjson_graph, "Initializer");
+    cjson_layers = cJSON_GetObjectItem(cjson_graph, "Layers");
+    cjson_width = cJSON_GetObjectItem(cjson_public, "width");
+    cjson_height = cJSON_GetObjectItem(cjson_public, "height");
+    cjson_channel = cJSON_GetObjectItem(cjson_public, "channel");
+    cjson_batch = cJSON_GetObjectItem(cjson_public, "batch");
+    cjson_subdivision = cJSON_GetObjectItem(cjson_public, "subdivision");
+    cjson_epoch = cJSON_GetObjectItem(cjson_public, "epoch");
+    cjson_learning_rate = cJSON_GetObjectItem(cjson_public, "learning_rate");
+    cjson_label_num = cJSON_GetObjectItem(cjson_public, "label");
+    init = load_initializer_json(cjson_initializer);
+    graph = load_graph_json(cjson_layers);
+    width = cjson_width->valueint;
+    height = cjson_height->valueint;
+    channel = cjson_channel->valueint;
+    batch = cjson_batch->valueint;
+    subdivision = cjson_subdivision->valueint;
+    epoch = cjson_epoch->valueint;
+    label_num = cjson_label_num->valueint;
+    learning_rate = cjson_learning_rate->valuedouble;
+    if (0 == strcmp(coretype, "gpu")){
+        sess = create_session("gpu", init);
+    } else {
+        sess = create_session("cpu", init);
+    }
+    bind_graph(sess, graph);
+    sess->height = height;
+    sess->width = width;
+    sess->channel = channel;
+    sess->epoch = epoch;
+    sess->batch = batch;
+    sess->subdivision = subdivision;
+    sess->learning_rate = learning_rate;
+    sess->label_num = label_num;
+    return sess;
+}
+
+Initializer load_initializer_json(cJSON *cjson_init)
+{
+    Initializer init = {0};
+    cJSON *cjson_type = NULL;
+    cJSON *cjson_mode = NULL;
+    cJSON *cjson_mean = NULL;
+    cJSON *cjson_variance = NULL;
+    cJSON *cjson_val = NULL;
+    char *type = NULL;
+    char *mode = NULL;
+    float mean = 0;
+    float variance = 0;
+    float val = 0;
+    cjson_type = cJSON_GetObjectItem(cjson_init, "type");
+    type = cjson_type->valuestring;
+    if (0 == strcmp(type, "KN")){
+        cjson_mode = cJSON_GetObjectItem(cjson_init, "mode");
+        mode = cjson_mode->valuestring;
+        init = kaiming_normal_initializer(mode);
+    } else if (0 == strcmp(type, "KU")){
+        cjson_mode = cJSON_GetObjectItem(cjson_init, "mode");
+        mode = cjson_mode->valuestring;
+        init = kaiming_uniform_initializer(mode);
+    } else if (0 == strcmp(type, "XN")){
+        init = xavier_normal_initializer();
+    } else if (0 == strcmp(type, "XU")){
+        init = xavier_uniform_initializer();
+    } else if (0 == strcmp(type, "NM")){
+        cjson_mean = cJSON_GetObjectItem(cjson_init, "mean");
+        mean = cjson_mean->valuedouble;
+        cjson_variance = cJSON_GetObjectItem(cjson_init, "variance");
+        variance = cjson_variance->valuedouble;
+        init = normal_initializer(mean, variance);
+    } else if (0 == strcmp(type, "UM")){
+        cjson_mean = cJSON_GetObjectItem(cjson_init, "mean");
+        mean = cjson_mean->valuedouble;
+        cjson_variance = cJSON_GetObjectItem(cjson_init, "variance");
+        variance = cjson_variance->valuedouble;
+        init = uniform_initializer(mean, variance);
+    } else if (0 == strcmp(type, "VL")){
+        cjson_val = cJSON_GetObjectItem(cjson_init, "val");
+        val = cjson_val->valuedouble;
+        init = val_initializer(val);
+    } else if (0 == strcmp(type, "HE")){
+        init = he_initializer();
+    }
+    return init;
+}
+
+Graph *load_graph_json(cJSON *cjson_graph)
+{
+    cJSON *cjson_layer = NULL;
+    cJSON *cjson_type = NULL;
+    cJSON *cjson_flag = NULL;
+    cJSON *cjson_output = NULL;
+    cJSON *cjson_bias = NULL;
+    cJSON *cjson_active = NULL;
+    cJSON *cjson_group = NULL;
+    cJSON *cjson_ksize = NULL;
+    cJSON *cjson_filters = NULL;
+    cJSON *cjson_stride = NULL;
+    cJSON *cjson_pad = NULL;
+    cJSON *cjson_normalization = NULL;
+    cJSON *cjson_probability = NULL;
+    char *type = NULL;
+    int ksize = 0;
+    int output = 0;
+    int bias = 0;
+    char *active = NULL;
+    int filters = 0;
+    int stride = 0;
+    int pad = 0;
+    int normalization = 0;
+    float probability = 0;
+    int flag = 0;
+    int group = 0;
+    int size = cJSON_GetArraySize(cjson_graph);
+    Graph *graph = create_graph("Lumos", size);
+    Layer *l = NULL;
+    for (int i = 0; i < size; ++i){
+        cjson_layer = cJSON_GetArrayItem(cjson_graph, i);
+        cjson_type = cJSON_GetObjectItem(cjson_layer, "type");
+        type = cjson_type->valuestring;
+        if (0 == strcmp(type, "AVGPOOL")){
+            cjson_ksize = cJSON_GetObjectItem(cjson_layer, "ksize");
+            ksize = cjson_ksize->valueint;
+            l = make_avgpool_layer(ksize);
+        } else if (0 == strcmp(type, "CONNECT")){
+            cjson_output = cJSON_GetObjectItem(cjson_layer, "output");
+            cjson_bias = cJSON_GetObjectItem(cjson_layer, "bias");
+            cjson_active = cJSON_GetObjectItem(cjson_layer, "active");
+            output = cjson_output->valueint;
+            bias = cjson_bias->valueint;
+            active = cjson_active->valuestring;
+            l = make_connect_layer(output, bias, active);
+        } else if (0 == strcmp(type, "CONVOLUTIONAL")){
+            cjson_filters = cJSON_GetObjectItem(cjson_layer, "filters");
+            cjson_ksize = cJSON_GetObjectItem(cjson_layer, "ksize");
+            cjson_stride = cJSON_GetObjectItem(cjson_layer, "stride");
+            cjson_pad = cJSON_GetObjectItem(cjson_layer, "pad");
+            cjson_bias = cJSON_GetObjectItem(cjson_layer, "bias");
+            cjson_normalization = cJSON_GetObjectItem(cjson_layer, "normalization");
+            cjson_active = cJSON_GetObjectItem(cjson_layer, "active");
+            filters = cjson_filters->valueint;
+            ksize = cjson_ksize->valueint;
+            stride = cjson_stride->valueint;
+            pad = cjson_pad->valueint;
+            bias = cjson_bias->valueint;
+            normalization = cjson_normalization->valueint;
+            active = cjson_active->valuestring;
+            l = make_convolutional_layer(filters, ksize, stride, pad, bias, normalization, active);
+        } else if (0 == strcmp(type, "DROPOUT")){
+            cjson_probability = cJSON_GetObjectItem(cjson_layer, "probability");
+            probability = cjson_probability->valuedouble;
+            l = make_dropout_layer(probability);
+        } else if (0 == strcmp(type, "IM2COL")){
+            cjson_flag = cJSON_GetObjectItem(cjson_layer, "flag");
+            flag = cjson_flag->valueint;
+            l = make_im2col_layer(flag);
+        } else if (0 == strcmp(type, "MAXPOOL")){
+            cjson_ksize = cJSON_GetObjectItem(cjson_layer, "ksize");
+            ksize = cjson_ksize->valueint;
+            l = make_maxpool_layer(ksize);
+        } else if (0 == strcmp(type, "SOFTMAX")){
+            cjson_group = cJSON_GetObjectItem(cjson_layer, "group");
+            group = cjson_group->valueint;
+            l = make_softmax_layer(group);
+        } else if (0 == strcmp(type, "MSE")){
+            cjson_group = cJSON_GetObjectItem(cjson_layer, "group");
+            group = cjson_group->valueint;
+            l = make_mse_layer(group);
+        }
+        append_layer2grpah(graph, l);
+    }
+    return graph;
 }
