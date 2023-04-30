@@ -38,10 +38,11 @@ void session_train(Session *sess, char *weights_path)
 void session_test(Session *sess)
 {
     fprintf(stderr, "\nSession Start To Detect Test Cases\n");
+    int correct = 0;
     for (int i = 0; i < sess->test_data_num; ++i)
     {
         load_test_data(sess, i);
-        load_test_label(sess, i);+
+        load_test_label(sess, i);
         forward_session(sess);
         Graph *graph = sess->graph;
         Layer **layers = graph->layers;
@@ -53,7 +54,19 @@ void session_test(Session *sess)
                     layers[graph->layer_num - 2]->outputs*sizeof(float));
         }
         test_information(sess->truth, sess->predicts, sess->loss[0], sess->test_data_paths[i]);
+        float max_pre = -1;
+        int index = -1;
+        for (int j = 0; j < sess->label_num; ++j){
+            if (sess->predicts[j] > max_pre && sess->predicts[j] >= 0.5){
+                max_pre = sess->predicts[j];
+                index = j;
+            }
+        }
+        if (index != -1 && sess->truth[index] == 1){
+            correct += 1;
+        }
     }
+    fprintf(stderr, "\nTesting result: %d/%d  %f\n", correct, sess->test_data_num, (float)correct/(float)sess->test_data_num);
     fprintf(stderr, "\nSession Testing Finished\n\n");
 }
 
