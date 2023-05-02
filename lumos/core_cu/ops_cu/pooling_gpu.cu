@@ -82,7 +82,7 @@ __global__ void avgpool_gradient_kernel(float *delta_l, int h, int w, int c, int
             int index_i = x + ksize_i - pad;
             int index_j = y + ksize_j - pad;
             if (index_i <= -1 || index_i >= h || index_j <= -1 || index_j >= w) continue;
-            delta_l[k*h*w + index_i*w + index_j] = delta_n[k*out_h*out_w + i*out_w + j] / (ksize*ksize);
+            delta_l[k*h*w + index_i*w + index_j] += delta_n[k*out_h*out_w + i*out_w + j] / (ksize*ksize);
         }
     }
 }
@@ -100,7 +100,7 @@ __global__ void maxpool_gradient_kernel(float *delta_l, int h, int w, int c, int
     int out_w = (w + 2 * pad - ksize) / stride + 1;
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     if (i >= out_h*out_w*c || index[i] == -1) return;
-    delta_l[index[i]] = delta_n[i];
+    delta_l[index[i]] += delta_n[i];
 }
 
 void maxpool_gradient_gpu(float *delta_l, int h, int w, int c, int ksize, int stride, int pad, float *delta_n, int *index)

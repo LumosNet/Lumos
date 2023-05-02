@@ -15,7 +15,7 @@ extern "C" {
 
 typedef enum {
     CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MAXPOOL, AVGPOOL, \
-    DROPOUT, MSE, SOFTMAX
+    DROPOUT, MSE, SOFTMAX, SHORTCUT
 } LayerType;
 
 typedef struct layer Layer;
@@ -81,6 +81,9 @@ struct layer{
     // dropout 占比
     float probability;
     int train;
+
+    Layer *shortcut;
+    int shortcut_index;
 
     float *kernel_weights;
     float *bias_weights;

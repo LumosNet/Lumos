@@ -40,6 +40,8 @@ typedef struct session{
     float learning_rate;
     size_t workspace_size;
     size_t weights_size;
+    size_t output_size;
+    size_t delta_size;
 
     float *workspace;
     float *input;

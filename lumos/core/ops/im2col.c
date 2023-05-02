@@ -49,7 +49,7 @@ void col2im(float *img, int ksize, int stride, int pad, int out_h, int out_w, in
             for (int j = 0; j < out_w; ++j)
             {
                 if (o_flag)
-                    space[c * out_h * out_w + i * out_w + j] = 0;
+                    space[c * out_h * out_w + i * out_w + j] += 0;
                 else
                 {
                     int kernel_w_index = (j + pad) / stride;
@@ -60,12 +60,12 @@ void col2im(float *img, int ksize, int stride, int pad, int out_h, int out_w, in
                         kernel_w_index = width_col - 1;
                     }
                     if (w_index + 1 > ksize)
-                        space[c * out_h * out_w + i * out_w + j] = 0;
+                        space[c * out_h * out_w + i * out_w + j] += 0;
                     else
                     {
                         int index_w = kernel_h_index * width_col + kernel_w_index;
                         int index_h = c * ksize * ksize + h_index * ksize + w_index;
-                        space[c * out_h * out_w + i * out_w + j] = img[index_h * height_col * width_col + index_w];
+                        space[c * out_h * out_w + i * out_w + j] += img[index_h * height_col * width_col + index_w];
                     }
                 }
             }

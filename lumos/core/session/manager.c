@@ -36,6 +36,7 @@ void create_output_memory(Session *sess)
         Layer *l = graph->layers[i];
         outputs += l->outputs;
     }
+    sess->output_size = outputs * sess->subdivision;
     sess->output = calloc(outputs * sess->subdivision, sizeof(float));
     if (sess->coretype == GPU){
         cudaMalloc((void**)&sess->output_gpu, (outputs*sess->subdivision)*sizeof(float));
@@ -63,6 +64,7 @@ void create_delta_memory(Session *sess)
         Layer *l = graph->layers[i];
         deltas += l->deltas;
     }
+    sess->delta_size = deltas * sess->subdivision;
     sess->layer_delta = calloc(deltas * sess->subdivision, sizeof(float));
     if (sess->coretype == GPU){
         cudaMalloc((void**)&sess->layer_delta_gpu, (deltas*sess->subdivision)*sizeof(float));
@@ -638,6 +640,7 @@ Graph *load_graph_json(cJSON *cjson_graph)
     cJSON *cjson_pad = NULL;
     cJSON *cjson_normalization = NULL;
     cJSON *cjson_probability = NULL;
+    cJSON *cjson_shortcut_index = NULL;
     char *type = NULL;
     int ksize = 0;
     int output = 0;
@@ -650,6 +653,7 @@ Graph *load_graph_json(cJSON *cjson_graph)
     float probability = 0;
     int flag = 0;
     int group = 0;
+    int shortcut_index = 0;
     int size = cJSON_GetArraySize(cjson_graph);
     Graph *graph = create_graph("Lumos", size);
     Layer *l = NULL;
@@ -705,6 +709,12 @@ Graph *load_graph_json(cJSON *cjson_graph)
             cjson_group = cJSON_GetObjectItem(cjson_layer, "group");
             group = cjson_group->valueint;
             l = make_mse_layer(group);
+        } else if (0 == strcmp(type, "SHORTCUT")){
+            cjson_shortcut_index = cJSON_GetObjectItem(cjson_layer, "from");
+            cjson_active = cJSON_GetObjectItem(cjson_layer, "active");
+            shortcut_index = cjson_shortcut_index->valueint;
+            active = cjson_active->valuestring;
+            l = make_shortcut_layer(shortcut_index, active);
         }
         append_layer2grpah(graph, l);
     }

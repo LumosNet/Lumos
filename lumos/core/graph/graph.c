@@ -52,6 +52,9 @@ void init_graph(Graph *g, int w, int h, int c)
         case DROPOUT:
             init_dropout_layer(l, w, h, c);
             break;
+        case SHORTCUT:
+            init_shortcut_layer(l, w, h, c, g->layers[l->shortcut_index]);
+            break;
         default:
             break;
         }

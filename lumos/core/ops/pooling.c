@@ -38,7 +38,7 @@ void avgpool_gradient(float *delta_l, int h, int w, int c, int ksize, int stride
                         int index_i = x + ksize_i - pad;
                         int index_j = y + ksize_j - pad;
                         if (index_i <= -1 || index_i >= h || index_j <= -1 || index_j >= w) continue;
-                        delta_l[k*h*w + index_i*w + index_j] = delta_n[k*out_h*out_w + i*out_w + j] / (ksize*ksize);
+                        delta_l[k*h*w + index_i*w + index_j] += delta_n[k*out_h*out_w + i*out_w + j] / (ksize*ksize);
                     }
                 }
             }
@@ -84,6 +84,6 @@ void maxpool_gradient(float *delta_l, int h, int w, int c, int ksize, int stride
     for (int j = 0; j < out_h * out_w * c; ++j)
     {
         if (index[j] == -1) continue;
-        delta_l[index[j]] = delta_n[j];
+        delta_l[index[j]] += delta_n[j];
     }
 }

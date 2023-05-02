@@ -15,6 +15,16 @@ void session_train(Session *sess, char *weights_path)
         {
             for (int k = 0; k < sub_batchs; ++k)
             {
+                if (sess->coretype == GPU){
+                    
+                    fill_gpu(sess->output_gpu, sess->output_size, 0, 1);
+                    fill_gpu(sess->layer_delta_gpu, sess->delta_size, 0, 1);
+                    fill_gpu(sess->workspace_gpu, sess->workspace_size, 0, 1);
+                } else {
+                    fill_cpu(sess->output, sess->output_size, 0, 1);
+                    fill_cpu(sess->layer_delta, sess->delta_size, 0, 1);
+                    fill_cpu(sess->workspace, sess->workspace_size, 0, 1);
+                }
                 load_train_data(sess, j * sess->batch + k * sess->subdivision, sess->subdivision);
                 load_train_label(sess, j * sess->batch + k * sess->subdivision, sess->subdivision);
                 forward_session(sess);
