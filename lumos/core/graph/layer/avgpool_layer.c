@@ -1,14 +1,14 @@
 #include "avgpool_layer.h"
 
-Layer *make_avgpool_layer(int ksize)
+Layer *make_avgpool_layer(int ksize, int stride, int pad)
 {
     Layer *l = malloc(sizeof(Layer));
     l->type = AVGPOOL;
-    l->pad = 0;
+    l->pad = pad;
     l->weights = 0;
 
     l->ksize = ksize;
-    l->stride = l->ksize;
+    l->stride = stride;
     l->update = NULL;
 
     fprintf(stderr, "Avg Pooling     Layer    :    [ksize=%2d]\n", l->ksize);
@@ -22,12 +22,12 @@ void init_avgpool_layer(Layer *l, int w, int h, int c)
     l->input_c = c;
     l->inputs = l->input_h * l->input_w * l->input_c;
 
-    l->output_h = (l->input_h - l->ksize) / l->ksize + 1;
-    l->output_w = (l->input_w - l->ksize) / l->ksize + 1;
+    l->output_h = (h + 2 * l->pad - l->ksize) / l->stride + 1;
+    l->output_w = (w + 2 * l->pad - l->ksize) / l->stride + 1;
     l->output_c = l->input_c;
     l->outputs = l->output_h * l->output_w * l->output_c;
 
-    l->workspace_size = l->output_h * l->output_w * l->ksize * l->ksize * l->output_c;
+    l->workspace_size = 0;
     l->deltas = l->inputs;
 
     if (l->coretype == GPU){

@@ -1,0 +1,109 @@
+{
+    "Public": {
+        "width": 224,
+        "height": 224,
+        "channel": 3,
+        "label": 2,
+        "batch": 16,
+        "subdivision": 16,
+        "epoch": 100,
+        "learning_rate": 0.1
+    },
+    "Initializer": {
+        "type": "HE"
+    },
+    "Layers": [
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 64,
+            "ksize": 7,
+            "stride": 2,
+            "pad": 3,
+            "bias": 1,
+            "normalization": 1,
+            "active": "relu"
+        },
+        {
+            "type": "MAXPOOL",
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1
+        },
+
+
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 64,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 1,
+            "active": "relu"
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 64,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 1,
+            "active": "relu"
+        },
+        {
+            "type": "SHORTCUT",
+            "from": 1,
+            "active": "leaky"
+        },
+
+
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 64,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 1,
+            "active": "relu"
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 64,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 1,
+            "active": "relu"
+        },
+        {
+            "type": "SHORTCUT",
+            "from": 4,
+            "active": "leaky"
+        },
+
+
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 128,
+            "ksize": 3,
+            "stride": 2,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 1,
+            "active": "relu"
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 128,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 1,
+            "active": "relu"
+        }
+    ]
+}

@@ -25,7 +25,9 @@
         },
         {
             "type": "AVGPOOL",
-            "ksize": 2
+            "ksize": 2,
+            "stride": 2,
+            "pad": 0
         },
         {
             "type": "CONVOLUTIONAL",
@@ -39,7 +41,9 @@
         },
         {
             "type": "AVGPOOL",
-            "ksize": 2
+            "ksize": 2,
+            "stride": 2,
+            "pad": 0
         },
         {
             "type": "CONVOLUTIONAL",

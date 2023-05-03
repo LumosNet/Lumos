@@ -12,7 +12,7 @@
 extern "C" {
 #endif
 
-Layer *make_avgpool_layer(int ksize);
+Layer *make_avgpool_layer(int ksize, int stride, int pad);
 
 void init_avgpool_layer(Layer *l, int w, int h, int c);
 

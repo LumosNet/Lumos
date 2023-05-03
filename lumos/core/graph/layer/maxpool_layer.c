@@ -1,14 +1,14 @@
 #include "maxpool_layer.h"
 
-Layer *make_maxpool_layer(int ksize)
+Layer *make_maxpool_layer(int ksize, int stride, int pad)
 {
     Layer *l = malloc(sizeof(Layer));
     l->type = MAXPOOL;
-    l->pad = 0;
+    l->pad = pad;
     l->weights = 0;
 
     l->ksize = ksize;
-    l->stride = ksize;
+    l->stride = stride;
 
     l->update = NULL;
 
@@ -23,12 +23,12 @@ void init_maxpool_layer(Layer *l, int w, int h, int c)
     l->input_c = c;
     l->inputs = l->input_h * l->input_w * l->input_c;
 
-    l->output_h = (l->input_h - l->ksize) / l->ksize + 1;
-    l->output_w = (l->input_w - l->ksize) / l->ksize + 1;
+    l->output_h = (h + 2 * l->pad - l->ksize) / l->stride + 1;
+    l->output_w = (w + 2 * l->pad - l->ksize) / l->stride + 1;
     l->output_c = l->input_c;
     l->outputs = l->output_h * l->output_w * l->output_c;
 
-    l->workspace_size = l->output_h * l->output_w * l->ksize * l->ksize * l->output_c;
+    l->workspace_size = 0;
     l->deltas = l->inputs;
 
     if (l->coretype == GPU){

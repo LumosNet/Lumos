@@ -663,8 +663,12 @@ Graph *load_graph_json(cJSON *cjson_graph)
         type = cjson_type->valuestring;
         if (0 == strcmp(type, "AVGPOOL")){
             cjson_ksize = cJSON_GetObjectItem(cjson_layer, "ksize");
+            cjson_stride = cJSON_GetObjectItem(cjson_layer, "stride");
+            cjson_pad = cJSON_GetObjectItem(cjson_layer, "pad");
             ksize = cjson_ksize->valueint;
-            l = make_avgpool_layer(ksize);
+            stride = cjson_stride->valueint;
+            pad = cjson_pad->valueint;
+            l = make_avgpool_layer(ksize, stride, pad);
         } else if (0 == strcmp(type, "CONNECT")){
             cjson_output = cJSON_GetObjectItem(cjson_layer, "output");
             cjson_bias = cJSON_GetObjectItem(cjson_layer, "bias");
@@ -699,8 +703,12 @@ Graph *load_graph_json(cJSON *cjson_graph)
             l = make_im2col_layer(flag);
         } else if (0 == strcmp(type, "MAXPOOL")){
             cjson_ksize = cJSON_GetObjectItem(cjson_layer, "ksize");
+            cjson_stride = cJSON_GetObjectItem(cjson_layer, "stride");
+            cjson_pad = cJSON_GetObjectItem(cjson_layer, "pad");
             ksize = cjson_ksize->valueint;
-            l = make_maxpool_layer(ksize);
+            stride = cjson_stride->valueint;
+            pad = cjson_pad->valueint;
+            l = make_maxpool_layer(ksize, stride, pad);
         } else if (0 == strcmp(type, "SOFTMAX")){
             cjson_group = cJSON_GetObjectItem(cjson_layer, "group");
             group = cjson_group->valueint;

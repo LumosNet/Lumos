@@ -228,7 +228,7 @@ float gradient_x(Activation TYPE, float x);
 void activate_list(float *origin, int num, Activation TYPE);
 void gradient_list(float *origin, int num, Activation TYPE);
 
-Layer *make_avgpool_layer(int ksize);
+Layer *make_avgpool_layer(int ksize, int stride, int pad);
 
 void init_avgpool_layer(Layer *l, int w, int h, int c);
 
@@ -258,7 +258,7 @@ void init_im2col_layer(Layer *l, int w, int h, int c);
 void forward_im2col_layer(Layer l, int num);
 void backward_im2col_layer(Layer l, float rate, int num, float *n_delta);
 
-Layer *make_maxpool_layer(int ksize);
+Layer *make_maxpool_layer(int ksize, int stride, int pad);
 
 void init_maxpool_layer(Layer *l, int w, int h, int c);
 
