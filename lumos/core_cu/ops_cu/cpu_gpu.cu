@@ -224,6 +224,34 @@ __global__ void mean_kernel(float *data, int num, float *space)
     }
 }
 
+__global__ void variance_kernel(float *data, float mean, int num, float *space)
+{
+    int gid = blockIdx.x * blockDim.x + threadIdx.x;
+    float scale = 1. / (num-1);
+    __shared__ float tmp[BLOCK];
+    if(gid < num)
+    {
+        tmp[threadIdx.x] = data[gid];
+    }
+    else
+    {
+        tmp[threadIdx.x] = 0.0f;
+    }
+    __syncthreads();
+
+    for(int strip = blockDim.x / 2; strip > 0; strip = strip / 2)
+    {
+        if(threadIdx.x < strip)
+            tmp[threadIdx.x] += pow((tmp[threadIdx.x + strip]-mean), 2);
+        __syncthreads();
+    }
+
+    if(threadIdx.x == 0)
+    {
+        space[blockIdx.x] = tmp[0]*scale;
+    }
+}
+
 void min_gpu(float *data, int num, float *space)
 {
     min_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data, num, space);
@@ -242,6 +270,11 @@ void sum_gpu(float *data, int num, float *space)
 void mean_gpu(float *data, int num, float *space)
 {
     mean_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data, num, space);
+}
+
+void variance_gpu(float *data, float mean, int num, float *space)
+{
+    variance_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data, mean, num, space);
 }
 
 __global__ void exp_list_kernel(float *data, int num, float *space, float *ALPHA)
