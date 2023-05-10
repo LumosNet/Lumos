@@ -15,7 +15,7 @@ extern "C" {
 
 typedef enum {
     CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MAXPOOL, AVGPOOL, \
-    DROPOUT, MSE, SOFTMAX, SHORTCUT
+    DROPOUT, MSE, SOFTMAX, SHORTCUT, NORMALIZE
 } LayerType;
 
 typedef struct layer Layer;
@@ -96,6 +96,17 @@ struct layer{
 
     float *update_kernel_weights_gpu;
     float *update_bias_weights_gpu;
+
+    int mean_size;
+    int variance_size;
+    float *normalize_bias;
+    float *normalize_scale;
+
+    float *mean;
+    float *variance;
+    float *rolling_mean;
+    float *rooling_variance;
+    float *x_norm;
 
     Forward forward;
     Backward backward;
