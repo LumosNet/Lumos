@@ -2,6 +2,11 @@
 
 void val_init(Layer *l, float val)
 {
+    int kernel_weights_size = l->kernel_weights_size;
+    if (l->batchnorm) {
+        kernel_weights_size -= l->output_c;
+        fill_cpu(l->kernel_weights+kernel_weights_size, l->output_c, 1, 1);
+    }
     for (int i = 0; i < l->kernel_weights_size; ++i){
         l->kernel_weights[i] = val;
     }
@@ -9,23 +14,43 @@ void val_init(Layer *l, float val)
 
 void uniform_init(Layer *l, float mean, float variance)
 {
+    int kernel_weights_size = l->kernel_weights_size;
+    if (l->batchnorm) {
+        kernel_weights_size -= l->output_c;
+        fill_cpu(l->kernel_weights+kernel_weights_size, l->output_c, 1, 1);
+    }
     uniform_list(-variance, variance, l->kernel_weights_size, l->kernel_weights);
 }
 
 void normal_init(Layer *l, float mean, float variance)
 {
+    int kernel_weights_size = l->kernel_weights_size;
+    if (l->batchnorm) {
+        kernel_weights_size -= l->output_c;
+        fill_cpu(l->kernel_weights+kernel_weights_size, l->output_c, 1, 1);
+    }
     int seed = (unsigned)time(NULL);
     guass_list(mean, variance, seed, l->kernel_weights_size, l->kernel_weights);
 }
 
 void xavier_uniform_init(Layer *l)
 {
+    int kernel_weights_size = l->kernel_weights_size;
+    if (l->batchnorm) {
+        kernel_weights_size -= l->output_c;
+        fill_cpu(l->kernel_weights+kernel_weights_size, l->output_c, 1, 1);
+    }
     float x = sqrt((float)6/(l->inputs+l->outputs));
     uniform_list(-x, x, l->kernel_weights_size, l->kernel_weights);
 }
 
 void xavier_normal_init(Layer *l)
 {
+    int kernel_weights_size = l->kernel_weights_size;
+    if (l->batchnorm) {
+        kernel_weights_size -= l->output_c;
+        fill_cpu(l->kernel_weights+kernel_weights_size, l->output_c, 1, 1);
+    }
     int seed = (unsigned)time(NULL);
     float x = (float)2/(l->inputs+l->outputs);
     guass_list(0, x, seed, l->kernel_weights_size, l->kernel_weights);
@@ -33,6 +58,11 @@ void xavier_normal_init(Layer *l)
 
 void kaiming_uniform_init(Layer *l, char *mode)
 {
+    int kernel_weights_size = l->kernel_weights_size;
+    if (l->batchnorm) {
+        kernel_weights_size -= l->output_c;
+        fill_cpu(l->kernel_weights+kernel_weights_size, l->output_c, 1, 1);
+    }
     float x = 0;
     float inp = 0;
     float out = 0;
@@ -53,6 +83,11 @@ void kaiming_uniform_init(Layer *l, char *mode)
 
 void kaiming_normal_init(Layer *l, char *mode)
 {
+    int kernel_weights_size = l->kernel_weights_size;
+    if (l->batchnorm) {
+        kernel_weights_size -= l->output_c;
+        fill_cpu(l->kernel_weights+kernel_weights_size, l->output_c, 1, 1);
+    }
     float x = 0;
     float inp = 0;
     float out = 0;
@@ -74,6 +109,11 @@ void kaiming_normal_init(Layer *l, char *mode)
 
 void he_init(Layer *l)
 {
+    int kernel_weights_size = l->kernel_weights_size;
+    if (l->batchnorm) {
+        kernel_weights_size -= l->output_c;
+        fill_cpu(l->kernel_weights+kernel_weights_size, l->output_c, 1, 1);
+    }
     float scale;
     if (l->type == CONNECT){
         scale = sqrt((float)2 / l->inputs);

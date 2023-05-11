@@ -6,7 +6,7 @@
         "label": 10,
         "batch": 16,
         "subdivision": 16,
-        "epoch": 100,
+        "epoch": 50,
         "learning_rate": 0.1
     },
     "Initializer": {
@@ -20,7 +20,7 @@
             "stride": 1,
             "pad": 0,
             "bias": 1,
-            "normalization": 1,
+            "normalization": 0,
             "active": "relu"
         },
         {
@@ -36,7 +36,7 @@
             "stride": 1,
             "pad": 0,
             "bias": 1,
-            "normalization": 1,
+            "normalization": 0,
             "active": "relu"
         },
         {
@@ -52,7 +52,7 @@
             "stride": 1,
             "pad": 0,
             "bias": 1,
-            "normalization": 1,
+            "normalization": 0,
             "active": "relu"
         },
         {
@@ -63,14 +63,14 @@
             "type": "CONNECT",
             "output": 84,
             "bias": 1,
-            "normalization": 1,
+            "normalization": 0,
             "active": "relu"
         },
         {
             "type": "CONNECT",
             "output": 10,
             "bias": 1,
-            "normalization": 1,
+            "normalization": 0,
             "active": "relu"
         },
         {
