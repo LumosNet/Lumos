@@ -747,11 +747,13 @@ Graph *load_graph_json(cJSON *cjson_graph)
         } else if (0 == strcmp(type, "CONNECT")){
             cjson_output = cJSON_GetObjectItem(cjson_layer, "output");
             cjson_bias = cJSON_GetObjectItem(cjson_layer, "bias");
+            cjson_normalization = cJSON_GetObjectItem(cjson_layer, "normalization");
             cjson_active = cJSON_GetObjectItem(cjson_layer, "active");
             output = cjson_output->valueint;
             bias = cjson_bias->valueint;
+            normalization = cjson_normalization->valueint;
             active = cjson_active->valuestring;
-            l = make_connect_layer(output, bias, active);
+            l = make_connect_layer(output, bias, normalization, active);
         } else if (0 == strcmp(type, "CONVOLUTIONAL")){
             cjson_filters = cJSON_GetObjectItem(cjson_layer, "filters");
             cjson_ksize = cJSON_GetObjectItem(cjson_layer, "ksize");

@@ -22,11 +22,7 @@ void init_im2col_layer(Layer *l, int w, int h, int c)
 
     l->output_h = 1;
     l->output_w = 1;
-    l->output_c = 1;
-    if (l->im2col_flag)
-        l->output_h = l->inputs;
-    else
-        l->output_w = l->inputs;
+    l->output_c = l->inputs;
     l->outputs = l->inputs;
     l->workspace_size = 0;
     l->deltas = l->inputs;

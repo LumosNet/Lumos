@@ -63,12 +63,14 @@
             "type": "CONNECT",
             "output": 84,
             "bias": 1,
+            "normalization": 1,
             "active": "relu"
         },
         {
             "type": "CONNECT",
             "output": 10,
             "bias": 1,
+            "normalization": 1,
             "active": "relu"
         },
         {

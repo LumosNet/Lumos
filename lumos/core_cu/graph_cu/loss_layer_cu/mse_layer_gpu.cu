@@ -11,7 +11,7 @@ void forward_mse_layer_gpu(Layer l, int num)
         float *output = l.output+offset_o;
         float *truth = l.truth+offset_t;
         matrix_subtract_gpu(truth, input, l.inputs, l.workspace);
-        gemm_gpu(1, 0, l.input_h, l.input_w, l.input_h, l.input_w, 1, \
+        gemm_gpu(1, 0, l.inputs, 1, l.inputs, 1, 1, \
             l.workspace, l.workspace, output);
         multy_gpu(output, l.outputs, 1/(float)l.group, 1);
     }

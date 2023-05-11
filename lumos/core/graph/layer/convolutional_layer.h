@@ -10,6 +10,7 @@
 #include "bias.h"
 #include "gemm.h"
 #include "cpu.h"
+#include "normalization_layer.h"
 
 #include "convolutional_layer_gpu.h"
 

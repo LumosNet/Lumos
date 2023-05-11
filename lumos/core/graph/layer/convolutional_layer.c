@@ -40,8 +40,12 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
     l->workspace_size = l->ksize * l->ksize * l->input_c * l->output_h * l->output_w + l->filters * l->ksize * l->ksize * l->input_c;
 
     l->kernel_weights_size = l->filters * l->ksize * l->ksize * l->input_c;
+    if (l->batchnorm){
+        l->bias = 0;
+        l->kernel_weights_size += l->filters;
+    }
     l->bias_weights_size = 0;
-    if (l->bias){
+    if (l->bias || l->batchnorm){
         l->bias_weights_size = l->filters;
     }
     l->deltas = l->inputs;
@@ -71,6 +75,9 @@ void forward_convolutional_layer(Layer l, int num)
         im2col(input, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, l.workspace);
         gemm(0, 0, l.filters, l.ksize * l.ksize * l.input_c, l.ksize * l.ksize * l.input_c, l.output_h * l.output_w, 1,
              l.kernel_weights, l.workspace, output);
+        if (l.batchnorm){
+            forward_normalization_layer(l, num);
+        }
         if (l.bias)
         {
             add_bias(output, l.bias_weights, l.filters, l.output_h * l.output_w);
@@ -89,6 +96,9 @@ void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta)
         float *delta_l = l.delta + offset_i;
         float *delta_n = n_delta + offset_o;
         gradient_list(output, l.outputs, l.gradient);
+        if (l.batchnorm){
+            backward_normalization_layer(l, rate, num, n_delta);
+        }
         matrix_multiply_cpu(delta_n, output, l.outputs, delta_n);
         gemm(1, 0, l.filters, l.ksize * l.ksize * l.input_c,
              l.filters, l.output_h * l.output_w, 1,
