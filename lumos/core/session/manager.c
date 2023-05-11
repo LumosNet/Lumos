@@ -139,6 +139,25 @@ void create_dropout_rand_memory(Session *sess)
     fprintf(stderr, "APPly For Dropout Layers's Rand Space\n");
 }
 
+void create_normalize_memory(Session *sess)
+{
+    if (sess->x_norm_size == 0) return;
+    sess->x_norm = calloc(sess->x_norm_size*sess->subdivision, sizeof(float));
+    sess->mean = calloc(sess->variance_size*sess->subdivision, sizeof(float));
+    sess->roll_mean = calloc(sess->variance_size*sess->subdivision, sizeof(float));
+    sess->variance = calloc(sess->variance_size*sess->subdivision, sizeof(float));
+    sess->roll_variance = calloc(sess->variance_size*sess->subdivision, sizeof(float));
+    sess->normalize_x = calloc(sess->normalize_x_size*sess->subdivision, sizeof(float));
+    if (sess->coretype == GPU){
+        cudaMalloc((void**)&sess->x_norm_gpu, sess->x_norm_size*sess->subdivision*sizeof(float));
+        cudaMalloc((void**)&sess->mean_gpu, sess->variance_size*sess->subdivision*sizeof(float));
+        cudaMalloc((void**)&sess->roll_mean_gpu, sess->variance_size*sess->subdivision*sizeof(float));
+        cudaMalloc((void**)&sess->variance_gpu, sess->variance_size*sess->subdivision*sizeof(float));
+        cudaMalloc((void**)&sess->roll_variance_gpu, sess->variance_size*sess->subdivision*sizeof(float));
+        cudaMalloc((void**)&sess->normalize_x_gpu, sess->normalize_x_size*sess->subdivision*sizeof(float));
+    }
+}
+
 void set_graph_memory(Session *sess)
 {
     Graph *graph = sess->graph;
@@ -199,7 +218,7 @@ void set_graph_weight(Session *sess)
             l->kernel_weights_gpu = weights_g + weights_offset;
             l->update_kernel_weights_gpu = update_weights_g + weights_offset;
             weights_offset += l->kernel_weights_size;
-            if (l->bias)
+            if (l->bias || l->batchnorm)
             {
                 l->bias_weights = weights + weights_offset;
                 l->update_bias_weights = update_weights + weights_offset;
@@ -296,6 +315,42 @@ void set_dropout_rand_memory(Session *sess)
     fprintf(stderr, "\nDropout Layers's Rand To Each Layer\n");
 }
 
+void set_normalize_memory(Session *sess)
+{
+    if (sess->x_norm_size == 0) return;
+    Graph *graph = sess->graph;
+    Layer **layers = graph->layers;
+    int x_norm_offset = 0;
+    int variance_offset = 0;
+    float *x_norm = sess->x_norm;
+    float *mean = sess->mean;
+    float *roll_mean = sess->roll_mean;
+    float *variance = sess->variance;
+    float *roll_variance = sess->roll_variance;
+    float *normalize_x = sess->normalize_x;
+    if (sess->coretype == GPU){
+        x_norm = sess->x_norm_gpu;
+        mean = sess->mean_gpu;
+        roll_mean = sess->roll_mean_gpu;
+        variance = sess->variance_gpu;
+        roll_variance = sess->roll_variance_gpu;
+        normalize_x = sess->normalize_x_gpu;
+    }
+    for (int i = 0; i < graph->layer_num; ++i){
+        Layer *l = layers[i];
+        if (l->batchnorm){
+            l->mean = mean + variance_offset;
+            l->rolling_mean = roll_mean + variance_offset;
+            l->variance = variance + variance_offset;
+            l->rolling_variance = roll_variance + variance_offset;
+            l->x_norm = x_norm + x_norm_offset;
+            l->normalize_x = normalize_x + x_norm_offset;
+            variance_offset += l->output_c * sess->subdivision;
+            x_norm_offset += l->outputs * sess->subdivision;
+        }
+    }
+}
+
 void get_workspace_size(Session *sess)
 {
     Graph *graph = sess->graph;
@@ -352,6 +407,26 @@ void statistics_memory_occupy_size(Session *sess)
         fprintf(stderr, "\nThe Whole Training Process Will Occupy %.1fMB Host Memory\n", mem_size);
     }
     fprintf(stderr, "Please Make Sure The Host Have Enough Memory\n\n");
+}
+
+void get_normalize_size(Session *sess)
+{
+    Graph *graph = sess->graph;
+    Layer **layers = graph->layers;
+    int x_norm_size = 0;
+    int variance_size = 0;
+    int normalize_x_size = 0;
+    for (int i = 0; i < graph->layer_num; ++i){
+        Layer *l = layers[i];
+        if (l->batchnorm){
+            variance_size += l->output_c;
+            x_norm_size += l->outputs;
+            normalize_x_size += l->outputs;
+        }
+    }
+    sess->x_norm_size = x_norm_size;
+    sess->variance_size = variance_size;
+    sess->normalize_x_size = normalize_x_size;
 }
 
 void init_weights(Session *sess, char *weights_file)

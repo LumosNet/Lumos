@@ -125,6 +125,7 @@ void init_train_scene(Session *sess, char *weights_file)
     init_graph(sess->graph, sess->width, sess->height, sess->channel);
     get_workspace_size(sess);
     statistics_memory_occupy_size(sess);
+    get_normalize_size(sess);
     create_run_memory(sess);
     set_graph_memory(sess);
     create_weights_memory(sess);
@@ -139,6 +140,8 @@ void init_train_scene(Session *sess, char *weights_file)
     set_truth_memory(sess);
     set_maxpool_index_memory(sess);
     set_dropout_rand_memory(sess);
+    create_normalize_memory(sess);
+    set_normalize_memory(sess);
     set_run_type(sess, 1);
 }
 

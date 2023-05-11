@@ -99,14 +99,13 @@ struct layer{
 
     int mean_size;
     int variance_size;
-    float *normalize_bias;
-    float *normalize_scale;
 
     float *mean;
     float *variance;
     float *rolling_mean;
-    float *rooling_variance;
+    float *rolling_variance;
     float *x_norm;
+    float *normalize_x;
 
     Forward forward;
     Backward backward;

@@ -72,6 +72,17 @@ typedef struct session{
 
     int memory_size;
 
+    float *x_norm;
+    float *mean;
+    float *variance;
+    float *roll_mean;
+    float *roll_variance;
+    float *normalize_x;
+
+    int x_norm_size;
+    int variance_size;
+    int normalize_x_size;
+
     Label2Truth label2truth;
     Initializer w_init;
 
@@ -85,6 +96,13 @@ typedef struct session{
     float *truth_gpu;
     int *maxpool_index_gpu;
     int *dropout_rand_gpu;
+
+    float *x_norm_gpu;
+    float *mean_gpu;
+    float *variance_gpu;
+    float *roll_mean_gpu;
+    float *roll_variance_gpu;
+    float *normalize_x_gpu;
 } Session;
 
 Session *create_session(char *type, Initializer w_init);

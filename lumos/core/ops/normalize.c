@@ -29,3 +29,34 @@ void normalize_cpu(float *data, float *mean, float *variance, int h, int w, int 
         }
     }
 }
+
+void gradient_normalize_mean(float *n_delta, float *variance, int h, int w, int c, float *mean_delta)
+{
+    for (int i = 0; i < c; ++i){
+        mean_delta[i] = 0;
+        for (int j = 0; j < h*w; ++j){
+            mean_delta[i] += n_delta[i*h*w + j];
+        }
+        mean_delta[i] *= (-1./sqrt(variance[i] + .00001f));
+    }
+}
+
+void gradient_normalize_variance(float *input, float *n_delta, float *mean, float *variance, int h, int w, int c, float *variance_delta)
+{
+    for (int i = 0; i < c; ++i){
+        variance_delta[i] = 0;
+        for (int j = 0; j < h*w; ++j){
+            variance_delta[i] += n_delta[i*h*w + j]*(input[i*h*w + j]-mean[i]);
+        }
+        variance_delta[i] *= -.5 * pow(variance[i] + .00001f, (float)(-3./2.));
+    }
+}
+
+void gradient_normalize_cpu(float *input, float *mean, float *variance, float *mean_delta, float *variance_delta, int h, int w, int c, float *n_delta, float *l_delta)
+{
+    for (int i = 0; i < c; ++i){
+        for (int j = 0; j < h*w; ++j){
+            l_delta[i*h*w + j] = n_delta[i*h*w + j] * 1./(sqrt(variance[i] + .00001f)) + variance_delta[i] * 2. * (input[i*h*w + j] - mean[i]) / (h*w) + mean_delta[i]/(h*w);
+        }
+    }
+}
