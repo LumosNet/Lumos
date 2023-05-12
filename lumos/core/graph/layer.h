@@ -45,6 +45,7 @@ struct layer{
     int outputs;
     int kernel_weights_size;
     int bias_weights_size;
+    int normalize_weights_size;
     int deltas;
     int workspace_size;
     int label_num;
@@ -87,15 +88,19 @@ struct layer{
 
     float *kernel_weights;
     float *bias_weights;
+    float *normalize_weights;
 
     float *update_kernel_weights;
     float *update_bias_weights;
+    float *update_normalize_weights;
 
     float *kernel_weights_gpu;
     float *bias_weights_gpu;
+    float *normalize_weights_gpu;
 
     float *update_kernel_weights_gpu;
     float *update_bias_weights_gpu;
+    float *update_normalize_weights_gpu;
 
     int mean_size;
     int variance_size;

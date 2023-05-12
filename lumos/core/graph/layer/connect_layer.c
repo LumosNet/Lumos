@@ -36,9 +36,10 @@ void init_connect_layer(Layer *l, int w, int h, int c)
     l->workspace_size = l->inputs * l->outputs;
 
     l->kernel_weights_size = l->inputs * l->outputs;
+    l->normalize_weights_size = 0;
     if (l->batchnorm){
-        l->bias = 0;
-        l->kernel_weights_size += l->outputs;
+        l->bias = 1;
+        l->normalize_weights_size = l->outputs;
     }
     l->bias_weights_size = 0;
     if (l->bias || l->batchnorm){

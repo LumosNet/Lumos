@@ -2,7 +2,6 @@
 
 void forward_avgpool_layer_gpu(Layer l, int num)
 {
-    fill_gpu(l.output, l.outputs * num, 0, 1);
     for (int i = 0; i < num; ++i)
     {
         int offset_i = i * l.inputs;

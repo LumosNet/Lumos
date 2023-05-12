@@ -224,31 +224,30 @@ __global__ void mean_kernel(float *data, int num, float *space)
     }
 }
 
-__global__ void variance_kernel(float *data, float mean, int num, float *space)
+__global__ void  variance_kernel(float *data, float *mean, int num, float *variance)
 {
-    int gid = blockIdx.x * blockDim.x + threadIdx.x;
-    float scale = 1. / (num-1);
-    __shared__ float tmp[BLOCK];
-    if(gid < num)
-    {
-        tmp[threadIdx.x] = data[gid];
+    const int threads = BLOCK;
+    __shared__ float local[threads];
+
+    int id = threadIdx.x;
+    local[id] = 0;
+
+    int filter = blockIdx.x;
+
+    int i;
+    for(i = 0; i < num; i += threads){
+        int index = filter*num + i + id;
+        local[id] += (i+id < num) ? powf((data[index] - mean[0]), 2) : 0;
     }
-    else
-    {
-        tmp[threadIdx.x] = 0.0f;
-    }
+
     __syncthreads();
 
-    for(int strip = blockDim.x / 2; strip > 0; strip = strip / 2)
-    {
-        if(threadIdx.x < strip)
-            tmp[threadIdx.x] += pow((tmp[threadIdx.x + strip]-mean), 2);
-        __syncthreads();
-    }
-
-    if(threadIdx.x == 0)
-    {
-        space[blockIdx.x] = tmp[0]*scale;
+    if(id == 0){
+        variance[filter] = 0;
+        for(i = 0; i < threads; ++i){
+            variance[filter] += local[i];
+        }
+        variance[filter] /= (num - 1);
     }
 }
 
@@ -272,9 +271,9 @@ void mean_gpu(float *data, int num, float *space)
     mean_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data, num, space);
 }
 
-void variance_gpu(float *data, float mean, int num, float *space)
+void variance_gpu(float *data, float *mean, int num, float *space)
 {
-    variance_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(data, mean, num, space);
+    variance_kernel<<<1, BLOCK>>>(data, mean, num, space);
 }
 
 __global__ void exp_list_kernel(float *data, int num, float *space, float *ALPHA)

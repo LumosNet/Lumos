@@ -23,7 +23,7 @@ void min_gpu(float *data, int num, float *space);
 void max_gpu(float *data, int num, float *space);
 void sum_gpu(float *data, int num, float *space);
 void mean_gpu(float *data, int num, float *space);
-void variance_gpu(float *data, float mean, int num, float *space);
+void variance_gpu(float *data, float *mean, int num, float *space);
 
 void matrix_add_gpu(float *data_a, float *data_b, int num, float *space);
 void matrix_subtract_gpu(float *data_a, float *data_b, int num, float *space);

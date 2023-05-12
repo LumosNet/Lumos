@@ -40,9 +40,10 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
     l->workspace_size = l->ksize * l->ksize * l->input_c * l->output_h * l->output_w + l->filters * l->ksize * l->ksize * l->input_c;
 
     l->kernel_weights_size = l->filters * l->ksize * l->ksize * l->input_c;
+    l->normalize_weights_size = 0;
     if (l->batchnorm){
-        l->bias = 0;
-        l->kernel_weights_size += l->filters;
+        l->bias = 1;
+        l->normalize_weights_size = l->filters;
     }
     l->bias_weights_size = 0;
     if (l->bias || l->batchnorm){

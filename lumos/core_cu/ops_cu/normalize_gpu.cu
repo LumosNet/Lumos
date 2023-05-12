@@ -11,10 +11,11 @@ void normalize_mean_gpu(float *data, int h, int w, int c, float *mean)
 
 void normalize_variance_gpu(float *data, int h, int w, int c, float *mean, float *variance)
 {
+    if (variance == NULL) printf("variance error\n");
     int offset = h*w;
     for (int i = 0; i < c; ++i){
         float *data_c = data + i*offset;
-        variance_gpu(data_c, mean[i], offset, variance+i);
+        variance_gpu(data_c, mean, offset, variance+i);
     }
 }
 

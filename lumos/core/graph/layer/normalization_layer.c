@@ -64,7 +64,7 @@ void forward_normalization_layer(Layer l, int num)
         saxpy_cpu(roll_mean, mean, l.output_c, .01, roll_mean);
         saxpy_cpu(roll_variance, variance, l.output_c, .01, roll_variance);
         if (!l.train) normalize_cpu(input, roll_mean, roll_variance, l.output_h, l.input_w, l.input_c, output);
-        scale_bias(output, l.kernel_weights, l.output_c, l.output_h * l.output_w);
+        scale_bias(output, l.normalize_weights, l.output_c, l.output_h * l.output_w);
         add_bias(output, l.bias_weights, l.output_c, l.output_h * l.output_w);
     }
 }
@@ -94,6 +94,6 @@ void update_normalization_layer(Layer l, float rate, int num, float *n_delta)
         add_bias(l.update_bias_weights, l.workspace, l.output_c, l.output_h*l.output_w);
         matrix_multiply_cpu(norm_x, delta_n, l.outputs, l.workspace);
         sum_channel_cpu(l.workspace, l.output_h, l.output_w, l.output_c, rate, l.workspace);
-        scale_bias(l.update_kernel_weights, l.workspace, l.output_c, l.output_h*l.output_w);
+        scale_bias(l.update_normalize_weights, l.workspace, l.output_c, l.output_h*l.output_w);
     }
 }

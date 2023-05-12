@@ -65,7 +65,7 @@ void mean_cpu(float *data, int num, float *space)
 void variance_cpu(float *data, float mean, int num, float *space)
 {
     for (int i = 0; i < num; ++i){
-        space[0] += pow((data[i] - mean), 2);
+        space[0] += powf((data[i] - mean), 2);
     }
     space[0] *= 1./(num-1);
 }

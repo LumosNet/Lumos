@@ -218,13 +218,21 @@ void set_graph_weight(Session *sess)
             l->kernel_weights_gpu = weights_g + weights_offset;
             l->update_kernel_weights_gpu = update_weights_g + weights_offset;
             weights_offset += l->kernel_weights_size;
-            if (l->bias || l->batchnorm)
+            if (l->bias)
             {
                 l->bias_weights = weights + weights_offset;
                 l->update_bias_weights = update_weights + weights_offset;
                 l->bias_weights_gpu = weights_g + weights_offset;
                 l->update_bias_weights_gpu = update_weights_g + weights_offset;
                 weights_offset += l->bias_weights_size;
+            }
+            if (l->batchnorm)
+            {
+                l->normalize_weights = weights + weights_offset;
+                l->update_normalize_weights = update_weights + weights_offset;
+                l->normalize_weights_gpu = weights_g + weights_offset;
+                l->update_normalize_weights_gpu = update_weights_g + weights_offset;
+                weights_offset += l->normalize_weights_size;
             }
         }
     }
@@ -368,6 +376,7 @@ void get_workspace_size(Session *sess)
         {
             weights_size += l->kernel_weights_size;
             weights_size += l->bias_weights_size;
+            weights_size += l->normalize_weights_size;
         }
     }
     sess->workspace_size = max_workspace_size;
@@ -390,6 +399,7 @@ void statistics_memory_occupy_size(Session *sess)
         deltas += l->deltas;
         weights += l->kernel_weights_size;
         weights += l->bias_weights_size;
+        weights += l->normalize_weights_size;
     }
     sess->memory_size += outputs * sess->subdivision * sizeof(float);
     sess->memory_size += deltas * sess->subdivision * sizeof(float);
@@ -468,6 +478,9 @@ void init_weights(Session *sess, char *weights_file)
             }
             if (l->bias){
                 fill_cpu(l->bias_weights, l->bias_weights_size, 0.001, 1);
+            }
+            if (l->batchnorm){
+                fill_cpu(l->normalize_weights, l->normalize_weights_size, 1, 1);
             }
         }
         fprintf(stderr, "\nInit Weights\n");
