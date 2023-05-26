@@ -34,12 +34,15 @@ COMMON=	-Ilib \
 		-Ilumos/utils/cmd \
 		-Ilumos/utils/file \
 		-Ilumos/utils/str \
-		-Ilumos/lumos \
 		-Ilumos/core_cu \
 		-Ilumos/core_cu/graph_cu \
 		-Ilumos/core_cu/ops_cu \
 		-Ilumos/core_cu/graph_cu/layer_cu \
 		-Ilumos/core_cu/graph_cu/loss_layer_cu
+
+ifeq ($(TEST), 0)
+COMMON += -Ilumos/lumos
+endif
 
 EXEC=lumos.exe
 OBJDIR=./obj/

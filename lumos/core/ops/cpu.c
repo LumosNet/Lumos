@@ -67,7 +67,7 @@ void variance_cpu(float *data, float mean, int num, float *space)
     for (int i = 0; i < num; ++i){
         space[0] += powf((data[i] - mean), 2);
     }
-    space[0] *= 1./(num-1);
+    space[0] *= 1./num;
 }
 
 void matrix_add_cpu(float *data_a, float *data_b, int num, float *space)

@@ -71,17 +71,15 @@ void forward_normalization_layer(Layer l, int num)
 
 void backward_normalization_layer(Layer l, float rate, int num, float *n_delta)
 {
+    l.update(l, rate, num, n_delta);
     for (int i = 0; i < num; ++i){
         int offset_o = i * l.outputs;
         float *input = l.normalize_x + offset_o;
         float *delta_n = n_delta + offset_o;
         float *mean = l.mean + i*l.output_c;
         float *variance = l.variance + i*l.output_c;
-        gradient_normalize_mean(delta_n, variance, l.output_h, l.output_w, l.output_c, l.workspace);
-        gradient_normalize_variance(input, delta_n, mean, variance, l.output_h, l.output_w, l.output_c, l.workspace+l.output_c);
-        gradient_normalize_cpu(input, mean, variance, l.workspace, l.workspace+l.output_c, l.output_h, l.output_w, l.output_c, delta_n, delta_n);
+        gradient_normalize_cpu(input, mean, variance, l.normalize_weights, l.output_h, l.output_w, l.output_c, delta_n, delta_n);
     }
-    l.update(l, rate, num, n_delta);
 }
 
 void update_normalization_layer(Layer l, float rate, int num, float *n_delta)

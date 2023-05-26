@@ -247,7 +247,7 @@ __global__ void  variance_kernel(float *data, float *mean, int num, float *varia
         for(i = 0; i < threads; ++i){
             variance[filter] += local[i];
         }
-        variance[filter] /= (num - 1);
+        variance[filter] /= num;
     }
 }
 

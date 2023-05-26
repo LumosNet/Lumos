@@ -4,8 +4,8 @@
         "height": 1,
         "channel": 1,
         "label": 2,
-        "batch": 4,
-        "subdivision": 2,
+        "batch": 1,
+        "subdivision": 1,
         "epoch": 100,
         "learning_rate": 0.1
     },
@@ -21,12 +21,14 @@
             "type": "CONNECT",
             "output": 4,
             "bias": 1,
+            "normalization": 1,
             "active": "relu"
         },
         {
             "type": "CONNECT",
             "output": 2,
             "bias": 1,
+            "normalization": 1,
             "active": "relu"
         },
         {

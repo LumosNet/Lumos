@@ -69,6 +69,7 @@ void forward_connect_layer(Layer l, int num)
         int offset_o = i * l.outputs;
         float *input = l.input + offset_i;
         float *output = l.output + offset_o;
+        // for (int j = 0; j < l.kernel_weights_size; ++j)
         gemm(0, 0, l.outputs, l.inputs, l.inputs, 1,
              1, l.kernel_weights, input, output);
         if (l.batchnorm){
