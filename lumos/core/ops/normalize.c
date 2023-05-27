@@ -33,10 +33,6 @@ void normalize_cpu(float *data, float *mean, float *variance, int h, int w, int 
 void gradient_normalize_mean(float *beta, float *variance, int num, float *mean_delta)
 {
     for (int i = 0; i < num; ++i){
-
-
-
-
         mean_delta[i] = 1./sqrt(variance[i] + .00001f)*beta[i];
     }
 }

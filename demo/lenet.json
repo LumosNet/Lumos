@@ -7,7 +7,7 @@
         "batch": 16,
         "subdivision": 16,
         "epoch": 50,
-        "learning_rate": 0.1
+        "learning_rate": 1
     },
     "Initializer": {
         "type": "HE"
