@@ -53,18 +53,21 @@
             "type": "CONNECT",
             "output": 128,
             "bias": 1,
+            "normalization": 1,
             "active": "relu"
         },
         {
             "type": "CONNECT",
             "output": 64,
             "bias": 1,
+            "normalization": 1,
             "active": "relu"
         },
         {
             "type": "CONNECT",
             "output": 2,
             "bias": 1,
+            "normalization": 1,
             "active": "relu"
         },
         {

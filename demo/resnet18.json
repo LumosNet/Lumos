@@ -271,6 +271,7 @@
             "type": "CONNECT",
             "output": 10,
             "bias": 1,
+            "normalization": 1,
             "active": "relu"
         },
         {
