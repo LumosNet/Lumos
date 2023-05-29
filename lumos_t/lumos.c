@@ -26,7 +26,12 @@ void lumos(int argc, char **argv)
             return ;
         }
         if (0 == strcmp(argv[2], "all")){
-            
+            run_all_benchmarks("./benchmark/benchmarks.txt", 0);
+            run_all_benchmarks("./benchmark/benchmarks.txt", 1);
+        } else if (0 == strcmp(argv[2], "cpu")){
+            run_all_benchmarks("./benchmark/benchmarks.txt", 0);
+        } else if (0 == strcmp(argv[2], "gpu")){
+            run_all_benchmarks("./benchmark/benchmarks.txt", 1);
         }
     }
 }

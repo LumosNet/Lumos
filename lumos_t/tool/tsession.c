@@ -1,6 +1,6 @@
 #include "tsession.h"
 
-void run_benchmarks(char *benchmark)
+void run_benchmarks(char *benchmark, int coretype)
 {
     cJSON *cjson_benchmark = NULL;
     cJSON *cjson_public = NULL;
@@ -62,9 +62,17 @@ void run_benchmarks(char *benchmark)
         load_params(cjson_single_benchmark, params, space, param_num);
         cjson_benchmark_value = cJSON_GetObjectItem(cjson_single_benchmark, "benchmark");
         if (0 == strcmp(type, "ops")){
-            call_ops(interface, space, ret);
+            if (coretype == GPU){
+                call_cu_ops(interface, space, ret);
+            } else {
+                call_ops(interface, space, ret);
+            }
         } else if (0 == strcmp(type, "graph")){
-            call_graph(interface, space, ret);
+            if (coretype == GPU){
+                call_cu_graph(interface, space, ret);
+            } else {
+                call_graph(interface, space, ret);
+            }
         }
         compare_flag = compare_test(cjson_benchmark_value, ret, compares, compare_num);
         if (compare_flag == 0){
@@ -78,7 +86,7 @@ void run_benchmarks(char *benchmark)
     test_res(all_pass, " ");
 }
 
-void run_all_benchmarks(char *benchmarks)
+void run_all_benchmarks(char *benchmarks, int coretype)
 {
     FILE *fp = fopen(benchmarks, "r");
     fseek(fp, 0, SEEK_END);

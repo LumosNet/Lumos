@@ -20,12 +20,28 @@
 #include "maxpool_layer_call.h"
 #include "mse_layer_call.h"
 
+#include "bias_gpu_call.h"
+#include "cpu_gpu_call.h"
+#include "gemm_gpu_call.h"
+#include "im2col_gpu_call.h"
+#include "pooling_gpu_call.h"
+
+#include "avgpool_layer_gpu_call.h"
+#include "batchnorm_layer_gpu_call.h"
+#include "connect_layer_gpu_call.h"
+#include "convolutional_layer_gpu_call.h"
+#include "im2col_layer_gpu_call.h"
+#include "maxpool_layer_gpu_call.h"
+
 #ifdef  __cplusplus
 extern "C" {
 #endif
 
 void call_ops(char *interface, void **params, void **ret);
 void call_graph(char *interface, void **params, void **ret);
+
+void call_cu_ops(char *interface, void **params, void **ret);
+void call_cu_graph(char *interface, void **params, void **ret);
 
 #ifdef __cplusplus
 }

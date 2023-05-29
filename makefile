@@ -1,5 +1,5 @@
 LINUX=1
-TEST=0
+TEST=1
 
 ARCH=	-gencode arch=compute_50,code=[sm_50,compute_50] \
       	-gencode arch=compute_52,code=[sm_52,compute_52] \
