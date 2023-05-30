@@ -9,7 +9,6 @@ void call_forward_convolutional_layer_gpu(void **params, void **ret)
     int *bias = (int*)params[4];
     int *normalization = (int*)params[5];
     char *active = (char*)params[6];
-    char *weights_init = (char*)params[7];
     int *h = (int*)params[8];
     int *w = (int*)params[9];
     int *c = (int*)params[10];
@@ -24,7 +23,7 @@ void call_forward_convolutional_layer_gpu(void **params, void **ret)
     float *kernel_weights_g = NULL;
     float *bias_weights_g = NULL;
     float *workspace_g = NULL;
-    Layer *l = make_convolutional_layer(filters[0], ksize[0], stride[0], pad[0], bias[0], normalization[0], active, weights_init);
+    Layer *l = make_convolutional_layer(filters[0], ksize[0], stride[0], pad[0], bias[0], normalization[0], active);
     init_convolutional_layer(l, w[0], h[0], c[0]);
     cudaMalloc((void**)&input_g, l->inputs*sizeof(float));
     cudaMalloc((void**)&output_g, l->outputs*sizeof(float));
@@ -60,7 +59,6 @@ void call_backward_convolutional_layer_gpu(void **params, void **ret)
     int *bias = (int*)params[4];
     int *normalization = (int*)params[5];
     char *active = (char*)params[6];
-    char *weights_init = (char*)params[7];
     int *h = (int*)params[8];
     int *w = (int*)params[9];
     int *c = (int*)params[10];
@@ -84,7 +82,7 @@ void call_backward_convolutional_layer_gpu(void **params, void **ret)
     float *bias_weights_g = NULL;
     float *update_bias_weights_g = NULL;
     float *workspace_g = NULL;
-    Layer *l = make_convolutional_layer(filters[0], ksize[0], stride[0], pad[0], bias[0], normalization[0], active, weights_init);
+    Layer *l = make_convolutional_layer(filters[0], ksize[0], stride[0], pad[0], bias[0], normalization[0], active);
     init_convolutional_layer(l, w[0], h[0], c[0]);
     cudaMalloc((void**)&l_delta_g, l->inputs*sizeof(float));
     cudaMalloc((void**)&n_delta_g, l->outputs*sizeof(float));

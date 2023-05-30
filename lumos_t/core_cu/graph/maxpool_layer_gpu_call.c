@@ -13,7 +13,7 @@ void call_forward_maxpool_layer_gpu(void **params, void **ret)
     float *input_g = NULL;
     float *output_g = NULL;
     int *index_g = NULL;
-    Layer *l = make_maxpool_layer(ksize[0]);
+    Layer *l = make_maxpool_layer(ksize[0], ksize[0], 0);
     init_maxpool_layer(l, w[0], h[0], c[0]);
     cudaMalloc((void**)&input_g, l->inputs*sizeof(float));
     cudaMalloc((void**)&output_g, l->outputs*sizeof(float));
@@ -48,7 +48,7 @@ void call_backward_maxpool_layer_gpu(void **params, void **ret)
     float *l_delta_g = NULL;
     float *n_delta_g = NULL;
     int *index_g = NULL;
-    Layer *l = make_maxpool_layer(ksize[0]);
+    Layer *l = make_maxpool_layer(ksize[0], ksize[0], 0);
     init_maxpool_layer(l, w[0], h[0], c[0]);
     cudaMalloc((void**)&l_delta_g, l->inputs*sizeof(float));
     cudaMalloc((void**)&n_delta_g, l->outputs*sizeof(float));

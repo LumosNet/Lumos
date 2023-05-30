@@ -16,7 +16,6 @@ VPATH=	./lib/: \
 		./lumos/utils/cmd/: \
 		./lumos/utils/file/: \
 		./lumos/utils/str/: \
-		./lumos/lumos/: \
 		./: \
 		./lumos/core_cu/: \
 		./lumos/core_cu/graph_cu/: \
@@ -42,6 +41,8 @@ COMMON=	-Ilib \
 
 ifeq ($(TEST), 0)
 COMMON += -Ilumos/lumos
+
+VPATH += ./lumos/lumos
 endif
 
 EXEC=lumos.exe
@@ -62,12 +63,17 @@ ifeq ($(TEST), 1)
 COMMON+= -Ilumos_t \
 		 -Ilumos_t/core/ops \
 		 -Ilumos_t/core/graph \
-		 -Ilumos_t/tool
+		 -Ilumos_t/tool \
+		 -Ilumos_t/core_cu/ops \
+		 -Ilumos_t/core_cu/graph
+
 VPATH+=	./lumos_t \
 		./lumos_t/tool \
 		./lumos_t/core \
 		./lumos_t/core/graph \
-		./lumos_t/core/ops
+		./lumos_t/core/ops \
+		./lumos_t/core_cu/ops \
+		./lumos_t/core_cu/graph
 endif
 
 OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o maxpool_layer.o softmax_layer.o dropout_layer.o shortcut_layer.o \
@@ -86,10 +92,10 @@ OBJ+= 	gpu.o active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_g
 EXECOBJA=lumos.o
 
 ifeq ($(TEST), 1)
-OBJ+= bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call.o \
-	  avgpool_layer_call.o batchnorm_layer_call.o connect_layer_call.o convolutional_layer_call.o im2col_layer_call.o maxpool_layer_call.o \
-	  mse_layer_call.o \
-	  utest.o benchmark_json.o call.o compare.o tsession.o
+OBJ+=   bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call.o \
+	    avgpool_layer_call.o batchnorm_layer_call.o connect_layer_call.o convolutional_layer_call.o im2col_layer_call.o maxpool_layer_call.o \
+	    mse_layer_call.o \
+	    utest.o benchmark_json.o call.o compare.o tsession.o
 
 OBJ+= bias_gpu_call.o cpu_gpu_call.o gemm_gpu_call.o im2col_gpu_call.o pooling_gpu_call.o \
 	  avgpool_layer_gpu_call.o connect_layer_gpu_call.o convolutional_layer_gpu_call.o im2col_layer_gpu_call.o maxpool_layer_gpu_call.o

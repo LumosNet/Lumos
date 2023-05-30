@@ -9,7 +9,6 @@ void call_forward_convolutional_layer(void **params, void **ret)
     int *bias = (int*)params[4];
     int *normalization = (int*)params[5];
     char *active = (char*)params[6];
-    char *weights_init = (char*)params[7];
     int *h = (int*)params[8];
     int *w = (int*)params[9];
     int *c = (int*)params[10];
@@ -19,7 +18,7 @@ void call_forward_convolutional_layer(void **params, void **ret)
     float *kernel_weights = (float*)params[14];
     float *bias_weights = (float*)params[15];
     float *workspace = (float*)params[16];
-    Layer *l = make_convolutional_layer(filters[0], ksize[0], stride[0], pad[0], bias[0], normalization[0], active, weights_init);
+    Layer *l = make_convolutional_layer(filters[0], ksize[0], stride[0], pad[0], bias[0], normalization[0], active);
     init_convolutional_layer(l, w[0], h[0], c[0]);
     l->input = input;
     l->output = output;
@@ -39,7 +38,6 @@ void call_backward_convolutional_layer(void **params, void **ret)
     int *bias = (int*)params[4];
     int *normalization = (int*)params[5];
     char *active = (char*)params[6];
-    char *weights_init = (char*)params[7];
     int *h = (int*)params[8];
     int *w = (int*)params[9];
     int *c = (int*)params[10];
@@ -54,7 +52,7 @@ void call_backward_convolutional_layer(void **params, void **ret)
     float *bias_weights = (float*)params[19];
     float *update_bias_weights = (float*)params[20];
     float *workspace = (float*)params[21];
-    Layer *l = make_convolutional_layer(filters[0], ksize[0], stride[0], pad[0], bias[0], normalization[0], active, weights_init);
+    Layer *l = make_convolutional_layer(filters[0], ksize[0], stride[0], pad[0], bias[0], normalization[0], active);
     init_convolutional_layer(l, w[0], h[0], c[0]);
     l->input = input;
     l->output = output;

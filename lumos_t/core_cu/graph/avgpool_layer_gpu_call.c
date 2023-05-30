@@ -11,7 +11,7 @@ void call_forward_avgpool_layer_gpu(void **params, void **ret)
     float *output = (float*)params[6];
     float *input_g = NULL;
     float *output_g = NULL;
-    Layer *l = make_avgpool_layer(ksize[0]);
+    Layer *l = make_avgpool_layer(ksize[0], ksize[0], 0);
     init_avgpool_layer(l, w[0], h[0], c[0]);
     cudaMalloc((void**)&input_g, num[0]*l->inputs*sizeof(float));
     cudaMalloc((void**)&output_g, num[0]*l->outputs*sizeof(float));
@@ -38,7 +38,7 @@ void call_backward_avgpool_layer_gpu(void **params, void **ret)
     float *l_delta = (float*)params[7];
     float *n_delta_g = NULL;
     float *l_delta_g = NULL;
-    Layer *l = make_avgpool_layer(ksize[0]);
+    Layer *l = make_avgpool_layer(ksize[0], ksize[0], 0);
     init_avgpool_layer(l, w[0], h[0], c[0]);
     cudaMalloc((void**)&n_delta_g, num[0]*l->outputs*sizeof(float));
     cudaMalloc((void**)&l_delta_g, num[0]*l->inputs*sizeof(float));
