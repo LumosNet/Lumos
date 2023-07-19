@@ -47,12 +47,23 @@ void gradient_normalize_variance(float *beta, float *input, float *n_delta, floa
         variance_delta[i] *= -.5 * pow(variance[i] + .00001f, (float)(-3./2.)) * beta[i];
     }
 }
+// 少一半
+void gradient_normalize_cpu(float *input, float *mean, float *mean_delta, float *variance_delta, int h, int w, int c, float *n_delta, float *l_delta, float *space)
+{
+    for (int i = 0; i < c; ++i){
+        space[i] = 0;
+        for (int j = 0; j < h*w; ++j){
+            l_delta[i*h*w + j] = n_delta[i*h*w + j] * mean_delta[i] + 2.0/(h*w)*(input[i*h*w + j]-mean[i])*variance_delta[i];
+            space[i] += l_delta[i*h*w + j];
+        }
+    }
+}
 
-void gradient_normalize_cpu(float *input, float *mean, float *mean_delta, float *variance_delta, int h, int w, int c, float *n_delta, float *l_delta)
+void gradient_normalize_layer(int h, int w, int c, float *l_delta, float *space)
 {
     for (int i = 0; i < c; ++i){
         for (int j = 0; j < h*w; ++j){
-            l_delta[i*h*w + j] = n_delta[i*h*w + j] * mean_delta[i] + 2.0/(h*w)*(input[i*h*w + j]-mean[i])*variance_delta[i];
+            l_delta[i*h*w + j] -= 1/(h*w)*space[i];
         }
     }
 }

@@ -80,7 +80,8 @@ void backward_normalization_layer(Layer l, float rate, int num, float *n_delta)
         float *variance = l.variance + i*l.output_c;
         gradient_normalize_mean(l.normalize_weights, variance, l.output_c, l.workspace);
         gradient_normalize_variance(l.normalize_weights, input, n_delta, mean, variance, l.output_h, l.output_w, l.output_c, l.workspace+l.output_c);
-        gradient_normalize_cpu(input, mean, l.workspace, l.workspace+l.output_c, l.output_h, l.output_w, l.output_c, delta_n, delta_n);
+        gradient_normalize_cpu(input, mean, l.workspace, l.workspace+l.output_c, l.output_h, l.output_w, l.output_c, delta_n, delta_n, l.workspace+2*l.output_c);
+        gradient_normalize_layer(l.output_h, l.output_w, l.output_c, delta_n, l.workspace+2*l.output_c);
     }
 }
 

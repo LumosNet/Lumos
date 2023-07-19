@@ -65,16 +65,32 @@ void gradient_normalize_variance_gpu(float *beta, float *input, float *n_delta, 
     gradient_normalize_variance_kernel<<<(c+BLOCK-1)/BLOCK, BLOCK>>>(beta, input, n_delta, mean, variance, h, w, c, variance_delta);
 }
 
-__global__ void gradient_normalize_kernel(float *input, float *mean, float *mean_delta, float *variance_delta, int h, int w, int c, float *n_delta, float *l_delta)
+__global__ void gradient_normalize_kernel(float *input, float *mean, float *mean_delta, float *variance_delta, int h, int w, int c, float *n_delta, float *l_delta, float *space)
+{
+    int index = blockIdx.x * blockDim.x + threadIdx.x;
+    if (index >= c) return;
+    space[index] = 0;
+    for (int j = 0; j < h*w; ++j){
+        l_delta[index*h*w + j] = n_delta[index*h*w + j] * mean_delta[index] + 2.0/(h*w)*(input[index*h*w + j]-mean[index])*variance_delta[index];
+        space[index] += l_delta[index*h*w + j];
+    }
+}
+
+void gradient_normalize_gpu(float *input, float *mean, float *mean_delta, float *variance_delta, int h, int w, int c, float *n_delta, float *l_delta, float *space)
+{
+    gradient_normalize_kernel<<<(c+BLOCK-1)/BLOCK, BLOCK>>>(input, mean, mean_delta, variance_delta, h, w, c, n_delta, l_delta, space);
+}
+
+__global__ void  gradient_normalize_layer_kernel(int h, int w, int c, float *l_delta, float *space)
 {
     int index = blockIdx.x * blockDim.x + threadIdx.x;
     if (index >= c) return;
     for (int j = 0; j < h*w; ++j){
-        l_delta[index*h*w + j] = n_delta[index*h*w + j] * mean_delta[index] + 2.0/(h*w)*(input[index*h*w + j]-mean[index])*variance_delta[index];
+        l_delta[index*h*w + j] -= 1/(h*w)*space[index];
     }
 }
 
-void gradient_normalize_gpu(float *input, float *mean, float *mean_delta, float *variance_delta, int h, int w, int c, float *n_delta, float *l_delta)
+void gradient_normalize_layer_gpu(int h, int w, int c, float *l_delta, float *space)
 {
-    gradient_normalize_kernel<<<(c+BLOCK-1)/BLOCK, BLOCK>>>(input, mean, mean_delta, variance_delta, h, w, c, n_delta, l_delta);
+    gradient_normalize_layer_kernel<<<(c+BLOCK-1)/BLOCK, BLOCK>>>(h, w, c, l_delta, space);
 }
