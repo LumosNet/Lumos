@@ -1,7 +1,6 @@
 {
     "Public": {
         "interface": "mean_cpu",
-        "type": "ops",
         "benchmarks": [
             "BenchMark 1"
         ],

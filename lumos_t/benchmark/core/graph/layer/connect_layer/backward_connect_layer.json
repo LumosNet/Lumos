@@ -1,7 +1,6 @@
 {
     "Public": {
         "interface": "backward_connect_layer",
-        "type": "graph",
         "benchmarks": [
             "BenchMark 1", "BenchMark 2", "BenchMark 3", "BenchMark 4",
             "BenchMark 5", "BenchMark 6", "BenchMark 7", "BenchMark 8",

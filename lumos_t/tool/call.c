@@ -1,6 +1,6 @@
 #include "call.h"
 
-int call_ops(char *interface, void **params, void **ret)
+int call(char *interface, void **params, void **ret)
 {
     if (0 == strcmp(interface, "add_bias")){
         call_add_bias(params, ret);
@@ -54,6 +54,28 @@ int call_ops(char *interface, void **params, void **ret)
         call_avgpool_gradient(params, ret);
     } else if (0 == strcmp(interface, "maxpool_gradient")){
         call_maxpool_gradient(params, ret);
+    } else if (0 == strcmp(interface, "forward_avgpool_layer")){
+        call_forward_avgpool_layer(params, ret);
+    } else if (0 == strcmp(interface, "backward_avgpool_layer")){
+        call_backward_avgpool_layer(params, ret);
+    } else if (0 == strcmp(interface, "forward_connect_layer")){
+        call_forward_connect_layer(params, ret);
+    } else if (0 == strcmp(interface, "backward_connect_layer")){
+        call_backward_connect_layer(params, ret);
+    } else if (0 == strcmp(interface, "forward_convolutional_layer")){
+        call_forward_convolutional_layer(params, ret);
+    } else if (0 == strcmp(interface, "backward_convolutional_layer")){
+        call_backward_convolutional_layer(params, ret);
+    } else if (0 == strcmp(interface, "forward_im2col_layer")){
+        call_forward_im2col_layer(params, ret);
+    } else if (0 == strcmp(interface, "backward_im2col_layer")){
+        call_backward_im2col_layer(params, ret);
+    } else if (0 == strcmp(interface, "forward_maxpool_layer")){
+        call_forward_maxpool_layer(params, ret);
+    } else if (0 == strcmp(interface, "backward_maxpool_layer")){
+        call_backward_maxpool_layer(params, ret);
+    } else if (0 == strcmp(interface, "forward_mse_layer")){
+        call_forward_mse_layer(params, ret);
     } else {
         fprintf(stderr, "interface: %s is not in the testlist", interface);
         return 0;
@@ -61,7 +83,7 @@ int call_ops(char *interface, void **params, void **ret)
     return 1;
 }
 
-int call_cu_ops(char *interface, void **params, void **ret)
+int call_cu(char *interface, void **params, void **ret)
 {
     if (0 == strcmp(interface, "add_bias")){
         call_add_bias_gpu(params, ret);
@@ -113,47 +135,7 @@ int call_cu_ops(char *interface, void **params, void **ret)
         call_avgpool_gradient_gpu(params, ret);
     } else if (0 == strcmp(interface, "maxpool_gradient")){
         call_maxpool_gradient_gpu(params, ret);
-    } else {
-        fprintf(stderr, "interface: %s is not in the testlist", interface);
-        return 0;
-    }
-    return 1;
-}
-
-int call_graph(char *interface, void **params, void **ret)
-{
-    if (0 == strcmp(interface, "forward_avgpool_layer")){
-        call_forward_avgpool_layer(params, ret);
-    } else if (0 == strcmp(interface, "backward_avgpool_layer")){
-        call_backward_avgpool_layer(params, ret);
-    } else if (0 == strcmp(interface, "forward_connect_layer")){
-        call_forward_connect_layer(params, ret);
-    } else if (0 == strcmp(interface, "backward_connect_layer")){
-        call_backward_connect_layer(params, ret);
-    } else if (0 == strcmp(interface, "forward_convolutional_layer")){
-        call_forward_convolutional_layer(params, ret);
-    } else if (0 == strcmp(interface, "backward_convolutional_layer")){
-        call_backward_convolutional_layer(params, ret);
-    } else if (0 == strcmp(interface, "forward_im2col_layer")){
-        call_forward_im2col_layer(params, ret);
-    } else if (0 == strcmp(interface, "backward_im2col_layer")){
-        call_backward_im2col_layer(params, ret);
-    } else if (0 == strcmp(interface, "forward_maxpool_layer")){
-        call_forward_maxpool_layer(params, ret);
-    } else if (0 == strcmp(interface, "backward_maxpool_layer")){
-        call_backward_maxpool_layer(params, ret);
-    } else if (0 == strcmp(interface, "forward_mse_layer")){
-        call_forward_mse_layer(params, ret);
-    } else {
-        fprintf(stderr, "interface: %s is not in the testlist", interface);
-        return 0;
-    }
-    return 1;
-}
-
-int call_cu_graph(char *interface, void **params, void **ret)
-{
-    if (0 == strcmp(interface, "forward_avgpool_layer")){
+    } else if (0 == strcmp(interface, "forward_avgpool_layer")){
         call_forward_avgpool_layer_gpu(params, ret);
     } else if (0 == strcmp(interface, "backward_avgpool_layer")){
         call_backward_avgpool_layer_gpu(params, ret);

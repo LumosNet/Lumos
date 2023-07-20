@@ -5,7 +5,6 @@ void run_benchmarks(char *benchmark, int coretype)
     cJSON *cjson_benchmark = NULL;
     cJSON *cjson_public = NULL;
     cJSON *cjson_interface = NULL;
-    cJSON *cjson_type = NULL;
     cJSON *cjson_benchmarks = NULL;
     cJSON *cjson_params = NULL;
     cJSON *cjson_compares = NULL;
@@ -29,12 +28,10 @@ void run_benchmarks(char *benchmark, int coretype)
     cjson_benchmark = cJSON_Parse(json_benchmark);
     cjson_public = cJSON_GetObjectItem(cjson_benchmark, "Public");
     cjson_interface = cJSON_GetObjectItem(cjson_public, "interface");
-    cjson_type = cJSON_GetObjectItem(cjson_public, "type");
     cjson_benchmarks = cJSON_GetObjectItem(cjson_public, "benchmarks");
     cjson_params = cJSON_GetObjectItem(cjson_public, "params");
     cjson_compares = cJSON_GetObjectItem(cjson_public, "compares");
     interface = cjson_interface->valuestring;
-    type = cjson_type->valuestring;
     benchmark_num = cJSON_GetArraySize(cjson_benchmarks);
     param_num = cJSON_GetArraySize(cjson_params);
     compare_num = cJSON_GetArraySize(cjson_compares);
@@ -63,18 +60,10 @@ void run_benchmarks(char *benchmark, int coretype)
         cjson_benchmark_value = cJSON_GetObjectItem(cjson_single_benchmark, "benchmark");
         // 运行测试
         int run_flag = 1;
-        if (0 == strcmp(type, "ops")){
-            if (coretype == GPU){
-                run_flag = call_cu_ops(interface, space, ret);
-            } else {
-                run_flag = call_ops(interface, space, ret);
-            }
-        } else if (0 == strcmp(type, "graph")){
-            if (coretype == GPU){
-                run_flag = call_cu_graph(interface, space, ret);
-            } else {
-                run_flag = call_graph(interface, space, ret);
-            }
+        if (coretype == GPU){
+            run_flag = call_cu(interface, space, ret);
+        } else {
+            run_flag = call(interface, space, ret);
         }
         if (run_flag){
             compare_flag = compare_test(cjson_benchmark_value, ret, compares, compare_num);

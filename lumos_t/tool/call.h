@@ -39,11 +39,8 @@
 extern "C" {
 #endif
 
-int call_ops(char *interface, void **params, void **ret);
-int call_graph(char *interface, void **params, void **ret);
-
-int call_cu_ops(char *interface, void **params, void **ret);
-int call_cu_graph(char *interface, void **params, void **ret);
+int call(char *interface, void **params, void **ret);
+int call_cu(char *interface, void **params, void **ret);
 
 #ifdef __cplusplus
 }

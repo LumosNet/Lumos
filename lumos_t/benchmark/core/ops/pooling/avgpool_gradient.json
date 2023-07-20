@@ -1,7 +1,6 @@
 {
     "Public": {
         "interface": "avgpool_gradient",
-        "type": "ops",
         "benchmarks": [
             "BenchMark 1", "BenchMark 2"
         ],

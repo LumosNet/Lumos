@@ -1,7 +1,6 @@
 {
     "Public": {
         "interface": "forward_convolutional_layer",
-        "type": "graph",
         "benchmarks": [
             "BenchMark 1", "BenchMark 2", "BenchMark 3"
         ],

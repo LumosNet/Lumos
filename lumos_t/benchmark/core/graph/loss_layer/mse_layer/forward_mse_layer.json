@@ -1,7 +1,6 @@
 {
     "Public": {
         "interface": "forward_mse_layer",
-        "type": "graph",
         "benchmarks": [
             "BenchMark 1"
         ],
