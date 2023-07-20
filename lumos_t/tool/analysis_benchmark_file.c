@@ -1,7 +1,8 @@
-#include "benchmark_json.h"
+#include "analysis_benchmark_file.h"
 
-char *load_from_json_file(char *path)
+cJSON *get_benchmark(char *path)
 {
+    cJSON *benchmark = NULL;
     FILE *fp = fopen(path, "r");
     fseek(fp, 0, SEEK_END);
     int file_size = ftell(fp);
@@ -10,7 +11,8 @@ char *load_from_json_file(char *path)
     fseek(fp, 0, SEEK_SET);
     fread(tmp, sizeof(char), file_size, fp);
     fclose(fp);
-    return tmp;
+    benchmark = cJSON_Parse(tmp);
+    return benchmark;
 }
 
 void load_params(cJSON *cjson_benchmark, char **param_names, void **space, int num)
@@ -20,6 +22,7 @@ void load_params(cJSON *cjson_benchmark, char **param_names, void **space, int n
     }
 }
 
+// 返回参数个数
 int load_param(cJSON *cjson_benchmark, char *param_name, void **space, int index)
 {
     int size = 0;
@@ -57,6 +60,7 @@ void load_params_gpu(cJSON *cjson_benchmark, char **param_names, void **space, i
 
 int load_param_gpu(cJSON *cjson_benchmark, char *param_name, void **space, int index)
 {
+    int size = 0;
     void *value = NULL;
     void *value_gpu = NULL;
     cJSON *cjson_param = NULL;
@@ -65,18 +69,24 @@ int load_param_gpu(cJSON *cjson_benchmark, char *param_name, void **space, int i
     cjson_param = cJSON_GetObjectItem(cjson_benchmark, param_name);
     cjson_type = cJSON_GetObjectItem(cjson_param, "type");
     cjson_value = cJSON_GetObjectItem(cjson_param, "value");
-    int size = cJSON_GetArraySize(cjson_value);
     char *type = cjson_type->valuestring;
-    if (0 == strcmp(type, "float")){
-        value = (void*)malloc(size*sizeof(float));
-        cudaMalloc((void**)&value_gpu, size*sizeof(float));
-        load_float_array(cjson_value, value, size);
-        cudaMemcpy(value, value_gpu, size*sizeof(float), cudaMemcpyHostToDevice);
-    } else if (0 == strcmp(type, "int")){
-        value = (void*)malloc(size*sizeof(int));
-        cudaMalloc((void**)&value_gpu, size*sizeof(int));
-        load_int_array(cjson_value, value, size);
-        cudaMemcpy(value, value_gpu, size*sizeof(int), cudaMemcpyHostToDevice);
+    if (0 == strcmp(type, "string")){
+        value = cJSON_GetStringValue(cjson_value);
+        size = 1;
+    }
+    else {
+        size = cJSON_GetArraySize(cjson_value);
+        if (0 == strcmp(type, "float")){
+            value = (void*)malloc(size*sizeof(float));
+            cudaMalloc((void**)&value_gpu, size*sizeof(float));
+            load_float_array(cjson_value, value, size);
+            cudaMemcpy(value, value_gpu, size*sizeof(float), cudaMemcpyHostToDevice);
+        } else if (0 == strcmp(type, "int")){
+            value = (void*)malloc(size*sizeof(int));
+            cudaMalloc((void**)&value_gpu, size*sizeof(int));
+            load_int_array(cjson_value, value, size);
+            cudaMemcpy(value, value_gpu, size*sizeof(int), cudaMemcpyHostToDevice);
+        }
     }
     space[index] = value_gpu;
     free(value);

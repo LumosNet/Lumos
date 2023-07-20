@@ -1,5 +1,5 @@
-#ifndef BENCHMARK_JSON_H
-#define BENCHMARK_JSON_H
+#ifndef ANALYSIS_BENCHMARK_FILE
+#define ANALYSIS_BENCHMARK_FILE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,10 +17,17 @@
 extern "C" {
 #endif
 
+cJSON *get_benchmark(char *path);
+cJSON *get_public(cJSON *benchmark);
+char *load_interface(cJSON *public);
+int load_cases_name(cJSON *public, char **benchmarks);
+int load_params_name(cJSON *public, char **params);
+int load_compares_name(cJSON *public, char **compares);
+
+
 void load_params_gpu(cJSON *cjson_benchmark, char **param_names, void **space, int num);
 int load_param_gpu(cJSON *cjson_benchmark, char *param_name, void **space, int index);
 
-char *load_from_json_file(char *path);
 void load_params(cJSON *cjson_benchmark, char **param_names, void **space, int num);
 int load_param(cJSON *cjson_benchmark, char *param_name, void **space, int index);
 
