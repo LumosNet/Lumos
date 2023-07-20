@@ -1,8 +1,12 @@
 #include "utest.h"
 
-void test_run(char *msg)
+void test_run(char *msg, int coretype)
 {
-    fprintf(stderr, "[ RUN       ] %s\n", msg);
+    char *type = "CPU";
+    if (coretype == 1){
+        type = "GPU";
+    }
+    fprintf(stderr, "[ RUN    %s] %s\n", type, msg);
 }
 
 void test_res(int flag, char *msg)

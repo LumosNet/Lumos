@@ -1,7 +1,6 @@
 {
     "Public": {
         "interface": "forward_connect_layer",
-        "core": "cpu",
         "type": "graph",
         "benchmarks": [
             "BenchMark 1", "BenchMark 2", "BenchMark 3", "BenchMark 4",

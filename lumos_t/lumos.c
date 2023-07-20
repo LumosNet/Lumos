@@ -34,6 +34,17 @@ void lumos(int argc, char **argv)
             run_all_benchmarks("./lumos_t/benchmark/benchmarks.txt", 1);
         }
     }
+    else if (0 == strcmp(argv[1], "--help") || 0 == strcmp(argv[1], "-h"))
+    {
+        fprintf(stderr, "Usage commands:\n");
+        fprintf(stderr, "    --version or -v : To get version\n");
+        fprintf(stderr, "    --path or -p : View The installation path\n");
+        fprintf(stderr, "    --runall or -ra : To run all the tests\n");
+        fprintf(stderr, "      runall all : To run all the tests\n");
+        fprintf(stderr, "      runall cpu : To run all the cpu tests\n");
+        fprintf(stderr, "      runall gpu : To run all the gpu tests\n");
+        fprintf(stderr, "Thank you for using Lumos deeplearning framework.\n");
+    }
 }
 
 int main(int argc, char **argv)

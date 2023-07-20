@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-void test_run(char *msg);
+void test_run(char *msg, int coretype);
 void test_res(int flag, char *msg);
 void test_msg(char *msg);
 void test_msg_pass(char *msg);

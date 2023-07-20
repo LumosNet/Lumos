@@ -45,6 +45,78 @@ void call_add_gpu(void **params, void **ret)
     ret[0] = (void*)data;
 }
 
+void call_min_gpu(void **params, void **ret)
+{
+    float *data = (float*)params[0];
+    int *num = (int*)params[1];
+    float *space = (float*)params[2];
+    float *data_g = NULL;
+    float *space_g = NULL;
+    cudaMalloc((void**)&data_g, num[0]*sizeof(float));
+    cudaMalloc((void**)&space_g, num[0]*sizeof(float));
+    cudaMemcpy(data_g, data, num[0]*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(space_g, space, num[0]*sizeof(float), cudaMemcpyHostToDevice);
+    min_gpu(data_g, num[0], space_g);
+    cudaMemcpy(space, space_g, num[0]*sizeof(float), cudaMemcpyDeviceToHost);
+    cudaFree(data_g);
+    cudaFree(space_g);
+    ret[0] = (void*)space;
+}
+
+void call_max_gpu(void **params, void **ret)
+{
+    float *data = (float*)params[0];
+    int *num = (int*)params[1];
+    float *space = (float*)params[2];
+    float *data_g = NULL;
+    float *space_g = NULL;
+    cudaMalloc((void**)&data_g, num[0]*sizeof(float));
+    cudaMalloc((void**)&space_g, num[0]*sizeof(float));
+    cudaMemcpy(data_g, data, num[0]*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(space_g, space, num[0]*sizeof(float), cudaMemcpyHostToDevice);
+    max_gpu(data_g, num[0], space_g);
+    cudaMemcpy(space, space_g, num[0]*sizeof(float), cudaMemcpyDeviceToHost);
+    cudaFree(data_g);
+    cudaFree(space_g);
+    ret[0] = (void*)space;
+}
+
+void call_sum_gpu(void **params, void **ret)
+{
+    float *data = (float*)params[0];
+    int *num = (int*)params[1];
+    float *space = (float*)params[2];
+    float *data_g = NULL;
+    float *space_g = NULL;
+    cudaMalloc((void**)&data_g, num[0]*sizeof(float));
+    cudaMalloc((void**)&space_g, num[0]*sizeof(float));
+    cudaMemcpy(data_g, data, num[0]*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(space_g, space, num[0]*sizeof(float), cudaMemcpyHostToDevice);
+    sum_gpu(data_g, num[0], space_g);
+    cudaMemcpy(space, space_g, num[0]*sizeof(float), cudaMemcpyDeviceToHost);
+    cudaFree(data_g);
+    cudaFree(space_g);
+    ret[0] = (void*)space;
+}
+
+void call_mean_gpu(void **params, void **ret)
+{
+    float *data = (float*)params[0];
+    int *num = (int*)params[1];
+    float *space = (float*)params[2];
+    float *data_g = NULL;
+    float *space_g = NULL;
+    cudaMalloc((void**)&data_g, num[0]*sizeof(float));
+    cudaMalloc((void**)&space_g, num[0]*sizeof(float));
+    cudaMemcpy(data_g, data, num[0]*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(space_g, space, num[0]*sizeof(float), cudaMemcpyHostToDevice);
+    mean_gpu(data_g, num[0], space_g);
+    cudaMemcpy(space, space_g, num[0]*sizeof(float), cudaMemcpyDeviceToHost);
+    cudaFree(data_g);
+    cudaFree(space_g);
+    ret[0] = (void*)space;
+}
+
 void call_matrix_add_gpu(void **params, void **ret)
 {
     float *data_a = (float*)params[0];

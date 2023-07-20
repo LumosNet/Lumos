@@ -1,7 +1,6 @@
 {
     "Public": {
         "interface": "matrix_add_cpu",
-        "core": "cpu",
         "type": "ops",
         "benchmarks": [
             "BenchMark 1", "BenchMark 2"

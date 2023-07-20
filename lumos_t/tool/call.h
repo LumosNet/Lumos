@@ -33,15 +33,17 @@
 #include "im2col_layer_gpu_call.h"
 #include "maxpool_layer_gpu_call.h"
 
+#include "utest.h"
+
 #ifdef  __cplusplus
 extern "C" {
 #endif
 
-void call_ops(char *interface, void **params, void **ret);
-void call_graph(char *interface, void **params, void **ret);
+int call_ops(char *interface, void **params, void **ret);
+int call_graph(char *interface, void **params, void **ret);
 
-void call_cu_ops(char *interface, void **params, void **ret);
-void call_cu_graph(char *interface, void **params, void **ret);
+int call_cu_ops(char *interface, void **params, void **ret);
+int call_cu_graph(char *interface, void **params, void **ret);
 
 #ifdef __cplusplus
 }

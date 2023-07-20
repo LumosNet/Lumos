@@ -47,7 +47,7 @@ void gradient_normalize_variance(float *beta, float *input, float *n_delta, floa
         variance_delta[i] *= -.5 * pow(variance[i] + .00001f, (float)(-3./2.)) * beta[i];
     }
 }
-// 少一半
+
 void gradient_normalize_cpu(float *input, float *mean, float *mean_delta, float *variance_delta, int h, int w, int c, float *n_delta, float *l_delta, float *space)
 {
     for (int i = 0; i < c; ++i){

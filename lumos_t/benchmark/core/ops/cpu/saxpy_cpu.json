@@ -1,7 +1,6 @@
 {
     "Public": {
         "interface": "saxpy_cpu",
-        "core": "cpu",
         "type": "ops",
         "benchmarks": [
             "BenchMark 1", "BenchMark 2"

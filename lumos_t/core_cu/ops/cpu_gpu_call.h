@@ -20,6 +20,11 @@ void call_fill_gpu(void **params, void **ret);
 void call_multy_gpu(void **params, void **ret);
 void call_add_gpu(void **params, void **ret);
 
+void call_min_gpu(void **params, void **ret);
+void call_max_gpu(void **params, void **ret);
+void call_sum_gpu(void **params, void **ret);
+void call_mean_gpu(void **params, void **ret);
+
 void call_matrix_add_gpu(void **params, void **ret);
 void call_matrix_subtract_gpu(void **params, void **ret);
 void call_matrix_multiply_gpu(void **params, void **ret);
@@ -27,6 +32,8 @@ void call_matrix_divide_gpu(void **params, void **ret);
 
 void call_saxpy_gpu(void **params, void **ret);
 void call_sum_channel_gpu(void **params, void **ret);
+
+// void call_exp_list_gpu(void **params, void **ret);
 
 #ifdef __cplusplus
 }

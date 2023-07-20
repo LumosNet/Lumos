@@ -1,7 +1,6 @@
 {
     "Public": {
         "interface": "sum_cpu",
-        "core": "cpu",
         "type": "ops",
         "benchmarks": [
             "BenchMark 1", "BenchMark 2", "BenchMark 3"

@@ -1,7 +1,6 @@
 {
     "Public": {
         "interface": "forward_convolutional_layer",
-        "core": "cpu",
         "type": "graph",
         "benchmarks": [
             "BenchMark 1", "BenchMark 2", "BenchMark 3"
@@ -434,7 +433,7 @@
                 0, 0, 0, 0,
                 0, 0, 0, 0
             ]
-        },-----------------------------------
+        },
         "kernel_weights": {
             "type": "float",
             "value": [

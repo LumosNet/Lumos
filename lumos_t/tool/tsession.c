@@ -55,32 +55,41 @@ void run_benchmarks(char *benchmark, int coretype)
         cjson_compare_item = cJSON_GetArrayItem(cjson_compares, i);
         compares[i] = cjson_compare_item->valuestring;
     }
-    test_run(interface);
+    test_run(interface, coretype);
     for (int i = 0; i < benchmark_num; ++i){
         int compare_flag = 1;
         cjson_single_benchmark = cJSON_GetObjectItem(cjson_benchmark, benchmarks[i]);
         load_params(cjson_single_benchmark, params, space, param_num);
         cjson_benchmark_value = cJSON_GetObjectItem(cjson_single_benchmark, "benchmark");
+        // 运行测试
+        int run_flag = 1;
         if (0 == strcmp(type, "ops")){
             if (coretype == GPU){
-                call_cu_ops(interface, space, ret);
+                run_flag = call_cu_ops(interface, space, ret);
             } else {
-                call_ops(interface, space, ret);
+                run_flag = call_ops(interface, space, ret);
             }
         } else if (0 == strcmp(type, "graph")){
             if (coretype == GPU){
-                call_cu_graph(interface, space, ret);
+                run_flag = call_cu_graph(interface, space, ret);
             } else {
-                call_graph(interface, space, ret);
+                run_flag = call_graph(interface, space, ret);
             }
         }
-        compare_flag = compare_test(cjson_benchmark_value, ret, compares, compare_num);
-        if (compare_flag == 0){
-            test_msg_pass(benchmarks[i]);
+        if (run_flag){
+            compare_flag = compare_test(cjson_benchmark_value, ret, compares, compare_num);
+            if (compare_flag == 0){
+                test_msg_pass(benchmarks[i]);
+            }
+            else{
+                all_pass = 1;
+                test_msg_error(benchmarks[i]);
+            }
         }
-        else{
+        else {
             all_pass = 1;
-            test_msg_error(benchmarks[i]);
+            test_msg_error("Interface can't find, Please checkout your testlist");
+            continue;
         }
     }
     test_res(all_pass, " ");
