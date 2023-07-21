@@ -24,12 +24,16 @@ int load_cases_name(cJSON *public, char **benchmarks);
 int load_params_name(cJSON *public, char **params);
 int load_compares_name(cJSON *public, char **compares);
 
+void get_params_value(cJSON *single_benchmark, char **params, int param_num, void **space, int *num_list, char **types);
+void get_compare_value(cJSON *single_benchmark, char **compares, int compare_num, void **space, int *num_list, char **types);
+void get_params_value_gpu(cJSON *single_benchmark, char **params, int param_num, void **space, int *num_list, char **types);
+void get_compare_value_gpu(cJSON *single_benchmark, char **compares, int compare_num, void **space, int *num_list, char **types);
 
-void load_params_gpu(cJSON *cjson_benchmark, char **param_names, void **space, int num);
-int load_param_gpu(cJSON *cjson_benchmark, char *param_name, void **space, int index);
+void load_params_gpu(cJSON *cjson_benchmark, char **param_names, void **space, int *num_list, char **types, int num);
+int load_param_gpu(cJSON *cjson_benchmark, char *param_name, void **space, char **types, int index);
 
-void load_params(cJSON *cjson_benchmark, char **param_names, void **space, int num);
-int load_param(cJSON *cjson_benchmark, char *param_name, void **space, int index);
+void load_params(cJSON *cjson_benchmark, char **param_names, void **space, int *num_list, char **types, int num);
+int load_param(cJSON *cjson_benchmark, char *param_name, void **space, char **types, int index);
 
 void load_float_array(cJSON *cjson_value, void *space, int num);
 void load_int_array(cJSON *cjson_value, void *space, int num);

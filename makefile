@@ -95,7 +95,7 @@ ifeq ($(TEST), 1)
 OBJ+=   bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call.o \
 	    avgpool_layer_call.o batchnorm_layer_call.o connect_layer_call.o convolutional_layer_call.o im2col_layer_call.o maxpool_layer_call.o \
 	    mse_layer_call.o \
-	    utest.o benchmark_json.o call.o compare.o tsession.o
+	    analysis_benchmark_file.o call.o compare.o run_test.o utest.o
 
 OBJ+= bias_gpu_call.o cpu_gpu_call.o gemm_gpu_call.o im2col_gpu_call.o pooling_gpu_call.o \
 	  avgpool_layer_gpu_call.o connect_layer_gpu_call.o convolutional_layer_gpu_call.o im2col_layer_gpu_call.o maxpool_layer_gpu_call.o

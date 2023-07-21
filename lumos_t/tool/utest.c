@@ -13,10 +13,10 @@ void test_res(int flag, char *msg)
 {
     switch (flag)
     {
-    case SUCCESS:
+    case 1:
         fprintf(stderr, "[        \e[0;32mOK\e[0m ] %s\n", msg);
         break;
-    case ERROR:
+    case 0:
         fprintf(stderr, "[      \e[0;31mFAIL\e[0m ] %s\n", msg);
         break;
     default:

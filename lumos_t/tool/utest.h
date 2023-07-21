@@ -4,9 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define SUCCESS            0
-#define ERROR              1
-
 #ifdef __cplusplus
 extern "C" {
 #endif
