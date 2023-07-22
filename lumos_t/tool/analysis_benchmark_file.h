@@ -20,9 +20,9 @@ extern "C" {
 cJSON *get_benchmark(char *path);
 cJSON *get_public(cJSON *benchmark);
 char *load_interface(cJSON *public);
-int load_cases_name(cJSON *public, char **benchmarks);
-int load_params_name(cJSON *public, char **params);
-int load_compares_name(cJSON *public, char **compares);
+char **load_cases_name(cJSON *public, int *num);
+char **load_params_name(cJSON *public, int *num);
+char **load_compares_name(cJSON *public, int *num);
 
 void get_params_value(cJSON *single_benchmark, char **params, int param_num, void **space, int *num_list, char **types);
 void get_compare_value(cJSON *single_benchmark, char **compares, int compare_num, void **space, int *num_list, char **types);

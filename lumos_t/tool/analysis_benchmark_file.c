@@ -30,8 +30,9 @@ char *load_interface(cJSON *public)
     return interface;
 }
 
-int load_cases_name(cJSON *public, char **benchmarks)
+char **load_cases_name(cJSON *public, int *num)
 {
+    char **benchmarks = NULL;
     cJSON *cjson_benchmarks = NULL;
     cJSON *cjson_benchmark_item = NULL;
     int benchmark_num = 0;
@@ -42,11 +43,13 @@ int load_cases_name(cJSON *public, char **benchmarks)
         cjson_benchmark_item = cJSON_GetArrayItem(cjson_benchmarks, i);
         benchmarks[i] = cjson_benchmark_item->valuestring;
     }
-    return benchmark_num;
+    num[0] = benchmark_num;
+    return benchmarks;
 }
 
-int load_params_name(cJSON *public, char **params)
+char **load_params_name(cJSON *public, int *num)
 {
+    char **params = NULL;
     cJSON *cjson_params = NULL;
     cJSON *cjson_param_item = NULL;
     int param_num = 0;
@@ -57,11 +60,13 @@ int load_params_name(cJSON *public, char **params)
         cjson_param_item = cJSON_GetArrayItem(cjson_params, i);
         params[i] = cjson_param_item->valuestring;
     }
-    return param_num;
+    num[0] = param_num;
+    return params;
 }
 
-int load_compares_name(cJSON *public, char **compares)
+char **load_compares_name(cJSON *public, int *num)
 {
+    char **compares = NULL;
     cJSON *cjson_compares = NULL;
     cJSON *cjson_compare_item = NULL;
     int compare_num = 0;
@@ -72,7 +77,8 @@ int load_compares_name(cJSON *public, char **compares)
         cjson_compare_item = cJSON_GetArrayItem(cjson_compares, i);
         compares[i] = cjson_compare_item->valuestring;
     }
-    return compare_num;
+    num[0] = compare_num;
+    return compares;
 }
 
 void get_params_value(cJSON *single_benchmark, char **params, int param_num, void **space, int *num_list, char **types)

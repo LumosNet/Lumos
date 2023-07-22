@@ -26,9 +26,10 @@ void run_by_benchmark_file(char *path, int coretype)
 
     CJbenchmark = get_benchmark(path);
     CJpublic = cJSON_GetObjectItem(CJbenchmark, "Public");
-    cases_num = load_cases_name(CJpublic, cases);
-    params_num = load_params_name(CJpublic, params);
-    compares_num = load_compares_name(CJpublic, compares);
+    interface = load_interface(CJpublic);
+    cases = load_cases_name(CJpublic, &cases_num);
+    params = load_params_name(CJpublic, &params_num);
+    compares = load_compares_name(CJpublic, &compares_num);
 
     space = malloc(params_num*sizeof(void*));
     ret = malloc(compares_num*sizeof(void*));
@@ -37,7 +38,6 @@ void run_by_benchmark_file(char *path, int coretype)
     compares_num_list = malloc(compares_num*sizeof(int));
     params_types = malloc(params_num*sizeof(char*));
     compares_types = malloc(compares_num*sizeof(char*));
-
     for (int i = 0; i < cases_num; ++i){
         CJsinglebench = cJSON_GetObjectItem(CJbenchmark, cases[i]);
         if (coretype == CPU){
