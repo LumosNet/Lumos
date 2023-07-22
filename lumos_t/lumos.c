@@ -32,9 +32,9 @@ void lumos(int argc, char **argv)
         if (0 == strcmp(argv[2], "all")){
             run_all_cases("./lumos_t/benchmark/benchmarks.txt", flag);
         } else if (0 == strcmp(argv[2], "ops")){
-            run_all_ops_cases("./lumos_t/benchmark/benchmarks.txt", flag);
+            run_all_ops_cases("./lumos_t/benchmark/benchmarks_ops.txt", flag);
         } else if (0 == strcmp(argv[2], "graph")){
-            run_all_graph_cases("./lumos_t/benchmark/benchmarks.txt", flag);
+            run_all_graph_cases("./lumos_t/benchmark/benchmarks_graph.txt", flag);
         } else if (0 == strcmp(argv[2], "memory")){
             run_all_memory_cases("./lumos_t/benchmark/benchmarks.txt", flag);
         }

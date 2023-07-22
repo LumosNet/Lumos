@@ -1,6 +1,6 @@
 #include "run_test.h"
 
-void run_by_benchmark_file(char *path, int coretype)
+int run_by_benchmark_file(char *path, int coretype)
 {
     cJSON *CJbenchmark = NULL;
     cJSON *CJpublic = NULL;
@@ -41,21 +41,21 @@ void run_by_benchmark_file(char *path, int coretype)
     compares_types = malloc(compares_num*sizeof(char*));
     test_run(interface, coretype);
     for (int i = 0; i < cases_num; ++i){
-        fprintf(stderr, "Do benchmark: %s\n", cases[i]);
+        fprintf(stderr, "  Do benchmark: %s\n", cases[i]);
         CJsinglebench = cJSON_GetObjectItem(CJbenchmark, cases[i]);
         if (coretype == CPU){
             get_params_value(CJsinglebench, params, params_num, space, params_num_list, params_types);
             get_compare_value(CJsinglebench, compares, compares_num, compare, compares_num_list, compares_types);
-            fprintf(stderr, "Load running params\n");
+            fprintf(stderr, "  Load running params\n");
             flag = call(interface, space, ret);
         } else {
             get_params_value_gpu(CJsinglebench, params, params_num, space, params_num_list, params_types);
             get_compare_value_gpu(CJsinglebench, compares, compares_num, compare, compares_num_list, compares_types);
-            fprintf(stderr, "Load running params\n");
+            fprintf(stderr, "  Load running params\n");
             flag = call_cu(interface, space, ret);
         }
         if (flag){
-            fprintf(stderr, "Running test case \e[0;32mFINISH\e[0m\n");
+            fprintf(stderr, "  Running test case \e[0;32mFINISH\e[0m\n");
             for (int j = 0; j < compares_num; ++j){
                 if (coretype == CPU){
                     flag = compare_array(compare[j], ret[j], compares_types[j], compares_num_list[j]);
@@ -63,18 +63,20 @@ void run_by_benchmark_file(char *path, int coretype)
                     flag = compare_array_gpu(compare[j], ret[j], compares_types[j], compares_num_list[j]);
                 }
                 if (flag == 1){
-                    fprintf(stderr, "Interface %s: \e[0;32mPASS\e[0m\n\n", interface);
+                    fprintf(stderr, "  Interface %s: %s \e[0;32mPASS\e[0m\n", interface, compares[j]);
                 } else {
-                    fprintf(stderr, "Interface %s: \e[0;31mFAIL\e[0m\n\n", interface);
+                    fprintf(stderr, "  Interface %s: %s \e[0;31mFAIL\e[0m\n", interface, compares[j]);
                     all_flag = 0;
                 }
             }
         } else {
-            fprintf(stderr, "Running test case \e[0;31mERROR\e[0m\n\n");
+            fprintf(stderr, "  Running test case \e[0;31mERROR\e[0m\n");
             test_msg_error("Interface can't find, Please checkout your testlist");
-            continue;
+            all_flag = 0;
+            break;
         }
     }
+    test_res(all_flag, "All Cases run finish");
     for (int i = 0; i < params_num; ++i){
         if (coretype == CPU){
             free(space[i]);
@@ -99,6 +101,7 @@ void run_by_benchmark_file(char *path, int coretype)
     free(compares_num_list);
     free(params_types);
     free(compares_types);
+    return all_flag;
 }
 
 void run_each_interface(char *interface, int flag)
@@ -130,24 +133,36 @@ void run_all(char *listpath, int coretype)
 
 void run_all_cases(char *listpath, int flag)
 {
+    fprintf(stderr, "Lumos Test Start: RUN ALL CASES [CPU");
+    if (flag) fprintf(stderr, " | GPU");
+    fprintf(stderr, "]");
     run_all(listpath, CPU);
     if (flag) run_all(listpath, GPU);
 }
 
 void run_all_ops_cases(char *listpath, int flag)
 {
+    fprintf(stderr, "Lumos Test Start: RUN ALL OPS CASES [CPU");
+    if (flag) fprintf(stderr, " | GPU");
+    fprintf(stderr, "]\n\n");
     run_all(listpath, CPU);
     if (flag) run_all(listpath, GPU);
 }
 
 void run_all_graph_cases(char *listpath, int flag)
 {
+    fprintf(stderr, "Lumos Test Start: RUN ALL GRAPH CASES [CPU");
+    if (flag) fprintf(stderr, " | GPU");
+    fprintf(stderr, "]\n\n");
     run_all(listpath, CPU);
     if (flag) run_all(listpath, GPU);
 }
 
 void run_all_memory_cases(char *listpath, int flag)
 {
+    fprintf(stderr, "Lumos Test Start: RUN ALL MEMORY CASES [CPU");
+    if (flag) fprintf(stderr, " | GPU");
+    fprintf(stderr, "]\n\n");
     run_all(listpath, CPU);
     if (flag) run_all(listpath, GPU);
 }

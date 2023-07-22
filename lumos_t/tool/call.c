@@ -77,7 +77,7 @@ int call(char *interface, void **params, void **ret)
     } else if (0 == strcmp(interface, "forward_mse_layer")){
         call_forward_mse_layer(params, ret);
     } else {
-        fprintf(stderr, "interface: %s is not in the testlist", interface);
+        fprintf(stderr, "  interface: %s is not in the testlist\n", interface);
         return 0;
     }
     return 1;
@@ -156,7 +156,7 @@ int call_cu(char *interface, void **params, void **ret)
     } else if (0 == strcmp(interface, "backward_maxpool_layer")){
         call_backward_maxpool_layer_gpu(params, ret);
     } else {
-        fprintf(stderr, "interface: %s is not in the testlist", interface);
+        fprintf(stderr, "  interface: %s is not in the testlist\n", interface);
         return 0;
     }
     return 1;

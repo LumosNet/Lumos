@@ -1,0 +1,6 @@
+./lumos_t/benchmark/core/graph/layer/avgpool_layer/backward_avgpool_layer.json
+./lumos_t/benchmark/core/graph/layer/avgpool_layer/forward_avgpool_layer.json
+./lumos_t/benchmark/core/graph/layer/connect_layer/backward_connect_layer.json
+./lumos_t/benchmark/core/graph/layer/connect_layer/forward_connect_layer.json
+./lumos_t/benchmark/core/graph/layer/convolutional_layer/forward_convolutional_layer.json
+./lumos_t/benchmark/core/graph/loss_layer/mse_layer/forward_mse_layer.json
