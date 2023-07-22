@@ -13,7 +13,7 @@
     },
     "BenchMark 1": {
         "data": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 0.9, 0.1, 2, 7
             ]
@@ -23,12 +23,12 @@
             "value": [7]
         },
         "space": {
-            "type": "float",
+            "type": "float g",
             "value": [0]
         },
         "benchmark": {
             "space": {
-                "type": "float",
+                "type": "float g",
                 "value": [1]
             }
         }

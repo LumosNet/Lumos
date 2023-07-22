@@ -13,13 +13,13 @@
     },
     "BenchMark 1": {
         "data_a": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "data_b": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.1
             ]
@@ -29,14 +29,14 @@
             "value": [1]
         },
         "space": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0
             ]
         },
         "benchmark": {
             "space": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     0.2
                 ]
@@ -45,13 +45,13 @@
     },
     "BenchMark 2": {
         "data_a": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1, 0, 1, -2
             ]
         },
         "data_b": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.1, -1, 0.5, 4
             ]
@@ -61,14 +61,14 @@
             "value": [4]
         },
         "space": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0
             ]
         },
         "benchmark": {
             "space": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     0.2, 1, 0.5, -6
                 ]

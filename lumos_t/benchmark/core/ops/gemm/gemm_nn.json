@@ -33,20 +33,20 @@
             "value": [1]
         },
         "A": {
-            "type": "float",
+            "type": "float g",
             "value": [0.1]
         },
         "B": {
-            "type": "float",
+            "type": "float g",
             "value": [10]
         },
         "C": {
-            "type": "float",
+            "type": "float g",
             "value": [0]
         },
         "benchmark": {
             "C": {
-                "type": "float",
+                "type": "float g",
                 "value": [1]
             }
         }
@@ -73,24 +73,24 @@
             "value": [1]
         },
         "A": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, 0.1, 2, -0.2
             ]
         },
         "B": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1, -1, -0.2, 2
             ]
         },
         "C": {
-            "type": "float",
+            "type": "float g",
             "value": [0]
         },
         "benchmark": {
             "C": {
-                "type": "float",
+                "type": "float g",
                 "value": [-1]
             }
         }
@@ -117,19 +117,19 @@
             "value": [1]
         },
         "A": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1, -1, -0.2, 2
             ]
         },
         "B": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, 0.1, 2, -0.2
             ]
         },
         "C": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -139,7 +139,7 @@
         },
         "benchmark": {
             "C": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -0.1, 0.01, 0.2, -0.02,
                     1, -0.1, -2, 0.2,
@@ -171,7 +171,7 @@
             "value": [1]
         },
         "A": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1, 0.2, 0.3,
                 -0.1, -0.1, -0.1,
@@ -180,7 +180,7 @@
             ]
         },
         "B": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 1, 2, 3, 4,
                 0.1, 0.2, 0.3, 0.4,
@@ -188,7 +188,7 @@
             ]
         },
         "C": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -198,7 +198,7 @@
         },
         "benchmark": {
             "C": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     0.09, 0.18, 0.27, 0.36,
                     -0.1, -0.2, -0.3, -0.4,
@@ -230,7 +230,7 @@
             "value": [1]
         },
         "A": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1, 0.2, 0.3, 0.4,
                 1, -1, 1, -1,
@@ -238,7 +238,7 @@
             ]
         },
         "B": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -1, -1,
                 1, 1, 1,
@@ -247,7 +247,7 @@
             ]
         },
         "C": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -257,7 +257,7 @@
         },
         "benchmark": {
             "C": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     0.9, 0.9, 0.9,
                     -4, -4, -4,

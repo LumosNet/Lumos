@@ -13,7 +13,7 @@
     },
     "BenchMark 1": {
         "data": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 1, 2, 3, 4,
                 0.1, 0.2, 0.3, 0.4,
@@ -38,19 +38,19 @@
             "value": [1]
         },
         "space": {
-            "type": "float",
+            "type": "float g",
             "value": [0]
         },
         "benchmark": {
             "space": {
-                "type": "float",
+                "type": "float g",
                 "value": [9.2]
             }
         }
     },
     "BenchMark 2": {
         "data": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 1, 2, 3, 4,
                 0.1, 0.2, 0.3, 0.4,
@@ -83,19 +83,19 @@
             "value": [1]
         },
         "space": {
-            "type": "float",
+            "type": "float g",
             "value": [0, 0, 0]
         },
         "benchmark": {
             "space": {
-                "type": "float",
+                "type": "float g",
                 "value": [9.2, 0, 2]
             }
         }
     },
     "BenchMark 3": {
         "data": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 1
             ]
@@ -117,19 +117,19 @@
             "value": [1]
         },
         "space": {
-            "type": "float",
+            "type": "float g",
             "value": [0]
         },
         "benchmark": {
             "space": {
-                "type": "float",
+                "type": "float g",
                 "value": [1]
             }
         }
     },
     "BenchMark 4": {
         "data": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 1, 0, -0.1
             ]
@@ -151,12 +151,12 @@
             "value": [1]
         },
         "space": {
-            "type": "float",
+            "type": "float g",
             "value": [0, 0, 0]
         },
         "benchmark": {
             "space": {
-                "type": "float",
+                "type": "float g",
                 "value": [1, 0, -0.1]
             }
         }

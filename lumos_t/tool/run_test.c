@@ -75,7 +75,6 @@ void run_by_benchmark_file(char *path, int coretype)
             continue;
         }
     }
-    test_res(all_flag, "ALL benchmarks running finished");
     for (int i = 0; i < params_num; ++i){
         if (coretype == CPU){
             free(space[i]);
@@ -102,14 +101,58 @@ void run_by_benchmark_file(char *path, int coretype)
     free(compares_types);
 }
 
-void run_each_interface(char *interface)
+void run_each_interface(char *interface, int flag)
 {
     char *path = interface_to_path(interface);
-    run_by_benchmark_file(path);
+    run_by_benchmark_file(path, 0);
+    if (flag == 1) run_by_benchmark_file(path, 1);
 }
 
-void run_all_cases(char *listpath, int flag);
-void run_all_ops_cases(char *listpath, int flag);
-void run_all_graph_cases(char *listpath, int flag);
-void run_all_memory_cases(char *listpath, int flag);
-char *interface_to_path(char *interface);
+void run_all(char *listpath, int coretype)
+{
+    FILE *fp = fopen(listpath, "r");
+    fseek(fp, 0, SEEK_END);
+    int file_size = ftell(fp);
+    char *tmp = (char*)malloc(file_size * sizeof(char));
+    memset(tmp, '\0', file_size * sizeof(char));
+    fseek(fp, 0, SEEK_SET);
+    fread(tmp, sizeof(char), file_size, fp);
+    fclose(fp);
+    int head = 0;
+    for (int i = 0; i < file_size; ++i){
+        if (tmp[i] == '\n'){
+            tmp[i] = '\0';
+            run_by_benchmark_file(tmp+head, coretype);
+            head = i+1;
+        }
+    }
+}
+
+void run_all_cases(char *listpath, int flag)
+{
+    run_all(listpath, CPU);
+    if (flag) run_all(listpath, GPU);
+}
+
+void run_all_ops_cases(char *listpath, int flag)
+{
+    run_all(listpath, CPU);
+    if (flag) run_all(listpath, GPU);
+}
+
+void run_all_graph_cases(char *listpath, int flag)
+{
+    run_all(listpath, CPU);
+    if (flag) run_all(listpath, GPU);
+}
+
+void run_all_memory_cases(char *listpath, int flag)
+{
+    run_all(listpath, CPU);
+    if (flag) run_all(listpath, GPU);
+}
+
+char *interface_to_path(char *interface)
+{
+    return interface;
+}

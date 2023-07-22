@@ -13,7 +13,7 @@
     },
     "BenchMark 1": {
         "delta_l": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -46,14 +46,14 @@
             "value": [0]
         },
         "delta_n": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 16, 16,
                 0.32, 0.12
             ]
         },
         "index": {
-            "type": "int",
+            "type": "int g",
             "value": [
                 1, 6,
                 12, 10
@@ -61,7 +61,7 @@
         },
         "benchmark": {
             "delta_l": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     0, 16, 0, 0,
                     0, 0, 16, 0,
@@ -73,7 +73,7 @@
     },
     "BenchMark 2": {
         "delta_l": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -114,7 +114,7 @@
             "value": [0]
         },
         "delta_n": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 16, 16,
                 0.32, 0.12,
@@ -125,7 +125,7 @@
             ]
         },
         "index": {
-            "type": "int",
+            "type": "int g",
             "value": [
                 0, 3,
                 9, 14,
@@ -137,7 +137,7 @@
         },
         "benchmark": {
             "delta_l": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     16, 0, 0, 16,
                     0, 0, 0, 0,
