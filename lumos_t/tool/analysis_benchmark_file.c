@@ -126,10 +126,10 @@ int load_param(cJSON *cjson_benchmark, char *param_name, void **space, char **ty
         size = 1;
     } else {
         size = cJSON_GetArraySize(cjson_value);
-        if (0 == strcmp(type, "float")){
+        if (0 == strcmp(type, "float") || 0 == strcmp(type, "float g")){
             value = (void*)malloc(size*sizeof(float));
             load_float_array(cjson_value, value, size);
-        } else if (0 == strcmp(type, "int")){
+        } else if (0 == strcmp(type, "int") || 0 == strcmp(type, "int g")){
             value = (void*)malloc(size*sizeof(int));
             load_int_array(cjson_value, value, size);
         }
@@ -159,26 +159,33 @@ int load_param_gpu(cJSON *cjson_benchmark, char *param_name, void **space, char 
     cjson_value = cJSON_GetObjectItem(cjson_param, "value");
     char *type = cjson_type->valuestring;
     if (0 == strcmp(type, "string")){
-        value = cJSON_GetStringValue(cjson_value);
+        value_gpu = cJSON_GetStringValue(cjson_value);
         size = 1;
     }
     else {
         size = cJSON_GetArraySize(cjson_value);
-        if (0 == strcmp(type, "float")){
+        if (0 == strcmp(type, "float g")){
             value = (void*)malloc(size*sizeof(float));
             cudaMalloc((void**)&value_gpu, size*sizeof(float));
             load_float_array(cjson_value, value, size);
             cudaMemcpy(value_gpu, value, size*sizeof(float), cudaMemcpyHostToDevice);
-        } else if (0 == strcmp(type, "int")){
+            free(value);
+        } else if (0 == strcmp(type, "int g")){
             value = (void*)malloc(size*sizeof(int));
             cudaMalloc((void**)&value_gpu, size*sizeof(int));
             load_int_array(cjson_value, value, size);
             cudaMemcpy(value_gpu, value, size*sizeof(int), cudaMemcpyHostToDevice);
+            free(value);
+        } else if (0 == strcmp(type, "float")){
+            value_gpu = (void*)malloc(size*sizeof(float));
+            load_float_array(cjson_value, value_gpu, size);
+        } else if (0 == strcmp(type, "int")){
+            value_gpu = (void*)malloc(size*sizeof(int));
+            load_int_array(cjson_value, value_gpu, size);
         }
     }
     space[index] = value_gpu;
     types[index] = type;
-    free(value);
     return size;
 }
 

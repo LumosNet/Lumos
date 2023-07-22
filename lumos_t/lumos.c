@@ -49,7 +49,7 @@
 
 int main(int argc, char **argv)
 {
-    run_by_benchmark_file("./lumos_t/benchmark/core/ops/bias/add_bias.json", CPU);
+    run_by_benchmark_file("./lumos_t/benchmark/core/ops/bias/add_bias.json", GPU);
     // lumos(argc, argv);
     return 0;
 }

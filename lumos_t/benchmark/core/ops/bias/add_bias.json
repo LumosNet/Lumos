@@ -13,13 +13,13 @@
     },
     "BenchMark 1": {
         "origin": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "bias": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
@@ -38,7 +38,7 @@
         },
         "benchmark": {
             "origin": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     0.2
                 ]
@@ -47,14 +47,14 @@
     },
     "BenchMark 2": {
         "origin": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1, 0.2, 0.3, 0.4,
                 1, 2, 3, 4
             ]
         },
         "bias": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 1, 2, 3, 4,
                 0.1, 0.2, 0.3, 0.4
@@ -74,7 +74,7 @@
         },
         "benchmark": {
             "origin": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     1.1, 2.2, 3.3, 4.4,
                     1.1, 2.2, 3.3, 4.4
@@ -84,7 +84,7 @@
     },
     "BenchMark 3": {
         "origin": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1, 0.2, 0.3, 0.4,
                 0.5, 0.6, 0.7, 0.8,
@@ -101,7 +101,7 @@
             ]
         },
         "bias": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1, 0.0, 1.0
             ]
@@ -120,7 +120,7 @@
         },
         "benchmark": {
             "origin": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     0.2, 0.3, 0.4, 0.5,
                     0.6, 0.7, 0.8, 0.9,

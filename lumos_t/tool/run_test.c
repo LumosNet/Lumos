@@ -23,6 +23,7 @@ void run_by_benchmark_file(char *path, int coretype)
     int compares_num = 0;
 
     int flag = 0;
+    int all_flag = 1;
 
     CJbenchmark = get_benchmark(path);
     CJpublic = cJSON_GetObjectItem(CJbenchmark, "Public");
@@ -38,31 +39,43 @@ void run_by_benchmark_file(char *path, int coretype)
     compares_num_list = malloc(compares_num*sizeof(int));
     params_types = malloc(params_num*sizeof(char*));
     compares_types = malloc(compares_num*sizeof(char*));
+    test_run(interface, coretype);
     for (int i = 0; i < cases_num; ++i){
+        fprintf(stderr, "Do benchmark: %s\n", cases[i]);
         CJsinglebench = cJSON_GetObjectItem(CJbenchmark, cases[i]);
         if (coretype == CPU){
             get_params_value(CJsinglebench, params, params_num, space, params_num_list, params_types);
             get_compare_value(CJsinglebench, compares, compares_num, compare, compares_num_list, compares_types);
+            fprintf(stderr, "Load running params\n");
             flag = call(interface, space, ret);
         } else {
             get_params_value_gpu(CJsinglebench, params, params_num, space, params_num_list, params_types);
             get_compare_value_gpu(CJsinglebench, compares, compares_num, compare, compares_num_list, compares_types);
+            fprintf(stderr, "Load running params\n");
             flag = call_cu(interface, space, ret);
         }
         if (flag){
+            fprintf(stderr, "Running test case \e[0;32mFINISH\e[0m\n");
             for (int j = 0; j < compares_num; ++j){
                 if (coretype == CPU){
                     flag = compare_array(compare[j], ret[j], compares_types[j], compares_num_list[j]);
                 } else {
                     flag = compare_array_gpu(compare[j], ret[j], compares_types[j], compares_num_list[j]);
                 }
+                if (flag == 1){
+                    fprintf(stderr, "Interface %s: \e[0;32mPASS\e[0m\n\n", interface);
+                } else {
+                    fprintf(stderr, "Interface %s: \e[0;31mFAIL\e[0m\n\n", interface);
+                    all_flag = 0;
+                }
             }
         } else {
+            fprintf(stderr, "Running test case \e[0;31mERROR\e[0m\n\n");
             test_msg_error("Interface can't find, Please checkout your testlist");
             continue;
         }
     }
-    test_res(flag, " ");
+    test_res(all_flag, "ALL benchmarks running finished");
     for (int i = 0; i < params_num; ++i){
         if (coretype == CPU){
             free(space[i]);
@@ -88,3 +101,15 @@ void run_by_benchmark_file(char *path, int coretype)
     free(params_types);
     free(compares_types);
 }
+
+void run_each_interface(char *interface)
+{
+    char *path = interface_to_path(interface);
+    run_by_benchmark_file(path);
+}
+
+void run_all_cases(char *listpath, int flag);
+void run_all_ops_cases(char *listpath, int flag);
+void run_all_graph_cases(char *listpath, int flag);
+void run_all_memory_cases(char *listpath, int flag);
+char *interface_to_path(char *interface);
