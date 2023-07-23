@@ -25,11 +25,7 @@ int run_by_benchmark_file(char *path, int coretype);
 void run_each_interface(char *interface, int flag);
 
 void run_all(char *listpath, int coretype);
-
 void run_all_cases(char *listpath, int flag);
-void run_all_ops_cases(char *listpath, int flag);
-void run_all_graph_cases(char *listpath, int flag);
-void run_all_memory_cases(char *listpath, int flag);
 
 char *interface_to_path(char *interface);
 

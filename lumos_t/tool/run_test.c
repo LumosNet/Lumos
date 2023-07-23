@@ -133,38 +133,14 @@ void run_all(char *listpath, int coretype)
 
 void run_all_cases(char *listpath, int flag)
 {
-    fprintf(stderr, "Lumos Test Start: RUN ALL CASES [CPU");
-    if (flag) fprintf(stderr, " | GPU");
-    fprintf(stderr, "]");
-    run_all(listpath, CPU);
-    if (flag) run_all(listpath, GPU);
-}
-
-void run_all_ops_cases(char *listpath, int flag)
-{
-    fprintf(stderr, "Lumos Test Start: RUN ALL OPS CASES [CPU");
-    if (flag) fprintf(stderr, " | GPU");
-    fprintf(stderr, "]\n\n");
-    run_all(listpath, CPU);
-    if (flag) run_all(listpath, GPU);
-}
-
-void run_all_graph_cases(char *listpath, int flag)
-{
-    fprintf(stderr, "Lumos Test Start: RUN ALL GRAPH CASES [CPU");
-    if (flag) fprintf(stderr, " | GPU");
-    fprintf(stderr, "]\n\n");
-    run_all(listpath, CPU);
-    if (flag) run_all(listpath, GPU);
-}
-
-void run_all_memory_cases(char *listpath, int flag)
-{
-    fprintf(stderr, "Lumos Test Start: RUN ALL MEMORY CASES [CPU");
-    if (flag) fprintf(stderr, " | GPU");
-    fprintf(stderr, "]\n\n");
-    run_all(listpath, CPU);
-    if (flag) run_all(listpath, GPU);
+    if (flag == 0) run_all(listpath, CPU);
+    else if (flag == 1) run_all(listpath, GPU);
+    else if (flag == 2){
+        run_all(listpath, CPU);
+        run_all(listpath, GPU);
+    } else {
+        fprintf(stderr, "Test Running Flag ERROR!\n");
+    }
 }
 
 char *interface_to_path(char *interface)

@@ -25,18 +25,15 @@ void lumos(int argc, char **argv)
             fprintf(stderr, "Lumos fatal: You miss the param of Testing module; use option --help for more information\n");
             return ;
         }
-        int flag = 0;
-        if (0 == strcmp(argv[3], "1")){
-            flag = 1;
-        }
+        int flag = atoi(argv[3]);
         if (0 == strcmp(argv[2], "all")){
             run_all_cases("./lumos_t/benchmark/benchmarks.txt", flag);
         } else if (0 == strcmp(argv[2], "ops")){
-            run_all_ops_cases("./lumos_t/benchmark/benchmarks_ops.txt", flag);
+            run_all_cases("./lumos_t/benchmark/benchmarks_ops.txt", flag);
         } else if (0 == strcmp(argv[2], "graph")){
-            run_all_graph_cases("./lumos_t/benchmark/benchmarks_graph.txt", flag);
+            run_all_cases("./lumos_t/benchmark/benchmarks_graph.txt", flag);
         } else if (0 == strcmp(argv[2], "memory")){
-            run_all_memory_cases("./lumos_t/benchmark/benchmarks.txt", flag);
+            run_all_cases("./lumos_t/benchmark/benchmarks.txt", flag);
         }
     }
     else if (0 == strcmp(argv[1], "--help") || 0 == strcmp(argv[1], "-h"))
