@@ -1,0 +1,62 @@
+{
+    "Public": {
+        "width": 32,
+        "height": 32,
+        "channel": 1,
+        "label": 10,
+        "batch": 16,
+        "subdivision": 16,
+        "epoch": 100,
+        "learning_rate": 0.1
+    },
+    "Initializer": {
+        "type": "HE"
+    },
+    "Layers": [
+        {
+            "type": "IM2COL",
+            "flag": 1
+        },
+        {
+            "type": "CONNECT",
+            "output": 128,
+            "bias": 1,
+            "normalization": 0,
+            "active": "relu"
+        },
+        {
+            "type": "DROPOUT",
+            "probability": 0.5
+        },
+        {
+            "type": "CONNECT",
+            "output": 64,
+            "bias": 1,
+            "normalization": 0,
+            "active": "relu"
+        },
+        {
+            "type": "DROPOUT",
+            "probability": 0.5
+        },
+        {
+            "type": "CONNECT",
+            "output": 10,
+            "bias": 1,
+            "normalization": 0,
+            "active": "relu"
+        },
+        {
+            "type": "DROPOUT",
+            "probability": 0.5
+        },
+        {
+            "type": "SOFTMAX",
+            "group": 10
+        },
+        {
+            "type": "MSE",
+            "group": 10
+        }
+    ]
+}

@@ -652,6 +652,7 @@ Session *load_session_json(char *graph_path, char *coretype)
     } else {
         sess = create_session("cpu", init);
     }
+    printf("create success\n");
     bind_graph(sess, graph);
     sess->height = height;
     sess->width = width;

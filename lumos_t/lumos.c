@@ -19,7 +19,7 @@ void lumos(int argc, char **argv)
         fprintf(stderr, "This is free software; see the source for copying conditions.  There is NO\n");
         fprintf(stderr, "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n");
     }
-    else if (0 == strcmp(argv[1], "--runall") || 0 == strcmp(argv[1], "-ra"))
+    else if ((0 == strcmp(argv[1], "--runall")) || (0 == strcmp(argv[1], "-ra")))
     {
         if (argc <= 2 || argc <= 3){
             fprintf(stderr, "Lumos fatal: You miss the param of Testing module; use option --help for more information\n");
@@ -33,7 +33,7 @@ void lumos(int argc, char **argv)
         } else if (0 == strcmp(argv[2], "graph")){
             run_all_cases("./lumos_t/benchmark/benchmarks_graph.txt", flag);
         } else if (0 == strcmp(argv[2], "memory")){
-            run_all_cases("./lumos_t/benchmark/benchmarks.txt", flag);
+            run_all_cases("./lumos_t/benchmark/benchmarks_memory.txt", flag);
         }
     }
     else if (0 == strcmp(argv[1], "--help") || 0 == strcmp(argv[1], "-h"))

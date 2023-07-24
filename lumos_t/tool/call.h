@@ -33,6 +33,8 @@
 #include "im2col_layer_gpu_call.h"
 #include "maxpool_layer_gpu_call.h"
 
+#include "dropout_rand_call.h"
+
 #include "utest.h"
 
 #ifdef  __cplusplus

@@ -1,0 +1,89 @@
+{
+    "Public": {
+        "width": 32,
+        "height": 32,
+        "channel": 1,
+        "label": 10,
+        "batch": 16,
+        "subdivision": 16,
+        "epoch": 50,
+        "learning_rate": 0.001
+    },
+    "Initializer": {
+        "type": "HE"
+    },
+    "Layers": [
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 6,
+            "ksize": 5,
+            "stride": 1,
+            "pad": 0,
+            "bias": 1,
+            "normalization": 1,
+            "active": "relu"
+        },
+        {
+            "type": "AVGPOOL",
+            "ksize": 2,
+            "stride": 2,
+            "pad": 0
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 16,
+            "ksize": 5,
+            "stride": 1,
+            "pad": 0,
+            "bias": 1,
+            "normalization": 1,
+            "active": "relu"
+        },
+        {
+            "type": "AVGPOOL",
+            "ksize": 2,
+            "stride": 2,
+            "pad": 0
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 120,
+            "ksize": 5,
+            "stride": 1,
+            "pad": 0,
+            "bias": 1,
+            "normalization": 1,
+            "active": "relu"
+        },
+        {
+            "type": "IM2COL",
+            "flag": 1
+        },
+        {
+            "type": "CONNECT",
+            "output": 84,
+            "bias": 1,
+            "normalization": 1,
+            "active": "relu"
+        },
+        {
+            "type": "DROPOUT",
+            "probability": 0.5
+        },
+        {
+            "type": "CONNECT",
+            "output": 10,
+            "bias": 1,
+            "normalization": 1,
+            "active": "relu"
+        },
+        {
+            "type": "SOFTMAX",
+            "group": 10
+        },
+        {
+            "type": "MSE",
+            "group": 10
+        }
+    ]
+}

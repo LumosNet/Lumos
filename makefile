@@ -65,15 +65,19 @@ COMMON+= -Ilumos_t \
 		 -Ilumos_t/core/graph \
 		 -Ilumos_t/tool \
 		 -Ilumos_t/core_cu/ops \
-		 -Ilumos_t/core_cu/graph
+		 -Ilumos_t/core_cu/graph \
+		 -Ilumos_t/memory \
+		 -Ilumos_t/memory_cu
 
 VPATH+=	./lumos_t \
 		./lumos_t/tool \
 		./lumos_t/core \
 		./lumos_t/core/graph \
 		./lumos_t/core/ops \
+		./lumos_t/memory \
 		./lumos_t/core_cu/ops \
-		./lumos_t/core_cu/graph
+		./lumos_t/core_cu/graph \
+		./lumos_t/memory_cu
 endif
 
 OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o maxpool_layer.o softmax_layer.o dropout_layer.o shortcut_layer.o \
@@ -98,7 +102,8 @@ OBJ+=   bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_ca
 	    analysis_benchmark_file.o call.o compare.o run_test.o utest.o
 
 OBJ+= bias_gpu_call.o cpu_gpu_call.o gemm_gpu_call.o im2col_gpu_call.o pooling_gpu_call.o \
-	  avgpool_layer_gpu_call.o connect_layer_gpu_call.o convolutional_layer_gpu_call.o im2col_layer_gpu_call.o maxpool_layer_gpu_call.o
+	  avgpool_layer_gpu_call.o connect_layer_gpu_call.o convolutional_layer_gpu_call.o im2col_layer_gpu_call.o maxpool_layer_gpu_call.o \
+	  dropout_rand_call.o
 endif
 
 ifeq ($(TEST),1)

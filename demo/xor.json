@@ -21,8 +21,12 @@
             "type": "CONNECT",
             "output": 4,
             "bias": 1,
-            "normalization": 1,
+            "normalization": 0,
             "active": "relu"
+        },
+        {
+            "type": "DROPOUT",
+            "probability": 0.2
         },
         {
             "type": "CONNECT",
