@@ -78,7 +78,10 @@ int call(char *interface, void **params, void **ret)
         call_forward_mse_layer(params, ret);
     } else if (0 == strcmp(interface, "dropout_rand")){
         call_dropout_rand(params, ret);
-    } else {
+    } else if (0 == strcmp(interface, "layer_delta")){
+        call_
+    } 
+    else {
         fprintf(stderr, "  interface: %s is not in the testlist\n", interface);
         return 0;
     }

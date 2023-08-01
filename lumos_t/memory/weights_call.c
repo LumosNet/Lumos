@@ -13,7 +13,26 @@ void call_weights(void **params, void **ret)
     for (int i = 0; i < graph->layer_num; ++i){
         l = graph->layers[i];
         if (l->weights){
-            
+            weights_c = weights + offset;
+            for (int j = 0; j < l->kernel_weights_size; ++j){
+                l->kernel_weights[j] = weights_c[j];
+            }
+            offset += l->kernel_weights_size;
+            if (l->bias){
+                weights_c = weights + offset;
+                for (int j = 0; j < l->bias_weights_size; ++j){
+                    l->bias_weights[j] = weights_c[j];
+                }
+                offset += l->bias_weights_size;
+            }
+            if (l->batchnorm){
+                weights_c = weights + offset;
+                for (int j = 0; j < l->normalize_weights_size; ++j){
+                    l->normalize_weights[j] = weights_c[j]
+                }
+                offset += l->normalize_weights_size;
+            }
         }
     }
+    ret[0] = sess->weights;
 }

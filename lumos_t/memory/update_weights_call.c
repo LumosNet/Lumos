@@ -21,14 +21,14 @@ void call_update_weights(void **params, void **ret)
             if (l->bias){
                 weights = update_weights + offset;
                 for (int j = 0; j < l->bias_weights_size; ++j){
-                    l->bias_weights[j] = weights[j]
+                    l->update_bias_weights[j] = weights[j]
                 }
                 offset += l->bias_weights_size;
             }
             if (l->batchnorm){
                 weights = update_weights + offset;
                 for (int j = 0; j < l->normalize_weights_size; ++j){
-                    l->normalize_weights[j] = weights[j];
+                    l->update_normalize_weights[j] = weights[j];
                 }
                 offset += l->normalize_weights_size;
             }
