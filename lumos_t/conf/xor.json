@@ -1,0 +1,43 @@
+{
+    "Public": {
+        "width": 2,
+        "height": 1,
+        "channel": 1,
+        "label": 2,
+        "batch": 1,
+        "subdivision": 1,
+        "epoch": 100,
+        "learning_rate": 0.001
+    },
+    "Initializer": {
+        "type": "HE"
+    },
+    "Layers": [
+        {
+            "type": "IM2COL",
+            "flag": 1
+        },
+        {
+            "type": "CONNECT",
+            "output": 4,
+            "bias": 1,
+            "normalization": 0,
+            "active": "relu"
+        },
+        {
+            "type": "CONNECT",
+            "output": 2,
+            "bias": 1,
+            "normalization": 0,
+            "active": "relu"
+        },
+        {
+            "type": "SOFTMAX",
+            "group": 2
+        },
+        {
+            "type": "MSE",
+            "group": 2
+        }
+    ]
+}
