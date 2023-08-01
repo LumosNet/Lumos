@@ -13,7 +13,7 @@ void call_x_norm(void **params, void **ret)
         l = graph->layers[i];
         if (l->batchnorm){
             float *x_norm_c = x_norm + offset;
-            for (int j = 0; j < l->l->outputs * sess->subdivision; ++j){
+            for (int j = 0; j < l->outputs * sess->subdivision; ++j){
                 l->x_norm[j] = x_norm_c[j];
             }
             offset += l->outputs * sess->subdivision;

@@ -28,7 +28,7 @@ void call_weights(void **params, void **ret)
             if (l->batchnorm){
                 weights_c = weights + offset;
                 for (int j = 0; j < l->normalize_weights_size; ++j){
-                    l->normalize_weights[j] = weights_c[j]
+                    l->normalize_weights[j] = weights_c[j];
                 }
                 offset += l->normalize_weights_size;
             }

@@ -79,9 +79,32 @@ int call(char *interface, void **params, void **ret)
     } else if (0 == strcmp(interface, "dropout_rand")){
         call_dropout_rand(params, ret);
     } else if (0 == strcmp(interface, "layer_delta")){
-        call_
-    } 
-    else {
+        call_layer_delta(params, ret);
+    } else if (0 == strcmp(interface, "loss")){
+        call_loss(params, ret);
+    } else if (0 == strcmp(interface, "maxpool_index")){
+        call_maxpool_index(params, ret);
+    } else if (0 == strcmp(interface, "mean")){
+        call_mean(params, ret);
+    } else if (0 == strcmp(interface, "normalize_x_size")){
+        call_normalize_x_size(params, ret);
+    } else if (0 == strcmp(interface, "output")){
+        call_output(params, ret);
+    } else if (0 == strcmp(interface, "roll_mean")){
+        call_roll_mean(params, ret);
+    } else if (0 == strcmp(interface, "roll_variance")){
+        call_roll_variance(params, ret);
+    } else if (0 == strcmp(interface, "truth")){
+        call_truth(params, ret);
+    } else if (0 == strcmp(interface, "update_weights")){
+        call_update_weights(params, ret);
+    } else if (0 == strcmp(interface, "variance")){
+        call_variance(params, ret);
+    } else if (0 == strcmp(interface, "weights")){
+        call_weights(params, ret);
+    } else if (0 == strcmp(interface, "x_norm")){
+        call_x_norm(params, ret);
+    } else {
         fprintf(stderr, "  interface: %s is not in the testlist\n", interface);
         return 0;
     }

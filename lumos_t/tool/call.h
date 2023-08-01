@@ -34,6 +34,19 @@
 #include "maxpool_layer_gpu_call.h"
 
 #include "dropout_rand_call.h"
+#include "layer_delta_call.h"
+#include "loss_call.h"
+#include "maxpool_index_call.h"
+#include "mean_call.h"
+#include "normalize_x_size_call.h"
+#include "output_call.h"
+#include "roll_mean_call.h"
+#include "roll_variance_call.h"
+#include "truth_call.h"
+#include "update_weights_call.h"
+#include "variance_call.h"
+#include "weights_call.h"
+#include "x_norm_call.h"
 
 #include "utest.h"
 
