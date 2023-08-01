@@ -36,6 +36,15 @@ void lumos(int argc, char **argv)
             run_all_cases("./lumos_t/benchmark/benchmarks_memory.txt", flag);
         }
     }
+    else if (0 == strcmp(argv[1], "--run"))
+    {
+        if (argc <= 2 || argc <= 3){
+            fprintf(stderr, "Lumos fatal: You miss the param of Testing module; use option --help for more information\n");
+            return ;
+        }
+        int flag = atoi(argv[3]);
+        run_by_interface(argv[2], flag);
+    }
     else if (0 == strcmp(argv[1], "--help") || 0 == strcmp(argv[1], "-h"))
     {
         fprintf(stderr, "Usage commands:\n");

@@ -104,13 +104,6 @@ int run_by_benchmark_file(char *path, int coretype)
     return all_flag;
 }
 
-void run_each_interface(char *interface, int flag)
-{
-    char *path = interface_to_path(interface);
-    run_by_benchmark_file(path, 0);
-    if (flag == 1) run_by_benchmark_file(path, 1);
-}
-
 void run_all(char *listpath, int coretype)
 {
     FILE *fp = fopen(listpath, "r");
@@ -143,7 +136,8 @@ void run_all_cases(char *listpath, int flag)
     }
 }
 
-char *interface_to_path(char *interface)
+void run_by_interface(char *interface, int coretype)
 {
-    return interface;
+    char *benchmark = interface_to_benchmark(interface);
+    run_by_benchmark_file(benchmark, coretype);
 }

@@ -189,3 +189,112 @@ int call_cu(char *interface, void **params, void **ret)
     }
     return 1;
 }
+
+char *interface_to_benchmark(char *interface)
+{
+    if (0 == strcmp(interface, "add_bias")){
+        return "./lumos_t/benchmark/core/ops/bias/add_bias.json";
+    } else if (0 == strcmp(interface, "fill_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/fill_cpu.json";
+    } else if (0 == strcmp(interface, "multy_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/multy_cpu.json";
+    } else if (0 == strcmp(interface, "add_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/add_cpu.json";
+    } else if (0 == strcmp(interface, "min_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/min_cpu.json";
+    } else if (0 == strcmp(interface, "max_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/max_cpu.json";
+    } else if (0 == strcmp(interface, "sum_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/sum_cpu.json";
+    } else if (0 == strcmp(interface, "mean_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/mean_cpu.json";
+    } else if (0 == strcmp(interface, "matrix_add_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/matrix_add_cpu.json";
+    } else if (0 == strcmp(interface, "matrix_subtract_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/matrix_subtract_cpu.json";
+    } else if (0 == strcmp(interface, "matrix_multiply_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/matrix_multiply_cpu.json";
+    } else if (0 == strcmp(interface, "matrix_divide_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/matrix_divide_cpu.json";
+    } else if (0 == strcmp(interface, "saxpy_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/fill_saxpy.json";
+    } else if (0 == strcmp(interface, "sum_channel_cpu")){
+        return "./lumos_t/benchmark/core/ops/cpu/sum_channel_cpu.json";
+    } else if (0 == strcmp(interface, "gemm")){
+        return "./lumos_t/benchmark/core/ops/gemm/gemm.json";
+    } else if (0 == strcmp(interface, "gemm_nn")){
+        return "./lumos_t/benchmark/core/ops/gemm/gemm_nn.json";
+    } else if (0 == strcmp(interface, "gemm_nt")){
+        return "./lumos_t/benchmark/core/ops/gemm/gemm_nt.json";
+    } else if (0 == strcmp(interface, "gemm_tn")){
+        return "./lumos_t/benchmark/core/ops/gemm/gemm_tn.json";
+    } else if (0 == strcmp(interface, "gemm_tt")){
+        return "./lumos_t/benchmark/core/ops/gemm/gemm_tt.json";
+    } else if (0 == strcmp(interface, "im2col")){
+        return "./lumos_t/benchmark/core/ops/im2col/im2col.json";
+    } else if (0 == strcmp(interface, "col2im")){
+        return "./lumos_t/benchmark/core/ops/im2col/col2im.json";
+    } else if (0 == strcmp(interface, "avgpool")){
+        return "./lumos_t/benchmark/core/ops/pooling/avgpool.json";
+    } else if (0 == strcmp(interface, "maxpool")){
+        return "./lumos_t/benchmark/core/ops/pooling/maxpool.json";
+    } else if (0 == strcmp(interface, "avgpool_gradient")){
+        return "./lumos_t/benchmark/core/ops/pooling/avgpool_gradient.json";
+    } else if (0 == strcmp(interface, "maxpool_gradient")){
+        return "./lumos_t/benchmark/core/ops/pooling/maxpool_gradient.json";
+    } else if (0 == strcmp(interface, "forward_avgpool_layer")){
+        return "./lumos_t/benchmark/core/graph/layer/avgpool_layer/forward_avgpool_layer.json";
+    } else if (0 == strcmp(interface, "backward_avgpool_layer")){
+        return "./lumos_t/benchmark/core/graph/layer/avgpool_layer/backward_avgpool_layer.json";
+    } else if (0 == strcmp(interface, "forward_connect_layer")){
+        return "./lumos_t/benchmark/core/graph/layer/connect_layer/forward_connect_layer.json";
+    } else if (0 == strcmp(interface, "backward_connect_layer")){
+        return "./lumos_t/benchmark/core/graph/layer/connect_layer/backward_connect_layer.json";
+    } else if (0 == strcmp(interface, "forward_convolutional_layer")){
+        return "./lumos_t/benchmark/core/graph/layer/convolutional_layer/forward_convolutional_layer.json";
+    } else if (0 == strcmp(interface, "backward_convolutional_layer")){
+        return "./lumos_t/benchmark/core/graph/layer/convolutional_layer/backward_convolutional_layer.json";
+    } else if (0 == strcmp(interface, "forward_im2col_layer")){
+        return "./lumos_t/benchmark/core/graph/layer/im2col_layer/forward_im2col_layer.json";
+    } else if (0 == strcmp(interface, "backward_im2col_layer")){
+        return "./lumos_t/benchmark/core/graph/layer/im2col_layer/backward_im2col_layer.json";
+    } else if (0 == strcmp(interface, "forward_maxpool_layer")){
+        return "./lumos_t/benchmark/core/graph/layer/maxpool_layer/forward_maxpool_layer.json";
+    } else if (0 == strcmp(interface, "backward_maxpool_layer")){
+        return "./lumos_t/benchmark/core/graph/layer/maxpool_layer/backward_maxpool_layer.json";
+    } else if (0 == strcmp(interface, "forward_mse_layer")){
+        return "./lumos_t/benchmark/core/graph/layer/mse_layer/forward_mse_layer.json";
+    } else if (0 == strcmp(interface, "dropout_rand")){
+        return "./lumos_t/benchmark/memory/dropout_rand.json";
+    } else if (0 == strcmp(interface, "layer_delta")){
+        return "./lumos_t/benchmark/memory/layer_delta.json";
+    } else if (0 == strcmp(interface, "loss")){ //
+        return "./lumos_t/benchmark/memory/loss.json";
+    } else if (0 == strcmp(interface, "maxpool_index")){
+        return "./lumos_t/benchmark/memory/maxpool_index.json";
+    } else if (0 == strcmp(interface, "mean")){
+        return "./lumos_t/benchmark/memory/mean.json";
+    } else if (0 == strcmp(interface, "normalize_x_size")){
+        return "./lumos_t/benchmark/memory/normalize_x_size.json";
+    } else if (0 == strcmp(interface, "output")){
+        return "./lumos_t/benchmark/memory/output.json";
+    } else if (0 == strcmp(interface, "roll_mean")){
+        return "./lumos_t/benchmark/memory/roll_mean.json";
+    } else if (0 == strcmp(interface, "roll_variance")){
+        return "./lumos_t/benchmark/memory/roll_variance.json";
+    } else if (0 == strcmp(interface, "truth")){
+        return "./lumos_t/benchmark/memory/truth.json";
+    } else if (0 == strcmp(interface, "update_weights")){
+        return "./lumos_t/benchmark/memory/update_weights.json";
+    } else if (0 == strcmp(interface, "variance")){
+        return "./lumos_t/benchmark/memory/variance.json";
+    } else if (0 == strcmp(interface, "weights")){
+        return "./lumos_t/benchmark/memory/weights.json";
+    } else if (0 == strcmp(interface, "x_norm")){
+        return "./lumos_t/benchmark/memory/x_norm.json";
+    } else {
+        fprintf(stderr, "  interface: %s is not in the testlist\n", interface);
+        return 0;
+    }
+    return 1;
+}

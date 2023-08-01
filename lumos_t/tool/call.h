@@ -56,6 +56,7 @@ extern "C" {
 
 int call(char *interface, void **params, void **ret);
 int call_cu(char *interface, void **params, void **ret);
+char *interface_to_benchmark(char *interface);
 
 #ifdef __cplusplus
 }
