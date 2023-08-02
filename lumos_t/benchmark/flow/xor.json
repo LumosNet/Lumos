@@ -1,0 +1,65 @@
+{
+    "Public": {
+        "interface": "xor",
+        "benchmarks": [
+            "BenchMark 1"
+        ],
+        "params": [
+            "epoch", "batch", "subdivision", "learning_rate",
+            "data_path", "label_path", "weights_path"
+        ],
+        "compares": [
+            "output", "update_weights", "weights"
+        ]
+    },
+    "BenchMark 1": {
+        "epoch": {
+            "type": "int",
+            "value": [1]
+        },
+        "batch": {
+            "type": "int",
+            "value": [2]
+        },
+        "subdivision": {
+            "type": "int",
+            "value": [2]
+        },
+        "learning_rate": {
+            "type": "float",
+            "value": 0.1
+        },
+        "data_path": {
+            "type": "string",
+            "value": "./data/xor/data.txt"
+        },
+        "label_path": {
+            "type": "string",
+            "value": "./data/xor/label.txt"
+        },
+        "weights_path": {
+            "type": "string",
+            "value": "./lumos_t/conf/xor.w"
+        },
+        "benchmark": {
+            "output": {
+                "type": "float",
+                "value": [
+
+                ]
+            },
+            "update_weights": {
+                "type": "float",
+                "value": [
+
+                ]
+            },
+            "weights": {
+                "type": "float",
+                "value": [
+                    
+                ]
+            }
+        }
+    }
+}
