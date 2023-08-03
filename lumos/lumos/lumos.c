@@ -93,53 +93,6 @@ void lumos(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-    // lumos(argc, argv);
-
-    Graph *graph = create_graph("xor", 5);
-    Layer *l1 = make_im2col_layer(1);
-    Layer *l2 = make_connect_layer(4, 1, 0, "relu");
-    Layer *l3 = make_connect_layer(2, 1, 0, "relu");
-    Layer *l4 = make_softmax_layer(2);
-    Layer *l5 = make_mse_layer(2);
-    append_layer2grpah(graph, l1);
-    append_layer2grpah(graph, l2);
-    append_layer2grpah(graph, l3);
-    append_layer2grpah(graph, l4);
-    append_layer2grpah(graph, l5);
-
-    Initializer init = {0};
-    init = he_initializer();
-    Session *sess = create_session("cpu", init);
-    bind_graph(sess, graph);
-    sess->height = 1;
-    sess->width = 2;
-    sess->channel = 1;
-    sess->epoch = 100;
-    sess->batch = 1;
-    sess->subdivision = 1;
-    sess->learning_rate = 0.1;
-    sess->label_num = 2;
-
-    float *weights = calloc(16, sizeof(float));
-    weights[0] = 0.1;
-    weights[1] = 0.2;
-    weights[2] = 0.4;
-    weights[3] = -0.1;
-    weights[4] = 0.2;
-    weights[5] = 0.1;
-    weights[6] = -0.3;
-    weights[7] = 0.5;
-    weights[8] = 0.1;
-    weights[9] = 0.2;
-    weights[10] = 0.4;
-    weights[11] = -0.1;
-    weights[12] = 0.2;
-    weights[13] = 0.1;
-    weights[14] = -0.3;
-    weights[15] = 0.5;
-
-    sess->weights = weights;
-    sess->weights_size = 16;
-    save_weigths(sess, "xor.w");
+    lumos(argc, argv);
     return 0;
 }

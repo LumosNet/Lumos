@@ -294,7 +294,6 @@ char *interface_to_benchmark(char *interface)
         return "./lumos_t/benchmark/memory/x_norm.json";
     } else {
         fprintf(stderr, "  interface: %s is not in the testlist\n", interface);
-        return 0;
     }
-    return 1;
+    return NULL;
 }

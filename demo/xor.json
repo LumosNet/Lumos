@@ -6,8 +6,8 @@
         "label": 2,
         "batch": 1,
         "subdivision": 1,
-        "epoch": 100,
-        "learning_rate": 0.001
+        "epoch": 25,
+        "learning_rate": 0.1
     },
     "Initializer": {
         "type": "HE"
@@ -25,19 +25,11 @@
             "active": "relu"
         },
         {
-            "type": "DROPOUT",
-            "probability": 0.2
-        },
-        {
             "type": "CONNECT",
             "output": 2,
             "bias": 1,
-            "normalization": 1,
+            "normalization": 0,
             "active": "relu"
-        },
-        {
-            "type": "SOFTMAX",
-            "group": 2
         },
         {
             "type": "MSE",
