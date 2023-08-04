@@ -57,7 +57,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0,
                 0, 2, 1,
@@ -66,7 +66,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0,
@@ -76,7 +76,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0,
                     0, 2, 1,
@@ -124,7 +124,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 0,
                 2, 1, 0.1, 2.2,
@@ -132,7 +132,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -141,7 +141,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0, 0,
                     2, 1, 0.1, 2.2,
@@ -188,7 +188,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 0,
                 2, 1, 0.1, 2.2,
@@ -199,7 +199,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -211,7 +211,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0, 0,
                     2, 1, 0.1, 2.2,
@@ -261,7 +261,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0,
                 0, 2, 1,
@@ -274,7 +274,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0,
@@ -288,7 +288,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0,
                     0, 2, 1,
@@ -340,7 +340,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0,
                 0, 2, 1,
@@ -357,7 +357,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0,
@@ -375,7 +375,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0,
                     0, 2, 1,
@@ -431,7 +431,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 0,
                 2, 1, 0.1, 2.2,
@@ -445,7 +445,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -460,7 +460,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0, 0,
                     2, 1, 0.1, 2.2,
@@ -513,7 +513,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0,
                 0, 2, 1,
@@ -526,7 +526,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0,
@@ -540,7 +540,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0,
                     0, 2, 1,
@@ -592,7 +592,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 0,
                 2, 1, 0.1, 2.2,
@@ -603,7 +603,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -615,7 +615,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0, 0,
                     2, 1, 0.1, 2.2,
@@ -665,7 +665,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 0,
                 2, 1, 0.1, 2.2,
@@ -682,7 +682,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -700,7 +700,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0, 0,
                     2, 1, 0.1, 2.2,
@@ -756,7 +756,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0,
                 0, 2, 1,
@@ -777,7 +777,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0,
@@ -799,7 +799,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0,
                     0, 2, 1,
@@ -859,7 +859,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0,
                 0, 2, 1,
@@ -888,7 +888,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0,
@@ -918,7 +918,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0,
                     0, 2, 1,
@@ -986,7 +986,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 0,
                 2, 1, 0.1, 2.2,
@@ -1009,7 +1009,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -1033,7 +1033,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0, 0,
                     2, 1, 0.1, 2.2,
@@ -1095,7 +1095,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0,
                 0, 2, 1,
@@ -1112,7 +1112,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0,
@@ -1130,7 +1130,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0,
                     0, 2, 1,
@@ -1186,7 +1186,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 0,
                 2, 1, 0.1, 2.2,
@@ -1200,7 +1200,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -1215,7 +1215,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0, 0,
                     2, 1, 0.1, 2.2,
@@ -1268,7 +1268,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 0,
                 2, 1, 0.1, 2.2,
@@ -1291,7 +1291,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -1315,7 +1315,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0, 0,
                     2, 1, 0.1, 2.2,
@@ -1377,7 +1377,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0,
                 0, 2, 1,
@@ -1406,7 +1406,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0,
@@ -1436,7 +1436,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0,
                     0, 2, 1,
@@ -1504,7 +1504,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0,
                 0, 2, 1,
@@ -1545,7 +1545,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0,
@@ -1587,7 +1587,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0,
                     0, 2, 1,
@@ -1667,7 +1667,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 0,
                 2, 1, 0.1, 2.2,
@@ -1699,7 +1699,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -1732,7 +1732,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -2, 0, 0,
                     2, 1, 0.1, 2.2,
@@ -1803,7 +1803,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 20,
                 0, 2, 1, -20,
@@ -1812,7 +1812,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1826,7 +1826,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
@@ -1878,7 +1878,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 20,
                 0, 2, 1, -20,
@@ -1891,7 +1891,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1913,7 +1913,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
@@ -1973,7 +1973,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 20,
                 0, 2, 1, -20,
@@ -1990,7 +1990,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2020,7 +2020,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
@@ -2088,7 +2088,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 20,
                 0, 2, 1, -20,
@@ -2101,7 +2101,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2123,7 +2123,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
@@ -2183,7 +2183,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 20,
                 0, 2, 1, -20,
@@ -2204,7 +2204,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2242,7 +2242,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
@@ -2318,7 +2318,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 20,
                 0, 2, 1, -20,
@@ -2347,7 +2347,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2401,7 +2401,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
@@ -2493,7 +2493,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 20,
                 0, 2, 1, -20,
@@ -2510,7 +2510,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2540,7 +2540,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
@@ -2608,7 +2608,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 20,
                 0, 2, 1, -20,
@@ -2637,7 +2637,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2691,7 +2691,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
@@ -2783,7 +2783,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1, -2, 0, 20,
                 0, 2, 1, -20,
@@ -2824,7 +2824,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0,
@@ -2902,7 +2902,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
                     -0.25, -0.25, -0.5, -0.5, 0, 0, 5, 5,
@@ -3018,7 +3018,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -9, -18, 0, 0.09,
                 0, -0.9, 0.45, -4.5,
@@ -3027,7 +3027,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -3045,7 +3045,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
@@ -3101,7 +3101,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -9, -18, 0, 0.09,
                 0, -0.9, 0.45, -4.5,
@@ -3114,7 +3114,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -3144,7 +3144,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
@@ -3212,7 +3212,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -9, -18, 0, 0.09,
                 0, -0.9, 0.45, -4.5,
@@ -3229,7 +3229,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -3271,7 +3271,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
@@ -3351,7 +3351,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -9, -18, 0, 0.09,
                 0, -0.9, 0.45, -4.5,
@@ -3364,7 +3364,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -3394,7 +3394,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
@@ -3462,7 +3462,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -9, -18, 0, 0.09,
                 0, -0.9, 0.45, -4.5,
@@ -3483,7 +3483,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -3537,7 +3537,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
@@ -3629,7 +3629,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -9, -18, 0, 0.09,
                 0, -0.9, 0.45, -4.5,
@@ -3658,7 +3658,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -3736,7 +3736,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
@@ -3852,7 +3852,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -9, -18, 0, 0.09,
                 0, -0.9, 0.45, -4.5,
@@ -3869,7 +3869,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -3911,7 +3911,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
@@ -3991,7 +3991,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -9, -18, 0, 0.09,
                 0, -0.9, 0.45, -4.5,
@@ -4020,7 +4020,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -4098,7 +4098,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
@@ -4214,7 +4214,7 @@
             ]
         },
         "n_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -9, -18, 0, 0.09,
                 0, -0.9, 0.45, -4.5,
@@ -4255,7 +4255,7 @@
             ]
         },
         "l_delta": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -4369,7 +4369,7 @@
         },
         "benchmark": {
             "l_delta": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,
                     -1, -1, -1, -2, -2, -2, 0, 0, 0, 0.01, 0.01, 0.01,

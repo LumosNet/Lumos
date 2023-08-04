@@ -7,7 +7,7 @@
             "BenchMark 9", "BenchMark 10", "BenchMark 11", "BenchMark 12"
         ],
         "params": [
-            "ksize", "bias", "active", "weights_init",
+            "ksize", "bias", "active",
             "h", "w", "c", "num", "input", "output",
             "kernel_weights", "bias_weights"
         ],
@@ -31,10 +31,6 @@
         "active": {
             "type": "string",
             "value": "linear"
-        },
-        "weights_init": {
-            "type": "string",
-            "value": "guass"
         },
         "h": {
             "type": "int",
@@ -61,32 +57,32 @@
             ]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     218.292
                 ]
@@ -109,10 +105,6 @@
         "active": {
             "type": "string",
             "value": "linear"
-        },
-        "weights_init": {
-            "type": "string",
-            "value": "guass"
         },
         "h": {
             "type": "int",
@@ -139,33 +131,33 @@
             ]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
                 321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     218.292,
                     218.292
@@ -189,10 +181,6 @@
         "active": {
             "type": "string",
             "value": "linear"
-        },
-        "weights_init": {
-            "type": "string",
-            "value": "guass"
         },
         "h": {
             "type": "int",
@@ -219,7 +207,7 @@
             ]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
                 321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
@@ -227,26 +215,26 @@
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     218.292,
                     218.292,
@@ -272,10 +260,6 @@
             "type": "string",
             "value": "linear"
         },
-        "weights_init": {
-            "type": "string",
-            "value": "guass"
-        },
         "h": {
             "type": "int",
             "value": [
@@ -301,32 +285,32 @@
             ]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     218.392014
                 ]
@@ -349,10 +333,6 @@
         "active": {
             "type": "string",
             "value": "linear"
-        },
-        "weights_init": {
-            "type": "string",
-            "value": "guass"
         },
         "h": {
             "type": "int",
@@ -379,33 +359,33 @@
             ]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
                 321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.1
             ]
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     218.192,
                     218.192
@@ -429,10 +409,6 @@
         "active": {
             "type": "string",
             "value": "linear"
-        },
-        "weights_init": {
-            "type": "string",
-            "value": "guass"
         },
         "h": {
             "type": "int",
@@ -459,7 +435,7 @@
             ]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
                 321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
@@ -467,26 +443,26 @@
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -1
             ]
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     217.292,
                     217.292,
@@ -512,10 +488,6 @@
             "type": "string",
             "value": "linear"
         },
-        "weights_init": {
-            "type": "string",
-            "value": "guass"
-        },
         "h": {
             "type": "int",
             "value": [
@@ -541,19 +513,19 @@
             ]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 321, 0, -7, 0.231, -1.314
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.037, -1.314, 0.231, -321, -21,
                 -7, 0, 7, 21, 321,
@@ -561,14 +533,14 @@
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -60.051,
                     -2712.9428,
@@ -593,10 +565,6 @@
         "active": {
             "type": "string",
             "value": "linear"
-        },
-        "weights_init": {
-            "type": "string",
-            "value": "guass"
         },
         "h": {
             "type": "int",
@@ -623,21 +591,21 @@
             ]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 321, 0, -7, 0.231, -1.314,
                 321, 0, -7, 0.231, -1.314
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.037, -1.314, 0.231, -321, -21,
                 -7, 0, 7, 21, 321,
@@ -645,14 +613,14 @@
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -60.051,
                     -2712.9428,
@@ -681,10 +649,6 @@
             "type": "string",
             "value": "linear"
         },
-        "weights_init": {
-            "type": "string",
-            "value": "guass"
-        },
         "h": {
             "type": "int",
             "value": [
@@ -710,7 +674,7 @@
             ]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 321, 0, -7, 0.231, -1.314,
                 321, 0, -7, 0.231, -1.314,
@@ -718,7 +682,7 @@
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0,
@@ -726,7 +690,7 @@
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.037, -1.314, 0.231, -321, -21,
                 -7, 0, 7, 21, 321,
@@ -734,14 +698,14 @@
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -60.051,
                     -2712.9428,
@@ -773,10 +737,6 @@
             "type": "string",
             "value": "linear"
         },
-        "weights_init": {
-            "type": "string",
-            "value": "guass"
-        },
         "h": {
             "type": "int",
             "value": [
@@ -802,19 +762,19 @@
             ]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 321, 0, -7, 0.231, -1.314
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.037, -1.314, 0.231, -321, -21,
                 -7, 0, 7, 21, 321,
@@ -822,14 +782,14 @@
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1, -0.1, 0
             ]
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -59.951,
                     -2713.0429,
@@ -854,10 +814,6 @@
         "active": {
             "type": "string",
             "value": "linear"
-        },
-        "weights_init": {
-            "type": "string",
-            "value": "guass"
         },
         "h": {
             "type": "int",
@@ -884,21 +840,21 @@
             ]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 321, 0, -7, 0.231, -1.314,
                 321, 0, -7, 0.231, -1.314
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.037, -1.314, 0.231, -321, -21,
                 -7, 0, 7, 21, 321,
@@ -906,14 +862,14 @@
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.1, 0, 0.1
             ]
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -60.151,
                     -2712.9428,
@@ -942,10 +898,6 @@
             "type": "string",
             "value": "linear"
         },
-        "weights_init": {
-            "type": "string",
-            "value": "guass"
-        },
         "h": {
             "type": "int",
             "value": [
@@ -971,7 +923,7 @@
             ]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 321, 0, -7, 0.231, -1.314,
                 321, 0, -7, 0.231, -1.314,
@@ -979,7 +931,7 @@
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0,
                 0, 0, 0,
@@ -987,7 +939,7 @@
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -0.037, -1.314, 0.231, -321, -21,
                 -7, 0, 7, 21, 321,
@@ -995,14 +947,14 @@
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1, 0, -0.1
             ]
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -59.951,
                     -2712.9428,

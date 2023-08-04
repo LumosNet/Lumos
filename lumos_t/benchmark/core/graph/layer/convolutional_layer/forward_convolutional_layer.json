@@ -64,7 +64,7 @@
             "value": [1]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 1, 2, 3, 4, 5,
                 1.21, 2.31, 3.42, 4.53, 5.12,
@@ -74,7 +74,7 @@
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0,
@@ -84,19 +84,19 @@
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -7.35
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "workspace": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0,
@@ -108,7 +108,7 @@
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -7.35, -14.7, -22.05, -29.4, -36.75,
                     -8.8935, -16.9785, -25.137, -33.2955, -37.632,
@@ -169,7 +169,7 @@
             "value": [1]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 1, 2, 3, 4, 5,
                 1.21, 2.31, 3.42, 4.53, 5.12,
@@ -179,7 +179,7 @@
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0,
@@ -195,19 +195,19 @@
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -7.35, 3.15
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "workspace": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0,
@@ -219,7 +219,7 @@
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -7.35, -14.7, -22.05, -29.4, -36.75,
                     -8.8935, -16.9785, -25.137, -33.2955, -37.632,
@@ -286,7 +286,7 @@
             "value": [1]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 1, 2, 3, 4, 5,
                 1.21, 2.31, 3.42, 4.53, 5.12,
@@ -296,7 +296,7 @@
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0,
@@ -318,19 +318,19 @@
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -7.35, 3.15, 0
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "workspace": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0,
@@ -342,7 +342,7 @@
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -7.35, -14.7, -22.05, -29.4, -36.75,
                     -8.8935, -16.9785, -25.137, -33.2955, -37.632,
@@ -415,7 +415,7 @@
             "value": [1]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 1, 2, 3, 4, 5,
                 1.21, 2.31, 3.42, 4.53, 5.12,
@@ -425,7 +425,7 @@
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0,
                 0, 0, 0, 0,
@@ -434,20 +434,20 @@
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -7.35, 0.1,
                 -1.23, 2.47
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "workspace": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0,
@@ -459,7 +459,7 @@
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -7.35, -14.7, -22.05, -29.4, -36.75,
                     -8.8935, -16.9785, -25.137, -33.2955, -37.632,
@@ -520,7 +520,7 @@
             "value": [1]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 1, 2, 3, 4, 5,
                 1.21, 2.31, 3.42, 4.53, 5.12,
@@ -530,7 +530,7 @@
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0,
@@ -546,19 +546,19 @@
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -7.35, 3.15
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "workspace": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0,
@@ -570,7 +570,7 @@
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -7.35, -14.7, -22.05, -29.4, -36.75,
                     -8.8935, -16.9785, -25.137, -33.2955, -37.632,
@@ -637,7 +637,7 @@
             "value": [1]
         },
         "input": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 1, 2, 3, 4, 5,
                 1.21, 2.31, 3.42, 4.53, 5.12,
@@ -647,7 +647,7 @@
             ]
         },
         "output": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0,
@@ -669,19 +669,19 @@
             ]
         },
         "kernel_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 -7.35, 3.15, 0
             ]
         },
         "bias_weights": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0.1
             ]
         },
         "workspace": {
-            "type": "float",
+            "type": "float g",
             "value": [
                 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0,
@@ -693,7 +693,7 @@
         },
         "benchmark": {
             "output": {
-                "type": "float",
+                "type": "float g",
                 "value": [
                     -7.35, -14.7, -22.05, -29.4, -36.75,
                     -8.8935, -16.9785, -25.137, -33.2955, -37.632,

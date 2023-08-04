@@ -10,6 +10,7 @@ void call_forward_avgpool_layer_gpu(void **params, void **ret)
     float *input = (float*)params[5];
     float *output = (float*)params[6];
     Layer *l = make_avgpool_layer(ksize[0], ksize[0], 0);
+    l->coretype = GPU;
     init_avgpool_layer(l, w[0], h[0], c[0]);
     l->input = input;
     l->output = output;
@@ -28,6 +29,7 @@ void call_backward_avgpool_layer_gpu(void **params, void **ret)
     float *n_delta = (float*)params[6];
     float *l_delta = (float*)params[7];
     Layer *l = make_avgpool_layer(ksize[0], ksize[0], 0);
+    l->coretype = GPU;
     init_avgpool_layer(l, w[0], h[0], c[0]);
     l->delta = l_delta;
     l->backward(*l, rate[0], num[0], n_delta);
