@@ -99,13 +99,14 @@ ifeq ($(TEST), 1)
 OBJ+=   bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call.o \
 	    avgpool_layer_call.o batchnorm_layer_call.o connect_layer_call.o convolutional_layer_call.o im2col_layer_call.o maxpool_layer_call.o \
 	    mse_layer_call.o \
-	    analysis_benchmark_file.o call.o compare.o run_test.o utest.o
+	    analysis_benchmark_file.o call.o compare.o run_test.o utest.o \
+		dropout_rand_call.o layer_delta_call.o loss_call.o maxpool_index_call.o mean_call.o normalize_x_size_call.o \
+	  	output_call.o roll_mean_call.o roll_variance_call.o truth_call.o update_weights_call.o variance_call.o weights_call.o \
+	  	x_norm_call.o
 
 OBJ+= bias_gpu_call.o cpu_gpu_call.o gemm_gpu_call.o im2col_gpu_call.o pooling_gpu_call.o \
 	  avgpool_layer_gpu_call.o connect_layer_gpu_call.o convolutional_layer_gpu_call.o im2col_layer_gpu_call.o maxpool_layer_gpu_call.o \
-	  dropout_rand_call.o layer_delta_call.o loss_call.o maxpool_index_call.o mean_call.o normalize_x_size_call.o \
-	  output_call.o roll_mean_call.o roll_variance_call.o truth_call.o update_weights_call.o variance_call.o weights_call.o \
-	  x_norm_call.o
+	  dropout_rand_gpu_call.o layer_delta_gpu_call.o
 endif
 
 ifeq ($(TEST),1)
