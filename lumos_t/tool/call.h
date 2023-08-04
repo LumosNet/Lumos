@@ -38,7 +38,6 @@
 #include "loss_call.h"
 #include "maxpool_index_call.h"
 #include "mean_call.h"
-#include "normalize_x_size_call.h"
 #include "output_call.h"
 #include "roll_mean_call.h"
 #include "roll_variance_call.h"

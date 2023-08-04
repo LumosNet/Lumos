@@ -19,5 +19,5 @@ void call_dropout_rand_gpu(void **params, void **ret)
             offset += l->inputs*sess->subdivision;
         }
     }
-    ret[0] = sess->dropout_rand;
+    ret[0] = sess->dropout_rand_gpu;
 }

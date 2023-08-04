@@ -86,8 +86,6 @@ int call(char *interface, void **params, void **ret)
         call_maxpool_index(params, ret);
     } else if (0 == strcmp(interface, "mean")){
         call_mean(params, ret);
-    } else if (0 == strcmp(interface, "normalize_x_size")){
-        call_normalize_x_size(params, ret);
     } else if (0 == strcmp(interface, "output")){
         call_output(params, ret);
     } else if (0 == strcmp(interface, "roll_mean")){

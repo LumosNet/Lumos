@@ -1,5 +1,5 @@
-#ifndef NORMALIZE_X_SIZE_CALL_H
-#define NORMALIZE_X_SIZE_CALL_H
+#ifndef NORMALIZE_MEAN_GPU_CALL_H
+#define NORMALIZE_MEAN_GPU_CALL_H
 
 #include "session.h"
 #include "manager.h"
@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
-void call_normalize_x_size(void **params, void **ret);
+void call_normalize_mean_gpu(void **params, void **ret);
 
 #ifdef __cplusplus
 }
