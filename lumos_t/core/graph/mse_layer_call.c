@@ -13,6 +13,7 @@ void call_forward_mse_layer(void **params, void **ret)
     float *workspace = (float*)params[8];
     float *loss = (float*)params[9];
     Layer *l = make_mse_layer(group[0]);
+    l->coretype = CPU;
     init_mse_layer(l, w[0], h[0], c[0]);
     l->input = input;
     l->output = output;

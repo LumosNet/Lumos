@@ -19,14 +19,15 @@ void call_forward_convolutional_layer_gpu(void **params, void **ret)
     float *bias_weights = (float*)params[15];
     float *workspace = (float*)params[16];
     Layer *l = make_convolutional_layer(filters[0], ksize[0], stride[0], pad[0], bias[0], normalization[0], active);
+    l->coretype = GPU;
     init_convolutional_layer(l, w[0], h[0], c[0]);
     l->input = input;
     l->output = output;
-    l->kernel_weights = kernel_weights;
-    l->bias_weights = bias_weights;
+    l->kernel_weights_gpu = kernel_weights;
+    l->bias_weights_gpu = bias_weights;
     l->workspace = workspace;
     l->forward(*l, num[0]);
-    ret[0] = output;
+    ret[0] = l->output;
 }
 
 void call_backward_convolutional_layer_gpu(void **params, void **ret)
@@ -53,17 +54,18 @@ void call_backward_convolutional_layer_gpu(void **params, void **ret)
     float *update_bias_weights = (float*)params[20];
     float *workspace = (float*)params[21];
     Layer *l = make_convolutional_layer(filters[0], ksize[0], stride[0], pad[0], bias[0], normalization[0], active);
+    l->coretype = GPU;
     init_convolutional_layer(l, w[0], h[0], c[0]);
     l->input = input;
     l->output = output;
-    l->kernel_weights = kernel_weights;
-    l->update_kernel_weights = update_kernel_weights;
-    l->bias_weights = bias_weights;
-    l->update_bias_weights = update_bias_weights;
+    l->kernel_weights_gpu = kernel_weights;
+    l->update_kernel_weights_gpu = update_kernel_weights;
+    l->bias_weights_gpu = bias_weights;
+    l->update_bias_weights_gpu = update_bias_weights;
     l->delta = l_delta;
     l->workspace = workspace;
     l->backward(*l, rate[0], num[0], n_delta);
-    ret[0] = l_delta;
-    ret[1] = update_kernel_weights;
-    ret[2] = update_bias_weights;
+    ret[0] = l->delta;
+    ret[1] = l->update_kernel_weights_gpu;
+    ret[2] = l->update_bias_weights_gpu;
 }
