@@ -181,6 +181,32 @@ int call_cu(char *interface, void **params, void **ret)
         call_forward_maxpool_layer_gpu(params, ret);
     } else if (0 == strcmp(interface, "backward_maxpool_layer")){
         call_backward_maxpool_layer_gpu(params, ret);
+    } else if (0 == strcmp(interface, "dropout_rand")){
+        call_dropout_rand_gpu(params, ret);
+    } else if (0 == strcmp(interface, "layer_delta")){
+        call_layer_delta_gpu(params, ret);
+    } else if (0 == strcmp(interface, "loss")){
+        call_loss_gpu(params, ret);
+    } else if (0 == strcmp(interface, "maxpool_index")){
+        call_maxpool_index_gpu(params, ret);
+    } else if (0 == strcmp(interface, "mean")){
+        call_normalize_mean_gpu(params, ret);
+    } else if (0 == strcmp(interface, "output")){
+        call_output_gpu(params, ret);
+    } else if (0 == strcmp(interface, "roll_mean")){
+        call_roll_mean_gpu(params, ret);
+    } else if (0 == strcmp(interface, "roll_variance")){
+        call_roll_variance_gpu(params, ret);
+    } else if (0 == strcmp(interface, "truth")){
+        call_truth_gpu(params, ret);
+    } else if (0 == strcmp(interface, "update_weights")){
+        call_update_weights_gpu(params, ret);
+    } else if (0 == strcmp(interface, "variance")){
+        call_variance_gpu(params, ret);
+    } else if (0 == strcmp(interface, "weights")){
+        call_weights_gpu(params, ret);
+    } else if (0 == strcmp(interface, "x_norm")){
+        call_x_norm_gpu(params, ret);
     } else {
         fprintf(stderr, "  interface: %s is not in the testlist\n", interface);
         return 0;

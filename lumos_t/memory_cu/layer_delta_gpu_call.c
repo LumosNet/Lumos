@@ -12,10 +12,8 @@ void call_layer_delta_gpu(void **params, void **ret)
     for (int i = 0; i < graph->layer_num; ++i){
         l = graph->layers[i];
         float *delta = layer_delta + offset;
-        for (int j = 0; j < l->deltas * sess->subdivision; ++j){
-            l->delta[j] = delta[j];
-        }
-        offset += l->deltas * sess->subdivision;
+        cudaMemcpy(l->delta, delta, l->deltas*sess->subdivision*sizeof(float), cudaMemcpyDeviceToDevice);
+        offset += l->deltas*sess->subdivision;
     }
     ret[0] = sess->layer_delta_gpu;
 }

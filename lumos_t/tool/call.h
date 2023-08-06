@@ -47,6 +47,20 @@
 #include "weights_call.h"
 #include "x_norm_call.h"
 
+#include "dropout_rand_gpu_call.h"
+#include "layer_delta_gpu_call.h"
+#include "loss_gpu_call.h"
+#include "maxpool_index_gpu_call.h"
+#include "normalize_mean_gpu_call.h"
+#include "output_gpu_call.h"
+#include "roll_mean_gpu_call.h"
+#include "roll_variance_gpu_call.h"
+#include "truth_gpu_call.h"
+#include "update_weights_gpu_call.h"
+#include "variance_gpu_call.h"
+#include "weights_gpu_call.h"
+#include "x_norm_gpu_call.h"
+
 #include "utest.h"
 
 #ifdef  __cplusplus
