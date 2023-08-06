@@ -1,0 +1,55 @@
+{
+    "Public": {
+        "width": 16,
+        "height": 16,
+        "channel": 3,
+        "label": 10,
+        "batch": 4,
+        "subdivision": 4,
+        "epoch": 100,
+        "learning_rate": 0.1
+    },
+    "Initializer": {
+        "type": "HE"
+    },
+    "Layers": [
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 2,
+            "ksize": 4,
+            "stride": 1,
+            "pad": 0,
+            "bias": 1,
+            "normalization": 0,
+            "active": "relu"
+        },
+        {
+            "type": "AVGPOOL",
+            "ksize": 2,
+            "stride": 2,
+            "pad": 0
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 4,
+            "ksize": 2,
+            "stride": 2,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 0,
+            "active": "relu"
+        },
+        {
+            "type": "AVGPOOL",
+            "ksize": 2,
+            "stride": 2,
+            "pad": 0
+        },
+        {
+            "type": "MAXPOOL",
+            "ksize": 2,
+            "stride": 2,
+            "pad": 0
+        }
+    ]
+}

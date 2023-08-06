@@ -2,7 +2,7 @@
     "Public": {
         "interface": "layer_delta",
         "benchmarks": [
-            "BenchMark 1"
+            "BenchMark 1", "BenchMark 2"
         ],
         "params": [
             "path", "delta"
@@ -387,6 +387,26 @@
                 -4, -0.4, -5, -0.5,
                 -1, -0.1, -2, -0.2, -3, -0.3,
                 -4, -0.4, -5, -0.5
+                ]
+            }
+        }
+    },
+    "BenchMark 2": {
+        "path": {
+            "type": "string",
+            "value": "./lumos_t/conf/layer_delta_cnv1.json"
+        },
+        "delta": {
+            "type": "float g",
+            "value": [
+                
+            ]
+        },
+        "benchmark": {
+            "delta": {
+                "type": "float g",
+                "value": [
+                    
                 ]
             }
         }
