@@ -1,12 +1,12 @@
 {
     "Public": {
-        "width": 2,
-        "height": 1,
-        "channel": 1,
-        "label": 2,
-        "batch": 2,
-        "subdivision": 2,
-        "epoch": 50,
+        "width": 4,
+        "height": 4,
+        "channel": 3,
+        "label": 10,
+        "batch": 4,
+        "subdivision": 4,
+        "epoch": 100,
         "learning_rate": 0.1
     },
     "Initializer": {
@@ -19,21 +19,32 @@
         },
         {
             "type": "CONNECT",
-            "output": 4,
+            "output": 24,
             "bias": 1,
             "normalization": 0,
             "active": "relu"
         },
         {
             "type": "CONNECT",
-            "output": 2,
+            "output": 12,
             "bias": 1,
             "normalization": 0,
             "active": "relu"
         },
         {
+            "type": "CONNECT",
+            "output": 10,
+            "bias": 1,
+            "normalization": 0,
+            "active": "relu"
+        },
+        {
+            "type": "SOFTMAX",
+            "group": 10
+        },
+        {
             "type": "MSE",
-            "group": 2
+            "group": 10
         }
     ]
 }

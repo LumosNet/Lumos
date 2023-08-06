@@ -4,6 +4,7 @@ void call_layer_delta(void **params, void **ret)
 {
     char *graphF = params[0];
     float *layer_delta = params[1];
+    printf("-----------------in\n");
     Session *sess = load_session_json(graphF, "cpu");
     init_train_scene(sess, NULL);
     Graph *graph = sess->graph;
