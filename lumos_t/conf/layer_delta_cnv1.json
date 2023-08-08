@@ -4,8 +4,8 @@
         "height": 16,
         "channel": 3,
         "label": 10,
-        "batch": 4,
-        "subdivision": 4,
+        "batch": 16,
+        "subdivision": 16,
         "epoch": 100,
         "learning_rate": 0.1
     },

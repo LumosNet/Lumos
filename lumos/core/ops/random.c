@@ -44,6 +44,13 @@ void normal_list(int num, float *space)
 	}
 }
 
+void uniform_int_list(int a, int b, int num, float *space)
+{
+    for (int i = 0; i < num; ++i){
+        space[i] = (int)rand_uniform(a, b);
+    }
+}
+
 void uniform_list(float a, float b, int num, float *space)
 {
 	for (int i = 0; i < num; ++i){

@@ -46,11 +46,13 @@ int run_by_benchmark_file(char *path, int coretype)
         if (coretype == CPU){
             get_params_value(CJsinglebench, params, params_num, space, params_num_list, params_types);
             get_compare_value(CJsinglebench, compares, compares_num, compare, compares_num_list, compares_types);
+            get_copy_value_cpu(space, compare, params, params_num_list, compares_num_list, params_types, compares_types, compares_num, params_num);
             fprintf(stderr, "  Load running params\n");
             flag = call(interface, space, ret);
         } else {
             get_params_value_gpu(CJsinglebench, params, params_num, space, params_num_list, params_types);
             get_compare_value_gpu(CJsinglebench, compares, compares_num, compare, compares_num_list, compares_types);
+            get_copy_value_gpu(space, compare, params, params_num_list, compares_num_list, params_types, compares_types, compares_num, params_num);
             fprintf(stderr, "  Load running params\n");
             flag = call_cu(interface, space, ret);
         }

@@ -103,6 +103,74 @@ void get_compare_value_gpu(cJSON *single_benchmark, char **compares, int compare
     load_params_gpu(cjson_benchmark_value, compares, space, num_list, types, compare_num);
 }
 
+void get_copy_value_cpu(void **params, void **compares, char **param_names, int *param_num_list, int *compare_num_list, char **param_types, char **compare_types, int compares_num, int params_num)
+{
+    for (int i = 0; i < compares_num; ++i){
+        if (0 == strcmp(compare_types[i], "copy")){
+            char *param_name = compares[i];
+            for (int j = 0; j < params_num; ++j){
+                if (0 == strcmp(param_name, param_names[j])){
+                    char *type = param_types[j];
+                    if (0 == strcmp(type, "float") || 0 == strcmp(type, "float g")){
+                        float *value = malloc(param_num_list[j]*sizeof(float));
+                        memcpy(value, params[j], param_num_list[j]*sizeof(float));
+                        compares[i] = value;
+                        compare_num_list[i] = param_num_list[j];
+                        compare_types[i] = param_types[j];
+                    } else if (0 == strcmp(type, "int") || 0 == strcmp(type, "int g")){
+                        float *value = malloc(param_num_list[j]*sizeof(int));
+                        memcpy(value, params[j], param_num_list[j]*sizeof(int));
+                        compares[i] = value;
+                        compare_num_list[i] = param_num_list[j];
+                        compare_types[i] = param_types[j];
+                    }
+                }
+            }
+        }
+    }
+}
+
+void get_copy_value_gpu(void **params, void **compares, char **param_names, int *param_num_list, int *compare_num_list, char **param_types, char **compare_types, int compares_num, int params_num)
+{
+    for (int i = 0; i < compares_num; ++i){
+        if (0 == strcmp(compare_types[i], "copy")){
+            char *param_name = compares[i];
+            for (int j = 0; j < params_num; ++j){
+                if (0 == strcmp(param_name, param_names[j])){
+                    char *type = param_types[j];
+                    if (0 == strcmp(type, "float")){
+                        float *value = malloc(param_num_list[j]*sizeof(float));
+                        memcpy(value, params[j], param_num_list[j]*sizeof(float));
+                        compares[i] = value;
+                        compare_num_list[i] = param_num_list[j];
+                        compare_types[i] = param_types[j];
+                    } else if (0 == strcmp(type, "int")){
+                        float *value = malloc(param_num_list[j]*sizeof(int));
+                        memcpy(value, params[j], param_num_list[j]*sizeof(int));
+                        compares[i] = value;
+                        compare_num_list[i] = param_num_list[j];
+                        compare_types[i] = param_types[j];
+                    } else if (0 == strcmp(type, "float g")){
+                        float *value = NULL;
+                        cudaMalloc((void**)&value, param_num_list[j]*sizeof(float));
+                        cudaMemcpy(value, params[j], param_num_list[j]*sizeof(float), cudaMemcpyDeviceToDevice);
+                        compares[i] = value;
+                        compare_num_list[i] = param_num_list[j];
+                        compare_types[i] = param_types[j];
+                    } else if (0 == strcmp(type, "int g")){
+                        float *value = NULL;
+                        cudaMalloc((void**)&value, param_num_list[j]*sizeof(int));
+                        cudaMemcpy(value, params[j], param_num_list[j]*sizeof(int), cudaMemcpyDeviceToDevice);
+                        compares[i] = value;
+                        compare_num_list[i] = param_num_list[j];
+                        compare_types[i] = param_types[j];
+                    }
+                }
+            }
+        }
+    }
+}
+
 void load_params(cJSON *cjson_benchmark, char **param_names, void **space, int *num_list, char **types, int num)
 {
     for (int i = 0; i < num; ++i){
@@ -121,7 +189,7 @@ int load_param(cJSON *cjson_benchmark, char *param_name, void **space, char **ty
     cjson_type = cJSON_GetObjectItem(cjson_param, "type");
     cjson_value = cJSON_GetObjectItem(cjson_param, "value");
     char *type = cjson_type->valuestring;
-    if (0 == strcmp(type, "string")){
+    if (0 == strcmp(type, "string") || 0 == strcmp(type, "copy")){
         value = cJSON_GetStringValue(cjson_value);
         size = 1;
     } else {
@@ -132,6 +200,12 @@ int load_param(cJSON *cjson_benchmark, char *param_name, void **space, char **ty
         } else if (0 == strcmp(type, "int") || 0 == strcmp(type, "int g")){
             value = (void*)malloc(size*sizeof(int));
             load_int_array(cjson_value, value, size);
+        } else if (0 == strcmp(type, "random f") || 0 == strcmp(type, "random fg")){
+            value = (void*)malloc(size*sizeof(float));
+            uniform_list(-10, 10, size, value);
+        } else if (0 == strcmp(type, "random i") || 0 == strcmp(type, "random ig")){
+            value = (void*)malloc(size*sizeof(int));
+            uniform_int_list(10, 10, size, value);
         }
     }
     space[index] = value;

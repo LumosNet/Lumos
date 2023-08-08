@@ -7,6 +7,7 @@
 
 #include "cJSON.h"
 #include "cJSON_Utils.h"
+#include "random.h"
 
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
@@ -28,6 +29,8 @@ void get_params_value(cJSON *single_benchmark, char **params, int param_num, voi
 void get_compare_value(cJSON *single_benchmark, char **compares, int compare_num, void **space, int *num_list, char **types);
 void get_params_value_gpu(cJSON *single_benchmark, char **params, int param_num, void **space, int *num_list, char **types);
 void get_compare_value_gpu(cJSON *single_benchmark, char **compares, int compare_num, void **space, int *num_list, char **types);
+void get_copy_value_cpu(void **params, void **compares, char **param_names, int *param_num_list, int *compare_num_list, char **param_types, char **compare_types, int compares_num, int params_num);
+void get_copy_value_gpu(void **params, void **compares, char **param_names, int *param_num_list, int *compare_num_list, char **param_types, char **compare_types, int compares_num, int params_num);
 
 void load_params_gpu(cJSON *cjson_benchmark, char **param_names, void **space, int *num_list, char **types, int num);
 int load_param_gpu(cJSON *cjson_benchmark, char *param_name, void **space, char **types, int index);
