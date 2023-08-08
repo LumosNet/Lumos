@@ -7,6 +7,8 @@ Layer *make_dropout_layer(float probability)
     l->probability = probability;
 
     l->weights = 0;
+    l->batchnorm = 0;
+    l->bias = 0;
     l->update = NULL;
 
     fprintf(stderr, "Dropout   Layer    :    [probability=%.2f]\n", l->probability);

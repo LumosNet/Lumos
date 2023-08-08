@@ -6,6 +6,8 @@ Layer *make_mse_layer(int group)
     l->type = MSE;
     l->group = group;
     l->weights = 0;
+    l->batchnorm = 0;
+    l->bias = 0;
     l->update = NULL;
 
     fprintf(stderr, "Mse             Layer    :    [output=%4d]\n", 1);

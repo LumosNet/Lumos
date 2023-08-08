@@ -6,6 +6,8 @@ Layer *make_shortcut_layer(int index, char *active)
     l->type = SHORTCUT;
     l->shortcut_index = index;
     l->weights = 0;
+    l->batchnorm = 0;
+    l->bias = 0;
 
     l->active_str = active;
     Activation type = load_activate_type(active);

@@ -141,6 +141,5 @@ void run_all_cases(char *listpath, int flag)
 void run_by_interface(char *interface, int coretype)
 {
     char *benchmark = interface_to_benchmark(interface);
-    printf("%s\n", benchmark);
     run_by_benchmark_file(benchmark, coretype);
 }

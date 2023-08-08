@@ -6,6 +6,8 @@ Layer *make_avgpool_layer(int ksize, int stride, int pad)
     l->type = AVGPOOL;
     l->pad = pad;
     l->weights = 0;
+    l->batchnorm = 0;
+    l->bias = 0;
 
     l->ksize = ksize;
     l->stride = stride;

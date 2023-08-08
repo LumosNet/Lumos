@@ -6,6 +6,8 @@ Layer *make_maxpool_layer(int ksize, int stride, int pad)
     l->type = MAXPOOL;
     l->pad = pad;
     l->weights = 0;
+    l->batchnorm = 0;
+    l->bias = 0;
 
     l->ksize = ksize;
     l->stride = stride;

@@ -6,6 +6,8 @@ Layer *make_softmax_layer(int group)
     l->type = SOFTMAX;
     l->group = group;
     l->weights = 0;
+    l->batchnorm = 0;
+    l->bias = 0;
     l->update = NULL;
 
     fprintf(stderr, "Softmax         Layer    :    [output=%4d]\n", group);
