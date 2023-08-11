@@ -39,7 +39,7 @@
         "benchmark": {
             "output": {
                 "type": "copy",
-                "value": "output"
+                "value": "input"
             },
             "h": {
                 "type": "int",

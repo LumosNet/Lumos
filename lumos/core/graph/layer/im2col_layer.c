@@ -9,7 +9,7 @@ Layer *make_im2col_layer()
     l->bias = 0;
     l->update = NULL;
 
-    fprintf(stderr, "Im2col          Layer");
+    fprintf(stderr, "Im2col          Layer\n");
     return l;
 }
 

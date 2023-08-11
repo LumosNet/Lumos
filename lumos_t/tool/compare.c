@@ -34,15 +34,19 @@ int compare_int_array(int *a, int *b, int num)
 
 int compare_array_gpu(void *a, void *b, char *type, int num)
 {
-    if (0 == strcmp(type, "int") || 0 == strcmp(type, "int g")){
+    if (0 == strcmp(type, "int")){
+        return compare_int_array(a, b, num);
+    } else if (0 == strcmp(type, "float")){
+        return compare_float_array(a, b, num);
+    } else if (0 == strcmp(type, "int g")){
         return compare_int_array_gpu(a, b, num);
-    } else if (0 == strcmp(type, "float") || 0 == strcmp(type, "float g")){
+    } else if (0 == strcmp(type, "float g")){
         return compare_float_array_gpu(a, b, num);
     } else {
         fprintf(stderr, "Not Supported DataType!\n");
     }
     return 0;
-}
+} 
 
 int compare_float_array_gpu(float *a, float *b, int num)
 {
