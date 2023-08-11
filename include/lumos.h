@@ -101,7 +101,6 @@ struct layer{
     int stride;
     int pad;
     int group;
-    int im2col_flag;
 
     int weights;
     int bias;
@@ -251,7 +250,7 @@ void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta);
 
 void update_convolutional_layer(Layer l, float rate, int num, float *n_delta);
 
-Layer *make_im2col_layer(int flag);
+Layer *make_im2col_layer();
 
 void init_im2col_layer(Layer *l, int w, int h, int c);
 

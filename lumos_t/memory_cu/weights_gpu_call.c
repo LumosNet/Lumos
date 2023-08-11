@@ -14,22 +14,16 @@ void call_weights_gpu(void **params, void **ret)
         l = graph->layers[i];
         if (l->weights){
             weights_c = weights + offset;
-            for (int j = 0; j < l->kernel_weights_size; ++j){
-                l->kernel_weights_gpu[j] = weights_c[j];
-            }
+            cudaMemcpy(l->kernel_weights_gpu, weights_c, l->kernel_weights_size*sizeof(float), cudaMemcpyDeviceToDevice);
             offset += l->kernel_weights_size;
             if (l->bias){
                 weights_c = weights + offset;
-                for (int j = 0; j < l->bias_weights_size; ++j){
-                    l->bias_weights_gpu[j] = weights_c[j];
-                }
+                cudaMemcpy(l->bias_weights_gpu, weights_c, l->bias_weights_size*sizeof(float), cudaMemcpyDeviceToDevice);
                 offset += l->bias_weights_size;
             }
             if (l->batchnorm){
                 weights_c = weights + offset;
-                for (int j = 0; j < l->normalize_weights_size; ++j){
-                    l->normalize_weights_gpu[j] = weights_c[j];
-                }
+                cudaMemcpy(l->normalize_weights_gpu, weights_c, l->normalize_weights_size*sizeof(float), cudaMemcpyDeviceToDevice);
                 offset += l->normalize_weights_size;
             }
         }

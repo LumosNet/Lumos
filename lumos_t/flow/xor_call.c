@@ -10,7 +10,7 @@ void call_xor(void **params, void **ret)
     char *label_path = params[5];
     char *weights_path = params[6];
     Graph *graph = create_graph("xor", 5);
-    Layer *l1 = make_im2col_layer(1);
+    Layer *l1 = make_im2col_layer();
     Layer *l2 = make_connect_layer(4, 1, 0, "relu");
     Layer *l3 = make_connect_layer(2, 1, 0, "relu");
     Layer *l4 = make_mse_layer(2);

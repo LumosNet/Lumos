@@ -718,7 +718,6 @@ Graph *load_graph_json(cJSON *cjson_graph)
 {
     cJSON *cjson_layer = NULL;
     cJSON *cjson_type = NULL;
-    cJSON *cjson_flag = NULL;
     cJSON *cjson_output = NULL;
     cJSON *cjson_bias = NULL;
     cJSON *cjson_active = NULL;
@@ -740,7 +739,6 @@ Graph *load_graph_json(cJSON *cjson_graph)
     int pad = 0;
     int normalization = 0;
     float probability = 0;
-    int flag = 0;
     int group = 0;
     int shortcut_index = 0;
     int size = cJSON_GetArraySize(cjson_graph);
@@ -789,9 +787,7 @@ Graph *load_graph_json(cJSON *cjson_graph)
             probability = cjson_probability->valuedouble;
             l = make_dropout_layer(probability);
         } else if (0 == strcmp(type, "IM2COL")){
-            cjson_flag = cJSON_GetObjectItem(cjson_layer, "flag");
-            flag = cjson_flag->valueint;
-            l = make_im2col_layer(flag);
+            l = make_im2col_layer();
         } else if (0 == strcmp(type, "MAXPOOL")){
             cjson_ksize = cJSON_GetObjectItem(cjson_layer, "ksize");
             cjson_stride = cJSON_GetObjectItem(cjson_layer, "stride");

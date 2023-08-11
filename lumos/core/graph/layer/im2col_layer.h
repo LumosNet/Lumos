@@ -13,7 +13,7 @@
 extern "C" {
 #endif
 
-Layer *make_im2col_layer(int flag);
+Layer *make_im2col_layer();
 
 void init_im2col_layer(Layer *l, int w, int h, int c);
 

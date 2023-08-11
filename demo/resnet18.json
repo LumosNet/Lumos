@@ -264,8 +264,7 @@
             "active": "linear"
         },
         {
-            "type": "IM2COL",
-            "flag": 1
+            "type": "IM2COL"
         },
         {
             "type": "CONNECT",

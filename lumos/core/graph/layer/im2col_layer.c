@@ -1,17 +1,15 @@
 #include "im2col_layer.h"
 
-Layer *make_im2col_layer(int flag)
+Layer *make_im2col_layer()
 {
     Layer *l = malloc(sizeof(Layer));
     l->type = IM2COL;
     l->weights = 0;
     l->batchnorm = 0;
     l->bias = 0;
-
-    l->im2col_flag = flag;
     l->update = NULL;
 
-    fprintf(stderr, "Im2col          Layer    :    [flag=%d]\n", l->im2col_flag);
+    fprintf(stderr, "Im2col          Layer");
     return l;
 }
 
