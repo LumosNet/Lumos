@@ -12,7 +12,7 @@ void call_output_gpu(void **params, void **ret)
     for (int i = 0; i < graph->layer_num; ++i){
         l = graph->layers[i];
         float *output_el = output + offset;
-        memcpy(l->output, output_el, l->outputs*sess->subdivision*sizeof(float));
+        cudaMemcpy(l->output, output_el, l->outputs*sess->subdivision*sizeof(float), cudaMemcpyDeviceToDevice);
         offset += l->outputs * sess->subdivision;
     }
     ret[0] = sess->output_gpu;
