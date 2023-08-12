@@ -1,0 +1,86 @@
+{
+    "Public": {
+        "interface": "backward_im2col_layer",
+        "benchmarks": [
+            "BenchMark 1"
+        ],
+        "params": [
+            "h", "w", "c", "num", "rate", "l_delta", "n_delta"
+        ],
+        "compares": [
+            "n_delta"
+        ]
+    },
+    "BenchMark 1": {
+        "h": {
+            "type": "int",
+            "value": [25]
+        },
+        "w": {
+            "type": "int",
+            "value": [26]
+        },
+        "c": {
+            "type": "int",
+            "value": [1]
+        },
+        "num": {
+            "type": "int",
+            "value": [1]
+        },
+        "rate": {
+            "type": "float",
+            "value": [0.1]
+        },
+        "l_delta": {
+            "type":"random fg",
+            "value": [650]
+        },
+        "n_delta": {
+            "type": "random fg",
+            "value": [650]
+        },
+        "benchmark": {
+            "n_delta": {
+                "type": "copy",
+                "value": "n_delta"
+            }
+        }
+    },
+    "BenchMark 2": {
+        "h": {
+            "type": "int",
+            "value": [25]
+        },
+        "w": {
+            "type": "int",
+            "value": [26]
+        },
+        "c": {
+            "type": "int",
+            "value": [1]
+        },
+        "num": {
+            "type": "int",
+            "value": [4]
+        },
+        "rate": {
+            "type": "float",
+            "value": [0.1]
+        },
+        "l_delta": {
+            "type":"random fg",
+            "value": [2600]
+        },
+        "n_delta": {
+            "type": "random fg",
+            "value": [2600]
+        },
+        "benchmark": {
+            "n_delta": {
+                "type": "copy",
+                "value": "n_delta"
+            }
+        }
+    }
+}

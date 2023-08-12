@@ -2,7 +2,7 @@
     "Public": {
         "interface": "forward_im2col_layer",
         "benchmarks": [
-            "BenchMark 1"
+            "BenchMark 1", "BenchMark 2"
         ],
         "params": [
             "h", "w", "c", "num", "input", "output"
@@ -35,6 +35,50 @@
         "output": {
             "type": "random fg",
             "value": [650]
+        },
+        "benchmark": {
+            "output": {
+                "type": "copy",
+                "value": "input"
+            },
+            "h": {
+                "type": "int",
+                "value": [1]
+            },
+            "w": {
+                "type": "int",
+                "value": [1]
+            },
+            "c": {
+                "type": "int",
+                "value": [650]
+            }
+        }
+    },
+    "BenchMark 2": {
+        "h": {
+            "type": "int",
+            "value": [25]
+        },
+        "w": {
+            "type": "int",
+            "value": [26]
+        },
+        "c": {
+            "type": "int",
+            "value": [1]
+        },
+        "num": {
+            "type": "int",
+            "value": [4]
+        },
+        "input": {
+            "type": "random fg",
+            "value": [2600]
+        },
+        "output": {
+            "type": "random fg",
+            "value": [2600]
         },
         "benchmark": {
             "output": {

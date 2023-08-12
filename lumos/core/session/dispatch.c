@@ -31,6 +31,7 @@ void session_train(Session *sess, char *weights_path)
                 backward_session(sess);
                 final = clock();
                 run_time = (double)(final - start) / CLOCKS_PER_SEC;
+                if (sess->coretype == CPU) run_time /= 10;
                 progress_bar(j * sub_batchs + k + 1, sub_epochs * sub_batchs, run_time, sess->loss[0]);
             }
             if (sess->coretype == GPU){

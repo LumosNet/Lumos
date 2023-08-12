@@ -4,10 +4,10 @@
         "height": 32,
         "channel": 3,
         "label": 10,
-        "batch": 16,
-        "subdivision": 16,
+        "batch": 8,
+        "subdivision": 4,
         "epoch": 100,
-        "learning_rate": 0.1
+        "learning_rate": 0.01
     },
     "Initializer": {
         "type": "HE"
