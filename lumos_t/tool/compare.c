@@ -16,6 +16,7 @@ int compare_float_array(float *a, float *b, int num)
 {
     for (int i = 0; i < num; ++i){
         if (fabs(a[i]-b[i]) > 1e-5){
+            printf("%f %f\n", a[i], b[i]);
             return ERROR;
         }
     }

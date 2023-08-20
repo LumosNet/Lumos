@@ -1,45 +1,5 @@
 #include "normalization_layer.h"
 
-// Layer *make_normalization_layer()
-// {
-//     Layer *l = malloc(sizeof(Layer));
-//     l->type = NORMALIZE;
-//     l->weights = 1;
-
-//     fprintf(stderr, "Normalize       Layer    :    [ksize=%2d]\n");
-// }
-
-// void init_normalization_layer(Layer *l, int w, int h, int c)
-// {
-//     l->input_h = h;
-//     l->input_w = w;
-//     l->input_c = c;
-//     l->inputs = l->input_h * l->input_w * l->input_c;
-
-//     l->output_h = h;
-//     l->output_w = w;
-//     l->output_c = c;
-//     l->outputs = l->output_h * l->output_w * l->output_c;
-
-//     l->workspace_size = 2*l->input_c;
-
-//     l->kernel_weights_size = l->input_c;
-//     l->bias_weights_size = l->input_c;
-//     l->deltas = l->inputs;
-
-//     if (l->coretype == GPU){
-//         l->forward = forward_normalization_layer_gpu;
-//         l->backward = backward_normalization_layer_gpu;
-//         l->update = update_normalization_layer_gpu;
-//     } else {
-//         l->forward = forward_normalization_layer;
-//         l->backward = backward_normalization_layer;
-//         l->update = update_normalization_layer;
-//     }
-//     fprintf(stderr, "Normalization   Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
-//             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
-// }
-
 void forward_normalization_layer(Layer l, int num)
 {
     for (int i = 0; i < num; ++i){
