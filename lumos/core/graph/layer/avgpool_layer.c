@@ -5,9 +5,6 @@ Layer *make_avgpool_layer(int ksize, int stride, int pad)
     Layer *l = malloc(sizeof(Layer));
     l->type = AVGPOOL;
     l->pad = pad;
-    l->weights = 0;
-    l->batchnorm = 0;
-    l->bias = 0;
 
     l->ksize = ksize;
     l->stride = stride;
@@ -30,15 +27,12 @@ void init_avgpool_layer(Layer *l, int w, int h, int c)
     l->outputs = l->output_h * l->output_w * l->output_c;
 
     l->workspace_size = 0;
-    l->deltas = l->inputs;
 
-    if (l->coretype == GPU){
-        l->forward = forward_avgpool_layer_gpu;
-        l->backward = backward_avgpool_layer_gpu;
-    } else {
-        l->forward = forward_avgpool_layer;
-        l->backward = backward_avgpool_layer;
-    }
+    l->forward = forward_avgpool_layer;
+    l->backward = backward_avgpool_layer;
+
+    l->output = calloc(l->outputs, sizeof(float));
+    l->delta = calloc(l->inputs, sizeof(float));
 
     fprintf(stderr, "Avg Pooling     Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);

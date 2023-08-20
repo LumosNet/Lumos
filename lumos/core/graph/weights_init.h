@@ -32,6 +32,9 @@ void kaiming_uniform_init(Layer *l, char *mode);
 void kaiming_normal_init(Layer *l, char *mode);
 void he_init(Layer *l);
 
+void connect_layer_w_init(Layer *l);
+void convolutional_layer_w_init(Layer *l);
+
 Initializer val_initializer(float val);
 Initializer uniform_initializer(float mean, float variance);
 Initializer normal_initializer(float mean, float variance);

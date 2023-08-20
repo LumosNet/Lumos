@@ -22,6 +22,7 @@
 extern "C" {
 #endif
 
+void init_convolutional_layer_gpu(Layer *l, int w, int h, int c);
 void forward_convolutional_layer_gpu(Layer l, int num);
 void backward_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta);
 void update_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta);

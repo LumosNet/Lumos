@@ -4,15 +4,12 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
 {
     Layer *l = malloc(sizeof(Layer));
     l->type = CONVOLUTIONAL;
-    l->weights = 1;
-
     l->filters = filters;
     l->ksize = ksize;
     l->stride = stride;
     l->pad = pad;
 
     l->bias = bias;
-
     l->batchnorm = normalization;
 
     l->active_str = active;
@@ -39,26 +36,17 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
 
     l->workspace_size = l->ksize * l->ksize * l->input_c * l->output_h * l->output_w + l->filters * l->ksize * l->ksize * l->input_c;
 
-    l->kernel_weights_size = l->filters * l->ksize * l->ksize * l->input_c;
-    l->normalize_weights_size = 0;
-    if (l->batchnorm){
-        l->bias = 1;
-        l->normalize_weights_size = l->filters;
-    }
-    l->bias_weights_size = 0;
-    if (l->bias || l->batchnorm){
-        l->bias_weights_size = l->filters;
-    }
-    l->deltas = l->inputs;
+    l->forward = forward_convolutional_layer;
+    l->backward = backward_convolutional_layer;
+    l->update = update_convolutional_layer;
 
-    if (l->coretype == GPU){
-        l->forward = forward_convolutional_layer_gpu;
-        l->backward = backward_convolutional_layer_gpu;
-        l->update = update_convolutional_layer_gpu;
-    } else {
-        l->forward = forward_convolutional_layer;
-        l->backward = backward_convolutional_layer;
-        l->update = update_convolutional_layer;
+    l->output = calloc(l->outputs, sizeof(float));
+    l->delta = calloc(l->inputs, sizeof(float));
+    l->kernel_weights = calloc(l->filters*l->ksize*l->ksize*l->input_c, sizeof(float));
+    l->update_kernel_weights = calloc(l->filters*l->ksize*l->ksize*l->input_c, sizeof(float));
+    if (l->bias){
+        l->bias_weights = calloc(l->filters, sizeof(float));
+        l->update_bias_weights = calloc(l->filters, sizeof(float));
     }
 
     fprintf(stderr, "Convolutional   Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
@@ -76,9 +64,6 @@ void forward_convolutional_layer(Layer l, int num)
         im2col(input, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, l.workspace);
         gemm(0, 0, l.filters, l.ksize * l.ksize * l.input_c, l.ksize * l.ksize * l.input_c, l.output_h * l.output_w, 1,
              l.kernel_weights, l.workspace, output);
-        if (l.batchnorm){
-            forward_normalization_layer(l, num);
-        }
         if (l.bias)
         {
             add_bias(output, l.bias_weights, l.filters, l.output_h * l.output_w);
@@ -97,9 +82,6 @@ void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta)
         float *delta_l = l.delta + offset_i;
         float *delta_n = n_delta + offset_o;
         gradient_list(output, l.outputs, l.gradient);
-        if (l.batchnorm){
-            backward_normalization_layer(l, rate, num, n_delta);
-        }
         matrix_multiply_cpu(delta_n, output, l.outputs, delta_n);
         gemm(1, 0, l.filters, l.ksize * l.ksize * l.input_c,
              l.filters, l.output_h * l.output_w, 1,

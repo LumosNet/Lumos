@@ -1,9 +1,6 @@
 #ifndef CONVOLUTIONAL_LAYER_H
 #define CONVOLUTIONAL_LAYER_H
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "layer.h"
 #include "image.h"
 #include "active.h"
@@ -11,8 +8,6 @@
 #include "gemm.h"
 #include "cpu.h"
 #include "normalization_layer.h"
-
-#include "convolutional_layer_gpu.h"
 
 #ifdef __cplusplus
 extern "C"{

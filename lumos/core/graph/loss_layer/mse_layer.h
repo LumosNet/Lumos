@@ -5,14 +5,11 @@
 #include "cpu.h"
 #include "gemm.h"
 
-#include "mse_layer_gpu.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 Layer *make_mse_layer(int group);
-
 void init_mse_layer(Layer *l, int w, int h, int c);
 
 void forward_mse_layer(Layer l, int num);

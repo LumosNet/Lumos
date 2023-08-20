@@ -8,14 +8,11 @@
 #include "softmax.h"
 #include "cpu.h"
 
-#include "softmax_layer_gpu.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 Layer *make_softmax_layer(int group);
-
 void init_softmax_layer(Layer *l, int w, int h, int c);
 
 void forward_softmax_layer(Layer l, int num);

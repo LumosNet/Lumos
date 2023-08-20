@@ -5,9 +5,6 @@ Layer *make_softmax_layer(int group)
     Layer *l = malloc(sizeof(Layer));
     l->type = SOFTMAX;
     l->group = group;
-    l->weights = 0;
-    l->batchnorm = 0;
-    l->bias = 0;
     l->update = NULL;
 
     fprintf(stderr, "Softmax         Layer    :    [output=%4d]\n", group);
@@ -26,16 +23,13 @@ void init_softmax_layer(Layer *l, int w, int h, int c)
     l->output_c = c;
     l->outputs = l->output_h*l->output_w*l->output_c;
 
-    l->deltas = l->inputs;
     l->workspace_size = l->inputs+1;
 
-    if (l->coretype == GPU){
-        l->forward = forward_softmax_layer_gpu;
-        l->backward = backward_softmax_layer_gpu;
-    } else {
-        l->forward = forward_softmax_layer;
-        l->backward = backward_softmax_layer;
-    }
+    l->forward = forward_softmax_layer;
+    l->backward = backward_softmax_layer;
+
+    l->output = calloc(l->outputs, sizeof(float));
+    l->delta = calloc(l->inputs, sizeof(float));
 
     fprintf(stderr, "Softmax         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n", \
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);

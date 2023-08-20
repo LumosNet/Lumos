@@ -10,14 +10,11 @@
 #include "cpu.h"
 #include "pooling.h"
 
-#include "maxpool_layer_gpu.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 Layer *make_maxpool_layer(int ksize, int stride, int pad);
-
 void init_maxpool_layer(Layer *l, int w, int h, int c);
 
 void forward_maxpool_layer(Layer l, int num);

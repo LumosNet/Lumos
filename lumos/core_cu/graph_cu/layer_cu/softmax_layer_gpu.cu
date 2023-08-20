@@ -1,5 +1,29 @@
 #include "softmax_layer_gpu.h"
 
+void init_softmax_layer_gpu(Layer *l, int w, int h, int c)
+{
+    l->input_h = h;
+    l->input_w = w;
+    l->input_c = c;
+    l->inputs = l->input_h*l->input_w*l->input_c;
+
+    l->output_h = h;
+    l->output_w = w;
+    l->output_c = c;
+    l->outputs = l->output_h*l->output_w*l->output_c;
+
+    l->workspace_size = l->inputs+1;
+
+    l->forward = forward_softmax_layer_gpu;
+    l->backward = backward_softmax_layer_gpu;
+
+    cudaMalloc((void**)&l->output, l->outputs*sizeof(float));
+    cudaMalloc((void**)&l->delta, l->inputs*sizeof(float));
+
+    fprintf(stderr, "Softmax         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n", \
+            l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
+}
+
 void forward_softmax_layer_gpu(Layer l, int num)
 {
     for (int i = 0; i < num; ++i){

@@ -5,9 +5,6 @@ Layer *make_shortcut_layer(int index, char *active)
     Layer *l = malloc(sizeof(Layer));
     l->type = SHORTCUT;
     l->shortcut_index = index;
-    l->weights = 0;
-    l->batchnorm = 0;
-    l->bias = 0;
 
     l->active_str = active;
     Activation type = load_activate_type(active);
@@ -33,17 +30,14 @@ void init_shortcut_layer(Layer *l, int w, int h, int c, Layer *shortcut)
     l->outputs = l->output_h * l->output_w * l->output_c;
 
     l->shortcut = shortcut;
-
     l->workspace_size = 0;
     l->deltas = l->inputs;
 
-    if (l->coretype == GPU){
-        l->forward = forward_shortcut_layer_gpu;
-        l->backward = backward_shortcut_layer_gpu;
-    } else {
-        l->forward = forward_shortcut_layer;
-        l->backward = backward_shortcut_layer;
-    }
+    l->forward = forward_shortcut_layer;
+    l->backward = backward_shortcut_layer;
+
+    l->output = calloc(l->outputs, sizeof(float));
+    l->delta = calloc(l->inputs, sizeof(float));
 
     fprintf(stderr, "Shortcut        Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);

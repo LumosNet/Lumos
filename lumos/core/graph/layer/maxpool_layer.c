@@ -5,13 +5,9 @@ Layer *make_maxpool_layer(int ksize, int stride, int pad)
     Layer *l = malloc(sizeof(Layer));
     l->type = MAXPOOL;
     l->pad = pad;
-    l->weights = 0;
-    l->batchnorm = 0;
-    l->bias = 0;
 
     l->ksize = ksize;
     l->stride = stride;
-
     l->update = NULL;
 
     fprintf(stderr, "Max Pooling     Layer    :    [ksize=%2d]\n", l->ksize);
@@ -31,15 +27,13 @@ void init_maxpool_layer(Layer *l, int w, int h, int c)
     l->outputs = l->output_h * l->output_w * l->output_c;
 
     l->workspace_size = 0;
-    l->deltas = l->inputs;
 
-    if (l->coretype == GPU){
-        l->forward = forward_maxpool_layer_gpu;
-        l->backward = backward_maxpool_layer_gpu;
-    } else {
-        l->forward = forward_maxpool_layer;
-        l->backward = backward_maxpool_layer;
-    }
+    l->forward = forward_maxpool_layer;
+    l->backward = backward_maxpool_layer;
+
+    l->output = calloc(l->outputs, sizeof(float));
+    l->delta = calloc(l->inputs, sizeof(float));
+    l->maxpool_index = calloc(l->outputs, sizeof(float));
 
     fprintf(stderr, "Max Pooling     Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);

@@ -1,37 +1,37 @@
 #include "weights_init.h"
 
-void val_init(Layer *l, float val)
+void val_init(float *space, int num, float val)
 {
     for (int i = 0; i < l->kernel_weights_size; ++i){
         l->kernel_weights[i] = val;
     }
 }
 
-void uniform_init(Layer *l, float mean, float variance)
+void uniform_init(float *space, int num, float mean, float variance)
 {
     uniform_list(-variance, variance, l->kernel_weights_size, l->kernel_weights);
 }
 
-void normal_init(Layer *l, float mean, float variance)
+void normal_init(float *space, int num, float mean, float variance)
 {
     int seed = (unsigned)time(NULL);
     guass_list(mean, variance, seed, l->kernel_weights_size, l->kernel_weights);
 }
 
-void xavier_uniform_init(Layer *l)
+void xavier_uniform_init(float *space, int num, float x)
 {
     float x = sqrt((float)6/(l->inputs+l->outputs));
     uniform_list(-x, x, l->kernel_weights_size, l->kernel_weights);
 }
 
-void xavier_normal_init(Layer *l)
+void xavier_normal_init(float *space, int num, float x)
 {
     int seed = (unsigned)time(NULL);
     float x = (float)2/(l->inputs+l->outputs);
     guass_list(0, x, seed, l->kernel_weights_size, l->kernel_weights);
 }
 
-void kaiming_uniform_init(Layer *l, char *mode)
+void kaiming_uniform_init(float *space, int num, int inp, int out, char *mode)
 {
     float x = 0;
     float inp = 0;
@@ -51,7 +51,7 @@ void kaiming_uniform_init(Layer *l, char *mode)
     uniform_list(-x, x, l->kernel_weights_size, l->kernel_weights);
 }
 
-void kaiming_normal_init(Layer *l, char *mode)
+void kaiming_normal_init(float *space, int num, int inp, int out, char *mode)
 {
     float x = 0;
     float inp = 0;
@@ -72,7 +72,7 @@ void kaiming_normal_init(Layer *l, char *mode)
     guass_list(0, x, seed, l->kernel_weights_size, l->kernel_weights);
 }
 
-void he_init(Layer *l)
+void he_init(float *space, int num)
 {
     float scale;
     if (l->type == CONNECT){

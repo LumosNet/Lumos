@@ -8,14 +8,11 @@
 #include "cpu.h"
 #include "shortcut.h"
 
-#include "shortcut_layer_gpu.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 Layer *make_shortcut_layer(int index, char *active);
-
 void init_shortcut_layer(Layer *l, int w, int h, int c, Layer *shortcut);
 
 void forward_shortcut_layer(Layer l, int num);
