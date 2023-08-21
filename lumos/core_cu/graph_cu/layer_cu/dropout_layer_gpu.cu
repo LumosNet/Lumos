@@ -17,8 +17,8 @@ void init_dropout_layer_gpu(Layer *l, int w, int h, int c)
     l->forward = forward_dropout_layer_gpu;
     l->backward = backward_dropout_layer_gpu;
 
-    cudaMalloc((void**)&l->output, l->outputs*sizeof(float));
-    cudaMalloc((void**)&l->delta, l->inputs*sizeof(float));
+    cudaMalloc((void**)&l->output, l->outputs*l->subdivision*sizeof(float));
+    cudaMalloc((void**)&l->delta, l->inputs*l->subdivision*sizeof(float));
 
     fprintf(stderr, "Dropout         Layer\n");
 }

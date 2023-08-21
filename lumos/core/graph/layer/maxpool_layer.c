@@ -31,8 +31,8 @@ void init_maxpool_layer(Layer *l, int w, int h, int c)
     l->forward = forward_maxpool_layer;
     l->backward = backward_maxpool_layer;
 
-    l->output = calloc(l->outputs, sizeof(float));
-    l->delta = calloc(l->inputs, sizeof(float));
+    l->output = calloc(l->outputs*l->subdivision, sizeof(float));
+    l->delta = calloc(l->inputs*l->subdivision, sizeof(float));
     l->maxpool_index = calloc(l->outputs, sizeof(float));
 
     fprintf(stderr, "Max Pooling     Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",

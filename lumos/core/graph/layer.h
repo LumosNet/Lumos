@@ -14,6 +14,10 @@ extern "C" {
 #define GPU 1
 
 typedef enum {
+    VALFILL, UNIFORM, NORMAL, XAVIERU, XAVIERN,, KAIMINGU, KAIMINGN, HE
+} InitType;
+
+typedef enum {
     CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MAXPOOL, AVGPOOL, \
     DROPOUT, MSE, SOFTMAX, SHORTCUT, NORMALIZE
 } LayerType;
@@ -32,6 +36,7 @@ typedef int (*get_float_calculate_times) (struct layer*);
 typedef get_float_calculate_times GetFloatCalculateTimes;
 
 struct layer{
+    int subdivision;
     LayerType type;
     int coretype;
     int input_h;
@@ -92,14 +97,6 @@ struct layer{
     float *update_kernel_weights;
     float *update_bias_weights;
     float *update_normalize_weights;
-
-    float *kernel_weights_gpu;
-    float *bias_weights_gpu;
-    float *normalize_weights_gpu;
-
-    float *update_kernel_weights_gpu;
-    float *update_bias_weights_gpu;
-    float *update_normalize_weights_gpu;
 
     int mean_size;
     int variance_size;

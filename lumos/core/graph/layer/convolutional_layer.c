@@ -40,8 +40,8 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
     l->backward = backward_convolutional_layer;
     l->update = update_convolutional_layer;
 
-    l->output = calloc(l->outputs, sizeof(float));
-    l->delta = calloc(l->inputs, sizeof(float));
+    l->output = calloc(l->outputs*l->subdivision, sizeof(float));
+    l->delta = calloc(l->inputs*l->subdivision, sizeof(float));
     l->kernel_weights = calloc(l->filters*l->ksize*l->ksize*l->input_c, sizeof(float));
     l->update_kernel_weights = calloc(l->filters*l->ksize*l->ksize*l->input_c, sizeof(float));
     if (l->bias){

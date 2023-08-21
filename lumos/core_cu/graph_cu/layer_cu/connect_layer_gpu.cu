@@ -18,8 +18,8 @@ void init_connect_layer_gpu(Layer *l, int w, int h, int c)
     l->backward = backward_connect_layer_gpu;
     l->update = update_connect_layer_gpu;
 
-    cudaMalloc((void**)&l->output, l->outputs*sizeof(float));
-    cudaMalloc((void**)&l->delta, l->inputs*sizeof(float));
+    cudaMalloc((void**)&l->output, l->outputs*l->subdivision*sizeof(float));
+    cudaMalloc((void**)&l->delta, l->inputs*l->subdivision*sizeof(float));
     cudaMalloc((void**)&l->kernel_weights, l->inputs*l->outputs*sizeof(float));
     cudaMalloc((void**)&l->update_kernel_weights, l->inputs*l->outputs*sizeof(float));
     if (l->bias){

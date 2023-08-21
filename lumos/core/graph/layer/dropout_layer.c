@@ -28,8 +28,8 @@ void init_dropout_layer(Layer *l, int w, int h, int c)
     l->forward = forward_dropout_layer;
     l->backward = backward_dropout_layer;
 
-    l->output = calloc(l->outputs, sizeof(float));
-    l->delta = calloc(l->inputs, sizeof(float));
+    l->output = calloc(l->outputs*l->subdivision, sizeof(float));
+    l->delta = calloc(l->inputs*l->subdivision, sizeof(float));
 
     fprintf(stderr, "Dropout         Layer\n");
 }

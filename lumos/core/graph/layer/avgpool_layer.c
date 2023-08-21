@@ -31,8 +31,8 @@ void init_avgpool_layer(Layer *l, int w, int h, int c)
     l->forward = forward_avgpool_layer;
     l->backward = backward_avgpool_layer;
 
-    l->output = calloc(l->outputs, sizeof(float));
-    l->delta = calloc(l->inputs, sizeof(float));
+    l->output = calloc(l->outputs*l->subdivision, sizeof(float));
+    l->delta = calloc(l->inputs*l->subdivision, sizeof(float));
 
     fprintf(stderr, "Avg Pooling     Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);

@@ -23,86 +23,65 @@ typedef label2truth Label2Truth;
 typedef void (*process_test_information) (char **, float *, float *, float, char *);
 typedef process_test_information ProcessTestInformation;
 
+// typedef struct session{
+//     Graph *graph;
+
+//     int coretype;
+//     int epoch;
+//     int batch;
+//     int subdivision;
+
+//     int width;
+//     int height;
+//     int channel;
+
+//     float *loss;
+
+//     float learning_rate;
+//     size_t workspace_size;
+
+//     float *workspace;
+//     float *input;
+//     float *output;
+//     float *delta;
+
+//     char **label;
+//     int label_num;
+
+//     float *truth;
+//     int truth_num;
+
+//     float *predicts;
+
+//     int train_data_num;
+//     char **train_data_paths;
+//     char **train_label_paths;
+
+//     int test_data_num;
+//     char **test_data_paths;
+//     char **test_label_paths;
+
+//     int memory_size;
+
+//     float *x_norm;
+//     float *mean;
+//     float *variance;
+//     float *roll_mean;
+//     float *roll_variance;
+//     float *normalize_x;
+
+//     int x_norm_size;
+//     int variance_size;
+//     int normalize_x_size;
+
+//     Label2Truth label2truth;
+//     Initializer w_init;
+// } Session;
+
 typedef struct session{
-    Graph *graph;
-
-    int coretype;
-    int epoch;
-    int batch;
-    int subdivision;
-
-    int width;
-    int height;
-    int channel;
-
-    float *loss;
-
-    float learning_rate;
-    size_t workspace_size;
-    size_t weights_size;
-    size_t output_size;
-    size_t delta_size;
-
-    float *workspace;
-    float *input;
-    float *output;
-    float *layer_delta;
-
-    char **label;
-    int label_num;
-
-    float *truth;
-    int truth_num;
-
-    float *predicts;
-
-    int *maxpool_index;
-    int *dropout_rand;
-
-    float *weights;
-    float *update_weights;
-
-    int train_data_num;
-    char **train_data_paths;
-    char **train_label_paths;
-
-    int test_data_num;
-    char **test_data_paths;
-    char **test_label_paths;
-
-    int memory_size;
-
-    float *x_norm;
-    float *mean;
-    float *variance;
-    float *roll_mean;
-    float *roll_variance;
-    float *normalize_x;
-
-    int x_norm_size;
-    int variance_size;
-    int normalize_x_size;
-
-    Label2Truth label2truth;
-    Initializer w_init;
-
-    float *workspace_gpu;
-    float *input_gpu;
-    float *output_gpu;
-    float *weights_gpu;
-    float *update_weights_gpu;
-    float *layer_delta_gpu;
-    float *loss_gpu;
-    float *truth_gpu;
-    int *maxpool_index_gpu;
-    int *dropout_rand_gpu;
-
-    float *x_norm_gpu;
-    float *mean_gpu;
-    float *variance_gpu;
-    float *roll_mean_gpu;
-    float *roll_variance_gpu;
-    float *normalize_x_gpu;
+    int dataset_num;
+    char **dataset_pathes;
+    char **labelset_pathes;
 } Session;
 
 Session *create_session(char *type, Initializer w_init);

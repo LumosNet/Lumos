@@ -26,6 +26,9 @@ void **load_label_txt(char *path);
 
 char *fget(char *file);
 
+int lines_num(char *tmp);
+int format_str(char *tmp);
+
 #ifdef __cplusplus
 }
 #endif

@@ -18,8 +18,8 @@ void init_convolutional_layer_gpu(Layer *l, int w, int h, int c)
     l->backward = backward_convolutional_layer_gpu;
     l->update = update_convolutional_layer_gpu;
 
-    cudaMalloc((void**)&l->output, l->outputs*sizeof(float));
-    cudaMalloc((void**)&l->delta, l->inputs*sizeof(float));
+    cudaMalloc((void**)&l->output, l->outputs*l->subdivision*sizeof(float));
+    cudaMalloc((void**)&l->delta, l->inputs*l->subdivision*sizeof(float));
     cudaMalloc((void**)&l->kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float));
     cudaMalloc((void**)&l->update_kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float));
     if (l->bias){

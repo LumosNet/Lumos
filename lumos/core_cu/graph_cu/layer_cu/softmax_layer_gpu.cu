@@ -17,8 +17,8 @@ void init_softmax_layer_gpu(Layer *l, int w, int h, int c)
     l->forward = forward_softmax_layer_gpu;
     l->backward = backward_softmax_layer_gpu;
 
-    cudaMalloc((void**)&l->output, l->outputs*sizeof(float));
-    cudaMalloc((void**)&l->delta, l->inputs*sizeof(float));
+    cudaMalloc((void**)&l->output, l->outputs*l->subdivision*sizeof(float));
+    cudaMalloc((void**)&l->delta, l->inputs*l->subdivision*sizeof(float));
 
     fprintf(stderr, "Softmax         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n", \
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);

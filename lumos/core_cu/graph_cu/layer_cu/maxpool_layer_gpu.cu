@@ -17,8 +17,8 @@ void init_maxpool_layer_gpu(Layer *l, int w, int h, int c)
     l->forward = forward_maxpool_layer_gpu;
     l->backward = backward_maxpool_layer_gpu;
 
-    cudaMalloc((void**)&l->output, l->outputs*sizeof(float));
-    cudaMalloc((void**)&l->delta, l->inputs*sizeof(float));
+    cudaMalloc((void**)&l->output, l->outputs*l->subdivision*sizeof(float));
+    cudaMalloc((void**)&l->delta, l->inputs*l->subdivision*sizeof(float));
     cudaMalloc((void**)&l->maxpool_index, l->outputs*sizeof(float));
 
     fprintf(stderr, "Max Pooling     Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
