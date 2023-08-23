@@ -79,9 +79,20 @@ typedef process_test_information ProcessTestInformation;
 // } Session;
 
 typedef struct session{
+    int batch;
+    int subdivison;
+
+    int height;
+    int width;
+    int channel;
+
     int dataset_num;
     char **dataset_pathes;
     char **labelset_pathes;
+
+    int index;
+    float **input;
+    float **truth;
 } Session;
 
 Session *create_session(char *type, Initializer w_init);
