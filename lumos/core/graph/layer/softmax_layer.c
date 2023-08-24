@@ -7,6 +7,13 @@ Layer *make_softmax_layer(int group)
     l->group = group;
     l->update = NULL;
 
+    l->initialize = init_softmax_layer;
+    l->forward = forward_softmax_layer;
+    l->backward = backward_softmax_layer;
+    l->initialize_gpu = init_softmax_layer_gpu;
+    l->forward_gpu = forward_softmax_layer_gpu;
+    l->backward_gpu = backward_softmax_layer_gpu;
+
     fprintf(stderr, "Softmax         Layer    :    [output=%4d]\n", group);
     return l;
 }
@@ -24,9 +31,6 @@ void init_softmax_layer(Layer *l, int w, int h, int c)
     l->outputs = l->output_h*l->output_w*l->output_c;
 
     l->workspace_size = l->inputs+1;
-
-    l->forward = forward_softmax_layer;
-    l->backward = backward_softmax_layer;
 
     l->output = calloc(l->outputs*l->subdivision, sizeof(float));
     l->delta = calloc(l->inputs*l->subdivision, sizeof(float));

@@ -66,7 +66,7 @@ void backward_convolutional_layer_gpu(Layer l, float rate, int num, float *n_del
              l.kernel_weights_gpu, delta_n, l.workspace);
         col2im_gpu(l.workspace, l.ksize, l.stride, l.pad, l.input_h, l.input_w, l.input_c, delta_l);
     }
-    l.update(l, rate, num, n_delta);
+    update_convolutional_layer_gpu(l, rate, num, n_delta);
 }
 
 void update_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta)

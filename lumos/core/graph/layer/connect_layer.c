@@ -14,6 +14,13 @@ Layer *make_connect_layer(int output, int bias, int normalize, char *active)
     l->bias = bias;
     l->batchnorm = normalize;
 
+    l->initialize = init_connect_layer;
+    l->forward = forward_connect_layer;
+    l->backward = backward_connect_layer;
+    l->initialize_gpu = init_connect_layer_gpu;
+    l->forward_gpu = forward_connect_layer_gpu;
+    l->backward_gpu = backward_connect_layer_gpu;
+
     fprintf(stderr, "Connect         Layer    :    [output=%4d, bias=%d, active=%s]\n", l->ksize, l->bias, l->active_str);
     return l;
 }
@@ -31,10 +38,6 @@ void init_connect_layer(Layer *l, int w, int h, int c)
     l->outputs = l->output_h * l->output_w * l->output_c;
 
     l->workspace_size = l->inputs * l->outputs;
-
-    l->forward = forward_connect_layer;
-    l->backward = backward_connect_layer;
-    l->update = update_connect_layer;
 
     l->output = calloc(l->outputs*l->subdivision, sizeof(float));
     l->delta = calloc(l->inputs*l->subdivision, sizeof(float));
@@ -81,7 +84,7 @@ void backward_connect_layer(Layer l, float rate, int num, float *n_delta)
         gemm(1, 0, l.output_c, l.input_c, l.output_c, l.input_w, 1,
              l.kernel_weights, delta_n, delta_l);
     }
-    l.update(l, rate, num, n_delta);
+    update_connect_layer(l, rate, num, n_delta);
 }
 
 void update_connect_layer(Layer l, float rate, int num, float *n_delta)

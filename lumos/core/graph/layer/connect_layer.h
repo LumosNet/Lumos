@@ -9,7 +9,8 @@
 #include "active.h"
 #include "gemm.h"
 #include "cpu.h"
-#include "normalization_layer.h"
+
+#include "connect_layer_gpu.h"
 
 #ifdef __cplusplus
 extern "C" {

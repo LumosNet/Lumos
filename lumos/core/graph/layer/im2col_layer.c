@@ -6,6 +6,13 @@ Layer *make_im2col_layer()
     l->type = IM2COL;
     l->update = NULL;
 
+    l->initialize = init_im2col_layer;
+    l->forward = forward_im2col_layer;
+    l->backward = backward_im2col_layer;
+    l->initialize_gpu = init_im2col_layer_gpu;
+    l->forward_gpu = forward_im2col_layer_gpu;
+    l->backward_gpu = backward_im2col_layer_gpu;
+
     fprintf(stderr, "Im2col          Layer\n");
     return l;
 }
@@ -22,9 +29,6 @@ void init_im2col_layer(Layer *l, int w, int h, int c)
     l->output_c = l->inputs;
     l->outputs = l->inputs;
     l->workspace_size = 0;
-
-    l->forward = forward_im2col_layer;
-    l->backward = backward_im2col_layer;
 
     l->output = calloc(l->outputs*l->subdivision, sizeof(float));
     l->delta = calloc(l->inputs*l->subdivision, sizeof(float));

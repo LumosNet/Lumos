@@ -15,8 +15,8 @@ void fputl(FILE *fp, char *line);
 void fputls(FILE *fp, char **lines, int n);
 char *fget(char *file);
 int lines_num(char *tmp);
-int format_str(char *tmp);
-int format_str_float(char *tmp);
+int format_str_line(char *tmp);
+int format_str_space(char *tmp);
 
 #ifdef __cplusplus
 }

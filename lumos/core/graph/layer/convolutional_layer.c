@@ -17,6 +17,13 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
     l->active = type;
     l->gradient = type;
 
+    l->initialize = init_convolutional_layer;
+    l->forward = forward_convolutional_layer;
+    l->backward = backward_convolutional_layer;
+    l->initialize_gpu = init_convolutional_layer_gpu;
+    l->forward_gpu = forward_convolutional_layer_gpu;
+    l->backward_gpu = backward_convolutional_layer_gpu;
+
     fprintf(stderr, "Convolutional   Layer    :    [filters=%2d, ksize=%2d, stride=%2d, pad=%2d, bias=%d, normalization=%d, active=%s]\n",
             l->filters, l->ksize, l->stride, l->pad, l->bias, l->batchnorm, l->active_str);
     return l;
@@ -35,10 +42,6 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
     l->outputs = l->output_h * l->output_w * l->output_c;
 
     l->workspace_size = l->ksize * l->ksize * l->input_c * l->output_h * l->output_w + l->filters * l->ksize * l->ksize * l->input_c;
-
-    l->forward = forward_convolutional_layer;
-    l->backward = backward_convolutional_layer;
-    l->update = update_convolutional_layer;
 
     l->output = calloc(l->outputs*l->subdivision, sizeof(float));
     l->delta = calloc(l->inputs*l->subdivision, sizeof(float));
@@ -88,7 +91,7 @@ void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta)
              l.kernel_weights, delta_n, l.workspace);
         col2im(l.workspace, l.ksize, l.stride, l.pad, l.input_h, l.input_w, l.input_c, delta_l);
     }
-    l.update(l, rate, num, n_delta);
+    update_convolutional_layer(l, rate, num, n_delta);
 }
 
 void update_convolutional_layer(Layer l, float rate, int num, float *n_delta)

@@ -8,6 +8,8 @@
 #include "softmax.h"
 #include "cpu.h"
 
+#include "softmax_layer_gpu.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

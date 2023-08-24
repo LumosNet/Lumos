@@ -5,6 +5,8 @@
 #include "cpu.h"
 #include "gemm.h"
 
+#include "mse_layer_gpu.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

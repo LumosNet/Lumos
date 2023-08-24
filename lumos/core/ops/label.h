@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "text_f.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

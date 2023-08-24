@@ -7,12 +7,13 @@
 #include "layer.h"
 #include "random.h"
 
+#include "dropout_layer_gpu.h"
+
 #ifdef __cplusplus
 extern "C"{
 #endif
 
 Layer *make_dropout_layer(float probability);
-
 void init_dropout_layer(Layer *l, int w, int h, int c);
 
 void forward_dropout_layer(Layer l, int num);

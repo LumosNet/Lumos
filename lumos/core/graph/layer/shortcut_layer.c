@@ -10,8 +10,14 @@ Layer *make_shortcut_layer(int index, char *active)
     Activation type = load_activate_type(active);
     l->active = type;
     l->gradient = type;
-
     l->update = NULL;
+
+    l->initialize = init_shortcut_layer;
+    l->forward = forward_shortcut_layer;
+    l->backward = backward_shortcut_layer;
+    l->initialize_gpu = init_shortcut_layer_gpu;
+    l->forward_gpu = forward_shortcut_layer_gpu;
+    l->backward_gpu = backward_shortcut_layer_gpu;
 
     fprintf(stderr, "Shortcut        Layer    :    [index=%d, active=%s]\n", l->shortcut_index, l->active_str);
     return l;
@@ -32,9 +38,6 @@ void init_shortcut_layer(Layer *l, int w, int h, int c, Layer *shortcut)
     l->shortcut = shortcut;
     l->workspace_size = 0;
     l->deltas = l->inputs;
-
-    l->forward = forward_shortcut_layer;
-    l->backward = backward_shortcut_layer;
 
     l->output = calloc(l->outputs*l->subdivision, sizeof(float));
     l->delta = calloc(l->inputs*l->subdivision, sizeof(float));

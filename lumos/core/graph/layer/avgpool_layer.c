@@ -8,7 +8,13 @@ Layer *make_avgpool_layer(int ksize, int stride, int pad)
 
     l->ksize = ksize;
     l->stride = stride;
-    l->update = NULL;
+
+    l->initialize = init_avgpool_layer;
+    l->forward = forward_avgpool_layer;
+    l->backward = backward_avgpool_layer;
+    l->initialize_gpu = init_avgpool_layer_gpu;
+    l->forward_gpu = forward_avgpool_layer_gpu;
+    l->backward_gpu = backward_avgpool_layer_gpu;
 
     fprintf(stderr, "Avg Pooling     Layer    :    [ksize=%2d]\n", l->ksize);
     return l;
@@ -27,9 +33,6 @@ void init_avgpool_layer(Layer *l, int w, int h, int c)
     l->outputs = l->output_h * l->output_w * l->output_c;
 
     l->workspace_size = 0;
-
-    l->forward = forward_avgpool_layer;
-    l->backward = backward_avgpool_layer;
 
     l->output = calloc(l->outputs*l->subdivision, sizeof(float));
     l->delta = calloc(l->inputs*l->subdivision, sizeof(float));

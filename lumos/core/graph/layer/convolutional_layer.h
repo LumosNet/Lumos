@@ -7,7 +7,8 @@
 #include "bias.h"
 #include "gemm.h"
 #include "cpu.h"
-#include "normalization_layer.h"
+
+#include "convolutional_layer_gpu.h"
 
 #ifdef __cplusplus
 extern "C"{
@@ -18,7 +19,6 @@ void init_convolutional_layer(Layer *l, int w, int h, int c);
 
 void forward_convolutional_layer(Layer l, int num);
 void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta);
-
 void update_convolutional_layer(Layer l, float rate, int num, float *n_delta);
 
 #ifdef __cplusplus

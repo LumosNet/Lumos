@@ -8,6 +8,8 @@
 #include "cpu.h"
 #include "shortcut.h"
 
+#include "shortcut_layer_gpu.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif

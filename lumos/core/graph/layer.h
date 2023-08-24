@@ -24,13 +24,19 @@ typedef enum {
 
 typedef struct layer Layer;
 
+typedef void (*initialize) (struct layer, int, int, int);
 typedef void (*forward)  (struct layer, int);
 typedef void (*backward) (struct layer, float, int, float*);
+typedef initialize Initialize;
 typedef forward Forward;
 typedef backward Backward;
 
-typedef void (*update) (struct layer, float, int, float*);
-typedef update Update;
+typedef void (*initialize_gpu) (struct layer, int, int, int);
+typedef void (*forward_gpu)  (struct layer, int);
+typedef void (*backward_gpu) (struct layer, float, int, float*);
+typedef initialize_gpu Initialize_Gpu;
+typedef forward_gpu Forward_Gpu;
+typedef backward_gpu Backward_Gpu;
 
 typedef int (*get_float_calculate_times) (struct layer*);
 typedef get_float_calculate_times GetFloatCalculateTimes;
@@ -108,13 +114,17 @@ struct layer{
     float *x_norm;
     float *normalize_x;
 
+    Initialize initialize;
     Forward forward;
     Backward backward;
+
+    Initialize_Gpu initialize_gpu;
+    Forward_Gpu forward_gpu;
+    Backward_Gpu backward_gpu;
 
     Activation active;
     Activation gradient;
 
-    Update update;
     GetFloatCalculateTimes get_fct;
 };
 

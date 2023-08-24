@@ -11,7 +11,7 @@ void bind_dataset(Session *sess, char *dataset_path_file)
     fseek(fp, 0, SEEK_SET);
     fread(tmp, sizeof(char), file_size, fp);
     fclose(fp);
-    sess->dataset_num = format_str(tmp);
+    sess->dataset_num = format_str_line(tmp);
     sess->dataset_pathes = calloc(sess->dataset_num, sizeof(char*));
     for (int i = 0; i < sess->dataset_num; ++i){
         sess->dataset_pathes[i] = tmp+offset;
@@ -30,7 +30,7 @@ void bind_labelset(Session *sess, char *labelset_path_file)
     fseek(fp, 0, SEEK_SET);
     fread(tmp, sizeof(char), file_size, fp);
     fclose(fp);
-    sess->dataset_num = format_str(tmp);
+    sess->dataset_num = format_str_line(tmp);
     sess->labelset_pathes = calloc(sess->dataset_num, sizeof(char*));
     for (int i = 0; i < sess->dataset_num; ++i){
         sess->labelset_pathes[i] = tmp+offset;
@@ -38,7 +38,7 @@ void bind_labelset(Session *sess, char *labelset_path_file)
     }
 }
 
-int load_dataalabel(Session *sess)
+int load_dataandlabel(Session *sess)
 {
     int h, w, c;
     for (int i = 0; i < sess->subdivison; ++i){
@@ -48,7 +48,7 @@ int load_dataalabel(Session *sess)
         resize_im(img, h, w, c, sess->height, sess->width, sess->input[i]);
         free(img);
         path = sess->labelset_pathes[index];
-        
+        sess->truth[i] = load_labels(path);
     }
     sess->index += sess->subdivison;
     if (sess->index >= sess->dataset_num){

@@ -63,7 +63,7 @@ void backward_connect_layer_gpu(Layer l, float rate, int num, float *n_delta)
         gemm_gpu(1, 0, l.output_c, l.input_c, l.output_c, l.input_w, 1,
              l.kernel_weights_gpu, delta_n, delta_l);
     }
-    l.update(l, rate, num, n_delta);
+    update_connect_layer_gpu(l, rate, num, n_delta);
 }
 
 void update_connect_layer_gpu(Layer l, float rate, int num, float *n_delta)

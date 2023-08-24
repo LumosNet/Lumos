@@ -10,6 +10,13 @@ Layer *make_maxpool_layer(int ksize, int stride, int pad)
     l->stride = stride;
     l->update = NULL;
 
+    l->initialize = init_maxpool_layer;
+    l->forward = forward_maxpool_layer;
+    l->backward = backward_maxpool_layer;
+    l->initialize_gpu = init_maxpool_layer_gpu;
+    l->forward_gpu = forward_maxpool_layer_gpu;
+    l->backward_gpu = backward_maxpool_layer_gpu;
+
     fprintf(stderr, "Max Pooling     Layer    :    [ksize=%2d]\n", l->ksize);
     return l;
 }
@@ -27,9 +34,6 @@ void init_maxpool_layer(Layer *l, int w, int h, int c)
     l->outputs = l->output_h * l->output_w * l->output_c;
 
     l->workspace_size = 0;
-
-    l->forward = forward_maxpool_layer;
-    l->backward = backward_maxpool_layer;
 
     l->output = calloc(l->outputs*l->subdivision, sizeof(float));
     l->delta = calloc(l->inputs*l->subdivision, sizeof(float));

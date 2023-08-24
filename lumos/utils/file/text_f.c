@@ -49,30 +49,32 @@ int lines_num(char *tmp)
     return res;
 }
 
-int format_str(char *tmp)
+int format_str_line(char *tmp)
 {
     int res = 0;
     int len = strlen(tmp);
     int flag = 0;
     int meet = 0;
-    int n = 0;
-    for (int i = 0; i < len; ++i){
+    int offset = 0;
+    int n = len;
+    for (int i = 0; i < n; ++i){
         if (tmp[i] == '\r' || tmp[i] == '\n') flag = 1;
         if (tmp[i] == '\r' || tmp[i] == '\n' || tmp[i] == '\t' || tmp[i] == ' '){
             tmp[i] = '\0';
-            n += 1;
+            offset += 1;
         } else {
-            if (n != 0){
+            if (offset != 0){
                 if (flag && meet){
-                    char *head = tmp+i-n;
+                    char *head = tmp+i-offset;
                     head[0] = '\0';
                     res += 1;
-                    n -= 1;
+                    offset -= 1;
                 }
-                memcpy(tmp+i-n, tmp+i, (len-i)*sizeof(char));
-                i -= n;
+                memcpy(tmp+i-offset, tmp+i, (len-i)*sizeof(char));
+                n -= offset;
+                i -= offset;
             }
-            n = 0;
+            offset = 0;
             flag = 0;
             meet = 1;
         }
@@ -81,32 +83,34 @@ int format_str(char *tmp)
     return res;
 }
 
-int format_str_float(char *tmp)
+int format_str_space(char *tmp)
 {
     int res = 0;
     int len = strlen(tmp);
-    int flag = 0;
+    int offset = 0;
     int meet = 0;
-    int n = 0;
-    for (int i = 0; i < len; ++i){
-        if (tmp[i] == '\r' || tmp[i] == '\n') flag = 1;
-        if (tmp[i] == '\r' || tmp[i] == '\n' || tmp[i] == '\t' || tmp[i] == ' '){
+    int flag = 0;
+    int n = len;
+    for (int i = 0; i < n; ++i){
+        if (tmp[i] == ' ' || tmp[i] == '\n' || tmp[i] == '\t' || tmp[i] == '\r'){
             tmp[i] = '\0';
-            n += 1;
+            flag = 1;
+            offset += 1;
         } else {
-            if (n != 0){
-                if (flag && meet){
-                    char *head = tmp+i-n;
+            if (offset != 0){
+                if (flag && meet) {
+                    char *head = tmp+i-offset;
                     head[0] = '\0';
                     res += 1;
-                    n -= 1;
+                    offset -= 1;
                 }
-                memcpy(tmp+i-n, tmp+i, (len-i)*sizeof(char));
-                i -= n;
+                memcpy(tmp+i-offset, tmp+i, (len-i)*sizeof(char));
+                n -= offset;
+                i -= offset;
             }
-            n = 0;
-            flag = 0;
             meet = 1;
+            offset = 0;
+            flag = 0;
         }
     }
     if (meet) res += 1;

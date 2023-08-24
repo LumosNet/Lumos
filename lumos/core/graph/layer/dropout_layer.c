@@ -7,6 +7,13 @@ Layer *make_dropout_layer(float probability)
     l->probability = probability;
     l->update = NULL;
 
+    l->initialize = init_dropout_layer;
+    l->forward = forward_dropout_layer;
+    l->backward = backward_dropout_layer;
+    l->initialize_gpu = init_dropout_layer_gpu;
+    l->forward_gpu = forward_dropout_layer_gpu;
+    l->backward_gpu = backward_dropout_layer_gpu;
+
     fprintf(stderr, "Dropout   Layer    :    [probability=%.2f]\n", l->probability);
     return l;
 }
@@ -24,9 +31,6 @@ void init_dropout_layer(Layer *l, int w, int h, int c)
     l->outputs = l->output_h*l->output_w*l->output_c;
 
     l->workspace_size = l->inputs;
-
-    l->forward = forward_dropout_layer;
-    l->backward = backward_dropout_layer;
 
     l->output = calloc(l->outputs*l->subdivision, sizeof(float));
     l->delta = calloc(l->inputs*l->subdivision, sizeof(float));
