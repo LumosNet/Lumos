@@ -109,8 +109,8 @@ struct layer{
     Forward_Gpu forward_gpu;
     Backward_Gpu backward_gpu;
 
-    Activation active;
-    Activation gradient;
+    Activate active;
+    Gradient gradient;
 };
 
 #ifdef __cplusplus

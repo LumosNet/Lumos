@@ -75,162 +75,98 @@ __device__ float leaky_gradient_kernel(float x){return (x>0) ? 1 : .1;}
 __device__ float tanh_gradient_kernel(float x){return 1-x*x;}
 __device__ float plse_gradient_kernel(float x){return (x < 0 || x > 1) ? .01 : .125;}
 
-ActivateGpu load_activate_gpu(Activation TYPE)
+Activate load_activate_gpu(char *activate)
 {
-    activate_gpu func;
-    if (TYPE == STAIR)
-        func = stair_activate_kernel;
-    else if (TYPE == HARDTAN)
-        func = hardtan_activate_kernel;
-    else if (TYPE == LINEAR)
-        func = linear_activate_kernel;
-    else if (TYPE == LOGISTIC)
-        func = logistic_activate_kernel;
-    else if (TYPE == LOGGY)
-        func = loggy_activate_kernel;
-    else if (TYPE == RELU)
-        func = relu_activate_kernel;
-    else if (TYPE == ELU)
-        func = elu_activate_kernel;
-    else if (TYPE == SELU)
-        func = selu_activate_kernel;
-    else if (TYPE == RELIE)
-        func = relie_activate_kernel;
-    else if (TYPE == RAMP)
-        func = ramp_activate_kernel;
-    else if (TYPE == LEAKY)
-        func = leaky_activate_kernel;
-    else if (TYPE == TANH)
-        func = tanh_activate_kernel;
-    else if (TYPE == PLSE)
-        func = plse_activate_kernel;
-    else if (TYPE == LHTAN)
-        func = lhtan_activate_kernel;
-    return func;
+    if (activate == "stair")
+        return stair_activate_kernel;
+    else if (activate == "hardtan")
+        return hardtan_activate_kernel;
+    else if (activate == "linear")
+        return linear_activate_kernel;
+    else if (activate == "logistic")
+        return logistic_activate_kernel;
+    else if (activate == "loggy")
+        return loggy_activate_kernel;
+    else if (activate == "relu")
+        return relu_activate_kernel;
+    else if (activate == "elu")
+        return elu_activate_kernel;
+    else if (activate == "selu")
+        return selu_activate_kernel;
+    else if (activate == "relie")
+        return relie_activate_kernel;
+    else if (activate == "ramp")
+        return ramp_activate_kernel;
+    else if (activate == "leaky")
+        return leaky_activate_kernel;
+    else if (activate == "tanh")
+        return tanh_activate_kernel;
+    else if (activate == "plse")
+        return plse_activate_kernel;
+    else if (activate == "lhtan")
+        return lhtan_activate_kernel;
+    else {
+        fprintf(stderr, "Active Error: Unknown Activate Name!");
+    }
+    return NULL;
 }
 
-GradientGpu load_gradient_gpu(Activation TYPE)
+Gradient load_activate_gpu(char *activate)
 {
-    gradient_gpu func;
-    if (TYPE == STAIR)
-        func = stair_gradient_kernel;
-    else if (TYPE == HARDTAN)
-        func = hardtan_gradient_kernel;
-    else if (TYPE == LINEAR)
-        func = linear_gradient_kernel;
-    else if (TYPE == LOGISTIC)
-        func = logistic_gradient_kernel;
-    else if (TYPE == LOGGY)
-        func = loggy_gradient_kernel;
-    else if (TYPE == RELU)
-        func = relu_gradient_kernel;
-    else if (TYPE == ELU)
-        func = elu_gradient_kernel;
-    else if (TYPE == SELU)
-        func = selu_gradient_kernel;
-    else if (TYPE == RELIE)
-        func = relie_gradient_kernel;
-    else if (TYPE == RAMP)
-        func = ramp_gradient_kernel;
-    else if (TYPE == LEAKY)
-        func = leaky_gradient_kernel;
-    else if (TYPE == TANH)
-        func = tanh_gradient_kernel;
-    else if (TYPE == PLSE)
-        func = plse_gradient_kernel;
-    else if (TYPE == LHTAN)
-        func = lhtan_gradient_kernel;
-    return func;
+    if (activate == "stair")
+        return stair_gradient_kernel;
+    else if (activate == "hardtan")
+        return hardtan_gradient_kernel;
+    else if (activate == "linear")
+        return linear_gradient_kernel;
+    else if (activate == "logistic")
+        return logistic_gradient_kernel;
+    else if (activate == "loggy")
+        return loggy_gradient_kernel;
+    else if (activate == "relu")
+        return relu_gradient_kernel;
+    else if (activate == "elu")
+        return elu_gradient_kernel;
+    else if (activate == "selu")
+        return selu_gradient_kernel;
+    else if (activate == "relie")
+        return relie_gradient_kernel;
+    else if (activate == "ramp")
+        return ramp_gradient_kernel;
+    else if (activate == "leaky")
+        return leaky_gradient_kernel;
+    else if (activate == "tanh")
+        return tanh_gradient_kernel;
+    else if (activate == "plse")
+        return plse_gradient_kernel;
+    else if (activate == "lhtan")
+        return lhtan_gradient_kernel;
+    else {
+        fprintf(stderr, "Active Error: Unknown Activate Name!");
+    }
+    return NULL;
 }
 
-__device__ float activate_x_kernel(Activation TYPE, float x)
-{
-    float res = 0;
-    if (TYPE == STAIR)
-        res = stair_activate_kernel(x);
-    else if (TYPE == HARDTAN)
-        res = hardtan_activate_kernel(x);
-    else if (TYPE == LINEAR)
-        res = linear_activate_kernel(x);
-    else if (TYPE == LOGISTIC)
-        res = logistic_activate_kernel(x);
-    else if (TYPE == LOGGY)
-        res = loggy_activate_kernel(x);
-    else if (TYPE == RELU)
-        res = relu_activate_kernel(x);
-    else if (TYPE == ELU)
-        res = elu_activate_kernel(x);
-    else if (TYPE == SELU)
-        res = selu_activate_kernel(x);
-    else if (TYPE == RELIE)
-        res = relie_activate_kernel(x);
-    else if (TYPE == RAMP)
-        res = ramp_activate_kernel(x);
-    else if (TYPE == LEAKY)
-        res = leaky_activate_kernel(x);
-    else if (TYPE == TANH)
-        res = tanh_activate_kernel(x);
-    else if (TYPE == PLSE)
-        res = plse_activate_kernel(x);
-    else if (TYPE == LHTAN)
-        res = lhtan_activate_kernel(x);
-    return res;
-}
-
-__global__ void activate_list_kernel(float *origin, int num, Activation TYPE)
+__global__ void activate_list_kernel(float *origin, int num, Activate func)
 {
     int index = threadIdx.x + blockIdx.x * blockDim.x;
     if (index >= num) return;
-    origin[index] = activate_x_kernel(TYPE, origin[index]);
+    origin[index] = func(origin[index]);
 }
 
-void activate_list_gpu(float *origin, int num, Activation TYPE)
+void activate_list_gpu(float *origin, int num, Activate func)
 {
-    activate_list_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(origin, num, TYPE);
+    activate_list_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(origin, num, func);
 }
 
-__device__ float gradient_x_kernel(Activation TYPE, float x)
-{
-    float res = 0;
-    if (TYPE == STAIR)
-        res = stair_gradient_kernel(x);
-    else if (TYPE == HARDTAN)
-        res = hardtan_gradient_kernel(x);
-    else if (TYPE == LINEAR)
-        res = linear_gradient_kernel(x);
-    else if (TYPE == LOGISTIC)
-        res = logistic_gradient_kernel(x);
-    else if (TYPE == LOGGY)
-        res = loggy_gradient_kernel(x);
-    else if (TYPE == RELU)
-        res = relu_gradient_kernel(x);
-    else if (TYPE == ELU)
-        res = elu_gradient_kernel(x);
-    else if (TYPE == SELU)
-        res = selu_gradient_kernel(x);
-    else if (TYPE == RELIE)
-        res = relie_gradient_kernel(x);
-    else if (TYPE == RAMP)
-        res = ramp_gradient_kernel(x);
-    else if (TYPE == LEAKY)
-        res = leaky_gradient_kernel(x);
-    else if (TYPE == TANH)
-        res = tanh_gradient_kernel(x);
-    else if (TYPE == PLSE)
-        res = plse_gradient_kernel(x);
-    else if (TYPE == LHTAN)
-        res = lhtan_gradient_kernel(x);
-    return res;
-}
-
-__global__ void gradient_list_kernel(float *origin, int num, Activation TYPE)
+__global__ void gradient_list_kernel(float *origin, int num, Gradient func)
 {
     int index = threadIdx.x + blockIdx.x * blockDim.x;
     if (index >= num) return;
-    origin[index] = gradient_x_kernel(TYPE, origin[index]);
+    origin[index] = func(origin[index]);
 }
 
-void gradient_list_gpu(float *origin, int num, Activation TYPE)
+void gradient_list_gpu(float *origin, int num, Gradient func)
 {
-    gradient_list_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(origin, num, TYPE);
+    gradient_list_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(origin, num, func);
 }
