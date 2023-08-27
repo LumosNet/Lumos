@@ -57,6 +57,7 @@ struct layer{
     float *output;
     float *delta;
     float *n_delta;
+    float *truth;
 
     float *workspace;
 

@@ -265,3 +265,13 @@ void run_update(Session *sess)
 {
 
 }
+
+void init_running_scene(Session *sess, char *weights_file)
+{
+
+}
+
+void clean_running_scene(Session *sess)
+{
+    
+}
