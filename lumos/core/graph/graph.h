@@ -12,7 +12,7 @@ extern "C" {
 
 typedef struct graph{
     int num;
-    Layer *layers;
+    Layer **layers;
 } graph, Graph;
 
 #ifdef __cplusplus

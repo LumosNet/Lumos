@@ -53,10 +53,10 @@ void forward_dropout_layer(Layer l, int num)
     }
 }
 
-void backward_dropout_layer(Layer l, float rate, int num, float *n_delta)
+void backward_dropout_layer(Layer l, float rate, int num)
 {
     if (!l.train){
-        memcpy(l.delta, n_delta, num*l.inputs*sizeof(float));
+        memcpy(l.delta, l.n_delta, num*l.inputs*sizeof(float));
         return;
     }
     float scale = 1. / (1.-l.probability);

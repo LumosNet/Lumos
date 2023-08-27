@@ -75,7 +75,7 @@ void forward_convolutional_layer(Layer l, int num)
     }
 }
 
-void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta)
+void backward_convolutional_layer(Layer l, float rate, int num)
 {
     for (int i = 0; i < num; ++i)
     {
@@ -83,7 +83,7 @@ void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta)
         int offset_o = i * l.outputs;
         float *output = l.output + offset_o;
         float *delta_l = l.delta + offset_i;
-        float *delta_n = n_delta + offset_o;
+        float *delta_n = l.n_delta + offset_o;
         gradient_list(output, l.outputs, l.gradient);
         matrix_multiply_cpu(delta_n, output, l.outputs, delta_n);
         gemm(1, 0, l.filters, l.ksize * l.ksize * l.input_c,
@@ -91,17 +91,17 @@ void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta)
              l.kernel_weights, delta_n, l.workspace);
         col2im(l.workspace, l.ksize, l.stride, l.pad, l.input_h, l.input_w, l.input_c, delta_l);
     }
-    update_convolutional_layer(l, rate, num, n_delta);
+    update_convolutional_layer(l, rate, num);
 }
 
-void update_convolutional_layer(Layer l, float rate, int num, float *n_delta)
+void update_convolutional_layer(Layer l, float rate, int num)
 {
     for (int i = 0; i < num; ++i)
     {
         int offset_i = i * l.inputs;
         int offset_o = i * l.outputs;
         float *input = l.input + offset_i;
-        float *delta_n = n_delta + offset_o;
+        float *delta_n = l.n_delta + offset_o;
         im2col(input, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, l.workspace);
         gemm(0, 1, l.filters, l.output_h * l.output_w,
              l.ksize * l.ksize * l.input_c, l.output_h * l.output_w, 1,

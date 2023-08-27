@@ -40,11 +40,11 @@ void forward_mse_layer_gpu(Layer l, int num)
         multy_gpu(output, l.outputs, 1/(float)l.group, 1);
     }
     cudaMemcpy(output_cpu, l.output, l.outputs*num*sizeof(float), cudaMemcpyDeviceToHost);
-    sum_cpu(output_cpu, l.outputs*num, l.loss);
-    l.loss[0] /= num;
+    // sum_cpu(output_cpu, l.outputs*num, l.loss);
+    // l.loss[0] /= num;
 }
 
-void backward_mse_layer_gpu(Layer l, float rate, int num, float *n_delta)
+void backward_mse_layer_gpu(Layer l, float rate, int num)
 {
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;

@@ -62,7 +62,7 @@ void forward_shortcut_layer(Layer l, int num)
     activate_list(l.output, num*l.outputs, l.active);
 }
 
-void backward_shortcut_layer(Layer l, float rate, int num, float *n_delta)
+void backward_shortcut_layer(Layer l, float rate, int num)
 {
     Layer *shortcut = l.shortcut;
     for (int i = 0; i < num; ++i){
@@ -71,7 +71,7 @@ void backward_shortcut_layer(Layer l, float rate, int num, float *n_delta)
         int offset_c = i * shortcut->inputs;
         float *output = l.output + offset_o;
         float *delta_l = l.delta + offset_i;
-        float *delta_n = n_delta + offset_o;
+        float *delta_n = l.n_delta + offset_o;
         float *out = shortcut->delta + offset_c;
         gradient_list(output, l.outputs, l.active);
         matrix_multiply_cpu(output, delta_n, l.inputs, delta_l);

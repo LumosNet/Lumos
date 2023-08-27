@@ -14,6 +14,7 @@
 #include <unistd.h>
 
 #include "session.h"
+#include "dataset.h"
 #include "graph.h"
 #include "layer.h"
 #include "weights_init.h"
@@ -22,48 +23,32 @@
 extern "C" {
 #endif
 
-void create_run_memory(Session *sess);
-void create_workspace_memory(Session *sess);
-void create_input_memory(Session *sess);
-void create_output_memory(Session *sess);
-void create_weights_memory(Session *sess);
-void create_delta_memory(Session *sess);
-void create_label_memory(Session *sess);
-void create_loss_memory(Session *sess);
-void create_truth_memory(Session *sess);
-void create_predicts_memory(Session *sess);
-void create_maxpool_index_memory(Session *sess);
-void create_dropout_rand_memory(Session *sess);
-void create_normalize_memory(Session *sess);
-
-void set_graph_memory(Session *sess);
-void set_graph_weight(Session *sess);
-void set_label(Session *sess);
-void set_loss_memory(Session *sess);
-void set_truth_memory(Session *sess);
-void set_maxpool_index_memory(Session *sess);
-void set_dropout_rand_memory(Session *sess);
-void set_normalize_memory(Session *sess);
-
-void get_workspace_size(Session *sess);
-void statistics_memory_occupy_size(Session *sess);
-void get_normalize_size(Session *sess);
-
-void init_weights(Session *sess, char *weights_file);
-
-// 从index读取num个数据
-void load_train_data(Session *sess, int index, int num);
-void load_train_label(Session *sess, int index, int num);
-
-void load_test_data(Session *sess, int index);
-void load_test_label(Session *sess, int index);
-
-void save_weigths(Session *sess, char *path);
-void load_weights(Session *sess, char *path);
-
 Session *load_session_json(char *graph_path, char *coretype);
 Initializer load_initializer_json(cJSON *cjson_init);
 Graph *load_graph_json(cJSON *cjson_graph);
+
+Layer **load_layers(cJSON *cjson_graph);
+Layer *load_layer_json(cJSON *cjson_layer);
+
+Layer *load_avgpool_layer_json(cJSON *cjson_layer);
+Layer *load_connect_layer_json(cJSON *cjson_layer);
+Layer *load_convolutional_layer_json(cJSON *cjson_layer);
+Layer *load_dropout_layer_json(cJSON *cjson_layer);
+Layer *load_im2col_layer_json(cJSON *cjson_layer);
+Layer *load_maxpool_layer_json(cJSON *cjson_layer);
+Layer *load_softmax_layer_json(cJSON *cjson_layer);
+Layer *load_mse_layer_json(cJSON *cjson_layer);
+Layer *load_shortcut_layer_json(cJSON *cjson_layer);
+
+void train(Session *sess);
+void detect(Session *sess);
+
+void run_forward(Session *sess);
+void run_backward(Session *sess);
+void run_update(Session *sess);
+
+void init_running_scene(Session *sess, char *weights_file);
+void clean_running_scene(Session *sess);
 
 #ifdef __cplusplus
 }

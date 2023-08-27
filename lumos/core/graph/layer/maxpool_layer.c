@@ -56,14 +56,14 @@ void forward_maxpool_layer(Layer l, int num)
     }
 }
 
-void backward_maxpool_layer(Layer l, float rate, int num, float *n_delta)
+void backward_maxpool_layer(Layer l, float rate, int num)
 {
     for (int i = 0; i < num; ++i)
     {
         int offset_i = i * l.inputs;
         int offset_o = i * l.outputs;
         float *delta_l = l.delta + offset_i;
-        float *delta_n = n_delta + offset_o;
+        float *delta_n = l.n_delta + offset_o;
         int *index = l.maxpool_index + offset_o;
         maxpool_gradient(delta_l, l.input_h, l.input_w, l.input_c, l.ksize, l.stride, l.pad, delta_n, index);
     }

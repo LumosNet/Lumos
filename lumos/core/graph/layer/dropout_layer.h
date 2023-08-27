@@ -17,7 +17,7 @@ Layer *make_dropout_layer(float probability);
 void init_dropout_layer(Layer *l, int w, int h, int c);
 
 void forward_dropout_layer(Layer l, int num);
-void backward_dropout_layer(Layer l, float rate, int num, float *n_delta);
+void backward_dropout_layer(Layer l, float rate, int num);
 
 #ifdef __cplusplus
 }

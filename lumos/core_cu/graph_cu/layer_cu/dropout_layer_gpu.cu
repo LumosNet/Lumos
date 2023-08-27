@@ -32,13 +32,13 @@ void forward_dropout_layer_gpu(Layer l, int num)
     dropout_gpu(l, num);
 }
 
-void backward_dropout_layer_gpu(Layer l, float rate, int num, float *n_delta)
+void backward_dropout_layer_gpu(Layer l, float rate, int num)
 {
     if (!l.train){
-        cudaMemcpy(l.delta, n_delta, num*l.inputs*sizeof(float), cudaMemcpyDeviceToDevice);
+        cudaMemcpy(l.delta, l.n_delta, num*l.inputs*sizeof(float), cudaMemcpyDeviceToDevice);
         return;
     }
-    dropout_gradient_gpu(l, num, n_delta);
+    dropout_gradient_gpu(l, num);
 }
 
 __device__ float rand_uniform_gpu(float a, float b, int seed)
@@ -77,9 +77,9 @@ void dropout_gpu(Layer l, int num)
     dropout_kernel<<<(size+BLOCK-1)/BLOCK, BLOCK>>>(l, num, scale);
 }
 
-void dropout_gradient_gpu(Layer l, int num, float *n_delta)
+void dropout_gradient_gpu(Layer l, int num)
 {
     int size = num * l.inputs;
     float scale = 1. / (1.-l.probability);
-    dropout_gradient_kernel<<<(size+BLOCK-1)/BLOCK, BLOCK>>>(l, num, n_delta, scale);
+    dropout_gradient_kernel<<<(size+BLOCK-1)/BLOCK, BLOCK>>>(l, num, l.n_delta, scale);
 }

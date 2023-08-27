@@ -24,10 +24,13 @@ void bind_train_label(Session *sess, char *path)
 
 void create_workspace(Session *sess)
 {
+    int max = -TMP_MAX;
     Graph *graph = sess->graph;
     for (int i = 0; i < graph->num; ++i){
-        
+        Layer *l = graph->layers[i];
+        if (max <= l->workspace_size) max = l->workspace_size;
     }
+    sess->workspace = calloc(max, sizeof(float));
 }
 
 int count_running_memsize(Session *sess)

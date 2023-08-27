@@ -18,8 +18,8 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
 void init_convolutional_layer(Layer *l, int w, int h, int c);
 
 void forward_convolutional_layer(Layer l, int num);
-void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta);
-void update_convolutional_layer(Layer l, float rate, int num, float *n_delta);
+void backward_convolutional_layer(Layer l, float rate, int num);
+void update_convolutional_layer(Layer l, float rate, int num);
 
 #ifdef __cplusplus
 }

@@ -12,18 +12,14 @@
 extern "C" {
 #endif
 
-void session_train(Session *sess, char *weights_path);
-void session_test(Session *sess);
+void train(Session *sess, char *weights_path);
+void detect(Session *sess);
 
-void forward_session(Session *sess);
-void backward_session(Session *sess);
+void forward(Session *sess);
+void backward(Session *sess);
 
 void init_train_scene(Session *sess, char *weights_file);
 void init_test_scene(Session *sess, char *weights_file);
-
-void set_run_type(Session *sess, int train);
-
-void test_information(float *truth, float *predict, int label_num, float loss, char *data_path);
 
 #ifdef __cplusplus
 }

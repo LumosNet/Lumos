@@ -18,7 +18,7 @@ Layer *make_shortcut_layer(int index, char *active);
 void init_shortcut_layer(Layer *l, int w, int h, int c, Layer *shortcut);
 
 void forward_shortcut_layer(Layer l, int num);
-void backward_shortcut_layer(Layer l, float rate, int num, float *n_delta);
+void backward_shortcut_layer(Layer l, float rate, int num);
 
 #ifdef __cplusplus
 }

@@ -42,7 +42,7 @@ void forward_im2col_layer(Layer l, int num)
     memcpy(l.output, l.input, num*l.outputs*sizeof(float));
 }
 
-void backward_im2col_layer(Layer l, float rate, int num, float *n_delta)
+void backward_im2col_layer(Layer l, float rate, int num)
 {
-    memcpy(l.delta, n_delta, num*l.inputs*sizeof(float));
+    memcpy(l.delta, l.n_delta, num*l.inputs*sizeof(float));
 }

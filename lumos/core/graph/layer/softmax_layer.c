@@ -50,14 +50,14 @@ void forward_softmax_layer(Layer l, int num)
     }
 }
 
-void backward_softmax_layer(Layer l, float rate, int num, float *n_delta)
+void backward_softmax_layer(Layer l, float rate, int num)
 {
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;
         float *input = l.input + offset_i;
         float *delta_l = l.delta + offset_i;
-        float *delta_n = n_delta + offset_o;
+        float *delta_n = l.n_delta + offset_o;
         softmax_grident(input, l.inputs, delta_l);
         matrix_multiply_cpu(delta_n, delta_l, l.inputs, delta_l);
     }

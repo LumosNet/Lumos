@@ -23,8 +23,8 @@ extern "C" {
 
 void init_connect_layer_gpu(Layer *l, int w, int h, int c);
 void forward_connect_layer_gpu(Layer l, int num);
-void backward_connect_layer_gpu(Layer l, float rate, int num, float *n_delta);
-void update_connect_layer_gpu(Layer l, float rate, int num, float *n_delta);
+void backward_connect_layer_gpu(Layer l, float rate, int num);
+void update_connect_layer_gpu(Layer l, float rate, int num);
 
 #ifdef __cplusplus
 }

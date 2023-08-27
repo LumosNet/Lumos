@@ -70,7 +70,7 @@ void forward_connect_layer(Layer l, int num)
     }
 }
 
-void backward_connect_layer(Layer l, float rate, int num, float *n_delta)
+void backward_connect_layer(Layer l, float rate, int num)
 {
     for (int i = 0; i < num; ++i)
     {
@@ -78,23 +78,23 @@ void backward_connect_layer(Layer l, float rate, int num, float *n_delta)
         int offset_o = i * l.outputs;
         float *output = l.output + offset_o;
         float *delta_l = l.delta + offset_i;
-        float *delta_n = n_delta + offset_o;
+        float *delta_n = l.n_delta + offset_o;
         gradient_list(output, l.outputs, l.gradient);
         matrix_multiply_cpu(delta_n, output, l.outputs, delta_n);
         gemm(1, 0, l.output_c, l.input_c, l.output_c, l.input_w, 1,
              l.kernel_weights, delta_n, delta_l);
     }
-    update_connect_layer(l, rate, num, n_delta);
+    update_connect_layer(l, rate, num);
 }
 
-void update_connect_layer(Layer l, float rate, int num, float *n_delta)
+void update_connect_layer(Layer l, float rate, int num)
 {
     for (int i = 0; i < num; ++i)
     {
         int offset_i = i * l.inputs;
         int offset_o = i * l.outputs;
         float *input = l.input + offset_i;
-        float *delta_n = n_delta + offset_o;
+        float *delta_n = l.n_delta + offset_o;
         gemm(0, 1, l.output_c, l.output_w,
              l.input_c, l.input_w, 1,
              delta_n, input, l.workspace);

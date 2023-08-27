@@ -19,8 +19,11 @@ extern "C" {
 
 typedef struct session{
     Graph *graph;
+    Initializer init;
+    int epoch;
     int batch;
     int subdivison;
+    float learning_rate;
 
     int height;
     int width;
@@ -35,6 +38,8 @@ typedef struct session{
     float **truth;
 
     float *workspace;
+    char *dataset_listf;
+    char *labelset_listf;
 } Session;
 
 void bind_train_data(Session *sess, char *path);

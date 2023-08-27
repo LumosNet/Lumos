@@ -17,7 +17,7 @@ Layer *make_im2col_layer();
 void init_im2col_layer(Layer *l, int w, int h, int c);
 
 void forward_im2col_layer(Layer l, int num);
-void backward_im2col_layer(Layer l, float rate, int num, float *n_delta);
+void backward_im2col_layer(Layer l, float rate, int num);
 
 #ifdef __cplusplus
 }

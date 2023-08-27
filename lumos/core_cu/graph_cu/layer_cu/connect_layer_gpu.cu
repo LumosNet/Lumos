@@ -16,7 +16,6 @@ void init_connect_layer_gpu(Layer *l, int w, int h, int c)
 
     l->forward = forward_connect_layer_gpu;
     l->backward = backward_connect_layer_gpu;
-    l->update = update_connect_layer_gpu;
 
     cudaMalloc((void**)&l->output, l->outputs*l->subdivision*sizeof(float));
     cudaMalloc((void**)&l->delta, l->inputs*l->subdivision*sizeof(float));
@@ -40,16 +39,16 @@ void forward_connect_layer_gpu(Layer l, int num)
         float *input = l.input + offset_i;
         float *output = l.output + offset_o;
         gemm_gpu(0, 0, l.outputs, l.inputs, l.inputs, 1,
-             1, l.kernel_weights_gpu, input, output);
+             1, l.kernel_weights, input, output);
         if (l.bias)
         {
-            add_bias_gpu(output, l.bias_weights_gpu, l.ksize, 1);
+            add_bias_gpu(output, l.bias_weights, l.ksize, 1);
         }
         activate_list_gpu(output, l.outputs, l.active);
     }
 }
 
-void backward_connect_layer_gpu(Layer l, float rate, int num, float *n_delta)
+void backward_connect_layer_gpu(Layer l, float rate, int num)
 {
     for (int i = 0; i < num; ++i)
     {
@@ -57,30 +56,30 @@ void backward_connect_layer_gpu(Layer l, float rate, int num, float *n_delta)
         int offset_o = i * l.outputs;
         float *output = l.output + offset_o;
         float *delta_l = l.delta + offset_i;
-        float *delta_n = n_delta + offset_o;
+        float *delta_n = l.n_delta + offset_o;
         gradient_list_gpu(output, l.outputs, l.gradient);
         matrix_multiply_gpu(delta_n, output, l.outputs, delta_n);
         gemm_gpu(1, 0, l.output_c, l.input_c, l.output_c, l.input_w, 1,
-             l.kernel_weights_gpu, delta_n, delta_l);
+             l.kernel_weights, delta_n, delta_l);
     }
-    update_connect_layer_gpu(l, rate, num, n_delta);
+    update_connect_layer_gpu(l, rate, num);
 }
 
-void update_connect_layer_gpu(Layer l, float rate, int num, float *n_delta)
+void update_connect_layer_gpu(Layer l, float rate, int num)
 {
     for (int i = 0; i < num; ++i)
     {
         int offset_i = i * l.inputs;
         int offset_o = i * l.outputs;
         float *input = l.input + offset_i;
-        float *delta_n = n_delta + offset_o;
+        float *delta_n = l.n_delta + offset_o;
         gemm_gpu(0, 1, l.output_c, l.output_w,
              l.input_c, l.input_w, 1,
              delta_n, input, l.workspace);
-        saxpy_gpu(l.update_kernel_weights_gpu, l.workspace, l.output_c * l.input_c, rate, l.update_kernel_weights_gpu);
+        saxpy_gpu(l.update_kernel_weights, l.workspace, l.output_c * l.input_c, rate, l.update_kernel_weights);
         if (l.bias)
         {
-            saxpy_gpu(l.update_bias_weights_gpu, delta_n, l.outputs, rate, l.update_bias_weights_gpu);
+            saxpy_gpu(l.update_bias_weights, delta_n, l.outputs, rate, l.update_bias_weights);
         }
     }
 }

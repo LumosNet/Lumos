@@ -29,13 +29,13 @@ void forward_normalization_layer(Layer l, int num)
     }
 }
 
-void backward_normalization_layer(Layer l, float rate, int num, float *n_delta)
+void backward_normalization_layer(Layer l, float rate, int num)
 {
-    l.update(l, rate, num, n_delta);
+    update_normalization_layer(l, rate, num);
     for (int i = 0; i < num; ++i){
         int offset_o = i * l.outputs;
         float *input = l.normalize_x + offset_o;
-        float *delta_n = n_delta + offset_o;
+        float *delta_n = l.n_delta + offset_o;
         float *mean = l.mean + i*l.output_c;
         float *variance = l.variance + i*l.output_c;
         gradient_normalize_mean(l.normalize_weights, variance, l.output_c, l.workspace);
@@ -45,11 +45,11 @@ void backward_normalization_layer(Layer l, float rate, int num, float *n_delta)
     }
 }
 
-void update_normalization_layer(Layer l, float rate, int num, float *n_delta)
+void update_normalization_layer(Layer l, float rate, int num)
 {
     for (int i = 0; i < num; ++i){
         int offset_o = i * l.outputs;
-        float *delta_n = n_delta + offset_o;
+        float *delta_n = l.n_delta + offset_o;
         float *norm_x = l.x_norm + offset_o;
         sum_channel_cpu(delta_n, l.output_h, l.output_w, l.output_c, rate, l.workspace);
         add_bias(l.update_bias_weights, l.workspace, l.output_c, l.output_h*l.output_w);

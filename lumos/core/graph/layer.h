@@ -10,9 +10,6 @@
 extern "C" {
 #endif
 
-#define CPU 0
-#define GPU 1
-
 typedef enum {
     VALFILL, UNIFORM, NORMAL, XAVIERU, XAVIERN,, KAIMINGU, KAIMINGN, HE
 } InitType;
@@ -26,24 +23,21 @@ typedef struct layer Layer;
 
 typedef void (*initialize) (struct layer, int, int, int);
 typedef void (*forward)  (struct layer, int);
-typedef void (*backward) (struct layer, float, int, float*);
+typedef void (*backward) (struct layer, float, int);
 typedef initialize Initialize;
 typedef forward Forward;
 typedef backward Backward;
 
 typedef void (*initialize_gpu) (struct layer, int, int, int);
 typedef void (*forward_gpu)  (struct layer, int);
-typedef void (*backward_gpu) (struct layer, float, int, float*);
+typedef void (*backward_gpu) (struct layer, float, int);
 typedef initialize_gpu Initialize_Gpu;
 typedef forward_gpu Forward_Gpu;
 typedef backward_gpu Backward_Gpu;
 
-typedef int (*get_float_calculate_times) (struct layer*);
-typedef get_float_calculate_times GetFloatCalculateTimes;
-
 struct layer{
-    int subdivision;
     LayerType type;
+    int subdivision;
     int coretype;
     int input_h;
     int input_w;
@@ -54,21 +48,15 @@ struct layer{
 
     int inputs;
     int outputs;
-    int kernel_weights_size;
-    int bias_weights_size;
-    int normalize_weights_size;
-    int deltas;
     int workspace_size;
-    int label_num;
+    int label_num; // ？？？
 
     char *active_str;
 
     float *input;
     float *output;
     float *delta;
-    char **label;
-    float *truth;
-    float *loss;
+    float *n_delta;
 
     float *workspace;
 
@@ -87,8 +75,6 @@ struct layer{
 
     // 在网中的位置，0开始
     int index;
-    // 浮点数操作数
-    int fops;
     // dropout 占比
     float probability;
     int train;
@@ -124,8 +110,6 @@ struct layer{
 
     Activation active;
     Activation gradient;
-
-    GetFloatCalculateTimes get_fct;
 };
 
 #ifdef __cplusplus
