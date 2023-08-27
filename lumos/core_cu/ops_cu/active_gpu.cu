@@ -111,7 +111,7 @@ Activate load_activate_gpu(char *activate)
     return NULL;
 }
 
-Gradient load_activate_gpu(char *activate)
+Gradient load_gradient_gpu(char *activate)
 {
     if (activate == "stair")
         return stair_gradient_kernel;
