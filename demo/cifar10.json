@@ -2,15 +2,16 @@
     "Public": {
         "width": 32,
         "height": 32,
-        "channel": 1,
+        "channel": 3,
         "label": 10,
-        "batch": 8,
-        "subdivision": 8,
-        "epoch": 1000,
-        "learning_rate": 0.0001
+        "batch": 4,
+        "subdivision": 4,
+        "epoch": 100,
+        "learning_rate": 0.001
     },
     "Initializer": {
-        "type": "HE"
+        "type": "KN",
+        "mode": "fan_in"
     },
     "Layers": [
         {
@@ -21,7 +22,7 @@
             "pad": 2,
             "bias": 1,
             "normalization": 0,
-            "active": "relu"
+            "active": "selu"
         },
         {
             "type": "MAXPOOL",
@@ -37,7 +38,7 @@
             "pad": 2,
             "bias": 1,
             "normalization": 0,
-            "active": "relu"
+            "active": "selu"
         },
         {
             "type": "MAXPOOL",
@@ -53,7 +54,7 @@
             "pad": 2,
             "bias": 1,
             "normalization": 0,
-            "active": "relu"
+            "active": "selu"
         },
         {
             "type": "MAXPOOL",
@@ -69,14 +70,14 @@
             "output": 64,
             "bias": 1,
             "normalization": 0,
-            "active": "relu"
+            "active": "selu"
         },
         {
             "type": "CONNECT",
             "output": 10,
             "bias": 1,
             "normalization": 0,
-            "active": "relu"
+            "active": "selu"
         },
         {
             "type": "SOFTMAX",

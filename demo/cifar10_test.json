@@ -1,0 +1,141 @@
+{
+    "Public": {
+        "width": 28,
+        "height": 28,
+        "channel": 3,
+        "label": 10,
+        "batch": 128,
+        "subdivision": 1,
+        "epoch": 5000,
+        "learning_rate": 0.4
+    },
+    "Initializer": {
+        "type": "KN",
+        "mode": "fan_in"
+    },
+    "Layers": [
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 128,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 0,
+            "active": "selu"
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 128,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 0,
+            "active": "selu"
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 128,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 0,
+            "active": "selu"
+        },
+        {
+            "type": "MAXPOOL",
+            "ksize": 2,
+            "stride": 2,
+            "pad": 0
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 256,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 0,
+            "active": "selu"
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 256,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 0,
+            "active": "selu"
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 256,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 0,
+            "active": "selu"
+        },
+        {
+            "type": "MAXPOOL",
+            "ksize": 2,
+            "stride": 2,
+            "pad": 0
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 512,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 0,
+            "active": "selu"
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 512,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 0,
+            "active": "selu"
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 512,
+            "ksize": 3,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 0,
+            "active": "selu"
+        },
+        {
+            "type": "CONVOLUTIONAL",
+            "filters": 10,
+            "ksize": 1,
+            "stride": 1,
+            "pad": 1,
+            "bias": 1,
+            "normalization": 0,
+            "active": "selu"
+        },
+        {
+            "type": "IM2COL"
+        },
+        {
+            "type": "SOFTMAX",
+            "group": 10
+        },
+        {
+            "type": "MSE",
+            "group": 10
+        }
+    ]
+}
