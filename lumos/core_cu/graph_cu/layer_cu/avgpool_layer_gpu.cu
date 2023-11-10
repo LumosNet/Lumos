@@ -1,5 +1,49 @@
 #include "avgpool_layer_gpu.h"
 
+Layer *make_avgpool_layer_gpu(int ksize, int stride, int pad)
+{
+    Layer *l = (Layer*)malloc(sizeof(Layer));
+    l->pad = pad;
+    l->ksize = ksize;
+    l->stride = stride;
+    l->update = NULL;
+
+    l->init = init_avgpool_layer_gpu;
+    l->release = release_avgpool_layer_gpu;
+    l->forward = forward_avgpool_layer_gpu;
+    l->backward = backward_avgpool_layer_gpu;
+
+    fprintf(stderr, "Avg Pooling     Layer    :    [ksize=%2d]\n", l->ksize);
+    return l;
+}
+
+void init_avgpool_layer_gpu(Layer *l, int w, int h, int c)
+{
+    l->input_h = h;
+    l->input_w = w;
+    l->input_c = c;
+    l->inputs = l->input_h * l->input_w * l->input_c;
+
+    l->output_h = (h + 2 * l->pad - l->ksize) / l->stride + 1;
+    l->output_w = (w + 2 * l->pad - l->ksize) / l->stride + 1;
+    l->output_c = l->input_c;
+    l->outputs = l->output_h * l->output_w * l->output_c;
+
+    l->workspace_size = 0;
+
+    cudaMalloc((void**)&l->output, l->outputs*sizeof(float));
+    cudaMalloc((void**)&l->delta, l->inputs*sizeof(float));
+
+    fprintf(stderr, "Avg Pooling     Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
+            l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
+}
+
+void release_avgpool_layer_gpu(Layer *l)
+{
+    cudaFree(l->output);
+    cudaFree(l->delta);
+}
+
 void forward_avgpool_layer_gpu(Layer l, int num)
 {
     for (int i = 0; i < num; ++i)

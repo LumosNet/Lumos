@@ -3,12 +3,11 @@
 Layer *make_im2col_layer()
 {
     Layer *l = malloc(sizeof(Layer));
-    l->type = IM2COL;
-    l->weights = 0;
-    l->batchnorm = 0;
-    l->bias = 0;
     l->update = NULL;
-
+    l->init = init_im2col_layer;
+    l->release = release_im2col_layer;
+    l->forward = forward_im2col_layer;
+    l->backward = backward_im2col_layer;
     fprintf(stderr, "Im2col          Layer\n");
     return l;
 }
@@ -25,18 +24,18 @@ void init_im2col_layer(Layer *l, int w, int h, int c)
     l->output_c = l->inputs;
     l->outputs = l->inputs;
     l->workspace_size = 0;
-    l->deltas = l->inputs;
 
-    if (l->coretype == GPU){
-        l->forward = forward_im2col_layer_gpu;
-        l->backward = backward_im2col_layer_gpu;
-    } else {
-        l->forward = forward_im2col_layer;
-        l->backward = backward_im2col_layer;
-    }
+    l->output = calloc(l->outputs, sizeof(float));
+    l->delta = calloc(l->inputs, sizeof(float));
 
     fprintf(stderr, "Im2col          Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
+}
+
+void release_im2col_layer(Layer *l)
+{
+    free(l->output);
+    free(l->delta);
 }
 
 void forward_im2col_layer(Layer l, int num)

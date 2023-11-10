@@ -14,14 +14,16 @@
 #include "cpu_gpu.h"
 #include "active_gpu.h"
 #include "gemm_gpu.h"
-#include "im2col_gpu.h"
 #include "bias_gpu.h"
-#include "normalization_layer_gpu.h"
+#include "im2col_gpu.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+Layer *make_convolutional_layer_gpu(int filters, int ksize, int stride, int pad, int bias, int normalization, char *active);
+void init_convolutional_layer_gpu(Layer *l, int w, int h, int c);
+void release_convolutional_layer_gpu(Layer *l);
 void forward_convolutional_layer_gpu(Layer l, int num);
 void backward_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta);
 void update_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta);

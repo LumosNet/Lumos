@@ -15,15 +15,17 @@
 #include "bias_gpu.h"
 #include "cpu_gpu.h"
 #include "gemm_gpu.h"
-#include "normalization_layer_gpu.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+Layer *make_connect_layer_gpu(int output, int bias, int normalize, char *active);
+void init_connect_layer_gpu(Layer *l, int w, int h, int c);
+void release_connect_layer_gpu(Layer *l);
+
 void forward_connect_layer_gpu(Layer l, int num);
 void backward_connect_layer_gpu(Layer l, float rate, int num, float *n_delta);
-
 void update_connect_layer_gpu(Layer l, float rate, int num, float *n_delta);
 
 #ifdef __cplusplus
