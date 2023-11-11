@@ -11,6 +11,7 @@ Layer *make_connect_layer_gpu(int output, int bias, int normalize, char *active)
     l->forward = forward_connect_layer_gpu;
     l->backward = backward_connect_layer_gpu;
     l->update = update_connect_layer_gpu;
+    l->weightinit = weightinit_connect_layer_gpu;
     Activation type = load_activate_type(active);
     l->active = load_activate_gpu(type);
     l->gradient = load_gradient_gpu(type);
@@ -40,8 +41,10 @@ void init_connect_layer_gpu(Layer *l, int w, int h, int c)
     cudaMalloc((void**)&l->delta, l->subdivision*l->inputs*sizeof(float));
     cudaMalloc((void**)&l->kernel_weights, l->inputs*l->outputs*sizeof(float));
     cudaMalloc((void**)&l->update_kernel_weights, l->inputs*l->outputs*sizeof(float));
-    cudaMalloc((void**)&l->bias_weights, l->outputs*sizeof(float));
-    cudaMalloc((void**)&l->update_bias_weights, l->outputs*sizeof(float));
+    if (l->bias){
+        cudaMalloc((void**)&l->bias_weights, l->outputs*sizeof(float));
+        cudaMalloc((void**)&l->update_bias_weights, l->outputs*sizeof(float));
+    }
 
     fprintf(stderr, "Connect         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
@@ -55,6 +58,21 @@ void release_connect_layer_gpu(Layer *l)
     cudaFree(l->update_kernel_weights);
     cudaFree(l->bias_weights);
     cudaFree(l->update_bias_weights);
+}
+
+void weightinit_connect_layer_gpu(Layer *l, WeightInitType type)
+{
+    float scale = sqrt((float)2 / l->inputs);
+    float *kernel_weights = (float *)calloc(l->inputs*l->outputs, sizeof(float));
+    for (int i = 0; i < l->inputs*l->outputs; ++i){
+        kernel_weights[i] = scale*rand_uniform(-1, 1);
+    }
+    cudaMemcpy(l->kernel_weights, kernel_weights, l->inputs*l->outputs*sizeof(float), cudaMemcpyHostToDevice);
+    if (l->bias){
+        fill_gpu(l->bias_weights, l->outputs, 0.001, 1);
+        cudaMemcpy(l->update_bias_weights, l->bias_weights, l->outputs*sizeof(float), cudaMemcpyDeviceToDevice);
+    }
+    cudaMemcpy(l->update_kernel_weights, l->kernel_weights, l->inputs*l->outputs*sizeof(float), cudaMemcpyDeviceToDevice);
 }
 
 void forward_connect_layer_gpu(Layer l, int num)

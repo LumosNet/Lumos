@@ -10,19 +10,25 @@
 extern "C" {
 #endif
 
+typedef enum {
+    HE
+} WeightInitType;
+
 typedef struct layer Layer;
 
-typedef void (*init)     (struct layer*, int, int, int);
-typedef void (*release)  (struct layer*);
-typedef void (*forward)  (struct layer, int);
-typedef void (*backward) (struct layer, float, int, float*);
-typedef void (*update)   (struct layer, float, int, float*);
+typedef void (*init)        (struct layer*, int, int, int);
+typedef void (*release)     (struct layer*);
+typedef void (*forward)     (struct layer, int);
+typedef void (*backward)    (struct layer, float, int, float*);
+typedef void (*update)      (struct layer, float, int, float*);
+typedef void (*weightinit)  (struct layer*, WeightInitType type);
 
-typedef init     Init;
-typedef release  Release;
-typedef forward  Forward;
-typedef backward Backward;
-typedef update   Update;
+typedef init        Init;
+typedef release     Release;
+typedef forward     Forward;
+typedef backward    Backward;
+typedef update      Update;
+typedef weightinit  Weightinit;
 
 struct layer{
     char *ID;
@@ -74,11 +80,12 @@ struct layer{
     float *update_bias_weights;
     float *update_normalize_weights;
 
-    Init     init;
-    Release  release;
-    Forward  forward;
-    Backward backward;
-    Update   update;
+    Init        init;
+    Release     release;
+    Forward     forward;
+    Backward    backward;
+    Update      update;
+    Weightinit  weightinit;
 
     Activate active;
     Gradient gradient;

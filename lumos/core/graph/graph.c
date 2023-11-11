@@ -1,63 +1,34 @@
 #include "graph.h"
 
-Graph *create_graph(char *name, int layer_n)
+Graph *create_graph(int width, int height, int channel)
 {
     Graph *graph = malloc(sizeof(Graph));
-    graph->graph_name = name;
-    graph->layer_list_num = layer_n;
-    graph->layer_num = 0;
-    graph->layers = calloc(layer_n, sizeof(Layer));
-    fprintf(stderr, "[%s]         max   %d  Layers\n", graph->graph_name, graph->layer_list_num);
+    graph->width = width;
+    graph->height = height;
+    graph->channel = channel;
+    graph->layers = calloc(MAXLAYERS, sizeof(struct Layer*));
     return graph;
 }
 
 void append_layer2grpah(Graph *graph, Layer *l)
 {
-    graph->layers[graph->layer_num] = l;
-    graph->layer_num += 1;
-    l->index = graph->layer_num;
-}
-
-void init_graph(Graph *g, int w, int h, int c)
-{
-    fprintf(stderr, "\nStart To Init Graph\n");
-    fprintf(stderr, "[%s]                     Inputs         Outputs\n", g->graph_name);
-    Layer *l;
-    for (int i = 0; i < g->layer_num; ++i)
-    {
-        l = g->layers[i];
-        switch (l->type)
-        {
-        case AVGPOOL:
-            init_avgpool_layer(l, w, h, c);
-            break;
-        case CONNECT:
-            init_connect_layer(l, w, h, c);
-            break;
-        case CONVOLUTIONAL:
-            init_convolutional_layer(l, w, h, c);
-            break;
-        case IM2COL:
-            init_im2col_layer(l, w, h, c);
-            break;
-        case MAXPOOL:
-            init_maxpool_layer(l, w, h, c);
-            break;
-        case MSE:
-            init_mse_layer(l, w, h, c);
-            break;
-        case SOFTMAX:
-            init_softmax_layer(l, w, h, c);
-            break;
-        case DROPOUT:
-            init_dropout_layer(l, w, h, c);
-            break;
-        case SHORTCUT:
-            init_shortcut_layer(l, w, h, c, g->layers[l->shortcut_index]);
-            break;
-        default:
+    for (int i = 0; i < MAXLAYERS; ++i){
+        if (graph->layers[i] == NULL){
+            graph->layers[i] = l;
             break;
         }
+    }
+}
+
+void init_graph(Graph *g)
+{
+    Layer *l;
+    int w = g->width, h = g->height, c = g->channel;
+    for (int i = 0; i < MAXLAYERS; ++i){
+        if (g->layers[i] == NULL) break;
+        l = g->layers[i];
+        l->subdivision = g->subdivision;
+        l->init(l, w, h, c);
         w = l->output_w;
         h = l->output_h;
         c = l->output_c;

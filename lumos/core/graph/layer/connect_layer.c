@@ -11,6 +11,7 @@ Layer *make_connect_layer(int output, int bias, int normalize, char *active)
     l->forward = forward_connect_layer;
     l->backward = backward_connect_layer;
     l->update = update_connect_layer;
+    l->weightinit = weightinit_connect_layer;
     Activation type = load_activate_type(active);
     l->active = load_activate(type);
     l->gradient = load_gradient(type);
@@ -40,8 +41,11 @@ void init_connect_layer(Layer *l, int w, int h, int c)
     l->delta = calloc(l->subdivision*l->inputs, sizeof(float));
     l->kernel_weights = calloc(l->inputs*l->outputs, sizeof(float));
     l->update_kernel_weights = calloc(l->inputs*l->outputs, sizeof(float));
-    l->bias_weights = calloc(l->outputs, sizeof(float));
-    l->update_bias_weights = calloc(l->outputs, sizeof(float));
+    
+    if (l->bias){
+        l->bias_weights = calloc(l->outputs, sizeof(float));
+        l->update_bias_weights = calloc(l->outputs, sizeof(float));
+    }
 
     fprintf(stderr, "Connect         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
@@ -55,6 +59,19 @@ void release_connect_layer(Layer *l)
     free(l->update_kernel_weights);
     free(l->bias_weights);
     free(l->update_bias_weights);
+}
+
+void weightinit_connect_layer(Layer *l, WeightInitType type)
+{
+    float scale = sqrt((float)2 / l->inputs);
+    for (int i = 0; i < l->inputs*l->outputs; ++i){
+        l->kernel_weights[i] = scale*rand_uniform(-1, 1);
+    }
+    if (l->bias){
+        fill_cpu(l->bias_weights, l->outputs, 0.001, 1);
+        memcpy(l->update_bias_weights, l->bias_weights, l->outputs*sizeof(float));
+    }
+    memcpy(l->update_kernel_weights, l->kernel_weights, l->inputs*l->outputs*sizeof(float));
 }
 
 void forward_connect_layer(Layer l, int num)

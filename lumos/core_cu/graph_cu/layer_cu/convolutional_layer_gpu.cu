@@ -16,6 +16,7 @@ Layer *make_convolutional_layer_gpu(int filters, int ksize, int stride, int pad,
     l->forward = forward_convolutional_layer_gpu;
     l->backward = backward_convolutional_layer_gpu;
     l->update = update_convolutional_layer_gpu;
+    l->weightinit = weightinit_convolutional_layer_gpu;
     Activation type = load_activate_type(active);
     l->active = load_activate_gpu(type);
     l->gradient = load_gradient_gpu(type);
@@ -43,8 +44,11 @@ void init_convolutional_layer_gpu(Layer *l, int w, int h, int c)
     cudaMalloc((void**)&l->delta, l->subdivision*l->inputs*sizeof(float));
     cudaMalloc((void**)&l->kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float));
     cudaMalloc((void**)&l->update_kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float));
-    cudaMalloc((void**)&l->bias_weights, l->filters*sizeof(float));
-    cudaMalloc((void**)&l->update_bias_weights, l->filters*sizeof(float));
+    
+    if (l->bias){
+        cudaMalloc((void**)&l->bias_weights, l->filters*sizeof(float));
+        cudaMalloc((void**)&l->update_bias_weights, l->filters*sizeof(float));
+    }
 
     fprintf(stderr, "Convolutional   Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
@@ -58,6 +62,29 @@ void release_convolutional_layer_gpu(Layer *l)
     cudaFree(l->update_kernel_weights);
     cudaFree(l->bias_weights);
     cudaFree(l->update_bias_weights);
+}
+
+void weightinit_convolutional_layer_gpu(Layer *l, WeightInitType type)
+{
+    float scale = sqrt((float)2 / (l->ksize*l->ksize*l->input_c));
+    float *kernel_weights = (float *)calloc(l->filters*l->ksize*l->ksize*l->input_c, sizeof(float));
+    for (int i = 0; i < l->filters; ++i){
+        float *weight = kernel_weights + i*l->input_c*l->ksize*l->ksize;
+        for (int j = 0; j < l->ksize*l->ksize; ++j){
+            weight[j] = scale*rand_normal();
+        }
+        for (int j = 0; j < l->input_c-1; ++j){
+            float *weight_c = weight + (j+1)*l->ksize*l->ksize;
+            memcpy(weight_c, weight, l->ksize*l->ksize*sizeof(float));
+        }
+    }
+    cudaMemcpy(l->kernel_weights, kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float), cudaMemcpyHostToDevice);
+    free(kernel_weights);
+    if (l->bias){
+        fill_gpu(l->bias_weights, l->filters, 0.001, 1);
+        cudaMemcpy(l->update_bias_weights, l->bias_weights, l->filters*sizeof(float), cudaMemcpyDeviceToDevice);
+    }
+    cudaMemcpy(l->update_kernel_weights, l->kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float), cudaMemcpyDeviceToDevice);
 }
 
 void forward_convolutional_layer_gpu(Layer l, int num)

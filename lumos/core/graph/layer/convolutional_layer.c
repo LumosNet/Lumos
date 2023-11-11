@@ -16,6 +16,7 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
     l->forward = forward_convolutional_layer;
     l->backward = backward_convolutional_layer;
     l->update = update_convolutional_layer;
+    l->weightinit = weightinit_convolutional_layer;
     Activation type = load_activate_type(active);
     l->active = load_activate(type);
     l->gradient = load_gradient(type);
@@ -43,8 +44,11 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
     l->delta = calloc(l->subdivision*l->inputs, sizeof(float));
     l->kernel_weights = calloc(l->filters*l->ksize*l->ksize*l->input_c, sizeof(float));
     l->update_kernel_weights = calloc(l->filters*l->ksize*l->ksize*l->input_c, sizeof(float));
-    l->bias_weights = calloc(l->filters, sizeof(float));
-    l->update_bias_weights = calloc(l->filters, sizeof(float));
+    
+    if (l->bias){
+        l->bias_weights = calloc(l->filters, sizeof(float));
+        l->update_bias_weights = calloc(l->filters, sizeof(float));
+    }
 
     fprintf(stderr, "Convolutional   Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
@@ -58,6 +62,26 @@ void release_convolutional_layer(Layer *l)
     free(l->update_kernel_weights);
     free(l->bias_weights);
     free(l->update_bias_weights);
+}
+
+void weightinit_convolutional_layer(Layer *l, WeightInitType type)
+{
+    float scale = sqrt((float)2 / (l->ksize*l->ksize*l->input_c));
+    for (int i = 0; i < l->filters; ++i){
+        float *weight = l->kernel_weights + i*l->input_c*l->ksize*l->ksize;
+        for (int j = 0; j < l->ksize*l->ksize; ++j){
+            weight[j] = scale*rand_normal();
+        }
+        for (int j = 0; j < l->input_c-1; ++j){
+            float *weight_c = weight + (j+1)*l->ksize*l->ksize;
+            memcpy(weight_c, weight, l->ksize*l->ksize*sizeof(float));
+        }
+    }
+    if (l->bias){
+        fill_cpu(l->bias_weights, l->filters, 0.001, 1);
+        memcpy(l->update_bias_weights, l->bias_weights, l->filters*sizeof(float));
+    }
+    memcpy(l->update_kernel_weights, l->kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float));
 }
 
 void forward_convolutional_layer(Layer l, int num)
