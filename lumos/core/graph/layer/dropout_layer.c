@@ -5,6 +5,10 @@ Layer *make_dropout_layer(float probability)
     Layer *l = malloc(sizeof(Layer));
     l->probability = probability;
     l->update = NULL;
+    l->init = init_dropout_layer;
+    l->release = release_dropout_layer;
+    l->forward = forward_dropout_layer;
+    l->backward = backward_dropout_layer;
 
     fprintf(stderr, "Dropout   Layer    :    [probability=%.2f]\n", l->probability);
     return l;
@@ -24,16 +28,18 @@ void init_dropout_layer(Layer *l, int w, int h, int c)
 
     l->workspace_size = l->inputs;
 
-    l->init
-    l->forward = forward_dropout_layer;
-    l->backward = backward_dropout_layer;
+    l->output = calloc(l->subdivision*l->outputs, sizeof(float));
+    l->delta = calloc(l->subdivision*l->inputs, sizeof(float));
+    l->dropout_rand = calloc(l->subdivision*l->inputs, sizeof(float));
 
     fprintf(stderr, "Dropout         Layer\n");
 }
 
 void release_dropout_layer(Layer *l)
 {
-
+    free(l->output);
+    free(l->delta);
+    free(l->dropout_rand);
 }
 
 void forward_dropout_layer(Layer l, int num)

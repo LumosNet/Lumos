@@ -21,6 +21,10 @@
 extern "C" {
 #endif
 
+Layer *make_dropout_layer_gpu(float probability);
+void init_dropout_layer_gpu(Layer *l, int w, int h, int c);
+void release_dropout_layer_gpu(Layer *l);
+
 void forward_dropout_layer_gpu(Layer l, int num);
 void backward_dropout_layer_gpu(Layer l, float rate, int num, float *n_delta);
 

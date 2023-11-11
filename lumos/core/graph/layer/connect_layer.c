@@ -36,8 +36,8 @@ void init_connect_layer(Layer *l, int w, int h, int c)
 
     l->workspace_size = l->inputs * l->outputs;
 
-    l->output = calloc(l->outputs, sizeof(float));
-    l->delta = calloc(l->inputs, sizeof(float));
+    l->output = calloc(l->subdivision*l->outputs, sizeof(float));
+    l->delta = calloc(l->subdivision*l->inputs, sizeof(float));
     l->kernel_weights = calloc(l->inputs*l->outputs, sizeof(float));
     l->update_kernel_weights = calloc(l->inputs*l->outputs, sizeof(float));
     l->bias_weights = calloc(l->outputs, sizeof(float));

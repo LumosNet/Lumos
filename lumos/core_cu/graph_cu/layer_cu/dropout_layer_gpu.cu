@@ -1,5 +1,47 @@
 #include "dropout_layer_gpu.h"
 
+Layer *make_dropout_layer_gpu(float probability)
+{
+    Layer *l = (Layer*)malloc(sizeof(Layer));
+    l->probability = probability;
+    l->update = NULL;
+    l->init = init_dropout_layer_gpu;
+    l->release = release_dropout_layer_gpu;
+    l->forward = forward_dropout_layer_gpu;
+    l->backward = backward_dropout_layer_gpu;
+
+    fprintf(stderr, "Dropout   Layer    :    [probability=%.2f]\n", l->probability);
+    return l;
+}
+
+void init_dropout_layer_gpu(Layer *l, int w, int h, int c)
+{
+    l->input_h = h;
+    l->input_w = w;
+    l->input_c = c;
+    l->inputs = l->input_h * l->input_w * l->input_c;
+
+    l->output_h = h;
+    l->output_w = w;
+    l->output_c = c;
+    l->outputs = l->output_h*l->output_w*l->output_c;
+
+    l->workspace_size = l->inputs;
+
+    cudaMalloc((void**)&l->output, l->subdivision*l->outputs*sizeof(float));
+    cudaMalloc((void**)&l->delta, l->subdivision*l->inputs*sizeof(float));
+    cudaMalloc((void**)&l->dropout_rand, l->subdivision*l->inputs*sizeof(float));
+
+    fprintf(stderr, "Dropout         Layer\n");
+}
+
+void release_dropout_layer_gpu(Layer *l)
+{
+    cudaFree(l->output);
+    cudaFree(l->delta);
+    cudaFree(l->dropout_rand);
+}
+
 void forward_dropout_layer_gpu(Layer l, int num)
 {
     if (!l.train){

@@ -36,8 +36,8 @@ void init_connect_layer_gpu(Layer *l, int w, int h, int c)
 
     l->workspace_size = l->inputs * l->outputs;
 
-    cudaMalloc((void**)&l->output, l->outputs*sizeof(float));
-    cudaMalloc((void**)&l->delta, l->inputs*sizeof(float));
+    cudaMalloc((void**)&l->output, l->subdivision*l->outputs*sizeof(float));
+    cudaMalloc((void**)&l->delta, l->subdivision*l->inputs*sizeof(float));
     cudaMalloc((void**)&l->kernel_weights, l->inputs*l->outputs*sizeof(float));
     cudaMalloc((void**)&l->update_kernel_weights, l->inputs*l->outputs*sizeof(float));
     cudaMalloc((void**)&l->bias_weights, l->outputs*sizeof(float));

@@ -45,7 +45,6 @@ struct layer{
     float *workspace;
 
     int *maxpool_index;
-    int *dropout_rand;
 
     int filters;
     int ksize;
@@ -61,6 +60,8 @@ struct layer{
 
 /* Dropout相关 */
     float probability;
+    float *dropout_rand;
+    int subdivision;
 
     Layer *shortcut;
     int shortcut_index;

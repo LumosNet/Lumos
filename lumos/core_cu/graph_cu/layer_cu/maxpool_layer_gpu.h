@@ -17,6 +17,10 @@
 extern "C" {
 #endif
 
+Layer *make_maxpool_layer_gpu(int ksize, int stride, int pad);
+void init_maxpool_layer_gpu(Layer *l, int w, int h, int c);
+void release_maxpool_layer_gpu(Layer *l);
+
 void forward_maxpool_layer_gpu(Layer l, int num);
 void backward_maxpool_layer_gpu(Layer l, float rate, int num, float *n_delta);
 

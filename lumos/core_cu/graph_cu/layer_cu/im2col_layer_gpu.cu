@@ -25,8 +25,8 @@ void init_im2col_layer_gpu(Layer *l, int w, int h, int c)
     l->outputs = l->inputs;
     l->workspace_size = 0;
 
-    cudaMalloc((void**)&l->output, l->outputs*sizeof(float));
-    cudaMalloc((void**)&l->delta, l->inputs*sizeof(float));
+    cudaMalloc((void**)&l->output, l->subdivision*l->outputs*sizeof(float));
+    cudaMalloc((void**)&l->delta, l->subdivision*l->inputs*sizeof(float));
 
     fprintf(stderr, "Im2col          Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);

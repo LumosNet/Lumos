@@ -1,5 +1,51 @@
 #include "maxpool_layer_gpu.h"
 
+Layer *make_maxpool_layer_gpu(int ksize, int stride, int pad)
+{
+    Layer *l = (Layer*)malloc(sizeof(Layer));
+    l->pad = pad;
+    l->ksize = ksize;
+    l->stride = stride;
+
+    l->init = init_maxpool_layer_gpu;
+    l->release = release_maxpool_layer_gpu;
+    l->forward = forward_maxpool_layer_gpu;
+    l->backward = backward_maxpool_layer_gpu;
+    l->update = NULL;
+
+    fprintf(stderr, "Max Pooling     Layer    :    [ksize=%2d]\n", l->ksize);
+    return l;
+}
+
+void init_maxpool_layer_gpu(Layer *l, int w, int h, int c)
+{
+    l->input_h = h;
+    l->input_w = w;
+    l->input_c = c;
+    l->inputs = l->input_h * l->input_w * l->input_c;
+
+    l->output_h = (h + 2 * l->pad - l->ksize) / l->stride + 1;
+    l->output_w = (w + 2 * l->pad - l->ksize) / l->stride + 1;
+    l->output_c = l->input_c;
+    l->outputs = l->output_h * l->output_w * l->output_c;
+
+    l->workspace_size = 0;
+
+    cudaMalloc((void**)&l->output, l->subdivision*l->outputs*sizeof(float));
+    cudaMalloc((void**)&l->delta, l->subdivision*l->inputs*sizeof(float));
+    cudaMalloc((void**)&l->maxpool_index, l->subdivision*l->outputs*sizeof(float));
+
+    fprintf(stderr, "Max Pooling     Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
+            l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
+}
+
+void release_maxpool_layer_gpu(Layer *l)
+{
+    cudaFree(l->output);
+    cudaFree(l->delta);
+    cudaFree(l->maxpool_index);
+}
+
 void forward_maxpool_layer_gpu(Layer l, int num)
 {
     for (int i = 0; i < num; ++i)
