@@ -1,100 +1,59 @@
 #include "session.h"
 
-Session *create_session(char *type, Initializer w_init)
+Session *create_session()
 {
     Session *sess = malloc(sizeof(Session));
-    sess->memory_size = 0;
-    sess->w_init = w_init;
-    if (0 == strcmp(type, "gpu")){
-        sess->coretype = GPU;
-    } else {
-        sess->coretype = CPU;
-    }
     return sess;
 }
 
-void bind_graph(Session *sess, Graph *graph)
+void set_batch(Session *sess, int batch)
 {
-    sess->graph = graph;
-    for (int i = 0; i < graph->layer_num; ++i){
-        Layer *l = graph->layers[i];
-        l->coretype = sess->coretype;
-    }
+    sess->batch = batch;
 }
 
-void bind_train_data(Session *sess, char *path)
+void set_subdivision(Session *sess, int subdivision)
 {
-    char *tmp = fget(path);
-    int *index = split(tmp, '\n');
-    int lines = index[0];
-    sess->train_data_num = lines;
-    sess->train_data_paths = malloc(lines*sizeof(char*));
-    for (int i = 0; i < lines; ++i){
-        sess->train_data_paths[i] = tmp+index[i+1];
-    }
-    free(index);
-    fprintf(stderr, "\nGet Train Data List From %s\n", path);
+    sess->subdivision = subdivision;
 }
 
-void bind_test_data(Session *sess, char *path)
-{
-    char *tmp = fget(path);
-    int *index = split(tmp, '\n');
-    int lines = index[0];
-    sess->test_data_num = lines;
-    sess->test_data_paths = malloc(lines*sizeof(char*));
-    for (int i = 0; i < lines; ++i){
-        sess->test_data_paths[i] = tmp+index[i+1];
-    }
-    free(index);
-    fprintf(stderr, "\nGet Test Data List From %s\n", path);
-}
-
-void bind_train_label(Session *sess, char *path)
-{
-    char *tmp = fget(path);
-    int *index = split(tmp, '\n');
-    int lines = index[0];
-    sess->train_label_paths = malloc(lines*sizeof(char*));
-    for (int i = 0; i < lines; ++i){
-        sess->train_label_paths[i] = tmp+index[i+1];
-    }
-    free(index);
-    fprintf(stderr, "\nGet Label List From %s\n", path);
-}
-
-void bind_test_label(Session *sess, char *path)
-{
-    char *tmp = fget(path);
-    int *index = split(tmp, '\n');
-    int lines = index[0];
-    sess->test_label_paths = malloc(lines*sizeof(char*));
-    for (int i = 0; i < lines; ++i){
-        sess->test_label_paths[i] = tmp+index[i+1];
-    }
-    free(index);
-    fprintf(stderr, "\nGet Label List From %s\n", path);
-}
-
-void bind_label2truth_func(Session *sess, int truth_num, Label2Truth func)
-{
-    sess->label2truth = func;
-    sess->truth_num = truth_num;
-}
-
-void set_input_dimension(Session *sess, int h, int w, int c)
-{
-    sess->height = h;
-    sess->width = w;
-    sess->channel = c;
-    fprintf(stderr, "\nSet Input Dementions: Height Width Channel\n");
-    fprintf(stderr, "                       %3d    %3d   %3d\n", h, w, c);
-}
-
-void set_train_params(Session *sess, int epoch, int batch, int subdivision, float learning_rate)
+void set_epoch(Session *sess, int epoch)
 {
     sess->epoch = epoch;
-    sess->batch = batch;
-    sess->subdivision = subdivision;
+}
+
+void set_learning_rate(Session *sess, float learning_rate)
+{
     sess->learning_rate = learning_rate;
+}
+
+void set_data_paths(Session *sess, char *data_paths)
+{
+    sess->data_paths = data_paths;
+}
+
+void set_truth_paths(Session *sess, char *truth_paths)
+{
+    sess->truth_paths = truth_paths;
+}
+
+void session_execute_command(Session *sess, char *command)
+{
+    int *index = split(command, ' ');
+    if (0 == strcmp(command+index[1], "setbatch")){
+        int batch = atoi(command+index[2]);
+        set_batch(sess, batch);
+    } else if (0 == strcmp(command+index[1], "setsubdivision")){
+        int subdivision = atoi(command+index[2]);
+        set_subdivision(sess, subdivision);
+    } else if (0 == strcmp(command+index[1], "setepoch")){
+        int epoch = atoi(command+index[2]);
+        set_epoch(sess, epoch);
+    } else if (0 == strcmp(command+index[1], "setlearningrate")){
+        float learning_rate = atof(command+index[2]);
+        set_learning_rate(sess, learning_rate);
+    } else if (0 == strcmp(command+index[1], "setdatapaths")){
+        set_data_paths(sess, command+index[2]);
+    } else if (0 == strcmp(command+index[1], "settruthpaths")){
+        set_truth_paths(sess, command+index[2]);
+    }
 }

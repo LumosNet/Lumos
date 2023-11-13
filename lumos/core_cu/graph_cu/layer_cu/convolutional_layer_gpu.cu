@@ -16,7 +16,10 @@ Layer *make_convolutional_layer_gpu(int filters, int ksize, int stride, int pad,
     l->forward = forward_convolutional_layer_gpu;
     l->backward = backward_convolutional_layer_gpu;
     l->update = update_convolutional_layer_gpu;
+    l->updateweights = update_convolutional_layer_weights_gpu;
     l->weightinit = weightinit_convolutional_layer_gpu;
+    l->loadweights = load_convolutional_layer_weights_gpu;
+    l->saveweights = save_convolutional_layer_weights_gpu;
     Activation type = load_activate_type(active);
     l->active = load_activate_gpu(type);
     l->gradient = load_gradient_gpu(type);
@@ -139,4 +142,36 @@ void update_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta
             add_bias_gpu(l.update_bias_weights, l.workspace, l.output_c, l.output_h*l.output_w);
         }
     }
+}
+
+void update_convolutional_layer_weights_gpu(Layer *l)
+{
+    cudaMemcpy(l->kernel_weights, l->update_kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float), cudaMemcpyDeviceToDevice);
+    cudaMemcpy(l->bias_weights, l->update_bias_weights, l->filters*sizeof(float), cudaMemcpyDeviceToDevice);
+}
+
+void load_convolutional_layer_weights_gpu(Layer *l, FILE *p)
+{
+    float *kernel_weights = (float*)malloc(l->filters*l->ksize*l->ksize*l->input_c*sizeof(float));
+    float *bias_weights = (float*)malloc(l->filters*sizeof(float));
+    bfget(p, kernel_weights, l->filters*l->ksize*l->ksize*l->input_c);
+    bfget(p, bias_weights, l->filters);
+    cudaMemcpy(l->kernel_weights, kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(l->bias_weights, bias_weights, l->filters*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(l->update_kernel_weights, l->kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float), cudaMemcpyDeviceToDevice);
+    cudaMemcpy(l->update_bias_weights, l->bias_weights, l->filters*sizeof(float), cudaMemcpyDeviceToDevice);
+    free(kernel_weights);
+    free(bias_weights);
+}
+
+void save_convolutional_layer_weights_gpu(Layer *l, FILE *p)
+{
+    float *kernel_weights = (float*)malloc(l->filters*l->ksize*l->ksize*l->input_c*sizeof(float));
+    float *bias_weights = (float*)malloc(l->filters*sizeof(float));
+    cudaMemcpy(kernel_weights, l->kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(bias_weights, l->bias_weights, l->filters*sizeof(float), cudaMemcpyDeviceToHost);
+    bfput(p, kernel_weights, l->filters*l->ksize*l->ksize*l->input_c);
+    bfput(p, bias_weights, l->filters);
+    free(kernel_weights);
+    free(bias_weights);
 }

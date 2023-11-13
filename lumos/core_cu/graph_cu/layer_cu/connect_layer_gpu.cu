@@ -12,6 +12,8 @@ Layer *make_connect_layer_gpu(int output, int bias, int normalize, char *active)
     l->backward = backward_connect_layer_gpu;
     l->update = update_connect_layer_gpu;
     l->weightinit = weightinit_connect_layer_gpu;
+    l->loadweights = load_connect_layer_weights_gpu;
+    l->saveweights = save_connect_layer_weights_gpu;
     Activation type = load_activate_type(active);
     l->active = load_activate_gpu(type);
     l->gradient = load_gradient_gpu(type);
@@ -123,4 +125,36 @@ void update_connect_layer_gpu(Layer l, float rate, int num, float *n_delta)
             saxpy_gpu(l.update_bias_weights, delta_n, l.outputs, rate, l.update_bias_weights);
         }
     }
+}
+
+void update_connect_layer_weights_gpu(Layer *l)
+{
+    cudaMemcpy(l->kernel_weights, l->update_kernel_weights, l->inputs*l->outputs*sizeof(float), cudaMemcpyDeviceToDevice);
+    cudaMemcpy(l->bias_weights, l->update_bias_weights, l->outputs*sizeof(float), cudaMemcpyDeviceToDevice);
+}
+
+void load_connect_layer_weights_gpu(Layer *l, FILE *p)
+{
+    float *kernel_weights = (float*)malloc(l->outputs*l->inputs*sizeof(float));
+    float *bias_weights = (float*)malloc(l->outputs*sizeof(float));
+    bfget(p, kernel_weights, l->outputs*l->inputs);
+    bfget(p, bias_weights, l->outputs);
+    cudaMemcpy(l->kernel_weights, kernel_weights, l->outputs*l->inputs*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(l->bias_weights, bias_weights, l->outputs*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(l->update_kernel_weights, l->kernel_weights, l->outputs*l->inputs*sizeof(float), cudaMemcpyDeviceToDevice);
+    cudaMemcpy(l->update_bias_weights, l->bias_weights, l->outputs*sizeof(float), cudaMemcpyDeviceToDevice);
+    free(kernel_weights);
+    free(bias_weights);
+}
+
+void save_connect_layer_weights_gpu(Layer *l, FILE *p)
+{
+    float *kernel_weights = (float*)malloc(l->outputs*l->inputs*sizeof(float));
+    float *bias_weights = (float*)malloc(l->outputs*sizeof(float));
+    cudaMemcpy(kernel_weights, l->kernel_weights, l->outputs*l->inputs*sizeof(float), cudaMemcpyDeviceToHost);
+    cudaMemcpy(bias_weights, l->bias_weights, l->outputs*sizeof(float), cudaMemcpyDeviceToHost);
+    bfput(p, kernel_weights, l->outputs*l->inputs);
+    bfput(p, bias_weights, l->outputs);
+    free(kernel_weights);
+    free(bias_weights);
 }

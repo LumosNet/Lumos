@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "binary_f.h"
 #include "gpu.h"
 #include "layer.h"
 #include "random.h"
@@ -29,6 +30,10 @@ void weightinit_connect_layer_gpu(Layer *l, WeightInitType type);
 void forward_connect_layer_gpu(Layer l, int num);
 void backward_connect_layer_gpu(Layer l, float rate, int num, float *n_delta);
 void update_connect_layer_gpu(Layer l, float rate, int num, float *n_delta);
+void update_connect_layer_weights_gpu(Layer *l);
+
+void load_connect_layer_weights_gpu(Layer *l, FILE *p);
+void save_connect_layer_weights_gpu(Layer *l, FILE *p);
 
 #ifdef __cplusplus
 }

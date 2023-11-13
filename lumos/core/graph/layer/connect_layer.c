@@ -11,7 +11,10 @@ Layer *make_connect_layer(int output, int bias, int normalize, char *active)
     l->forward = forward_connect_layer;
     l->backward = backward_connect_layer;
     l->update = update_connect_layer;
+    l->updateweights = update_connect_layer_weights;
     l->weightinit = weightinit_connect_layer;
+    l->loadweights = load_connect_layer_weights;
+    l->saveweights = save_connect_layer_weights;
     Activation type = load_activate_type(active);
     l->active = load_activate(type);
     l->gradient = load_gradient(type);
@@ -121,4 +124,24 @@ void update_connect_layer(Layer l, float rate, int num, float *n_delta)
             saxpy_cpu(l.update_bias_weights, delta_n, l.outputs, rate, l.update_bias_weights);
         }
     }
+}
+
+void update_connect_layer_weights(Layer *l)
+{
+    memcpy(l->kernel_weights, l->update_kernel_weights, l->inputs*l->outputs*sizeof(float));
+    memcpy(l->bias_weights, l->update_bias_weights, l->outputs*sizeof(float));
+}
+
+void load_connect_layer_weights(Layer *l, FILE *p)
+{
+    bfget(p, l->kernel_weights, l->outputs*l->inputs);
+    bfget(p, l->bias_weights, l->outputs);
+    memcpy(l->update_kernel_weights, l->kernel_weights, l->outputs*l->inputs*sizeof(float));
+    memcpy(l->update_bias_weights, l->bias_weights, l->outputs*sizeof(float));
+}
+
+void save_connect_layer_weights(Layer *l, FILE *p)
+{
+    bfput(p, l->kernel_weights, l->outputs*l->inputs);
+    bfput(p, l->bias_weights, l->outputs);
 }

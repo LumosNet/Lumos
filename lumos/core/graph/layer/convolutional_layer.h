@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "binary_f.h"
 #include "layer.h"
 #include "image.h"
 #include "active.h"
@@ -27,6 +28,10 @@ void weightinit_convolutional_layer(Layer *l, WeightInitType type);
 void forward_convolutional_layer(Layer l, int num);
 void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta);
 void update_convolutional_layer(Layer l, float rate, int num, float *n_delta);
+void update_convolutional_layer_weights(Layer *l);
+
+void load_convolutional_layer_weights(Layer *l, FILE *p);
+void save_convolutional_layer_weights(Layer *l, FILE *p);
 
 #ifdef __cplusplus
 }

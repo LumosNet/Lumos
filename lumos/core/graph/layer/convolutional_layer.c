@@ -16,7 +16,10 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
     l->forward = forward_convolutional_layer;
     l->backward = backward_convolutional_layer;
     l->update = update_convolutional_layer;
+    l->updateweights = update_convolutional_layer_weights;
     l->weightinit = weightinit_convolutional_layer;
+    l->loadweights = load_convolutional_layer_weights;
+    l->saveweights = save_convolutional_layer_weights;
     Activation type = load_activate_type(active);
     l->active = load_activate(type);
     l->gradient = load_gradient(type);
@@ -136,4 +139,24 @@ void update_convolutional_layer(Layer l, float rate, int num, float *n_delta)
             add_bias(l.update_bias_weights, l.workspace, l.output_c, l.output_h*l.output_w);
         }
     }
+}
+
+void update_convolutional_layer_weights(Layer *l)
+{
+    memcpy(l->kernel_weights, l->update_kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float));
+    memcpy(l->bias_weights, l->update_bias_weights, l->filters*sizeof(float));
+}
+
+void load_convolutional_layer_weights(Layer *l, FILE *p)
+{
+    bfget(p, l->kernel_weights, l->filters*l->ksize*l->ksize*l->input_c);
+    bfget(p, l->bias_weights, l->filters);
+    memcpy(l->update_kernel_weights, l->kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float));
+    memcpy(l->update_bias_weights, l->bias_weights, l->filters*sizeof(float));
+}
+
+void save_convolutional_layer_weights(Layer *l, FILE *p)
+{
+    bfput(p, l->kernel_weights, l->filters*l->ksize*l->ksize*l->input_c);
+    bfput(p, l->bias_weights, l->filters);
 }

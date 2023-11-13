@@ -164,16 +164,5 @@ int main(int argc, char **argv)
     //         buf[0] = '\0';
     //     }
     // }
-    FILE *buf = fopen("log.txt", "a+");
-    logging(buf, DEBUG, "022848 jiahu  ", 1);
-    logging(buf, DEBUG, "022848 jiahu  ", 0);
-    logging(buf, INFO, "022848 jiahu  ", 1);
-    logging(buf, INFO, "022848 jiahu  ", 0);
-    logging(buf, WARNING, "022848 jiahu  ", 1);
-    logging(buf, WARNING, "022848 jiahu  ", 0);
-    logging(buf, ERROR, "022848 jiahu  ", 1);
-    logging(buf, ERROR, "022848 jiahu  ", 0);
-    logging(buf, CRITICAL, "022848 jiahu  ", 1);
-    logging(buf, CRITICAL, "022848 jiahu  ", 0);
     return 0;
 }

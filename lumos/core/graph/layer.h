@@ -16,19 +16,25 @@ typedef enum {
 
 typedef struct layer Layer;
 
-typedef void (*init)        (struct layer*, int, int, int);
-typedef void (*release)     (struct layer*);
-typedef void (*forward)     (struct layer, int);
-typedef void (*backward)    (struct layer, float, int, float*);
-typedef void (*update)      (struct layer, float, int, float*);
-typedef void (*weightinit)  (struct layer*, WeightInitType type);
+typedef void (*init)            (struct layer*, int, int, int);
+typedef void (*release)         (struct layer*);
+typedef void (*forward)         (struct layer, int);
+typedef void (*backward)        (struct layer, float, int, float*);
+typedef void (*update)          (struct layer, float, int, float*);
+typedef void (*weightinit)      (struct layer*, WeightInitType type);
+typedef void (*loadweights)     (struct layer*, FILE *);
+typedef void (*saveweights)     (struct layer*, FILE *);
+typedef void (*updateweights)   (struct layer*);
 
-typedef init        Init;
-typedef release     Release;
-typedef forward     Forward;
-typedef backward    Backward;
-typedef update      Update;
-typedef weightinit  Weightinit;
+typedef init            Init;
+typedef release         Release;
+typedef forward         Forward;
+typedef backward        Backward;
+typedef update          Update;
+typedef weightinit      Weightinit;
+typedef loadweights     Loadweights;
+typedef saveweights     Saveweights;
+typedef updateweights   Updateweights;
 
 struct layer{
     char *ID;
@@ -80,12 +86,15 @@ struct layer{
     float *update_bias_weights;
     float *update_normalize_weights;
 
-    Init        init;
-    Release     release;
-    Forward     forward;
-    Backward    backward;
-    Update      update;
-    Weightinit  weightinit;
+    Init            init;
+    Release         release;
+    Forward         forward;
+    Backward        backward;
+    Update          update;
+    Weightinit      weightinit;
+    Loadweights     loadweights;
+    Saveweights     saveweights;
+    Updateweights   updateweights
 
     Activate active;
     Gradient gradient;
