@@ -19,6 +19,7 @@
 extern "C" {
 #endif
 
+void init_mse_layer_gpu(Layer *l, int w, int h, int c);
 void forward_mse_layer_gpu(Layer l, int num);
 void backward_mse_layer_gpu(Layer l, float rate, int num, float *n_delta);
 

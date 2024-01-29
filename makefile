@@ -80,8 +80,8 @@ VPATH+=	./lumos_t \
 		./lumos_t/memory_cu
 endif
 
-OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o maxpool_layer.o softmax_layer.o dropout_layer.o shortcut_layer.o \
-		mse_layer.o normalization_layer.o weights_init.o \
+OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o maxpool_layer.o \
+		mse_layer.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o pooling.o random.o softmax.o shortcut.o normalize.o \
 		session.o manager.o dispatch.o \
 		progress_bar.o \
@@ -91,7 +91,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 
 OBJ+= 	gpu.o active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o softmax_gpu.o shortcut_gpu.o normalize_gpu.o \
 	  	avgpool_layer_gpu.o maxpool_layer_gpu.o connect_layer_gpu.o convolutional_layer_gpu.o im2col_layer_gpu.o \
-	  	mse_layer_gpu.o dropout_layer_gpu.o softmax_layer_gpu.o shortcut_layer_gpu.o normalization_layer_gpu.o
+	  	mse_layer_gpu.o
 
 EXECOBJA=lumos.o
 

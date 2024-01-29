@@ -22,10 +22,8 @@ typedef struct layer Layer;
 
 typedef void (*forward)  (struct layer, int);
 typedef void (*backward) (struct layer, float, int, float*);
-typedef void (*update) (struct layer, float, int, float*);
 typedef forward Forward;
 typedef backward Backward;
-typedef update Update;
 
 typedef void (*forward_gpu)  (struct layer, int);
 typedef void (*backward_gpu) (struct layer, float, int, float*);
@@ -38,6 +36,11 @@ typedef void (*initialize) (struct layer *, int, int, int);
 typedef void (*initialize_gpu) (struct layer *, int, int, int);
 typedef initialize Initialize;
 typedef initialize_gpu InitializeGpu;
+
+typedef void (*weightinit) (struct layer);
+typedef weightinit WeightInit;
+typedef void (*weightinit_gpu) (struct layer);
+typedef weightinit_gpu WeightInitGpu;
 
 struct layer{
     LayerType type;
@@ -97,7 +100,6 @@ struct layer{
 
     Forward forward;
     Backward backward;
-    Update update;
 
     ForwardGpu forwardgpu;
     BackwardGpu backwardgpu;
@@ -106,9 +108,14 @@ struct layer{
     Initialize initialize;
     InitializeGpu initializegpu;
 
+    WeightInit weightinit;
+    WeightInitGpu weightinitgpu;
+
     /*直接绑定函数*/
     Activate active;
     Gradient gradient;
+    ActivateGpu activegpu;
+    GradientGpu gradientgpu;
 };
 
 #ifdef __cplusplus

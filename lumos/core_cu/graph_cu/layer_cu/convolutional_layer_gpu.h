@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "random.h"
+#include "cpu.h"
 #include "gpu.h"
 #include "layer.h"
 #include "cpu_gpu.h"
@@ -22,6 +24,8 @@
 extern "C" {
 #endif
 
+void init_convolutional_layer_gpu(Layer *l, int w, int h, int c);
+void weightinit_convolutional_layer_gpu(Layer l);
 void forward_convolutional_layer_gpu(Layer l, int num);
 void backward_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta);
 void update_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta);
