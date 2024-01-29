@@ -10,7 +10,7 @@ Layer *make_maxpool_layer(int ksize, int stride, int pad)
 
     l->initialize = init_maxpool_layer;
     l->forward = forward_maxpool_layer;
-    l->backward = forward_maxpool_layer;
+    l->backward = backward_maxpool_layer;
 
     l->initializegpu = init_maxpool_layer_gpu;
     l->forwardgpu = forward_maxpool_layer_gpu;

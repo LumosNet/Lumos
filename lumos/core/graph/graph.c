@@ -1,65 +1,110 @@
 #include "graph.h"
 
-Graph *create_graph(char *name, int layer_n)
+Graph *create_graph()
 {
     Graph *graph = malloc(sizeof(Graph));
-    graph->graph_name = name;
-    graph->layer_list_num = layer_n;
-    graph->layer_num = 0;
-    graph->layers = calloc(layer_n, sizeof(Layer));
-    fprintf(stderr, "[%s]         max   %d  Layers\n", graph->graph_name, graph->layer_list_num);
+    graph->head = NULL;
+    graph->tail = NULL;
+    fprintf(stderr, "[Lumos]         Module Structure\n");
     return graph;
 }
 
 void append_layer2grpah(Graph *graph, Layer *l)
 {
-    graph->layers[graph->layer_num] = l;
-    graph->layer_num += 1;
-    l->index = graph->layer_num;
+    Node *layer = malloc(sizeof(Node));
+    if (graph->tail){
+        Node *tail = graph->tail;
+        tail->next = layer;
+    }
+    layer->l = l;
+    layer->next = NULL;
+    graph->tail = layer;
+    if (graph->head == NULL) graph->head = layer;
 }
 
-void init_graph(Graph *g, int w, int h, int c)
+void init_graph(Graph *g, int w, int h, int c, int coretype, float *space, float *loss)
 {
     fprintf(stderr, "\nStart To Init Graph\n");
-    fprintf(stderr, "[%s]                     Inputs         Outputs\n", g->graph_name);
+    fprintf(stderr, "[Lumos]                     Inputs         Outputs\n");
+    Node *layer = g->head;
     Layer *l;
-    for (int i = 0; i < g->layer_num; ++i)
-    {
-        l = g->layers[i];
-        switch (l->type)
-        {
-        case AVGPOOL:
-            init_avgpool_layer(l, w, h, c);
-            break;
-        case CONNECT:
-            init_connect_layer(l, w, h, c);
-            break;
-        case CONVOLUTIONAL:
-            init_convolutional_layer(l, w, h, c);
-            break;
-        case IM2COL:
-            init_im2col_layer(l, w, h, c);
-            break;
-        case MAXPOOL:
-            init_maxpool_layer(l, w, h, c);
-            break;
-        case MSE:
-            init_mse_layer(l, w, h, c);
-            break;
-        case SOFTMAX:
-            init_softmax_layer(l, w, h, c);
-            break;
-        case DROPOUT:
-            init_dropout_layer(l, w, h, c);
-            break;
-        case SHORTCUT:
-            init_shortcut_layer(l, w, h, c, g->layers[l->shortcut_index]);
-            break;
-        default:
+    for (;;){
+        if (layer){
+            l = layer->l;
+            l->workspace = space;
+            if (coretype == GPU){
+                l->initializegpu(l, w, h, c);
+                if (l->weightinitgpu) l->weightinitgpu(*l);
+            } else {
+                l->initialize(l, w, h, c);
+                if (l->weightinit) l->weightinit(*l);
+            }
+        } else {
+            l->loss = loss;
             break;
         }
+        layer = layer->next;
         w = l->output_w;
         h = l->output_h;
         c = l->output_c;
+    }
+}
+
+void forward_graph(Graph *g, float *input, int coretype, int subdivision)
+{
+    Node *layer = g->head;
+    Layer *l;
+    for (;;){
+        if (layer){
+            l = layer->l;
+            l->input = input;
+            if (coretype == GPU){
+                l->forwardgpu(*l, subdivision);
+            } else {
+                l->forward(*l, subdivision);
+            }
+        } else {
+            break;
+        }
+        layer = layer->next;
+        input = l->output;
+    }
+}
+
+void backward_graph(Graph *g, float rate, float *truth, int coretype, int subdivision)
+{
+    Node *layer = g->head;
+    Layer *l;
+    float *n_delta;
+    for (;;){
+        if (layer){
+            l = layer->l;
+            l->truth = truth;
+            if (coretype == GPU){
+                l->backwardgpu(*l, rate, subdivision, n_delta);
+            } else {
+                l->backward(*l, rate, subdivision, n_delta);
+            }
+        } else {
+            break;
+        }
+        layer = layer->next;
+        n_delta = l->delta;
+    }
+}
+
+void update_graph(Graph *g, int coretype)
+{
+    Node *layer = g->head;
+    Layer *l;
+    for (;;){
+        if (layer){
+            l = layer->l;
+            if (coretype == GPU && l->updategpu) l->updategpu(*l);
+            if (coretype == CPU && l->update) l->update(*l);
+        } else {
+            break;
+        }
+        layer = layer->next;
     }
 }

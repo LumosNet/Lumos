@@ -11,9 +11,6 @@
 #include "convolutional_layer.h"
 #include "im2col_layer.h"
 #include "maxpool_layer.h"
-#include "softmax_layer.h"
-#include "dropout_layer.h"
-#include "shortcut_layer.h"
 
 #include "mse_layer.h"
 
@@ -21,28 +18,28 @@
 extern "C" {
 #endif
 
+typedef struct node Node;
+
 typedef struct graph{
-    char *graph_name;
-    int layer_list_num;
-    int layer_num;
-    int height;
-    int channel;
     float *input;
     float *output;
     float *delta;
-    Layer **layers;
-
-    int kinds;
-    char **label;
-
-    int num;
-    char **data;
+    Node *head;
+    Node *tail;
 } graph, Graph;
 
-Graph *create_graph(char *name, int layer_n);
+struct node{
+    Layer *l;
+    Node *next;
+};
+
+Graph *create_graph();
 
 void append_layer2grpah(Graph *graph, Layer *l);
-void init_graph(Graph *g, int w, int h, int c);
+void init_graph(Graph *g, int w, int h, int c, int coretype, float *space, float *loss);
+void forward_graph(Graph *g, float *input, int coretype, int subdivision);
+void backward_graph(Graph *g, float rate, float *truth, int coretype, int subdivision);
+void update_graph(Graph *g, int coretype);
 
 #ifdef __cplusplus
 }

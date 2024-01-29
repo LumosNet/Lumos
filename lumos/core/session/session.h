@@ -4,11 +4,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "cuda_runtime.h"
+#include "device_launch_parameters.h"
+#include "curand.h"
+#include "cublas_v2.h"
+
+#include <time.h>
+
 #include "graph.h"
 #include "text_f.h"
 #include "binary_f.h"
 #include "image.h"
-#include "weights_init.h"
+#include "progress_bar.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,12 +23,6 @@ extern "C" {
 
 #define CPU 0
 #define GPU 1
-
-typedef void (*label2truth) (char **, float *);
-typedef label2truth Label2Truth;
-
-typedef void (*process_test_information) (char **, float *, float *, float, char *);
-typedef process_test_information ProcessTestInformation;
 
 typedef struct session{
     Graph *graph;
@@ -39,28 +40,12 @@ typedef struct session{
 
     float learning_rate;
     size_t workspace_size;
-    size_t weights_size;
-    size_t output_size;
-    size_t delta_size;
 
     float *workspace;
     float *input;
-    float *output;
-    float *layer_delta;
-
-    char **label;
-    int label_num;
 
     float *truth;
     int truth_num;
-
-    float *predicts;
-
-    int *maxpool_index;
-    int *dropout_rand;
-
-    float *weights;
-    float *update_weights;
 
     int train_data_num;
     char **train_data_paths;
@@ -70,52 +55,23 @@ typedef struct session{
     char **test_data_paths;
     char **test_label_paths;
 
-    int memory_size;
-
-    float *x_norm;
-    float *mean;
-    float *variance;
-    float *roll_mean;
-    float *roll_variance;
-    float *normalize_x;
-
-    int x_norm_size;
-    int variance_size;
-    int normalize_x_size;
-
-    Label2Truth label2truth;
-    Initializer w_init;
-
-    float *workspace_gpu;
-    float *input_gpu;
-    float *output_gpu;
-    float *weights_gpu;
-    float *update_weights_gpu;
-    float *layer_delta_gpu;
-    float *loss_gpu;
-    float *truth_gpu;
-    int *maxpool_index_gpu;
-    int *dropout_rand_gpu;
-
-    float *x_norm_gpu;
-    float *mean_gpu;
-    float *variance_gpu;
-    float *roll_mean_gpu;
-    float *roll_variance_gpu;
-    float *normalize_x_gpu;
 } Session;
 
-Session *create_session(char *type, Initializer w_init);
+Session *create_session(Graph *graph, int h, int w, int c, int truth_num, char *type);
+void init_session(Session *sess, char *data_path, char *label_path);
 
-void bind_graph(Session *sess, Graph *graph);
 void bind_train_data(Session *sess, char *path);
 void bind_test_data(Session *sess, char *path);
 void bind_train_label(Session *sess, char *path);
 void bind_test_label(Session *sess, char *path);
-void bind_label2truth_func(Session *sess, int truth_num, Label2Truth func);
 
-void set_input_dimension(Session *sess, int h, int w, int c);
 void set_train_params(Session *sess, int epoch, int batch, int subdivision, float learning_rate);
+void create_workspace(Session *sess);
+void train(Session *sess, int epoch, int batch, int subdivision, float learning_rate);
+void detect(Session *sess);
+
+void load_train_data(Session *sess, int index);
+void load_train_label(Session *sess, int index);
 
 #ifdef __cplusplus
 }

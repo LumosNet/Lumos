@@ -7,7 +7,6 @@ Layer *make_connect_layer(int output, int bias, char *active)
     l->ksize = output;
     l->bias = bias;
 
-    l->active_str = active;
     Activation type = load_activate_type(active);
     l->active = load_activate(type);
     l->gradient = load_gradient(type);
@@ -25,7 +24,10 @@ Layer *make_connect_layer(int output, int bias, char *active)
     l->weightinit = weightinit_connect_layer;
     l->weightinitgpu = weightinit_connect_layer_gpu;
 
-    fprintf(stderr, "Connect         Layer    :    [output=%4d, bias=%d, active=%s]\n", l->ksize, l->bias, l->active_str);
+    l->update = update_connect_layer_weights;
+    l->updategpu = update_connect_layer_weights_gpu;
+
+    fprintf(stderr, "Connect         Layer    :    [output=%4d, bias=%d, active=%s]\n", l->ksize, l->bias, active);
     return l;
 }
 
@@ -115,5 +117,13 @@ void update_connect_layer(Layer l, float rate, int num, float *n_delta)
         if (l.bias){
             saxpy_cpu(l.update_bias_weights, delta_n, l.outputs, rate, l.update_bias_weights);
         }
+    }
+}
+
+void update_connect_layer_weights(Layer l)
+{
+    memcpy(l.kernel_weights, l.update_kernel_weights, l.inputs*l.outputs*sizeof(float));
+    if (l.bias){
+        memcpy(l.bias_weights, l.update_bias_weights, l.outputs*sizeof(float));
     }
 }

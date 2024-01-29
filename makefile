@@ -83,7 +83,7 @@ endif
 OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o maxpool_layer.o \
 		mse_layer.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o pooling.o random.o softmax.o shortcut.o normalize.o \
-		session.o manager.o dispatch.o \
+		session.o \
 		progress_bar.o \
 		binary_f.o text_f.o \
 		str_ops.o \

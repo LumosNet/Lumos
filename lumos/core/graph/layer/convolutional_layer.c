@@ -27,8 +27,11 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
     l->weightinit = weightinit_convolutional_layer;
     l->weightinitgpu = weightinit_convolutional_layer_gpu;
 
-    fprintf(stderr, "Convolutional   Layer    :    [filters=%2d, ksize=%2d, stride=%2d, pad=%2d, bias=%d, normalization=%d, active=%s]\n",
-            l->filters, l->ksize, l->stride, l->pad, l->bias, l->batchnorm, l->active_str);
+    l->update = update_convolutional_layer_weights;
+    l->updategpu = update_convolutional_layer_weights_gpu;
+
+    fprintf(stderr, "Convolutional   Layer    :    [filters=%2d, ksize=%2d, stride=%2d, pad=%2d, bias=%d, active=%s]\n",
+            l->filters, l->ksize, l->stride, l->pad, l->bias, active);
     return l;
 }
 
@@ -131,5 +134,13 @@ void update_convolutional_layer(Layer l, float rate, int num, float *n_delta)
             sum_channel_cpu(delta_n, l.output_h, l.output_w, l.output_c, rate, l.workspace);
             add_bias(l.update_bias_weights, l.workspace, l.output_c, l.output_h*l.output_w);
         }
+    }
+}
+
+void update_convolutional_layer_weights(Layer l)
+{
+    memcpy(l.kernel_weights, l.update_kernel_weights, l.filters*l.ksize*l.ksize*l.input_c*sizeof(float));
+    if (l.bias){
+        memcpy(l.bias_weights, l.update_bias_weights, l.filters*sizeof(float));
     }
 }

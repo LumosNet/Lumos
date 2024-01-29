@@ -13,9 +13,9 @@ Layer *make_avgpool_layer(int ksize, int stride, int pad)
     l->forward = forward_avgpool_layer;
     l->backward = backward_avgpool_layer;
 
-    l->initialize_gpu = init_avgpool_layer_gpu;
-    l->forward_gpu = forward_avgpool_layer_gpu;
-    l->backward_gpu = backward_avgpool_layer_gpu;
+    l->initializegpu = init_avgpool_layer_gpu;
+    l->forwardgpu = forward_avgpool_layer_gpu;
+    l->backwardgpu = backward_avgpool_layer_gpu;
 
     fprintf(stderr, "Avg Pooling     Layer    :    [ksize=%2d]\n", l->ksize);
     return l;

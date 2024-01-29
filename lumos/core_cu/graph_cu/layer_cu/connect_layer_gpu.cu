@@ -27,7 +27,7 @@ void init_connect_layer_gpu(Layer *l, int w, int h, int c)
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
 }
 
-void weightinit_connect_layer(Layer l)
+void weightinit_connect_layer_gpu(Layer l)
 {
     float *kernel_weights = (float*)calloc(l.inputs*l.outputs, sizeof(float));
     float *bias_weights = NULL;
@@ -95,5 +95,13 @@ void update_connect_layer_gpu(Layer l, float rate, int num, float *n_delta)
         {
             saxpy_gpu(l.update_bias_weights, delta_n, l.outputs, rate, l.update_bias_weights);
         }
+    }
+}
+
+void update_connect_layer_weights_gpu(Layer l)
+{
+    cudaMemcpy(l.kernel_weights, l.update_kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyDeviceToDevice);
+    if (l.bias){
+        cudaMemcpy(l.bias_weights, l.update_bias_weights, l.outputs*sizeof(float), cudaMemcpyDeviceToDevice);
     }
 }

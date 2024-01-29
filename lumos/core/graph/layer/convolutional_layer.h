@@ -24,8 +24,8 @@ void weightinit_convolutional_layer(Layer l);
 
 void forward_convolutional_layer(Layer l, int num);
 void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta);
-
 void update_convolutional_layer(Layer l, float rate, int num, float *n_delta);
+void update_convolutional_layer_weights(Layer l);
 
 #ifdef __cplusplus
 }

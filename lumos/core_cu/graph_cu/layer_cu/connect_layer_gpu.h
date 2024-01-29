@@ -28,6 +28,7 @@ void forward_connect_layer_gpu(Layer l, int num);
 void backward_connect_layer_gpu(Layer l, float rate, int num, float *n_delta);
 
 void update_connect_layer_gpu(Layer l, float rate, int num, float *n_delta);
+void update_connect_layer_weights_gpu(Layer l);
 
 #ifdef __cplusplus
 }

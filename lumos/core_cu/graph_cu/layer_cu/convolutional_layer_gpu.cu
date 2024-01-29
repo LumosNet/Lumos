@@ -107,3 +107,11 @@ void update_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta
         }
     }
 }
+
+void update_convolutional_layer_weights_gpu(Layer l)
+{
+    cudaMemcpy(l.kernel_weights, l.update_kernel_weights, l.filters*l.ksize*l.ksize*l.input_c*sizeof(float), cudaMemcpyDeviceToDevice);
+    if (l.bias){
+        cudaMemcpy(l.bias_weights, l.update_bias_weights, l.filters*sizeof(float), cudaMemcpyDeviceToDevice);
+    }
+}

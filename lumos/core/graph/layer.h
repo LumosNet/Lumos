@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "active.h"
+#include "active_gpu.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,12 +23,14 @@ typedef struct layer Layer;
 
 typedef void (*forward)  (struct layer, int);
 typedef void (*backward) (struct layer, float, int, float*);
+typedef void (*update) (struct layer);
 typedef forward Forward;
 typedef backward Backward;
+typedef update Update;
 
 typedef void (*forward_gpu)  (struct layer, int);
 typedef void (*backward_gpu) (struct layer, float, int, float*);
-typedef void (*update_gpu) (struct layer, float, int, float*);
+typedef void (*update_gpu) (struct layer);
 typedef forward_gpu ForwardGpu;
 typedef backward_gpu BackwardGpu;
 typedef update_gpu UpdateGpu;
@@ -100,6 +103,7 @@ struct layer{
 
     Forward forward;
     Backward backward;
+    Update update;
 
     ForwardGpu forwardgpu;
     BackwardGpu backwardgpu;
