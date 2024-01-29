@@ -18,11 +18,12 @@ void append_layer2grpah(Graph *graph, Layer *l)
     }
     layer->l = l;
     layer->next = NULL;
+    layer->head = graph->tail;
     graph->tail = layer;
     if (graph->head == NULL) graph->head = layer;
 }
 
-void init_graph(Graph *g, int w, int h, int c, int coretype, float *space, float *loss)
+void init_graph(Graph *g, int w, int h, int c, int coretype, float *space, float *loss, float *truth)
 {
     fprintf(stderr, "\nStart To Init Graph\n");
     fprintf(stderr, "[Lumos]                     Inputs         Outputs\n");
@@ -41,6 +42,7 @@ void init_graph(Graph *g, int w, int h, int c, int coretype, float *space, float
             }
         } else {
             l->loss = loss;
+            l->truth = truth;
             break;
         }
         layer = layer->next;
@@ -71,15 +73,14 @@ void forward_graph(Graph *g, float *input, int coretype, int subdivision)
     }
 }
 
-void backward_graph(Graph *g, float rate, float *truth, int coretype, int subdivision)
+void backward_graph(Graph *g, float rate, int coretype, int subdivision)
 {
-    Node *layer = g->head;
+    Node *layer = g->tail;
     Layer *l;
     float *n_delta;
     for (;;){
         if (layer){
             l = layer->l;
-            l->truth = truth;
             if (coretype == GPU){
                 l->backwardgpu(*l, rate, subdivision, n_delta);
             } else {
@@ -88,7 +89,7 @@ void backward_graph(Graph *g, float rate, float *truth, int coretype, int subdiv
         } else {
             break;
         }
-        layer = layer->next;
+        layer = layer->head;
         n_delta = l->delta;
     }
 }

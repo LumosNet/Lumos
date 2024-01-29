@@ -21,7 +21,6 @@ void init_session(Session *sess, char *data_path, char *label_path)
     bind_train_data(sess, data_path);
     bind_train_label(sess, label_path);
     create_workspace(sess);
-    init_graph(sess->graph, sess->width, sess->height, sess->channel, sess->coretype, sess->workspace, sess->loss);
     if (sess->coretype == GPU){
         cudaMalloc((void**)&sess->input, sess->subdivision*sess->width*sess->height*sess->channel*sizeof(float));
         cudaMalloc((void**)&sess->truth, sess->subdivision*sess->truth_num*sizeof(float));
@@ -31,6 +30,7 @@ void init_session(Session *sess, char *data_path, char *label_path)
         sess->truth = calloc(sess->subdivision*sess->truth_num, sizeof(float));
         sess->loss = calloc(1, sizeof(float));
     }
+    init_graph(sess->graph, sess->width, sess->height, sess->channel, sess->coretype, sess->workspace, sess->loss, sess->truth);
 }
 
 void bind_train_data(Session *sess, char *path)
@@ -186,7 +186,7 @@ void train(Session *sess, int epoch, int batch, int subdivision, float learning_
                 load_train_data(sess, j * sess->batch + k * sess->subdivision);
                 load_train_label(sess, j * sess->batch + k * sess->subdivision);
                 forward_graph(sess->graph, sess->input, sess->coretype, sess->subdivision);
-                backward_graph(sess->graph, rate, sess->truth, sess->coretype, sess->subdivision);
+                backward_graph(sess->graph, rate, sess->coretype, sess->subdivision);
                 final = clock();
                 run_time = (double)(final - start) / CLOCKS_PER_SEC;
                 if (sess->coretype == CPU) {

@@ -30,15 +30,16 @@ typedef struct graph{
 
 struct node{
     Layer *l;
+    Node *head;
     Node *next;
 };
 
 Graph *create_graph();
 
 void append_layer2grpah(Graph *graph, Layer *l);
-void init_graph(Graph *g, int w, int h, int c, int coretype, float *space, float *loss);
+void init_graph(Graph *g, int w, int h, int c, int coretype, float *space, float *loss, float *truth);
 void forward_graph(Graph *g, float *input, int coretype, int subdivision);
-void backward_graph(Graph *g, float rate, float *truth, int coretype, int subdivision);
+void backward_graph(Graph *g, float rate, int coretype, int subdivision);
 void update_graph(Graph *g, int coretype);
 
 #ifdef __cplusplus

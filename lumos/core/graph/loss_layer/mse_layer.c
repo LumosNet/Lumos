@@ -60,6 +60,7 @@ void forward_mse_layer(Layer l, int num)
 
 void backward_mse_layer(Layer l, float rate, int num, float *n_delta)
 {
+    printf("01\n");
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_t = i*l.group;
@@ -69,4 +70,5 @@ void backward_mse_layer(Layer l, float rate, int num, float *n_delta)
         matrix_subtract_cpu(input, truth, l.inputs, delta_l);
         multy_cpu(delta_l, l.inputs, (float)2/l.group, 1);
     }
+    printf("02\n");
 }

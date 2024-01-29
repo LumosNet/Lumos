@@ -9,7 +9,7 @@ Layer *make_im2col_layer()
     l->forward = forward_im2col_layer;
     l->backward = backward_im2col_layer;
 
-    l->initialize = init_im2col_layer_gpu;
+    l->initializegpu = init_im2col_layer_gpu;
     l->forwardgpu = forward_im2col_layer_gpu;
     l->backwardgpu = backward_im2col_layer_gpu;
 
