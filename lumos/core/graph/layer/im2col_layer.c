@@ -4,14 +4,14 @@ Layer *make_im2col_layer()
 {
     Layer *l = malloc(sizeof(Layer));
     l->type = IM2COL;
-    l->update = NULL;
 
     l->initialize = init_im2col_layer;
     l->forward = forward_im2col_layer;
     l->backward = backward_im2col_layer;
-    l->initialize_gpu = init_im2col_layer_gpu;
-    l->forward_gpu = forward_im2col_layer_gpu;
-    l->backward_gpu = backward_im2col_layer_gpu;
+
+    l->initializegpu = init_im2col_layer_gpu;
+    l->forwardgpu = forward_im2col_layer_gpu;
+    l->backwardgpu = backward_im2col_layer_gpu;
 
     fprintf(stderr, "Im2col          Layer\n");
     return l;
@@ -28,10 +28,10 @@ void init_im2col_layer(Layer *l, int w, int h, int c)
     l->output_w = 1;
     l->output_c = l->inputs;
     l->outputs = l->inputs;
-    l->workspace_size = 0;
 
-    l->output = calloc(l->outputs*l->subdivision, sizeof(float));
-    l->delta = calloc(l->inputs*l->subdivision, sizeof(float));
+    l->workspace_size = 0;
+    l->output = calloc(l->outputs, sizeof(float));
+    l->delta = calloc(l->inputs, sizeof(float));
 
     fprintf(stderr, "Im2col          Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
@@ -42,7 +42,7 @@ void forward_im2col_layer(Layer l, int num)
     memcpy(l.output, l.input, num*l.outputs*sizeof(float));
 }
 
-void backward_im2col_layer(Layer l, float rate, int num)
+void backward_im2col_layer(Layer l, float rate, int num, float *n_delta)
 {
-    memcpy(l.delta, l.n_delta, num*l.inputs*sizeof(float));
+    memcpy(l.delta, n_delta, num*l.inputs*sizeof(float));
 }

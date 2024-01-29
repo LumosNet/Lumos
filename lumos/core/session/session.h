@@ -4,11 +4,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "cuda_runtime.h"
+#include "device_launch_parameters.h"
+#include "curand.h"
+#include "cublas_v2.h"
+
 #include "graph.h"
 #include "text_f.h"
 #include "binary_f.h"
 #include "image.h"
-#include "weights_init.h"
+#include "progress_bar.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -19,35 +24,55 @@ extern "C" {
 
 typedef struct session{
     Graph *graph;
-    Initializer init;
+
+    int coretype;
     int epoch;
     int batch;
-    int subdivison;
-    float learning_rate;
+    int subdivision;
 
-    int height;
     int width;
+    int height;
     int channel;
 
-    int dataset_num;
-    char **dataset_pathes;
-    char **labelset_pathes;
+    float *loss;
 
-    int index;
-    float **input;
-    float **truth;
+    float learning_rate;
+    size_t workspace_size;
 
     float *workspace;
-    char *dataset_listf;
-    char *labelset_listf;
+    float *input;
+
+    float *truth;
+    int truth_num;
+
+    int train_data_num;
+    char **train_data_paths;
+    char **train_label_paths;
+
+    int test_data_num;
+    char **test_data_paths;
+    char **test_label_paths;
+
 } Session;
 
+Session *create_session(Graph *graph, int h, int w, int c, int truth_num, char *type);
+void init_session(Session *sess, char *data_path, char *label_path);
+
 void bind_train_data(Session *sess, char *path);
+void bind_test_data(Session *sess, char *path);
 void bind_train_label(Session *sess, char *path);
+void bind_test_label(Session *sess, char *path);
+
+void set_train_params(Session *sess, int epoch, int batch, int subdivision, float learning_rate);
 void create_workspace(Session *sess);
-int count_running_memsize(Session *sess);
+void train(Session *sess, int epoch, int batch, int subdivision, float learning_rate);
+void detect(Session *sess);
+
+void load_train_data(Session *sess, int index);
+void load_train_label(Session *sess, int index);
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif

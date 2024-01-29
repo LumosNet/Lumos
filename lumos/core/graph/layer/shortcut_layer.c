@@ -5,19 +5,16 @@ Layer *make_shortcut_layer(int index, char *active)
     Layer *l = malloc(sizeof(Layer));
     l->type = SHORTCUT;
     l->shortcut_index = index;
+    l->weights = 0;
+    l->batchnorm = 0;
+    l->bias = 0;
 
     l->active_str = active;
     Activation type = load_activate_type(active);
     l->active = type;
     l->gradient = type;
-    l->update = NULL;
 
-    l->initialize = init_shortcut_layer;
-    l->forward = forward_shortcut_layer;
-    l->backward = backward_shortcut_layer;
-    l->initialize_gpu = init_shortcut_layer_gpu;
-    l->forward_gpu = forward_shortcut_layer_gpu;
-    l->backward_gpu = backward_shortcut_layer_gpu;
+    l->update = NULL;
 
     fprintf(stderr, "Shortcut        Layer    :    [index=%d, active=%s]\n", l->shortcut_index, l->active_str);
     return l;
@@ -36,11 +33,17 @@ void init_shortcut_layer(Layer *l, int w, int h, int c, Layer *shortcut)
     l->outputs = l->output_h * l->output_w * l->output_c;
 
     l->shortcut = shortcut;
+
     l->workspace_size = 0;
     l->deltas = l->inputs;
 
-    l->output = calloc(l->outputs*l->subdivision, sizeof(float));
-    l->delta = calloc(l->inputs*l->subdivision, sizeof(float));
+    if (l->coretype == GPU){
+        l->forward = forward_shortcut_layer_gpu;
+        l->backward = backward_shortcut_layer_gpu;
+    } else {
+        l->forward = forward_shortcut_layer;
+        l->backward = backward_shortcut_layer;
+    }
 
     fprintf(stderr, "Shortcut        Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
@@ -62,7 +65,7 @@ void forward_shortcut_layer(Layer l, int num)
     activate_list(l.output, num*l.outputs, l.active);
 }
 
-void backward_shortcut_layer(Layer l, float rate, int num)
+void backward_shortcut_layer(Layer l, float rate, int num, float *n_delta)
 {
     Layer *shortcut = l.shortcut;
     for (int i = 0; i < num; ++i){
@@ -71,7 +74,7 @@ void backward_shortcut_layer(Layer l, float rate, int num)
         int offset_c = i * shortcut->inputs;
         float *output = l.output + offset_o;
         float *delta_l = l.delta + offset_i;
-        float *delta_n = l.n_delta + offset_o;
+        float *delta_n = n_delta + offset_o;
         float *out = shortcut->delta + offset_c;
         gradient_list(output, l.outputs, l.active);
         matrix_multiply_cpu(output, delta_n, l.inputs, delta_l);

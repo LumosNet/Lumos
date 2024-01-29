@@ -1,28 +1,5 @@
 #include "dropout_layer_gpu.h"
 
-void init_dropout_layer_gpu(Layer *l, int w, int h, int c)
-{
-    l->input_h = h;
-    l->input_w = w;
-    l->input_c = c;
-    l->inputs = l->input_h * l->input_w * l->input_c;
-
-    l->output_h = h;
-    l->output_w = w;
-    l->output_c = c;
-    l->outputs = l->output_h*l->output_w*l->output_c;
-
-    l->workspace_size = l->inputs;
-
-    l->forward = forward_dropout_layer_gpu;
-    l->backward = backward_dropout_layer_gpu;
-
-    cudaMalloc((void**)&l->output, l->outputs*l->subdivision*sizeof(float));
-    cudaMalloc((void**)&l->delta, l->inputs*l->subdivision*sizeof(float));
-
-    fprintf(stderr, "Dropout         Layer\n");
-}
-
 void forward_dropout_layer_gpu(Layer l, int num)
 {
     if (!l.train){
@@ -32,13 +9,13 @@ void forward_dropout_layer_gpu(Layer l, int num)
     dropout_gpu(l, num);
 }
 
-void backward_dropout_layer_gpu(Layer l, float rate, int num)
+void backward_dropout_layer_gpu(Layer l, float rate, int num, float *n_delta)
 {
     if (!l.train){
-        cudaMemcpy(l.delta, l.n_delta, num*l.inputs*sizeof(float), cudaMemcpyDeviceToDevice);
+        cudaMemcpy(l.delta, n_delta, num*l.inputs*sizeof(float), cudaMemcpyDeviceToDevice);
         return;
     }
-    dropout_gradient_gpu(l, num);
+    dropout_gradient_gpu(l, num, n_delta);
 }
 
 __device__ float rand_uniform_gpu(float a, float b, int seed)
@@ -77,9 +54,9 @@ void dropout_gpu(Layer l, int num)
     dropout_kernel<<<(size+BLOCK-1)/BLOCK, BLOCK>>>(l, num, scale);
 }
 
-void dropout_gradient_gpu(Layer l, int num)
+void dropout_gradient_gpu(Layer l, int num, float *n_delta)
 {
     int size = num * l.inputs;
     float scale = 1. / (1.-l.probability);
-    dropout_gradient_kernel<<<(size+BLOCK-1)/BLOCK, BLOCK>>>(l, num, l.n_delta, scale);
+    dropout_gradient_kernel<<<(size+BLOCK-1)/BLOCK, BLOCK>>>(l, num, n_delta, scale);
 }

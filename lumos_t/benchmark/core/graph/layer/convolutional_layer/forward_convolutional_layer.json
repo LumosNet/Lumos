@@ -2,7 +2,7 @@
     "Public": {
         "interface": "forward_convolutional_layer",
         "benchmarks": [
-            "BenchMark 6"
+            "BenchMark 1", "BenchMark 2", "BenchMark 3"
         ],
         "params": [
             "filters", "ksize", "stride", "pad", "bias",
@@ -671,26 +671,13 @@
         "kernel_weights": {
             "type": "float g",
             "value": [
-                -7.35, 3.15, 0, 1,
-                1, 0, 3.15, -7.35,
-                -1, -2, 3, 4,
-                4, 3, -2, -1,
-
-                1, 2, 3, 4,
-                4, 3, 2, 1,
-                -1, 1, -1, 1,
-                1, -1, 1, -1,
-
-                -1, 2, -3, 4,
-                4, -3, 2, -1,
-                1, 1, 1, 1,
-                -1, -1, -1, -1
+                -7.35, 3.15, 0
             ]
         },
         "bias_weights": {
             "type": "float g",
             "value": [
-                0.1, 0.1, 0.1
+                0.1
             ]
         },
         "workspace": {

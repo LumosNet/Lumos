@@ -5,14 +5,10 @@ Layer *make_softmax_layer(int group)
     Layer *l = malloc(sizeof(Layer));
     l->type = SOFTMAX;
     l->group = group;
+    l->weights = 0;
+    l->batchnorm = 0;
+    l->bias = 0;
     l->update = NULL;
-
-    l->initialize = init_softmax_layer;
-    l->forward = forward_softmax_layer;
-    l->backward = backward_softmax_layer;
-    l->initialize_gpu = init_softmax_layer_gpu;
-    l->forward_gpu = forward_softmax_layer_gpu;
-    l->backward_gpu = backward_softmax_layer_gpu;
 
     fprintf(stderr, "Softmax         Layer    :    [output=%4d]\n", group);
     return l;
@@ -30,10 +26,16 @@ void init_softmax_layer(Layer *l, int w, int h, int c)
     l->output_c = c;
     l->outputs = l->output_h*l->output_w*l->output_c;
 
+    l->deltas = l->inputs;
     l->workspace_size = l->inputs+1;
 
-    l->output = calloc(l->outputs*l->subdivision, sizeof(float));
-    l->delta = calloc(l->inputs*l->subdivision, sizeof(float));
+    if (l->coretype == GPU){
+        l->forward = forward_softmax_layer_gpu;
+        l->backward = backward_softmax_layer_gpu;
+    } else {
+        l->forward = forward_softmax_layer;
+        l->backward = backward_softmax_layer;
+    }
 
     fprintf(stderr, "Softmax         Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n", \
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
@@ -50,14 +52,14 @@ void forward_softmax_layer(Layer l, int num)
     }
 }
 
-void backward_softmax_layer(Layer l, float rate, int num)
+void backward_softmax_layer(Layer l, float rate, int num, float *n_delta)
 {
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;
         float *input = l.input + offset_i;
         float *delta_l = l.delta + offset_i;
-        float *delta_n = l.n_delta + offset_o;
+        float *delta_n = n_delta + offset_o;
         softmax_grident(input, l.inputs, delta_l);
         matrix_multiply_cpu(delta_n, delta_l, l.inputs, delta_l);
     }

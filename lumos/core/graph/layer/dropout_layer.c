@@ -5,14 +5,11 @@ Layer *make_dropout_layer(float probability)
     Layer *l = malloc(sizeof(Layer));
     l->type = DROPOUT;
     l->probability = probability;
-    l->update = NULL;
 
-    l->initialize = init_dropout_layer;
-    l->forward = forward_dropout_layer;
-    l->backward = backward_dropout_layer;
-    l->initialize_gpu = init_dropout_layer_gpu;
-    l->forward_gpu = forward_dropout_layer_gpu;
-    l->backward_gpu = backward_dropout_layer_gpu;
+    l->weights = 0;
+    l->batchnorm = 0;
+    l->bias = 0;
+    l->update = NULL;
 
     fprintf(stderr, "Dropout   Layer    :    [probability=%.2f]\n", l->probability);
     return l;
@@ -30,10 +27,16 @@ void init_dropout_layer(Layer *l, int w, int h, int c)
     l->output_c = c;
     l->outputs = l->output_h*l->output_w*l->output_c;
 
+    l->deltas = l->inputs;
     l->workspace_size = l->inputs;
 
-    l->output = calloc(l->outputs*l->subdivision, sizeof(float));
-    l->delta = calloc(l->inputs*l->subdivision, sizeof(float));
+    if (l->coretype == GPU){
+        l->forward = forward_dropout_layer_gpu;
+        l->backward = backward_dropout_layer_gpu;
+    } else {
+        l->forward = forward_dropout_layer;
+        l->backward = backward_dropout_layer;
+    }
 
     fprintf(stderr, "Dropout         Layer\n");
 }
@@ -53,10 +56,10 @@ void forward_dropout_layer(Layer l, int num)
     }
 }
 
-void backward_dropout_layer(Layer l, float rate, int num)
+void backward_dropout_layer(Layer l, float rate, int num, float *n_delta)
 {
     if (!l.train){
-        memcpy(l.delta, l.n_delta, num*l.inputs*sizeof(float));
+        memcpy(l.delta, n_delta, num*l.inputs*sizeof(float));
         return;
     }
     float scale = 1. / (1.-l.probability);

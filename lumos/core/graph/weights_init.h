@@ -20,24 +20,20 @@ struct initializer{
     float val;
     float mean;
     float variance;
-    float l;
-    float r;
     char *mode;
 };
 
-void connect_layer_weights_init(Layer *l, Initializer init);
-void convolutional_layer_weights_init(Layer *l, Initializer init);
-
-void val_init(float *space, int num, float val);
-void uniform_init(float *space, int num, float l, float r);
-void normal_init(float *space, int num, float mean, float variance);
-void xavier_uniform_init(float *space, int num, float x);
-void xavier_normal_init(float *space, int num, float x);
-void kaiming_uniform_init(char *mode, float *space, int num, int inp, int out);
-void kaiming_normal_init(char *mode, float *space, int num, int inp, int out);
+void val_init(Layer *l, float val);
+void uniform_init(Layer *l, float mean, float variance);
+void normal_init(Layer *l, float mean, float variance);
+void xavier_uniform_init(Layer *l);
+void xavier_normal_init(Layer *l);
+void kaiming_uniform_init(Layer *l, char *mode);
+void kaiming_normal_init(Layer *l, char *mode);
+void he_init(Layer *l);
 
 Initializer val_initializer(float val);
-Initializer uniform_initializer(float l, float r);
+Initializer uniform_initializer(float mean, float variance);
 Initializer normal_initializer(float mean, float variance);
 Initializer xavier_uniform_initializer();
 Initializer xavier_normal_initializer();

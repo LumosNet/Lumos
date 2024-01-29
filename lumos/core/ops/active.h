@@ -1,13 +1,29 @@
 #ifndef ACTIVE_H
 #define ACTIVE_H
 
-#include <stdio.h>
 #include <math.h>
 #include <string.h>
 
 #ifdef  __cplusplus
 extern "C" {
 #endif
+
+typedef enum {
+    STAIR,
+    HARDTAN,
+    LINEAR,
+    LOGISTIC,
+    LOGGY,
+    RELU,
+    ELU,
+    SELU,
+    RELIE,
+    RAMP,
+    LEAKY,
+    TANH,
+    PLSE,
+    LHTAN
+} Activation;
 
 typedef float   (*activate)(float);
 typedef float   (*gradient)(float);
@@ -82,11 +98,15 @@ static inline float leaky_gradient(float x){return (x>0) ? 1 : .1;}
 static inline float tanh_gradient(float x){return 1-x*x;}
 static inline float plse_gradient(float x){return (x < 0 || x > 1) ? .01 : .125;}
 
-Activate load_activate(char *activate);
-Gradient load_gradient(char *activate);
+Activation load_activate_type(char *activate);
 
-void activate_list(float *origin, int num, Activate func);
-void gradient_list(float *origin, int num, Gradient func);
+Activate load_activate(Activation TYPE);
+Gradient load_gradient(Activation TYPE);
+
+float activate_x(Activate FUNC, float x);
+float gradient_x(Gradient FUNC, float x);
+void activate_list(float *origin, int num, Activate FUNC);
+void gradient_list(float *origin, int num, Gradient FUNC);
 
 #ifdef  __cplusplus
 }

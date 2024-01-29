@@ -2,7 +2,7 @@
     "Public": {
         "interface": "backward_im2col_layer",
         "benchmarks": [
-            "BenchMark 1", "BenchMark 2"
+            "BenchMark 1"
         ],
         "params": [
             "h", "w", "c", "num", "rate", "l_delta", "n_delta"

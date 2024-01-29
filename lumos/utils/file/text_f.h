@@ -11,12 +11,20 @@
 extern "C" {
 #endif
 
+typedef struct Lines{
+    char *line;
+    struct Lines *next;
+} Lines;
+
+char *fgetl(FILE *fp);
+char **fgetls(FILE *fp);
+
 void fputl(FILE *fp, char *line);
 void fputls(FILE *fp, char **lines, int n);
+
+void **load_label_txt(char *path);
+
 char *fget(char *file);
-int lines_num(char *tmp);
-int format_str_line(char *tmp);
-int format_str_space(char *tmp);
 
 #ifdef __cplusplus
 }

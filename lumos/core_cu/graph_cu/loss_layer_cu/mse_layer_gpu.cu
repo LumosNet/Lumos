@@ -14,9 +14,6 @@ void init_mse_layer_gpu(Layer *l, int w, int h, int c)
 
     l->workspace_size = l->inputs;
 
-    l->forward = forward_mse_layer_gpu;
-    l->backward = backward_mse_layer_gpu;
-
     cudaMalloc((void**)&l->output, l->outputs*sizeof(float));
     cudaMalloc((void**)&l->delta, l->inputs*sizeof(float));
 
@@ -26,7 +23,6 @@ void init_mse_layer_gpu(Layer *l, int w, int h, int c)
 
 void forward_mse_layer_gpu(Layer l, int num)
 {
-    float output_cpu[l.outputs*num];
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;
@@ -39,12 +35,11 @@ void forward_mse_layer_gpu(Layer l, int num)
             l.workspace, l.workspace, output);
         multy_gpu(output, l.outputs, 1/(float)l.group, 1);
     }
-    cudaMemcpy(output_cpu, l.output, l.outputs*num*sizeof(float), cudaMemcpyDeviceToHost);
-    // sum_cpu(output_cpu, l.outputs*num, l.loss);
-    // l.loss[0] /= num;
+    sum_gpu(l.output, l.outputs*num, l.loss);
+    multy_gpu(l.loss, 1, 1/num, 1);
 }
 
-void backward_mse_layer_gpu(Layer l, float rate, int num)
+void backward_mse_layer_gpu(Layer l, float rate, int num, float *n_delta)
 {
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;

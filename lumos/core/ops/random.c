@@ -22,6 +22,13 @@ float guass_data(float mean, float sigma, int *seed)
 	return y;
 }
 
+// void uniform_list(float a, float b, int seed, int num, float *space)
+// {
+// 	for (int i = 0; i < num; ++i){
+// 		space[i] = uniform_data(a, b, &seed);
+// 	}
+// }
+
 void guass_list(float mean, float sigma, int seed, int num, float *space)
 {
     int sed[1] = {seed};

@@ -18,9 +18,8 @@
 extern "C" {
 #endif
 
-void init_softmax_layer_gpu(Layer *l, int w, int h, int c);
 void forward_softmax_layer_gpu(Layer l, int num);
-void backward_softmax_layer_gpu(Layer l, float rate, int num);
+void backward_softmax_layer_gpu(Layer l, float rate, int num, float *n_delta);
 
 #ifdef __cplusplus
 }

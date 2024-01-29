@@ -21,12 +21,11 @@
 extern "C" {
 #endif
 
-void init_dropout_layer_gpu(Layer *l, int w, int h, int c);
 void forward_dropout_layer_gpu(Layer l, int num);
-void backward_dropout_layer_gpu(Layer l, float rate, int num);
+void backward_dropout_layer_gpu(Layer l, float rate, int num, float *n_delta);
 
 void dropout_gpu(Layer l, int num);
-void dropout_gradient_gpu(Layer l, int num);
+void dropout_gradient_gpu(Layer l, int num, float *n_delta);
 
 #ifdef __cplusplus
 }

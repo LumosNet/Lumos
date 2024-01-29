@@ -2,12 +2,12 @@
     "Public": {
         "width": 32,
         "height": 32,
-        "channel": 1,
+        "channel": 3,
         "label": 10,
         "batch": 8,
-        "subdivision": 8,
-        "epoch": 1000,
-        "learning_rate": 0.0001
+        "subdivision": 4,
+        "epoch": 100,
+        "learning_rate": 0.01
     },
     "Initializer": {
         "type": "HE"
@@ -15,58 +15,52 @@
     "Layers": [
         {
             "type": "CONVOLUTIONAL",
-            "filters": 32,
+            "filters": 6,
             "ksize": 5,
             "stride": 1,
-            "pad": 2,
+            "pad": 0,
             "bias": 1,
             "normalization": 0,
             "active": "relu"
         },
         {
-            "type": "MAXPOOL",
+            "type": "AVGPOOL",
             "ksize": 2,
             "stride": 2,
             "pad": 0
         },
         {
             "type": "CONVOLUTIONAL",
-            "filters": 32,
+            "filters": 16,
             "ksize": 5,
             "stride": 1,
-            "pad": 2,
+            "pad": 0,
             "bias": 1,
             "normalization": 0,
             "active": "relu"
         },
         {
-            "type": "MAXPOOL",
+            "type": "AVGPOOL",
             "ksize": 2,
             "stride": 2,
             "pad": 0
         },
         {
             "type": "CONVOLUTIONAL",
-            "filters": 64,
+            "filters": 120,
             "ksize": 5,
             "stride": 1,
-            "pad": 2,
+            "pad": 0,
             "bias": 1,
             "normalization": 0,
             "active": "relu"
-        },
-        {
-            "type": "MAXPOOL",
-            "ksize": 2,
-            "stride": 2,
-            "pad": 0
         },
         {
             "type": "IM2COL"
         },
         {
             "type": "CONNECT",
-            "output": 64,
+            "output": 84,
             "bias": 1,
             "normalization": 0,
             "active": "relu"

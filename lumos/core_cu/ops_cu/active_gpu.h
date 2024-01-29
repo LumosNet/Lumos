@@ -16,11 +16,16 @@
 extern "C" {
 #endif
 
-Activate load_activate_gpu(char *activate);
-Gradient load_gradient_gpu(char *activate);
+typedef float   (*activate_gpu)(float);
+typedef float   (*gradient_gpu)(float);
+typedef activate_gpu ActivateGpu;
+typedef gradient_gpu GradientGpu;
 
-void activate_list_gpu(float *origin, int num, Activate func);
-void gradient_list_gpu(float *origin, int num, Gradient func);
+ActivateGpu load_activate_gpu(Activation TYPE);
+GradientGpu load_gradient_gpu(Activation TYPE);
+
+void activate_list_gpu(float *origin, int num, ActivateGpu FUNC);
+void gradient_list_gpu(float *origin, int num, GradientGpu FUNC);
 
 #ifdef  __cplusplus
 }
