@@ -22,18 +22,25 @@ typedef struct layer Layer;
 
 typedef void (*forward)  (struct layer, int);
 typedef void (*backward) (struct layer, float, int, float*);
+typedef void (*update) (struct layer, float, int, float*);
 typedef forward Forward;
 typedef backward Backward;
-
-typedef void (*update) (struct layer, float, int, float*);
 typedef update Update;
 
-typedef int (*get_float_calculate_times) (struct layer*);
-typedef get_float_calculate_times GetFloatCalculateTimes;
+typedef void (*forward_gpu)  (struct layer, int);
+typedef void (*backward_gpu) (struct layer, float, int, float*);
+typedef void (*update_gpu) (struct layer, float, int, float*);
+typedef forward_gpu ForwardGpu;
+typedef backward_gpu BackwardGpu;
+typedef update_gpu UpdateGpu;
+
+typedef void (*initialize) (struct layer *, int, int, int);
+typedef void (*initialize_gpu) (struct layer *, int, int, int);
+typedef initialize Initialize;
+typedef initialize_gpu InitializeGpu;
 
 struct layer{
     LayerType type;
-    int coretype;
     int input_h;
     int input_w;
     int input_c;
@@ -43,25 +50,19 @@ struct layer{
 
     int inputs;
     int outputs;
-    int kernel_weights_size;
-    int bias_weights_size;
-    int normalize_weights_size;
-    int deltas;
-    int workspace_size;
-    int label_num;
 
-    char *active_str;
+    int workspace_size;
+    int truth_num;
 
     float *input;
     float *output;
     float *delta;
-    char **label;
     float *truth;
     float *loss;
-
     float *workspace;
 
     int *maxpool_index;
+    //为社么是指针
     int *dropout_rand;
 
     int filters;
@@ -70,37 +71,20 @@ struct layer{
     int pad;
     int group;
 
-    int weights;
     int bias;
-    int batchnorm;
-
-    // 在网中的位置，0开始
-    int index;
-    // 浮点数操作数
-    int fops;
     // dropout 占比
     float probability;
-    int train;
 
     Layer *shortcut;
     int shortcut_index;
 
     float *kernel_weights;
     float *bias_weights;
-    float *normalize_weights;
 
     float *update_kernel_weights;
     float *update_bias_weights;
-    float *update_normalize_weights;
 
-    float *kernel_weights_gpu;
-    float *bias_weights_gpu;
-    float *normalize_weights_gpu;
-
-    float *update_kernel_weights_gpu;
-    float *update_bias_weights_gpu;
-    float *update_normalize_weights_gpu;
-
+    /*normalize层参数*/
     int mean_size;
     int variance_size;
 
@@ -113,12 +97,18 @@ struct layer{
 
     Forward forward;
     Backward backward;
-
-    Activation active;
-    Activation gradient;
-
     Update update;
-    GetFloatCalculateTimes get_fct;
+
+    ForwardGpu forwardgpu;
+    BackwardGpu backwardgpu;
+    UpdateGpu updategpu;
+
+    Initialize initialize;
+    InitializeGpu initializegpu;
+
+    /*直接绑定函数*/
+    Activate active;
+    Gradient gradient;
 };
 
 #ifdef __cplusplus
