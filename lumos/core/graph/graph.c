@@ -23,7 +23,7 @@ void append_layer2grpah(Graph *graph, Layer *l)
     if (graph->head == NULL) graph->head = layer;
 }
 
-void init_graph(Graph *g, int w, int h, int c, int coretype, float *space, float *loss, float *truth)
+void init_graph(Graph *g, int w, int h, int c, int coretype)
 {
     fprintf(stderr, "\nStart To Init Graph\n");
     fprintf(stderr, "[Lumos]                     Inputs         Outputs\n");
@@ -32,7 +32,6 @@ void init_graph(Graph *g, int w, int h, int c, int coretype, float *space, float
     for (;;){
         if (layer){
             l = layer->l;
-            l->workspace = space;
             if (coretype == GPU){
                 l->initializegpu(l, w, h, c);
                 if (l->weightinitgpu) l->weightinitgpu(*l);
@@ -41,14 +40,29 @@ void init_graph(Graph *g, int w, int h, int c, int coretype, float *space, float
                 if (l->weightinit) l->weightinit(*l);
             }
         } else {
-            l->loss = loss;
-            l->truth = truth;
             break;
         }
         layer = layer->next;
         w = l->output_w;
         h = l->output_h;
         c = l->output_c;
+    }
+}
+
+void set_graph(Graph *g, float *space, float *truth, float *loss)
+{
+    Node *layer = g->head;
+    Layer *l;
+    for (;;){
+        if (layer){
+            l = layer->l;
+            l->truth = truth;
+            l->loss = loss;
+            l->workspace = space;
+        } else {
+            break;
+        }
+        layer = layer->next;
     }
 }
 

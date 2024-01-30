@@ -1,5 +1,6 @@
 LINUX=1
 TEST=0
+DEBUG=1
 
 ARCH=	-gencode arch=compute_50,code=[sm_50,compute_50] \
       	-gencode arch=compute_52,code=[sm_52,compute_52] \
@@ -41,7 +42,6 @@ COMMON=	-Ilib \
 
 ifeq ($(TEST), 0)
 COMMON += -Ilumos/lumos
-
 VPATH += ./lumos/lumos
 endif
 
@@ -58,6 +58,10 @@ CFLAGS=-fopenmp -Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 COMMON+= -DGPU -I/usr/local/cuda/include/
 CFLAGS+= -DGPU -Wno-deprecated-gpu-targets
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
+
+ifeq ($(DEBUG), 1)
+CFLAGS+= -g
+endif
 
 ifeq ($(TEST), 1)
 COMMON+= -Ilumos_t \
@@ -89,7 +93,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		str_ops.o \
 		cJSON_Utils.o cJSON.o
 
-OBJ+= 	gpu.o active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o softmax_gpu.o shortcut_gpu.o normalize_gpu.o \
+OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o softmax_gpu.o shortcut_gpu.o normalize_gpu.o \
 	  	avgpool_layer_gpu.o maxpool_layer_gpu.o connect_layer_gpu.o convolutional_layer_gpu.o im2col_layer_gpu.o \
 	  	mse_layer_gpu.o
 
@@ -120,6 +124,12 @@ ifeq ($(LINUX),1)
 CFLAGS += -fPIC
 endif
 
+COMMONGPU = $(COMMON)
+
+ifeq ($(DEBUG),1)
+COMMONGPU += -g -G
+endif
+
 LDFLAGS+= -lstdc++
 
 EXECOBJ = $(addprefix $(OBJDIR), $(EXECOBJA))
@@ -135,7 +145,7 @@ $(OBJDIR)%.o: %.c $(DEPS)
 	$(CC) $(COMMON) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)%.o: %.cu $(DEPS)
-	$(NVCC) $(ARCH) $(COMMON) --compiler-options "$(CFLAGS)" -c $< -o $@
+	$(NVCC) $(ARCH) $(COMMONGPU) --compiler-options "$(CFLAGS)" -c $< -o $@
 
 obj:
 	mkdir obj

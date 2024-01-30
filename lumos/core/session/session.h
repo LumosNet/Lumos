@@ -3,11 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
-#include "curand.h"
-#include "cublas_v2.h"
+#include <time.h>
 
 #include "graph.h"
 #include "text_f.h"
@@ -65,7 +61,7 @@ void bind_test_label(Session *sess, char *path);
 
 void set_train_params(Session *sess, int epoch, int batch, int subdivision, float learning_rate);
 void create_workspace(Session *sess);
-void train(Session *sess, int epoch, int batch, int subdivision, float learning_rate);
+void train(Session *sess);
 void detect(Session *sess);
 
 void load_train_data(Session *sess, int index);

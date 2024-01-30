@@ -49,6 +49,13 @@ void weightinit_connect_layer_gpu(Layer l)
 
 void forward_connect_layer_gpu(Layer l, int num)
 {
+    // float *input_t = (float*)calloc(l.inputs*num, sizeof(float));
+    // cudaMemcpy(input_t, l.input, l.inputs*num*sizeof(float), cudaMemcpyDeviceToHost);
+    // printf("input: -------\n");
+    // for (int i = 0; i < l.inputs*num; ++i){
+    //     printf("%f ", input_t[i]);
+    // }
+    // printf("\n");
     for (int i = 0; i < num; ++i){
         int offset_i = i * l.inputs;
         int offset_o = i * l.outputs;
@@ -61,6 +68,13 @@ void forward_connect_layer_gpu(Layer l, int num)
         }
         activate_list_gpu(output, l.outputs, l.activegpu);
     }
+    // float *output_t = (float*)calloc(l.outputs*num, sizeof(float));
+    // cudaMemcpy(output_t, l.output, l.outputs*num*sizeof(float), cudaMemcpyDeviceToHost);
+    // printf("output: -------\n");
+    // for (int i = 0; i < l.outputs*num; ++i){
+    //     printf("%f ", output_t[i]);
+    // }
+    // printf("\n");
 }
 
 void backward_connect_layer_gpu(Layer l, float rate, int num, float *n_delta)

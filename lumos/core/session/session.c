@@ -20,6 +20,7 @@ void init_session(Session *sess, char *data_path, char *label_path)
 {
     bind_train_data(sess, data_path);
     bind_train_label(sess, label_path);
+    init_graph(sess->graph, sess->width, sess->height, sess->channel, sess->coretype);
     create_workspace(sess);
     if (sess->coretype == GPU){
         cudaMalloc((void**)&sess->input, sess->subdivision*sess->width*sess->height*sess->channel*sizeof(float));
@@ -30,7 +31,20 @@ void init_session(Session *sess, char *data_path, char *label_path)
         sess->truth = calloc(sess->subdivision*sess->truth_num, sizeof(float));
         sess->loss = calloc(1, sizeof(float));
     }
-    init_graph(sess->graph, sess->width, sess->height, sess->channel, sess->coretype, sess->workspace, sess->loss, sess->truth);
+    Graph *g = sess->graph;
+    Node *layer = g->head;
+    Layer *l;
+    for (;;){
+        if (layer){
+            l = layer->l;
+            l->truth = sess->truth;
+            l->loss = sess->loss;
+            l->workspace = sess->workspace;
+        } else {
+            break;
+        }
+        layer = layer->next;
+    }
 }
 
 void bind_train_data(Session *sess, char *path)
@@ -110,6 +124,7 @@ void create_workspace(Session *sess)
         }
         layer = layer->next;
     }
+    if (max <= 0) return;
     if (sess->coretype == GPU){
         cudaMalloc((void**)&sess->workspace, max*sizeof(float));
     } else {
@@ -122,7 +137,7 @@ void load_train_data(Session *sess, int index)
     int h[1], w[1], c[1];
     float *im;
     int offset_i = 0;
-    float *input = calloc(sess->subdivision*sess->width*sess->height*sess->channel, sizeof(float));
+    float *input = (float*)calloc(sess->subdivision*sess->width*sess->height*sess->channel, sizeof(float));
     for (int i = index; i < index + sess->subdivision; ++i){
         int index_i = i;
         if (index_i >= sess->train_data_num) index_i %= sess->train_data_num;
@@ -134,8 +149,7 @@ void load_train_data(Session *sess, int index)
         free(im);
     }
     if (sess->coretype == GPU){
-        cudaMemcpy(sess->input, input, \
-              sess->subdivision*sess->height*sess->width*sess->channel*sizeof(float), cudaMemcpyHostToDevice);
+        cudaMemcpy(sess->input, input, sess->subdivision*sess->width*sess->height*sess->channel*sizeof(float), cudaMemcpyHostToDevice);
     } else {
         memcpy(sess->input, input, sess->subdivision*sess->width*sess->height*sess->channel*sizeof(float));
     }
@@ -144,7 +158,7 @@ void load_train_data(Session *sess, int index)
 
 void load_train_label(Session *sess, int index)
 {
-    float *truth = calloc(sess->truth_num, sizeof(float));
+    float *truth = calloc(sess->subdivision*sess->truth_num, sizeof(float));
     for (int i = index; i < index + sess->subdivision; ++i){
         float *truth_i = truth + (i - index) * sess->truth_num;
         int index_i = i;
@@ -169,16 +183,16 @@ void load_train_label(Session *sess, int index)
     free(truth);
 }
 
-void train(Session *sess, int epoch, int batch, int subdivision, float learning_rate)
+void train(Session *sess)
 {
     fprintf(stderr, "\nSession Start To Running\n");
-    set_train_params(sess, epoch, batch, subdivision, learning_rate);
     float rate = -sess->learning_rate / (float)sess->batch;
     float *loss = calloc(1, sizeof(float));
     clock_t start, final;
     double run_time = 0;
     for (int i = 0; i < sess->epoch; ++i){
         fprintf(stderr, "\n\nEpoch %d/%d\n", i + 1, sess->epoch);
+        start = clock();
         int sub_epochs = (int)(sess->train_data_num / sess->batch);
         int sub_batchs = (int)(sess->batch / sess->subdivision);
         for (int j = 0; j < sub_epochs; ++j){

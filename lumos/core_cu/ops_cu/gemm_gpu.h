@@ -1,11 +1,6 @@
 #ifndef GEMM_GPU_H
 #define GEMM_GPU_H
 
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
-#include "curand.h"
-#include "cublas_v2.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 

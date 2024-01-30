@@ -5,7 +5,7 @@
 #include "avgpool_layer.h"
 #include "connect_layer.h"
 #include "convolutional_layer.h"
-#include "im2col.h"
+#include "im2col_layer.h"
 #include "maxpool_layer.h"
 #include "mse_layer.h"
 #include "graph.h"
@@ -86,17 +86,38 @@
 
 int main(int argc, char **argv)
 {
-    Graph *g = create_graph();
-    Layer *l1 = make_im2col_layer();
-    Layer *l2 = make_connect_layer(4, 1, "relu");
-    Layer *l3 = make_connect_layer(2, 1, "relu");
-    Layer *l4 = make_mse_layer(2);
-    append_layer2grpah(g, l1);
-    append_layer2grpah(g, l2);
-    append_layer2grpah(g, l3);
-    append_layer2grpah(g, l4);
-    Session *sess = create_session(g, 1, 2, 1, 2, "cpu");
-    init_session(sess, "./data/xor/data.txt", "./data/xor/label.txt");
-    train(sess, 50, 2, 2, 0.1);
+    // Graph *g = create_graph();
+    // Layer *l1 = make_im2col_layer();
+    // Layer *l2 = make_connect_layer(4, 1, "relu");
+    // Layer *l3 = make_connect_layer(2, 1, "relu");
+    // Layer *l4 = make_mse_layer(2);
+    // append_layer2grpah(g, l1);
+    // append_layer2grpah(g, l2);
+    // append_layer2grpah(g, l3);
+    // append_layer2grpah(g, l4);
+    // Session *sess = create_session(g, 1, 2, 1, 2, "gpu");
+    // set_train_params(sess, 50, 2, 2, 0.1);
+    // init_session(sess, "./data/xor/data.txt", "./data/xor/label.txt");
+    // train(sess);
+
+    printf("---------------------------\n");
+    float *input = calloc(10, sizeof(float));
+    for (int i = 0; i < 10; ++i){
+        input[i] = i;
+    }
+    float *input_g = NULL;
+    cudaMalloc((void**)&input_g, 10*sizeof(float));
+    cudaMemcpy(input_g, input, 10*sizeof(float), cudaMemcpyHostToDevice);
+
+    float *input_c = calloc(10, sizeof(float));
+    for (int i = 0; i < 10; ++i){
+        printf("%f ", input_c[i]);
+    }
+    printf("\n");
+    cudaMemcpy(input_c, input_g, 10*sizeof(float), cudaMemcpyDeviceToHost);
+    for (int i = 0; i < 10; ++i){
+        printf("%f ", input_c[i]);
+    }
+    printf("\n");
     return 0;
 }
