@@ -9,8 +9,6 @@
 #include "curand.h"
 #include "cublas_v2.h"
 
-#include <time.h>
-
 #include "graph.h"
 #include "text_f.h"
 #include "binary_f.h"

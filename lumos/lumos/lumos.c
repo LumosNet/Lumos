@@ -95,7 +95,7 @@ int main(int argc, char **argv)
     append_layer2grpah(g, l2);
     append_layer2grpah(g, l3);
     append_layer2grpah(g, l4);
-    Session *sess = create_session(g, 1, 2, 1, 2, "gpu");
+    Session *sess = create_session(g, 1, 2, 1, 2, "cpu");
     init_session(sess, "./data/xor/data.txt", "./data/xor/label.txt");
     train(sess, 50, 2, 2, 0.1);
     return 0;

@@ -12,7 +12,7 @@ Layer *make_mse_layer(int group)
 
     l->initializegpu = init_mse_layer_gpu;
     l->forwardgpu = forward_mse_layer_gpu;
-    l->backward = backward_mse_layer_gpu;
+    l->backwardgpu = backward_mse_layer_gpu;
 
     fprintf(stderr, "Mse             Layer    :    [output=%4d]\n", 1);
     return l;
@@ -60,7 +60,6 @@ void forward_mse_layer(Layer l, int num)
 
 void backward_mse_layer(Layer l, float rate, int num, float *n_delta)
 {
-    printf("01\n");
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_t = i*l.group;
@@ -70,5 +69,4 @@ void backward_mse_layer(Layer l, float rate, int num, float *n_delta)
         matrix_subtract_cpu(input, truth, l.inputs, delta_l);
         multy_cpu(delta_l, l.inputs, (float)2/l.group, 1);
     }
-    printf("02\n");
 }
