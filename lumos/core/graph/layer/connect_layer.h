@@ -18,7 +18,7 @@ extern "C" {
 
 
 Layer *make_connect_layer(int output, int bias, char *active);
-void init_connect_layer(Layer *l, int w, int h, int c);
+void init_connect_layer(Layer *l, int w, int h, int c, int subdivision);
 void weightinit_connect_layer(Layer l);
 
 void forward_connect_layer(Layer l, int num);

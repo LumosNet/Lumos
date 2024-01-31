@@ -23,7 +23,7 @@ void append_layer2grpah(Graph *graph, Layer *l)
     if (graph->head == NULL) graph->head = layer;
 }
 
-void init_graph(Graph *g, int w, int h, int c, int coretype)
+void init_graph(Graph *g, int w, int h, int c, int coretype, int subdivision)
 {
     fprintf(stderr, "\nStart To Init Graph\n");
     fprintf(stderr, "[Lumos]                     Inputs         Outputs\n");
@@ -33,10 +33,10 @@ void init_graph(Graph *g, int w, int h, int c, int coretype)
         if (layer){
             l = layer->l;
             if (coretype == GPU){
-                l->initializegpu(l, w, h, c);
+                l->initializegpu(l, w, h, c, subdivision);
                 if (l->weightinitgpu) l->weightinitgpu(*l);
             } else {
-                l->initialize(l, w, h, c);
+                l->initialize(l, w, h, c, subdivision);
                 if (l->weightinit) l->weightinit(*l);
             }
         } else {

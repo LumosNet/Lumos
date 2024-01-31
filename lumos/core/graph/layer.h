@@ -35,8 +35,8 @@ typedef forward_gpu ForwardGpu;
 typedef backward_gpu BackwardGpu;
 typedef update_gpu UpdateGpu;
 
-typedef void (*initialize) (struct layer *, int, int, int);
-typedef void (*initialize_gpu) (struct layer *, int, int, int);
+typedef void (*initialize) (struct layer *, int, int, int, int);
+typedef void (*initialize_gpu) (struct layer *, int, int, int, int);
 typedef initialize Initialize;
 typedef initialize_gpu InitializeGpu;
 

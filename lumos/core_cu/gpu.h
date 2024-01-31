@@ -1,6 +1,7 @@
 #ifndef GPU_H
 #define GPU_H
 
+#include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 #include "curand.h"
 #include "cublas_v2.h"

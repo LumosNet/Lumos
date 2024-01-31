@@ -11,6 +11,8 @@
 #include "graph.h"
 #include "layer.h"
 #include "session.h"
+#include "gemm_gpu.h"
+#include "cpu_gpu.h"
 
 #define VERSION "0.1"
 
@@ -100,22 +102,27 @@ int main(int argc, char **argv)
     // init_session(sess, "./data/xor/data.txt", "./data/xor/label.txt");
     // train(sess);
 
-    printf("---------------------------\n");
-    float *input = calloc(10, sizeof(float));
-    for (int i = 0; i < 10; ++i){
-        input[i] = i;
+    float *input_a = calloc(4, sizeof(float));
+    float *input_b = calloc(2, sizeof(float));
+    float *input_c = calloc(2, sizeof(float));
+    for (int i = 0; i < 4; ++i){
+        input_a[i] = i;
     }
-    float *input_g = NULL;
-    cudaMalloc((void**)&input_g, 10*sizeof(float));
-    cudaMemcpy(input_g, input, 10*sizeof(float), cudaMemcpyHostToDevice);
-
-    float *input_c = calloc(10, sizeof(float));
-    for (int i = 0; i < 10; ++i){
-        printf("%f ", input_c[i]);
-    }
-    printf("\n");
-    cudaMemcpy(input_c, input_g, 10*sizeof(float), cudaMemcpyDeviceToHost);
-    for (int i = 0; i < 10; ++i){
+    input_b[0] = 1;
+    input_b[1] = 2;
+    float *input_ag = NULL;
+    float *input_bg = NULL;
+    float *input_cg = NULL;
+    cudaMalloc((void**)&input_ag, 4*sizeof(float));
+    cudaMalloc((void**)&input_bg, 2*sizeof(float));
+    cudaMalloc((void**)&input_cg, 2*sizeof(float));
+    cudaMemcpy(input_ag, input_a, 4*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(input_bg, input_b, 2*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(input_cg, input_c, 2*sizeof(float), cudaMemcpyHostToDevice);
+    // gemm_gpu(0, 0, 2, 2, 2, 1, 1, input_ag, input_bg, input_cg);
+    add_gpu(input_cg, 2, 1, 1);
+    cudaMemcpy(input_c, input_cg, 2*sizeof(float), cudaMemcpyDeviceToHost);
+    for (int i = 0; i < 2; ++i){
         printf("%f ", input_c[i]);
     }
     printf("\n");

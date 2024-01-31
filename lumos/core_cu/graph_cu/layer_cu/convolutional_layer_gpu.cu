@@ -1,6 +1,6 @@
 #include "convolutional_layer_gpu.h"
 
-void init_convolutional_layer_gpu(Layer *l, int w, int h, int c)
+void init_convolutional_layer_gpu(Layer *l, int w, int h, int c, int subdivision)
 {
     l->input_h = h;
     l->input_w = w;
@@ -14,8 +14,8 @@ void init_convolutional_layer_gpu(Layer *l, int w, int h, int c)
 
     l->workspace_size = l->ksize * l->ksize * l->input_c * l->output_h * l->output_w + l->filters * l->ksize * l->ksize * l->input_c;
 
-    cudaMalloc((void**)&l->output, l->outputs*sizeof(float));
-    cudaMalloc((void**)&l->delta, l->inputs*sizeof(float));
+    cudaMalloc((void**)&l->output, subdivision*l->outputs*sizeof(float));
+    cudaMalloc((void**)&l->delta, subdivision*l->inputs*sizeof(float));
     cudaMalloc((void**)&l->kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float));
     cudaMalloc((void**)&l->update_kernel_weights, l->filters*l->ksize*l->ksize*l->input_c*sizeof(float));
     if (l->bias){

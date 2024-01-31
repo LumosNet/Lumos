@@ -20,7 +20,7 @@ void init_session(Session *sess, char *data_path, char *label_path)
 {
     bind_train_data(sess, data_path);
     bind_train_label(sess, label_path);
-    init_graph(sess->graph, sess->width, sess->height, sess->channel, sess->coretype);
+    init_graph(sess->graph, sess->width, sess->height, sess->channel, sess->coretype, sess->subdivision);
     create_workspace(sess);
     if (sess->coretype == GPU){
         cudaMalloc((void**)&sess->input, sess->subdivision*sess->width*sess->height*sess->channel*sizeof(float));

@@ -1,6 +1,6 @@
 #include "mse_layer_gpu.h"
 
-void init_mse_layer_gpu(Layer *l, int w, int h, int c)
+void init_mse_layer_gpu(Layer *l, int w, int h, int c, int subdivision)
 {
     l->input_h = h;
     l->input_w = w;
@@ -14,8 +14,8 @@ void init_mse_layer_gpu(Layer *l, int w, int h, int c)
 
     l->workspace_size = l->inputs;
 
-    cudaMalloc((void**)&l->output, l->outputs*sizeof(float));
-    cudaMalloc((void**)&l->delta, l->inputs*sizeof(float));
+    cudaMalloc((void**)&l->output, subdivision*l->outputs*sizeof(float));
+    cudaMalloc((void**)&l->delta, subdivision*l->inputs*sizeof(float));
 
     fprintf(stderr, "Mse             Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n", \
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
@@ -37,11 +37,7 @@ void forward_mse_layer_gpu(Layer l, int num)
     }
     float *loss = (float*)calloc(1, sizeof(float));
     sum_gpu(l.output, l.outputs*num, l.loss);
-    // cudaMemcpy(loss, l.loss, sizeof(float), cudaMemcpyDeviceToHost);
-    // printf("----------------: %f\n", loss[0]);
     multy_gpu(l.loss, 1, (float)1/num, 1);
-    // cudaMemcpy(loss, l.loss, sizeof(float), cudaMemcpyDeviceToHost);
-    // printf("++++++++++++++++: %f\n", loss[0]);
 }
 
 void backward_mse_layer_gpu(Layer l, float rate, int num, float *n_delta)

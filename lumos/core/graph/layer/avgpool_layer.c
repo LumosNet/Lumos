@@ -21,7 +21,7 @@ Layer *make_avgpool_layer(int ksize, int stride, int pad)
     return l;
 }
 
-void init_avgpool_layer(Layer *l, int w, int h, int c)
+void init_avgpool_layer(Layer *l, int w, int h, int c, int subdivision)
 {
     l->input_h = h;
     l->input_w = w;
@@ -35,8 +35,8 @@ void init_avgpool_layer(Layer *l, int w, int h, int c)
 
     l->workspace_size = 0;
 
-    l->output = calloc(l->outputs, sizeof(float));
-    l->delta = calloc(l->inputs, sizeof(float));
+    l->output = calloc(subdivision*l->outputs, sizeof(float));
+    l->delta = calloc(subdivision*l->inputs, sizeof(float));
 
     fprintf(stderr, "Avg Pooling     Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);

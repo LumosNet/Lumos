@@ -35,7 +35,7 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
     return l;
 }
 
-void init_convolutional_layer(Layer *l, int w, int h, int c)
+void init_convolutional_layer(Layer *l, int w, int h, int c, int subdivision)
 {
     l->input_h = h;
     l->input_w = w;
@@ -49,8 +49,8 @@ void init_convolutional_layer(Layer *l, int w, int h, int c)
 
     l->workspace_size = l->ksize * l->ksize * l->input_c * l->output_h * l->output_w + l->filters * l->ksize * l->ksize * l->input_c;
 
-    l->output = calloc(l->outputs, sizeof(float));
-    l->delta = calloc(l->inputs, sizeof(float));
+    l->output = calloc(subdivision*l->outputs, sizeof(float));
+    l->delta = calloc(subdivision*l->inputs, sizeof(float));
     l->kernel_weights = calloc(l->filters*l->ksize*l->ksize*l->input_c, sizeof(float));
     l->update_kernel_weights = calloc(l->filters*l->ksize*l->ksize*l->input_c, sizeof(float));
     if (l->bias){

@@ -31,7 +31,7 @@ Layer *make_connect_layer(int output, int bias, char *active)
     return l;
 }
 
-void init_connect_layer(Layer *l, int w, int h, int c)
+void init_connect_layer(Layer *l, int w, int h, int c, int subdivision)
 {
     l->input_h = h;
     l->input_w = w;
@@ -45,8 +45,8 @@ void init_connect_layer(Layer *l, int w, int h, int c)
 
     l->workspace_size = l->inputs * l->outputs;
 
-    l->output = calloc(l->outputs, sizeof(float));
-    l->delta = calloc(l->inputs, sizeof(float));
+    l->output = calloc(subdivision*l->outputs, sizeof(float));
+    l->delta = calloc(subdivision*l->inputs, sizeof(float));
     l->kernel_weights = calloc(l->inputs * l->outputs, sizeof(float));
     l->update_kernel_weights = calloc(l->inputs * l->outputs, sizeof(float));
     if (l->bias){

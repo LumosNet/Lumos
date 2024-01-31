@@ -19,7 +19,7 @@ extern "C"{
 #endif
 
 Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalization, char *active);
-void init_convolutional_layer(Layer *l, int w, int h, int c);
+void init_convolutional_layer(Layer *l, int w, int h, int c, int subdivision);
 void weightinit_convolutional_layer(Layer l);
 
 void forward_convolutional_layer(Layer l, int num);
