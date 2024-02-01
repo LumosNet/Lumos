@@ -59,7 +59,7 @@ void forward_connect_layer_gpu(Layer l, int num)
         if (l.bias){
             add_bias_gpu(output, l.bias_weights, l.ksize, 1);
         }
-        activate_list_gpu(output, l.outputs, l.activegpu);
+        activate_list_gpu(output, l.outputs, l.active);
     }
 }
 
@@ -71,7 +71,7 @@ void backward_connect_layer_gpu(Layer l, float rate, int num, float *n_delta)
         float *output = l.output + offset_o;
         float *delta_l = l.delta + offset_i;
         float *delta_n = n_delta + offset_o;
-        gradient_list_gpu(output, l.outputs, l.gradientgpu);
+        gradient_list_gpu(output, l.outputs, l.active);
         matrix_multiply_gpu(delta_n, output, l.outputs, delta_n);
         gemm_gpu(1, 0, l.output_c, l.input_c, l.output_c, l.input_w, 1,
              l.kernel_weights, delta_n, delta_l);

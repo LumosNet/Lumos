@@ -11,10 +11,7 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
     l->bias = bias;
 
     Activation type = load_activate_type(active);
-    l->active = load_activate(type);
-    l->gradient = load_gradient(type);
-    l->activegpu = load_activate_gpu(type);
-    l->gradientgpu = load_gradient_gpu(type);
+    l->active = type;
 
     l->initialize = init_convolutional_layer;
     l->forward = forward_convolutional_layer;
@@ -107,7 +104,7 @@ void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta)
         float *output = l.output + offset_o;
         float *delta_l = l.delta + offset_i;
         float *delta_n = n_delta + offset_o;
-        gradient_list(output, l.outputs, l.gradient);
+        gradient_list(output, l.outputs, l.active);
         matrix_multiply_cpu(delta_n, output, l.outputs, delta_n);
         gemm(1, 0, l.filters, l.ksize * l.ksize * l.input_c,
              l.filters, l.output_h * l.output_w, 1,

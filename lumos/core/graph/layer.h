@@ -15,7 +15,7 @@ extern "C" {
 #define GPU 1
 
 typedef enum {
-    CONVOLUTIONAL, ACTIVATION, CONNECT, IM2COL, MAXPOOL, AVGPOOL, \
+    CONVOLUTIONAL, CONNECT, IM2COL, MAXPOOL, AVGPOOL, \
     DROPOUT, MSE, SOFTMAX, SHORTCUT, NORMALIZE
 } LayerType;
 
@@ -115,11 +115,7 @@ struct layer{
     WeightInit weightinit;
     WeightInitGpu weightinitgpu;
 
-    /*直接绑定函数*/
-    Activate active;
-    Gradient gradient;
-    ActivateGpu activegpu;
-    GradientGpu gradientgpu;
+    Activation active;
 };
 
 #ifdef __cplusplus

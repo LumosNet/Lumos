@@ -88,43 +88,18 @@
 
 int main(int argc, char **argv)
 {
-    // Graph *g = create_graph();
-    // Layer *l1 = make_im2col_layer();
-    // Layer *l2 = make_connect_layer(4, 1, "relu");
-    // Layer *l3 = make_connect_layer(2, 1, "relu");
-    // Layer *l4 = make_mse_layer(2);
-    // append_layer2grpah(g, l1);
-    // append_layer2grpah(g, l2);
-    // append_layer2grpah(g, l3);
-    // append_layer2grpah(g, l4);
-    // Session *sess = create_session(g, 1, 2, 1, 2, "gpu");
-    // set_train_params(sess, 50, 2, 2, 0.1);
-    // init_session(sess, "./data/xor/data.txt", "./data/xor/label.txt");
-    // train(sess);
-
-    float *input_a = calloc(4, sizeof(float));
-    float *input_b = calloc(2, sizeof(float));
-    float *input_c = calloc(2, sizeof(float));
-    for (int i = 0; i < 4; ++i){
-        input_a[i] = i;
-    }
-    input_b[0] = 1;
-    input_b[1] = 2;
-    float *input_ag = NULL;
-    float *input_bg = NULL;
-    float *input_cg = NULL;
-    cudaMalloc((void**)&input_ag, 4*sizeof(float));
-    cudaMalloc((void**)&input_bg, 2*sizeof(float));
-    cudaMalloc((void**)&input_cg, 2*sizeof(float));
-    cudaMemcpy(input_ag, input_a, 4*sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy(input_bg, input_b, 2*sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy(input_cg, input_c, 2*sizeof(float), cudaMemcpyHostToDevice);
-    // gemm_gpu(0, 0, 2, 2, 2, 1, 1, input_ag, input_bg, input_cg);
-    add_gpu(input_cg, 2, 1, 1);
-    cudaMemcpy(input_c, input_cg, 2*sizeof(float), cudaMemcpyDeviceToHost);
-    for (int i = 0; i < 2; ++i){
-        printf("%f ", input_c[i]);
-    }
-    printf("\n");
+    Graph *g = create_graph();
+    Layer *l1 = make_im2col_layer();
+    Layer *l2 = make_connect_layer(4, 1, "relu");
+    Layer *l3 = make_connect_layer(2, 1, "relu");
+    Layer *l4 = make_mse_layer(2);
+    append_layer2grpah(g, l1);
+    append_layer2grpah(g, l2);
+    append_layer2grpah(g, l3);
+    append_layer2grpah(g, l4);
+    Session *sess = create_session(g, 1, 2, 1, 2, "gpu");
+    set_train_params(sess, 50, 2, 2, 0.1);
+    init_session(sess, "./data/xor/data.txt", "./data/xor/label.txt");
+    train(sess);
     return 0;
 }

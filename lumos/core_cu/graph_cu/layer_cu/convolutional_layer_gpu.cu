@@ -67,7 +67,7 @@ void forward_convolutional_layer_gpu(Layer l, int num)
         if (l.bias){
             add_bias_gpu(output, l.bias_weights, l.filters, l.output_h * l.output_w);
         }
-        activate_list_gpu(output, l.outputs, l.activegpu);
+        activate_list_gpu(output, l.outputs, l.active);
     }
 }
 
@@ -79,7 +79,7 @@ void backward_convolutional_layer_gpu(Layer l, float rate, int num, float *n_del
         float *output = l.output + offset_o;
         float *delta_l = l.delta + offset_i;
         float *delta_n = n_delta + offset_o;
-        gradient_list_gpu(output, l.outputs, l.gradientgpu);
+        gradient_list_gpu(output, l.outputs, l.active);
         matrix_multiply_gpu(delta_n, output, l.outputs, delta_n);
         gemm_gpu(1, 0, l.filters, l.ksize * l.ksize * l.input_c,
              l.filters, l.output_h * l.output_w, 1,

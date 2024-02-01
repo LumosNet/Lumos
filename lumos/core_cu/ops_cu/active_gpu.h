@@ -24,8 +24,8 @@ typedef gradient_gpu GradientGpu;
 ActivateGpu load_activate_gpu(Activation TYPE);
 GradientGpu load_gradient_gpu(Activation TYPE);
 
-void activate_list_gpu(float *origin, int num, ActivateGpu FUNC);
-void gradient_list_gpu(float *origin, int num, GradientGpu FUNC);
+void activate_list_gpu(float *origin, int num, Activation TYPE);
+void gradient_list_gpu(float *origin, int num, Activation TYPE);
 
 #ifdef  __cplusplus
 }

@@ -143,26 +143,94 @@ GradientGpu load_gradient_gpu(Activation TYPE)
     return func;
 }
 
-__global__ void activate_list_kernel(float *origin, int num, ActivateGpu FUNC)
+__device__ float activate_x_kernel(Activation TYPE, float x)
+{
+    float res = 0;
+    if (TYPE == STAIR)
+        res = stair_activate_kernel(x);
+    else if (TYPE == HARDTAN)
+        res = hardtan_activate_kernel(x);
+    else if (TYPE == LINEAR)
+        res = linear_activate_kernel(x);
+    else if (TYPE == LOGISTIC)
+        res = logistic_activate_kernel(x);
+    else if (TYPE == LOGGY)
+        res = loggy_activate_kernel(x);
+    else if (TYPE == RELU)
+        res = relu_activate_kernel(x);
+    else if (TYPE == ELU)
+        res = elu_activate_kernel(x);
+    else if (TYPE == SELU)
+        res = selu_activate_kernel(x);
+    else if (TYPE == RELIE)
+        res = relie_activate_kernel(x);
+    else if (TYPE == RAMP)
+        res = ramp_activate_kernel(x);
+    else if (TYPE == LEAKY)
+        res = leaky_activate_kernel(x);
+    else if (TYPE == TANH)
+        res = tanh_activate_kernel(x);
+    else if (TYPE == PLSE)
+        res = plse_activate_kernel(x);
+    else if (TYPE == LHTAN)
+        res = lhtan_activate_kernel(x);
+    return res;
+}
+
+__global__ void activate_list_kernel(float *origin, int num, Activation TYPE)
 {
     int index = threadIdx.x + blockIdx.x * blockDim.x;
     if (index >= num) return;
-    origin[index] = FUNC(origin[index]);
+    origin[index] = activate_x_kernel(TYPE, origin[index]);
 }
 
-void activate_list_gpu(float *origin, int num, ActivateGpu FUNC)
+void activate_list_gpu(float *origin, int num, Activation TYPE)
 {
-    activate_list_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(origin, num, FUNC);
+    activate_list_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(origin, num, TYPE);
 }
 
-__global__ void gradient_list_kernel(float *origin, int num, GradientGpu FUNC)
+__device__ float gradient_x_kernel(Activation TYPE, float x)
+{
+    float res = 0;
+    if (TYPE == STAIR)
+        res = stair_gradient_kernel(x);
+    else if (TYPE == HARDTAN)
+        res = hardtan_gradient_kernel(x);
+    else if (TYPE == LINEAR)
+        res = linear_gradient_kernel(x);
+    else if (TYPE == LOGISTIC)
+        res = logistic_gradient_kernel(x);
+    else if (TYPE == LOGGY)
+        res = loggy_gradient_kernel(x);
+    else if (TYPE == RELU)
+        res = relu_gradient_kernel(x);
+    else if (TYPE == ELU)
+        res = elu_gradient_kernel(x);
+    else if (TYPE == SELU)
+        res = selu_gradient_kernel(x);
+    else if (TYPE == RELIE)
+        res = relie_gradient_kernel(x);
+    else if (TYPE == RAMP)
+        res = ramp_gradient_kernel(x);
+    else if (TYPE == LEAKY)
+        res = leaky_gradient_kernel(x);
+    else if (TYPE == TANH)
+        res = tanh_gradient_kernel(x);
+    else if (TYPE == PLSE)
+        res = plse_gradient_kernel(x);
+    else if (TYPE == LHTAN)
+        res = lhtan_gradient_kernel(x);
+    return res;
+}
+
+__global__ void gradient_list_kernel(float *origin, int num, Activation TYPE)
 {
     int index = threadIdx.x + blockIdx.x * blockDim.x;
     if (index >= num) return;
-    origin[index] = FUNC(origin[index]);
+    origin[index] = gradient_x_kernel(TYPE, origin[index]);
 }
 
-void gradient_list_gpu(float *origin, int num, GradientGpu FUNC)
+void gradient_list_gpu(float *origin, int num, Activation TYPE)
 {
-    gradient_list_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(origin, num, FUNC);
+    gradient_list_kernel<<<(num+BLOCK-1)/BLOCK, BLOCK>>>(origin, num, TYPE);
 }

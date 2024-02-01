@@ -8,10 +8,7 @@ Layer *make_connect_layer(int output, int bias, char *active)
     l->bias = bias;
 
     Activation type = load_activate_type(active);
-    l->active = load_activate(type);
-    l->gradient = load_gradient(type);
-    l->activegpu = load_activate_gpu(type);
-    l->gradientgpu = load_gradient_gpu(type);
+    l->active = type;
 
     l->initialize = init_connect_layer;
     l->forward = forward_connect_layer;
@@ -95,7 +92,7 @@ void backward_connect_layer(Layer l, float rate, int num, float *n_delta)
         float *output = l.output + offset_o;
         float *delta_l = l.delta + offset_i;
         float *delta_n = n_delta + offset_o;
-        gradient_list(output, l.outputs, l.gradient);
+        gradient_list(output, l.outputs, l.active);
         matrix_multiply_cpu(delta_n, output, l.outputs, delta_n);
         gemm(1, 0, l.output_c, l.input_c, l.output_c, l.input_w, 1,
              l.kernel_weights, delta_n, delta_l);
