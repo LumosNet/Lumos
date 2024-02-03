@@ -102,8 +102,8 @@ char *fget(char *file)
     }
     fseek(fp, 0, SEEK_END);
     int file_size = ftell(fp);
-    char *tmp = (char*)malloc(file_size * sizeof(char));
-    memset(tmp, '\0', file_size * sizeof(char));
+    char *tmp = (char*)malloc((file_size+1)*sizeof(char));
+    memset(tmp, '\0', (file_size+1)*sizeof(char));
     fseek(fp, 0, SEEK_SET);
     fread(tmp, sizeof(char), file_size, fp);
     fclose(fp);

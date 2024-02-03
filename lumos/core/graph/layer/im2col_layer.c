@@ -13,6 +13,12 @@ Layer *make_im2col_layer()
     l->forwardgpu = forward_im2col_layer_gpu;
     l->backwardgpu = backward_im2col_layer_gpu;
 
+    l->weightinit = NULL;
+    l->weightinitgpu = NULL;
+
+    l->update = NULL;
+    l->updategpu = NULL;
+
     fprintf(stderr, "Im2col          Layer\n");
     return l;
 }

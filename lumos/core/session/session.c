@@ -134,15 +134,13 @@ void create_workspace(Session *sess)
 
 void load_train_data(Session *sess, int index)
 {
+    index = 0;
     int h[1], w[1], c[1];
     float *im;
     int offset_i = 0;
     float *input = (float*)calloc(sess->subdivision*sess->width*sess->height*sess->channel, sizeof(float));
     for (int i = index; i < index + sess->subdivision; ++i){
-        int index_i = i;
-        if (index_i >= sess->train_data_num) index_i %= sess->train_data_num;
-        char *data_path = sess->train_data_paths[index_i];
-        strip(data_path, ' ');
+        char *data_path = sess->train_data_paths[i];
         im = load_image_data(data_path, w, h, c);
         resize_im(im, h[0], w[0], c[0], sess->height, sess->width, input + offset_i);
         offset_i += sess->height * sess->width * sess->channel;
@@ -161,9 +159,7 @@ void load_train_label(Session *sess, int index)
     float *truth = calloc(sess->subdivision*sess->truth_num, sizeof(float));
     for (int i = index; i < index + sess->subdivision; ++i){
         float *truth_i = truth + (i - index) * sess->truth_num;
-        int index_i = i;
-        if (index_i >= sess->train_data_num) index_i %= sess->train_data_num;
-        char *label_path = sess->train_label_paths[index_i];
+        char *label_path = sess->train_label_paths[i];
         strip(label_path, ' ');
         void **labels = load_label_txt(label_path);
         int *lindex = (int*)labels[0];
@@ -197,6 +193,7 @@ void train(Session *sess)
         int sub_batchs = (int)(sess->batch / sess->subdivision);
         for (int j = 0; j < sub_epochs; ++j){
             for (int k = 0; k < sub_batchs; ++k){
+                if (j * sess->batch + k * sess->subdivision + sess->subdivision > sess->train_data_num) break;
                 load_train_data(sess, j * sess->batch + k * sess->subdivision);
                 load_train_label(sess, j * sess->batch + k * sess->subdivision);
                 forward_graph(sess->graph, sess->input, sess->coretype, sess->subdivision);

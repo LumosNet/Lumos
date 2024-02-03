@@ -28,6 +28,7 @@ void avgpool_gradient(float *delta_l, int h, int w, int c, int ksize, int stride
 {
     int out_h = (h + 2 * pad - ksize) / stride + 1;
     int out_w = (w + 2 * pad - ksize) / stride + 1;
+    fill_cpu(delta_l, h*w*c, 0, 1);
     for (int k = 0; k < c; ++k){
         for (int i = 0; i < out_h; ++i){
             for (int j = 0; j < out_w; ++j){

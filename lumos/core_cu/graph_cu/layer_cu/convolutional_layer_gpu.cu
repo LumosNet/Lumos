@@ -103,7 +103,7 @@ void update_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta
         saxpy_gpu(l.update_kernel_weights, l.workspace + l.ksize * l.ksize * l.input_c * l.output_h * l.output_w, l.filters * l.ksize * l.ksize * l.input_c, rate, l.update_kernel_weights);
         if (l.bias){
             sum_channel_gpu(delta_n, l.output_h, l.output_w, l.output_c, rate, l.workspace);
-            add_bias_gpu(l.update_bias_weights, l.workspace, l.output_c, l.output_h*l.output_w);
+            add_bias_gpu(l.update_bias_weights, l.workspace, l.output_c, 1);
         }
     }
 }

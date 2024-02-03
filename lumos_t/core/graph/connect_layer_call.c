@@ -13,7 +13,7 @@ void call_forward_connect_layer(void **params, void **ret)
     float *output = (float*)params[8];
     float *kernel_weights = (float*)params[9];
     float *bias_weights = (float*)params[10];
-    Layer *l = make_connect_layer(ksize[0], bias[0], 0, active);
+    Layer *l = make_connect_layer(ksize[0], bias[0], active);
     l->coretype = CPU;
     init_connect_layer(l, w[0], h[0], c[0]);
     l->input = input;

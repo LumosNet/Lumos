@@ -1,5 +1,5 @@
 LINUX=1
-TEST=0
+TEST=1
 DEBUG=1
 
 ARCH=	-gencode arch=compute_52,code=[sm_52,compute_52] \
@@ -21,7 +21,8 @@ VPATH=	./lib/: \
 		./lumos/core_cu/graph_cu/: \
 		./lumos/core_cu/ops_cu/: \
 		./lumos/core_cu/graph_cu/layer_cu/: \
-		./lumos/core_cu/graph_cu/loss_layer_cu/
+		./lumos/core_cu/graph_cu/loss_layer_cu/ \
+		./lumos/lumos
 
 COMMON=	-Ilib \
 		-Iinclude \
@@ -37,12 +38,8 @@ COMMON=	-Ilib \
 		-Ilumos/core_cu/graph_cu \
 		-Ilumos/core_cu/ops_cu \
 		-Ilumos/core_cu/graph_cu/layer_cu \
-		-Ilumos/core_cu/graph_cu/loss_layer_cu
-
-ifeq ($(TEST), 0)
-COMMON += -Ilumos/lumos
-VPATH += ./lumos/lumos
-endif
+		-Ilumos/core_cu/graph_cu/loss_layer_cu \
+		-Ilumos/lumos
 
 EXEC=lumos.exe
 OBJDIR=./obj/
@@ -59,7 +56,7 @@ CFLAGS+= -DGPU -Wno-deprecated-gpu-targets
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 
 ifeq ($(DEBUG), 1)
-CFLAGS+= -g
+CFLAGS+= -g -fsanitize=address
 endif
 
 ifeq ($(TEST), 1)
@@ -84,6 +81,7 @@ VPATH+=	./lumos_t \
 endif
 
 OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o maxpool_layer.o \
+		softmax_layer.o \
 		mse_layer.o \
 		active.o bias.o cpu.o gemm.o im2col.o image.o pooling.o random.o softmax.o shortcut.o normalize.o \
 		session.o \
@@ -94,24 +92,14 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 
 OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o softmax_gpu.o shortcut_gpu.o normalize_gpu.o \
 	  	avgpool_layer_gpu.o maxpool_layer_gpu.o connect_layer_gpu.o convolutional_layer_gpu.o im2col_layer_gpu.o \
-	  	mse_layer_gpu.o
+	  	softmax_layer_gpu.o mse_layer_gpu.o
 
 EXECOBJA=lumos.o
 
 ifeq ($(TEST), 1)
-OBJ+=   bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call.o \
-	    avgpool_layer_call.o batchnorm_layer_call.o connect_layer_call.o convolutional_layer_call.o im2col_layer_call.o maxpool_layer_call.o \
-	    mse_layer_call.o \
-	    analysis_benchmark_file.o call.o compare.o run_test.o utest.o \
-		dropout_rand_call.o layer_delta_call.o loss_call.o maxpool_index_call.o mean_call.o \
-	  	output_call.o roll_mean_call.o roll_variance_call.o truth_call.o update_weights_call.o variance_call.o weights_call.o \
-	  	x_norm_call.o
+OBJ+=   analysis_benchmark_file.o compare.o run_test.o test_msg.o utest.o
 
-OBJ+= 	bias_gpu_call.o cpu_gpu_call.o gemm_gpu_call.o im2col_gpu_call.o pooling_gpu_call.o \
-	  	avgpool_layer_gpu_call.o connect_layer_gpu_call.o convolutional_layer_gpu_call.o im2col_layer_gpu_call.o maxpool_layer_gpu_call.o \
-	  	dropout_rand_gpu_call.o layer_delta_gpu_call.o loss_gpu_call.o maxpool_index_gpu_call.o normalize_mean_gpu_call.o \
-		output_gpu_call.o roll_mean_gpu_call.o roll_variance_gpu_call.o truth_gpu_call.o update_weights_gpu_call.o variance_gpu_call.o weights_gpu_call.o \
-	  	x_norm_gpu_call.o
+OBJ+= 	avgpool_layer_call.o
 endif
 
 ifeq ($(TEST),1)

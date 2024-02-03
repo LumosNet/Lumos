@@ -1,6 +1,6 @@
 #include "convolutional_layer.h"
 
-Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalization, char *active)
+Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, char *active)
 {
     Layer *l = malloc(sizeof(Layer));
     l->type = CONVOLUTIONAL;
@@ -44,7 +44,7 @@ void init_convolutional_layer(Layer *l, int w, int h, int c, int subdivision)
     l->output_c = l->filters;
     l->outputs = l->output_h * l->output_w * l->output_c;
 
-    l->workspace_size = l->ksize * l->ksize * l->input_c * l->output_h * l->output_w + l->filters * l->ksize * l->ksize * l->input_c;
+    l->workspace_size = l->ksize*l->ksize*l->input_c*l->output_h*l->output_w + l->filters*l->ksize*l->ksize*l->input_c;
 
     l->output = calloc(subdivision*l->outputs, sizeof(float));
     l->delta = calloc(subdivision*l->inputs, sizeof(float));
@@ -129,7 +129,7 @@ void update_convolutional_layer(Layer l, float rate, int num, float *n_delta)
         saxpy_cpu(l.update_kernel_weights, l.workspace + l.ksize * l.ksize * l.input_c * l.output_h * l.output_w, l.filters * l.ksize * l.ksize * l.input_c, rate, l.update_kernel_weights);
         if (l.bias){
             sum_channel_cpu(delta_n, l.output_h, l.output_w, l.output_c, rate, l.workspace);
-            add_bias(l.update_bias_weights, l.workspace, l.output_c, l.output_h*l.output_w);
+            add_bias(l.update_bias_weights, l.workspace, l.output_c, 1);
         }
     }
 }

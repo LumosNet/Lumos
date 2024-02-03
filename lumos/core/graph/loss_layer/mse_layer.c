@@ -14,6 +14,12 @@ Layer *make_mse_layer(int group)
     l->forwardgpu = forward_mse_layer_gpu;
     l->backwardgpu = backward_mse_layer_gpu;
 
+    l->weightinit = NULL;
+    l->weightinitgpu = NULL;
+
+    l->update = NULL;
+    l->updategpu = NULL;
+
     fprintf(stderr, "Mse             Layer    :    [output=%4d]\n", 1);
     return l;
 }

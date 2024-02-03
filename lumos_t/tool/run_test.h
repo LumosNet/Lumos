@@ -9,7 +9,6 @@
 #include "cJSON_Utils.h"
 
 #include "analysis_benchmark_file.h"
-#include "call.h"
 #include "utest.h"
 #include "compare.h"
 
@@ -21,11 +20,7 @@ extern "C" {
 #define GPU 1
 #define ALL 2
 
-int run_by_benchmark_file(char *path, int coretype);
-
-void run_all(char *listpath, int coretype);
-void run_all_cases(char *listpath, int flag);
-void run_by_interface(char *interface, int coretype);
+int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype);
 
 #ifdef __cplusplus
 }

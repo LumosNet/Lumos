@@ -76,5 +76,6 @@ __global__ void col2im_kernel(float *img, int ksize, int stride, int pad, int ou
 
 void col2im_gpu(float *img, int ksize, int stride, int pad, int out_h, int out_w, int out_c, float *space)
 {
+    fill_gpu(space, out_h*out_w*out_c, 0, 1);
     col2im_kernel<<<(out_h*out_w*out_c+BLOCK-1)/BLOCK, BLOCK>>>(img, ksize, stride, pad, out_h, out_w, out_c, space);
 }

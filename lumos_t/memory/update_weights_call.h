@@ -2,8 +2,6 @@
 #define UPDATE_WEIGHTS_CALL_H
 
 #include "session.h"
-#include "manager.h"
-#include "dispatch.h"
 
 #ifdef __cplusplus
 extern "C" {

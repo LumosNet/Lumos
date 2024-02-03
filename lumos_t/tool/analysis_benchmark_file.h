@@ -19,6 +19,9 @@
 extern "C" {
 #endif
 
+typedef void (*test_interface) (void **, void **);
+typedef test_interface TestInterface;
+
 cJSON *get_benchmark(char *path);
 cJSON *get_public(cJSON *benchmark);
 char *load_interface(cJSON *public);

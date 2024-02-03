@@ -32,6 +32,7 @@ void col2im(float *img, int ksize, int stride, int pad, int out_h, int out_w, in
 {
     int height_col = (out_h + 2 * pad - ksize) / stride + 1;
     int width_col = (out_w + 2 * pad - ksize) / stride + 1;
+    fill_cpu(space, out_h*out_w*out_c, 0, 1);
     for (int c = 0; c < out_c; ++c)
     {
         for (int i = 0; i < out_h; ++i)

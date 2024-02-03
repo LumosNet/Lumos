@@ -91,6 +91,7 @@ void avgpool_gradient_gpu(float *delta_l, int h, int w, int c, int ksize, int st
 {
     int out_h = (h + 2 * pad - ksize) / stride + 1;
     int out_w = (w + 2 * pad - ksize) / stride + 1;
+    fill_gpu(delta_l, h*w*c, 0, 1);
     avgpool_gradient_kernel<<<(out_h*out_w*c + BLOCK - 1)/BLOCK, BLOCK>>>(delta_l, h, w, c, ksize, stride, pad, delta_n);
 }
 
