@@ -20,6 +20,9 @@
 #include "avgpool_layer_call.h"
 #include "avgpool_layer_gpu_call.h"
 
+#include "connect_layer_call.h"
+#include "connect_layer_gpu_call.h"
+
 #define VERSION "0.1"
 
 void xor(char *type)
@@ -89,7 +92,7 @@ void lenet5(char *type)
 
 int main(int argc, char **argv)
 {
-    TestInterface FUNC = call_forward_avgpool_layer_gpu;
-    run_by_benchmark_file("./lumos_t/benchmark/core/graph/layer/avgpool_layer/forward_avgpool_layer.json", FUNC, GPU);
+    TestInterface FUNC = call_backward_connect_layer;
+    run_by_benchmark_file("./lumos_t/benchmark/core/graph/layer/connect_layer/backward_connect_layer.json", FUNC, CPU);
     return 0;
 }

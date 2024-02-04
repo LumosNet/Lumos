@@ -4,7 +4,10 @@
         "benchmarks": [
             "BenchMark 1", "BenchMark 2", "BenchMark 3", "BenchMark 4",
             "BenchMark 5", "BenchMark 6", "BenchMark 7", "BenchMark 8",
-            "BenchMark 9", "BenchMark 10", "BenchMark 11", "BenchMark 12"
+            "BenchMark 9", "BenchMark 10", "BenchMark 11", "BenchMark 12",
+            "BenchMark -1", "BenchMark -2", "BenchMark -3", "BenchMark -4",
+            "BenchMark -5", "BenchMark -6", "BenchMark -7", "BenchMark -8",
+            "BenchMark -9", "BenchMark -10", "BenchMark -11", "BenchMark -12"
         ],
         "params": [
             "ksize", "bias", "active",
@@ -936,6 +939,956 @@
                 0, 0, 0,
                 0, 0, 0,
                 0, 0, 0
+            ]
+        },
+        "kernel_weights": {
+            "type": "float g",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "bias_weights": {
+            "type": "float g",
+            "value": [
+                0.1, 0, -0.1
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float g",
+                "value": [
+                    -59.951,
+                    -2712.9428,
+                    -6788.757587,
+                    -59.951,
+                    -2712.9428,
+                    -6788.757587,
+                    -59.951,
+                    -2712.9428,
+                    -6788.757587
+                ]
+            }
+        }
+    },
+    "BenchMark -1": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                0
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
+            ]
+        },
+        "output": {
+            "type": "float g",
+            "value": [
+                1.125
+            ]
+        },
+        "kernel_weights": {
+            "type": "float g",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "bias_weights": {
+            "type": "float g",
+            "value": [
+                0.1
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float g",
+                "value": [
+                    218.292
+                ]
+            }
+        }
+    },
+    "BenchMark -2": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                0
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                2
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
+            ]
+        },
+        "output": {
+            "type": "float g",
+            "value": [
+                1.125, -10
+            ]
+        },
+        "kernel_weights": {
+            "type": "float g",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "bias_weights": {
+            "type": "float g",
+            "value": [
+                0.1
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float g",
+                "value": [
+                    218.292,
+                    218.292
+                ]
+            }
+        }
+    },
+    "BenchMark -3": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                0
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
+            ]
+        },
+        "output": {
+            "type": "float g",
+            "value": [
+                -11, -19, 200
+            ]
+        },
+        "kernel_weights": {
+            "type": "float g",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "bias_weights": {
+            "type": "float g",
+            "value": [
+                0.1
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float g",
+                "value": [
+                    218.292,
+                    218.292,
+                    218.292
+                ]
+            }
+        }
+    },
+    "BenchMark -4": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
+            ]
+        },
+        "output": {
+            "type": "float g",
+            "value": [
+                10
+            ]
+        },
+        "kernel_weights": {
+            "type": "float g",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "bias_weights": {
+            "type": "float g",
+            "value": [
+                0.1
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float g",
+                "value": [
+                    218.392014
+                ]
+            }
+        }
+    },
+    "BenchMark -5": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                2
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
+            ]
+        },
+        "output": {
+            "type": "float g",
+            "value": [
+                -158, 22.03
+            ]
+        },
+        "kernel_weights": {
+            "type": "float g",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "bias_weights": {
+            "type": "float g",
+            "value": [
+                -0.1
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float g",
+                "value": [
+                    218.192,
+                    218.192
+                ]
+            }
+        }
+    },
+    "BenchMark -6": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037,
+                321, 21, 7, 0, -7, -21, -321, 0.231, -1.314, -0.037
+            ]
+        },
+        "output": {
+            "type": "float g",
+            "value": [
+                -2.31, 485, 120
+            ]
+        },
+        "kernel_weights": {
+            "type": "float g",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21, -7, 0, 7, 21, 321
+            ]
+        },
+        "bias_weights": {
+            "type": "float g",
+            "value": [
+                -1
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float g",
+                "value": [
+                    217.292,
+                    217.292,
+                    217.292
+                ]
+            }
+        }
+    },
+    "BenchMark -7": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                0
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                5
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                321, 0, -7, 0.231, -1.314
+            ]
+        },
+        "output": {
+            "type": "float g",
+            "value": [
+                458, 12, -12
+            ]
+        },
+        "kernel_weights": {
+            "type": "float g",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "bias_weights": {
+            "type": "float g",
+            "value": [
+                0.1
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float g",
+                "value": [
+                    -60.051,
+                    -2712.9428,
+                    -6788.657587
+                ]
+            }
+        }
+    },
+    "BenchMark -8": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                0
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                5
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                2
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 0.231, -1.314
+            ]
+        },
+        "output": {
+            "type": "float g",
+            "value": [
+                321, 0, -7, 0.231, -1.314, -1.314
+            ]
+        },
+        "kernel_weights": {
+            "type": "float g",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "bias_weights": {
+            "type": "float g",
+            "value": [
+                0.1
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float g",
+                "value": [
+                    -60.051,
+                    -2712.9428,
+                    -6788.657587,
+                    -60.051,
+                    -2712.9428,
+                    -6788.657587
+                ]
+            }
+        }
+    },
+    "BenchMark -9": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                0
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                5
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 0.231, -1.314
+            ]
+        },
+        "output": {
+            "type": "float g",
+            "value": [
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, -10
+            ]
+        },
+        "kernel_weights": {
+            "type": "float g",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "bias_weights": {
+            "type": "float g",
+            "value": [
+                0.1
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float g",
+                "value": [
+                    -60.051,
+                    -2712.9428,
+                    -6788.657587,
+                    -60.051,
+                    -2712.9428,
+                    -6788.657587,
+                    -60.051,
+                    -2712.9428,
+                    -6788.657587
+                ]
+            }
+        }
+    },
+    "BenchMark -10": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                5
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                321, 0, -7, 0.231, -1.314
+            ]
+        },
+        "output": {
+            "type": "float g",
+            "value": [
+                321, 0, -7
+            ]
+        },
+        "kernel_weights": {
+            "type": "float g",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "bias_weights": {
+            "type": "float g",
+            "value": [
+                0.1, -0.1, 0
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float g",
+                "value": [
+                    -59.951,
+                    -2713.0429,
+                    -6788.657587
+                ]
+            }
+        }
+    },
+    "BenchMark -11": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                5
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                2
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 0.231, -1.314
+            ]
+        },
+        "output": {
+            "type": "float g",
+            "value": [
+                321, 0, -7, 0.231, -1.314, 102
+            ]
+        },
+        "kernel_weights": {
+            "type": "float g",
+            "value": [
+                -0.037, -1.314, 0.231, -321, -21,
+                -7, 0, 7, 21, 321,
+                -21, -1.314, 7, 0.123, -1
+            ]
+        },
+        "bias_weights": {
+            "type": "float g",
+            "value": [
+                -0.1, 0, 0.1
+            ]
+        },
+        "benchmark": {
+            "output": {
+                "type": "float g",
+                "value": [
+                    -60.151,
+                    -2712.9428,
+                    -6788.557587,
+                    -60.151,
+                    -2712.9428,
+                    -6788.557587
+                ]
+            }
+        }
+    },
+    "BenchMark -12": {
+        "ksize": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "bias": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "active": {
+            "type": "string",
+            "value": "linear"
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                5
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                3
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 0.231, -1.314
+            ]
+        },
+        "output": {
+            "type": "float g",
+            "value": [
+                321, 0, -7, 0.231, -1.314,
+                321, 0, -7, 124
             ]
         },
         "kernel_weights": {

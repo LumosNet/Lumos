@@ -99,9 +99,9 @@ EXECOBJA=lumos.o
 ifeq ($(TEST), 1)
 OBJ+=   analysis_benchmark_file.o compare.o run_test.o test_msg.o utest.o
 
-OBJ+= 	avgpool_layer_call.o
+OBJ+= 	avgpool_layer_call.o connect_layer_call.o
 
-OBJ+= 	avgpool_layer_gpu_call.o
+OBJ+= 	avgpool_layer_gpu_call.o connect_layer_gpu_call.o
 endif
 
 ifeq ($(TEST),1)
