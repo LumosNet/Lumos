@@ -8,6 +8,7 @@
 #include "cJSON.h"
 #include "cJSON_Utils.h"
 #include "random.h"
+#include "text_f.h"
 
 #include "cuda_runtime.h"
 #include "cuda_runtime.h"

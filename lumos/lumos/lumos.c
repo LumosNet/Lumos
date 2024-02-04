@@ -15,6 +15,11 @@
 #include "gemm_gpu.h"
 #include "cpu_gpu.h"
 
+#include "analysis_benchmark_file.h"
+#include "run_test.h"
+#include "avgpool_layer_call.h"
+#include "avgpool_layer_gpu_call.h"
+
 #define VERSION "0.1"
 
 void xor(char *type)
@@ -84,5 +89,7 @@ void lenet5(char *type)
 
 int main(int argc, char **argv)
 {
+    TestInterface FUNC = call_forward_avgpool_layer_gpu;
+    run_by_benchmark_file("./lumos_t/benchmark/core/graph/layer/avgpool_layer/forward_avgpool_layer.json", FUNC, GPU);
     return 0;
 }

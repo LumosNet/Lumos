@@ -13,6 +13,7 @@
 
 #include "layer.h"
 #include "avgpool_layer.h"
+#include "avgpool_layer_gpu.h"
 
 #ifdef __cplusplus
 extern "C" {

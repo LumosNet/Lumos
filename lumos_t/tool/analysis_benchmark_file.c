@@ -3,14 +3,7 @@
 cJSON *get_benchmark(char *path)
 {
     cJSON *benchmark = NULL;
-    FILE *fp = fopen(path, "r");
-    fseek(fp, 0, SEEK_END);
-    int file_size = ftell(fp);
-    char *tmp = (char*)malloc(file_size * sizeof(char));
-    memset(tmp, '\0', file_size * sizeof(char));
-    fseek(fp, 0, SEEK_SET);
-    fread(tmp, sizeof(char), file_size, fp);
-    fclose(fp);
+    char *tmp = fget(path);
     benchmark = cJSON_Parse(tmp);
     return benchmark;
 }
