@@ -1,148 +1,144 @@
-[Feb  6 2024 13:48:12 INFO    ] forward_mse_layer
-[Feb  6 2024 13:48:12 INFO    ] BenchMark 1
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] forward_mse_layer
+[Feb  6 2024 16:52:31 INFO    ] BenchMark 1
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
+0.010000 
 
-×#<
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+0.010000 
 
-×#<
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+0.010000 
 
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-×#<
+0.010000 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] forward_mse_layer
+[Feb  6 2024 16:52:31 INFO    ] BenchMark 2
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-×#<
+54.226501 
 
-[Feb  6 2024 13:48:12 INFO    ] forward_mse_layer
-[Feb  6 2024 13:48:12 INFO    ] BenchMark 2
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-ðçXB
+54.226501 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-ðçXB
+54.226501 
 
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-ðçXB
+54.226501 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] forward_mse_layer
+[Feb  6 2024 16:52:31 INFO    ] BenchMark 3
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-ðçXB
+25.196341 
 
-[Feb  6 2024 13:48:12 INFO    ] forward_mse_layer
-[Feb  6 2024 13:48:12 INFO    ] BenchMark 3
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-:’ÉA
+25.196341 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-’ÉA
+25.196341 
 
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-:’ÉA
+25.196341 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] forward_mse_layer
+[Feb  6 2024 16:52:31 INFO    ] BenchMark 4
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-’ÉA
+54.226501 25.196341 
 
-[Feb  6 2024 13:48:12 INFO    ] forward_mse_layer
-[Feb  6 2024 13:48:12 INFO    ] BenchMark 4
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-ðçXB:’ÉA
+54.226501 25.196341 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-ðçXB’ÉA
+39.711418 
 
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-†ØB
+39.711422 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] forward_mse_layer
+[Feb  6 2024 16:52:31 INFO    ] BenchMark -1
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-ØB
+0.010000 
 
-[Feb  6 2024 13:48:12 INFO    ] forward_mse_layer
-[Feb  6 2024 13:48:12 INFO    ] BenchMark -1
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
+0.010000 
 
-×#<
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+0.010000 
 
-×#<
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+0.010000 
 
+[Feb  6 2024 16:52:31 INFO    ] forward_mse_layer
+[Feb  6 2024 16:52:31 INFO    ] BenchMark -2
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-×#<
+54.226501 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-×#<
+54.226501 
 
-[Feb  6 2024 13:48:12 INFO    ] forward_mse_layer
-[Feb  6 2024 13:48:12 INFO    ] BenchMark -2
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-ðçXB
+54.226501 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-ðçXB
+54.226501 
 
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] forward_mse_layer
+[Feb  6 2024 16:52:31 INFO    ] BenchMark -3
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-ðçXB
+25.196341 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-ðçXB
+25.196341 
 
-[Feb  6 2024 13:48:12 INFO    ] forward_mse_layer
-[Feb  6 2024 13:48:12 INFO    ] BenchMark -3
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-:’ÉA
+25.196341 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-’ÉA
+25.196341 
 
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] forward_mse_layer
+[Feb  6 2024 16:52:31 INFO    ] BenchMark -4
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-:’ÉA
+54.226501 25.196341 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-’ÉA
+54.226501 25.196341 
 
-[Feb  6 2024 13:48:12 INFO    ] forward_mse_layer
-[Feb  6 2024 13:48:12 INFO    ] BenchMark -4
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
+[Feb  6 2024 16:52:31 INFO    ] Benchmark:
 
-ðçXB:’ÉA
+39.711426 
 
-[Feb  6 2024 13:48:12 INFO    ] Return:
+[Feb  6 2024 16:52:31 INFO    ] Return:
 
-ðçXB’ÉA
-
-[Feb  6 2024 13:48:12 INFO    ] Benchmark:
-
-†ØB
-
-[Feb  6 2024 13:48:12 INFO    ] Return:
-
-ØB
+39.711422 
 

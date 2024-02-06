@@ -16,9 +16,9 @@ int compare_float_array(float *a, float *b, int num, FILE *logfp)
 {   
     int flag = 1;
     logging_info(logfp, "Benchmark:\n", 0);
-    logging_host_data(logfp, a, 1, num, 1, FLOAT);
+    logging_float_data(logfp, a, 1, num, 1);
     logging_info(logfp, "Return:\n", 0);
-    logging_host_data(logfp, b, 1, num, 1, FLOAT);
+    logging_float_data(logfp, b, 1, num, 1);
     for (int i = 0; i < num; ++i){
         if (fabs(a[i]-b[i]) > 1e-5){
             flag = 0;
@@ -31,9 +31,9 @@ int compare_int_array(int *a, int *b, int num, FILE *logfp)
 {
     int flag = 1;
     logging_info(logfp, "Benchmark:\n", 0);
-    logging_host_data(logfp, a, 1, num, 1, INT);
+    logging_int_data(logfp, a, 1, num, 1);
     logging_info(logfp, "Return:\n", 0);
-    logging_host_data(logfp, a, 1, num, 1, INT);
+    logging_int_data(logfp, a, 1, num, 1);
     for (int i = 0; i < num; ++i){
         if (fabs(a[i]-b[i]) > 1e-5){
             flag = 0;
