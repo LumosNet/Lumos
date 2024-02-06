@@ -52,14 +52,16 @@ void mnist(char *type)
     Layer *l2 = make_connect_layer(128, 1, "relu");
     Layer *l3 = make_connect_layer(64, 1, "relu");
     Layer *l4 = make_connect_layer(10, 1, "relu");
-    Layer *l5 = make_mse_layer(10);
+    Layer *l5 = make_softmax_layer(10);
+    Layer *l6 = make_mse_layer(10);
     append_layer2grpah(g, l1);
     append_layer2grpah(g, l2);
     append_layer2grpah(g, l3);
     append_layer2grpah(g, l4);
     append_layer2grpah(g, l5);
+    append_layer2grpah(g, l6);
     Session *sess = create_session(g, 32, 32, 1, 10, type);
-    set_train_params(sess, 20, 16, 16, 0.1);
+    set_train_params(sess, 500, 16, 16, 0.01);
     init_session(sess, "./data/mnist/train.txt", "./data/mnist/train_label.txt");
     train(sess);
 }
@@ -88,15 +90,16 @@ void lenet5(char *type)
     // append_layer2grpah(g, l9);
     append_layer2grpah(g, l10);
     Session *sess = create_session(g, 32, 32, 1, 10, type);
-    set_train_params(sess, 15, 16, 8, 0.1);
+    set_train_params(sess, 15, 16, 8, 1);
     init_session(sess, "./data/mnist/train.txt", "./data/mnist/train_label.txt");
     train(sess);
 }
 
 int main(int argc, char **argv)
 {
-    TestInterface FUNC = call_forward_mse_layer;
-    FILE *logfp = fopen("./log/logging", "w");
-    run_by_benchmark_file("./lumos_t/benchmark/core/graph/loss_layer/mse_layer/forward_mse_layer.json", FUNC, CPU, logfp);
+    // TestInterface FUNC = call_forward_mse_layer;
+    // FILE *logfp = fopen("./log/logging", "w");
+    // run_by_benchmark_file("./lumos_t/benchmark/core/graph/loss_layer/mse_layer/forward_mse_layer.json", FUNC, CPU, logfp);
+    lenet5("gpu");
     return 0;
 }

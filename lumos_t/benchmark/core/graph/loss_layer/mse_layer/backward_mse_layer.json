@@ -1,0 +1,15 @@
+{
+    "Public": {
+        "interface": "backward_mse_layer",
+        "benchmarks": [
+            "BenchMark 1", "BenchMark 2", "BenchMark 3", "BenchMark 4",
+            "BenchMark -1", "BenchMark -2", "BenchMark -3", "BenchMark -4"
+        ],
+        "params": [
+            "group", "h", "w", "c", "num", "input", "truth", "n_delta", "l_delta"
+        ],
+        "compares": [
+            "output", "loss"
+        ]
+    }
+}
