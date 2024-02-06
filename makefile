@@ -146,4 +146,5 @@ obj:
 
 clean:
 	rm -rf obj
+	rm -rf log
 	rm -rf $(EXEC)

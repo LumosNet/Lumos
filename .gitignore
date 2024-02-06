@@ -8,6 +8,7 @@
 *.w
 .idea
 .vscode
+.log
 obj
 main.c
 main
