@@ -11,6 +11,7 @@
 #include "analysis_benchmark_file.h"
 #include "utest.h"
 #include "compare.h"
+#include "logging.h"
 
 #ifdef  __cplusplus
 extern "C" {
@@ -20,7 +21,7 @@ extern "C" {
 #define GPU 1
 #define ALL 2
 
-int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype);
+int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype, FILE *logfp);
 
 #ifdef __cplusplus
 }

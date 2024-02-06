@@ -1,6 +1,6 @@
 LINUX=1
-TEST=1
-DEBUG=1
+TEST=0
+DEBUG=0
 
 ARCH=	-gencode arch=compute_52,code=[sm_52,compute_52] \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
@@ -16,6 +16,7 @@ VPATH=	./lib/: \
 		./lumos/utils/cmd/: \
 		./lumos/utils/file/: \
 		./lumos/utils/str/: \
+		./lumos/utils/log/: \
 		./: \
 		./lumos/core_cu/: \
 		./lumos/core_cu/graph_cu/: \
@@ -34,6 +35,7 @@ COMMON=	-Ilib \
 		-Ilumos/utils/cmd \
 		-Ilumos/utils/file \
 		-Ilumos/utils/str \
+		-Ilumos/utils/log \
 		-Ilumos/core_cu \
 		-Ilumos/core_cu/graph_cu \
 		-Ilumos/core_cu/ops_cu \
@@ -86,7 +88,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		active.o bias.o cpu.o gemm.o im2col.o image.o pooling.o random.o softmax.o shortcut.o normalize.o \
 		session.o \
 		progress_bar.o \
-		binary_f.o text_f.o \
+		binary_f.o text_f.o logging.o\
 		str_ops.o \
 		cJSON_Utils.o cJSON.o
 

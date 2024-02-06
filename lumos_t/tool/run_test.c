@@ -1,6 +1,6 @@
 #include "run_test.h"
 
-int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype)
+int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype, FILE *logfp)
 {
     cJSON *CJbenchmark = NULL;
     cJSON *CJpublic = NULL;
@@ -57,11 +57,13 @@ int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype)
             FUNC(space, ret);
         }
         fprintf(stderr, "  Running test case \e[0;32mFINISH\e[0m\n");
+        logging_info(logfp, interface, 0);
+        logging_info(logfp, cases[i], 0);
         for (int j = 0; j < compares_num; ++j){
             if (coretype == CPU){
-                flag = compare_array(compare[j], ret[j], compares_types[j], compares_num_list[j]);
+                flag = compare_array(compare[j], ret[j], compares_types[j], compares_num_list[j], logfp);
             } else {
-                flag = compare_array_gpu(compare[j], ret[j], compares_types[j], compares_num_list[j]);
+                flag = compare_array_gpu(compare[j], ret[j], compares_types[j], compares_num_list[j], logfp);
             }
             if (flag == 1){
                 fprintf(stderr, "  Interface %s: %s \e[0;32mPASS\e[0m\n", interface, compares[j]);
