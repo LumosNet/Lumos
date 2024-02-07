@@ -1,6 +1,7 @@
 LINUX=1
 TEST=0
 DEBUG=0
+MEMDEBUG=0
 
 ARCH=	-gencode arch=compute_52,code=[sm_52,compute_52] \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
@@ -58,7 +59,11 @@ CFLAGS+= -DGPU -Wno-deprecated-gpu-targets
 LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
 
 ifeq ($(DEBUG), 1)
-CFLAGS+= -g -fsanitize=address
+CFLAGS+= -g
+endif
+
+ifeq ($(MEMDEBUG),1)
+CFLAGS+= -fsanitize=address
 endif
 
 ifeq ($(TEST), 1)

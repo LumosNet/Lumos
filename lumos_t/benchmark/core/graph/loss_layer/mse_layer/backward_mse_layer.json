@@ -2,7 +2,8 @@
     "Public": {
         "interface": "backward_mse_layer",
         "benchmarks": [
-            "BenchMark 1"
+            "BenchMark 1", "BenchMark 2", "BenchMark 3",
+            "BenchMark -1", "BenchMark -2", "BenchMark -3"
         ],
         "params": [
             "group", "h", "w", "c", "rate", "num", "input", "truth", "n_delta", "l_delta"
@@ -77,6 +78,388 @@
                 "type": "float g",
                 "value": [
                     -0.2
+                ]
+            }
+        }
+    },
+    "BenchMark 2": {
+        "group": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                0.9, -1.2, -5, 23, 21.5,
+                22, -74.1, 6, 21, -0.1
+            ]
+        },
+        "truth": {
+            "type": "float g",
+            "value": [
+                1, 0.1, 0.2, 0.3, 0.4,
+                -10, -11, -12, -13, -14
+            ]
+        },
+        "n_delta": {
+            "type": "float g",
+            "value": [
+                0
+            ]
+        },
+        "l_delta": {
+            "type": "float g",
+            "value": [
+                0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float g",
+                "value": [
+                    -0.02, -0.26, -1.04, 4.54, 4.22,
+                    6.4, -12.62, 3.6, 6.8, 2.78
+                ]
+            }
+        }
+    },
+    "BenchMark 3": {
+        "group": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                2
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                0.9, -1.2, -5, 23, 21.5,
+                22, -74.1, 6, 21, -0.1,
+                0.9, -1.2, -5, 23, 21.5,
+                22, -74.1, 6, 21, -0.1
+            ]
+        },
+        "truth": {
+            "type": "float g",
+            "value": [
+                1, 0.1, 0.2, 0.3, 0.4,
+                -10, -11, -12, -13, -14,
+                1, 0.1, 0.2, 0.3, 0.4,
+                -10, -11, -12, -13, -14
+            ]
+        },
+        "n_delta": {
+            "type": "float g",
+            "value": [
+                0, 0
+            ]
+        },
+        "l_delta": {
+            "type": "float g",
+            "value": [
+                0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float g",
+                "value": [
+                    -0.02, -0.26, -1.04, 4.54, 4.22,
+                    6.4, -12.62, 3.6, 6.8, 2.78,
+                    -0.02, -0.26, -1.04, 4.54, 4.22,
+                    6.4, -12.62, 3.6, 6.8, 2.78
+                ]
+            }
+        }
+    },
+    "BenchMark -1": {
+        "group": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                0.9
+            ]
+        },
+        "truth": {
+            "type": "float g",
+            "value": [
+                1
+            ]
+        },
+        "n_delta": {
+            "type": "float g",
+            "value": [
+                0.24
+            ]
+        },
+        "l_delta": {
+            "type": "float g",
+            "value": [
+                10.12
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float g",
+                "value": [
+                    -0.2
+                ]
+            }
+        }
+    },
+    "BenchMark -2": {
+        "group": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                0.9, -1.2, -5, 23, 21.5,
+                22, -74.1, 6, 21, -0.1
+            ]
+        },
+        "truth": {
+            "type": "float g",
+            "value": [
+                1, 0.1, 0.2, 0.3, 0.4,
+                -10, -11, -12, -13, -14
+            ]
+        },
+        "n_delta": {
+            "type": "float g",
+            "value": [
+                -20
+            ]
+        },
+        "l_delta": {
+            "type": "float g",
+            "value": [
+                0.1, 0.2, 0.3, 10, 20,
+                110, -0.3, -10, 540, 30
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float g",
+                "value": [
+                    -0.02, -0.26, -1.04, 4.54, 4.22,
+                    6.4, -12.62, 3.6, 6.8, 2.78
+                ]
+            }
+        }
+    },
+    "BenchMark -3": {
+        "group": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                10
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                2
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                0.9, -1.2, -5, 23, 21.5,
+                22, -74.1, 6, 21, -0.1,
+                0.9, -1.2, -5, 23, 21.5,
+                22, -74.1, 6, 21, -0.1
+            ]
+        },
+        "truth": {
+            "type": "float g",
+            "value": [
+                1, 0.1, 0.2, 0.3, 0.4,
+                -10, -11, -12, -13, -14,
+                1, 0.1, 0.2, 0.3, 0.4,
+                -10, -11, -12, -13, -14
+            ]
+        },
+        "n_delta": {
+            "type": "float g",
+            "value": [
+                45, -0.32
+            ]
+        },
+        "l_delta": {
+            "type": "float g",
+            "value": [
+                0.23, 0.45, 10, -20, 540,
+                0.23, -0.45, 10, 20, -540,
+                -0.23, 0.45, -10, -20, 540,
+                0.23, -0.45, -10, 20, 540
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float g",
+                "value": [
+                    -0.02, -0.26, -1.04, 4.54, 4.22,
+                    6.4, -12.62, 3.6, 6.8, 2.78,
+                    -0.02, -0.26, -1.04, 4.54, 4.22,
+                    6.4, -12.62, 3.6, 6.8, 2.78
                 ]
             }
         }
