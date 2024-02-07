@@ -47,7 +47,6 @@ void init_mse_layer(Layer *l, int w, int h, int c, int subdivision)
 
 void forward_mse_layer(Layer l, int num)
 {
-    float loss = 0;
     for (int i = 0; i < num; ++i){
         int offset_i = i*l.inputs;
         int offset_o = i*l.outputs;
@@ -59,9 +58,9 @@ void forward_mse_layer(Layer l, int num)
         gemm(1, 0, l.inputs, 1, l.inputs, 1, 1, \
             l.workspace, l.workspace, output);
         multy_cpu(output, l.outputs, 1/(float)l.group, 1);
-        loss += output[0];
     }
-    l.loss[0] = loss / num;
+    sum_cpu(l.output, l.outputs*num, l.loss);
+    multy_cpu(l.loss, 1, (float)1/num, 1);
 }
 
 void backward_mse_layer(Layer l, float rate, int num, float *n_delta)

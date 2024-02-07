@@ -35,7 +35,6 @@ void forward_mse_layer_gpu(Layer l, int num)
             l.workspace, l.workspace, output);
         multy_gpu(output, l.outputs, 1/(float)l.group, 1);
     }
-    float *loss = (float*)calloc(1, sizeof(float));
     sum_gpu(l.output, l.outputs*num, l.loss);
     multy_gpu(l.loss, 1, (float)1/num, 1);
 }

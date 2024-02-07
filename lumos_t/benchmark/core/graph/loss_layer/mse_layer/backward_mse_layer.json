@@ -2,14 +2,83 @@
     "Public": {
         "interface": "backward_mse_layer",
         "benchmarks": [
-            "BenchMark 1", "BenchMark 2", "BenchMark 3", "BenchMark 4",
-            "BenchMark -1", "BenchMark -2", "BenchMark -3", "BenchMark -4"
+            "BenchMark 1"
         ],
         "params": [
-            "group", "h", "w", "c", "num", "input", "truth", "n_delta", "l_delta"
+            "group", "h", "w", "c", "rate", "num", "input", "truth", "n_delta", "l_delta"
         ],
         "compares": [
-            "output", "loss"
+            "l_delta"
         ]
+    },
+    "BenchMark 1": {
+        "group": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "h": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "w": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "c": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "rate": {
+            "type": "float",
+            "value": [
+                0.1
+            ]
+        },
+        "num": {
+            "type": "int",
+            "value": [
+                1
+            ]
+        },
+        "input": {
+            "type": "float g",
+            "value": [
+                0.9
+            ]
+        },
+        "truth": {
+            "type": "float g",
+            "value": [
+                1
+            ]
+        },
+        "n_delta": {
+            "type": "float g",
+            "value": [
+                0
+            ]
+        },
+        "l_delta": {
+            "type": "float g",
+            "value": [
+                0
+            ]
+        },
+        "benchmark": {
+            "l_delta": {
+                "type": "float g",
+                "value": [
+                    -0.2
+                ]
+            }
+        }
     }
 }

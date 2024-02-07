@@ -26,5 +26,21 @@ void call_forward_mse_layer_gpu(void **params, void **ret)
 
 void call_backward_mse_layer_gpu(void **params, void **ret)
 {
-    
+    int *group = (int*)params[0];
+    int *h = (int*)params[1];
+    int *w = (int*)params[2];
+    int *c = (int*)params[3];
+    float *rate = (float*)params[4];
+    int *num = (int*)params[5];
+    float *input = (float*)params[6];
+    float *truth = (float*)params[7];
+    float *n_delta = (float*)params[8];
+    float *l_delta = (float*)params[9];
+    Layer *l = make_mse_layer(group[0]);
+    l->initializegpu(l, w[0], h[0], c[0], num[0]);
+    l->input = input;
+    l->truth = truth;
+    l->delta = l_delta;
+    l->backwardgpu(*l, rate[0], num[0], n_delta);
+    ret[0] = l->delta;
 }

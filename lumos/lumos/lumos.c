@@ -97,9 +97,8 @@ void lenet5(char *type)
 
 int main(int argc, char **argv)
 {
-    // TestInterface FUNC = call_forward_mse_layer;
-    // FILE *logfp = fopen("./log/logging", "w");
-    // run_by_benchmark_file("./lumos_t/benchmark/core/graph/loss_layer/mse_layer/forward_mse_layer.json", FUNC, CPU, logfp);
-    lenet5("gpu");
+    TestInterface FUNC = call_backward_mse_layer;
+    FILE *logfp = fopen("./log/logging", "w");
+    run_by_benchmark_file("./lumos_t/benchmark/core/graph/loss_layer/mse_layer/backward_mse_layer.json", FUNC, CPU, logfp);
     return 0;
 }
