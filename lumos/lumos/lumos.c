@@ -15,17 +15,6 @@
 #include "gemm_gpu.h"
 #include "cpu_gpu.h"
 
-#include "analysis_benchmark_file.h"
-#include "run_test.h"
-#include "avgpool_layer_call.h"
-#include "avgpool_layer_gpu_call.h"
-
-#include "connect_layer_call.h"
-#include "connect_layer_gpu_call.h"
-
-#include "mse_layer_call.h"
-#include "mse_layer_gpu_call.h"
-
 #define VERSION "0.1"
 
 void xor(char *type)
@@ -49,19 +38,23 @@ void mnist(char *type)
 {
     Graph *g = create_graph();
     Layer *l1 = make_im2col_layer();
-    Layer *l2 = make_connect_layer(128, 1, "relu");
-    Layer *l3 = make_connect_layer(64, 1, "relu");
-    Layer *l4 = make_connect_layer(10, 1, "relu");
-    Layer *l5 = make_softmax_layer(10);
-    Layer *l6 = make_mse_layer(10);
+    Layer *l2 = make_connect_layer(512, 1, "relu");
+    Layer *l3 = make_connect_layer(256, 1, "relu");
+    Layer *l4 = make_connect_layer(128, 1, "relu");
+    Layer *l5 = make_connect_layer(64, 1, "relu");
+    Layer *l6 = make_connect_layer(10, 1, "relu");
+    // Layer *l7 = make_softmax_layer(10);
+    Layer *l8 = make_mse_layer(10);
     append_layer2grpah(g, l1);
     append_layer2grpah(g, l2);
     append_layer2grpah(g, l3);
     append_layer2grpah(g, l4);
     append_layer2grpah(g, l5);
     append_layer2grpah(g, l6);
-    Session *sess = create_session(g, 32, 32, 1, 10, type);
-    set_train_params(sess, 500, 16, 16, 0.01);
+    // append_layer2grpah(g, l7);
+    append_layer2grpah(g, l8);
+    Session *sess = create_session(g, 28, 28, 1, 10, type);
+    set_train_params(sess, 50, 8, 8, 0.01);
     init_session(sess, "./data/mnist/train.txt", "./data/mnist/train_label.txt");
     train(sess);
 }
@@ -97,8 +90,6 @@ void lenet5(char *type)
 
 int main(int argc, char **argv)
 {
-    TestInterface FUNC = call_forward_mse_layer;
-    FILE *logfp = fopen("./log/logging", "w");
-    run_by_benchmark_file("./lumos_t/benchmark/core/graph/loss_layer/mse_layer/forward_mse_layer.json", FUNC, CPU, logfp);
+    mnist("gpu");
     return 0;
 }

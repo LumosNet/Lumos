@@ -13,11 +13,11 @@ VPATH=	./lib/: \
 		./lumos/core/graph/loss_layer/: \
 		./lumos/core/ops/: \
 		./lumos/core/session/: \
-		./lumos/utils/: \
-		./lumos/utils/cmd/: \
-		./lumos/utils/file/: \
-		./lumos/utils/str/: \
-		./lumos/utils/log/: \
+		./utils/: \
+		./utils/cmd/: \
+		./utils/file/: \
+		./utils/str/: \
+		./utils/logging/: \
 		./: \
 		./lumos/core_cu/: \
 		./lumos/core_cu/graph_cu/: \
@@ -33,10 +33,10 @@ COMMON=	-Ilib \
 		-Ilumos/core/graph/loss_layer \
 		-Ilumos/core/ops \
 		-Ilumos/core/session \
-		-Ilumos/utils/cmd \
-		-Ilumos/utils/file \
-		-Ilumos/utils/str \
-		-Ilumos/utils/log \
+		-Iutils/cmd \
+		-Iutils/file \
+		-Iutils/str \
+		-Iutils/logging \
 		-Ilumos/core_cu \
 		-Ilumos/core_cu/graph_cu \
 		-Ilumos/core_cu/ops_cu \
@@ -56,7 +56,7 @@ CFLAGS=-fopenmp -Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 
 COMMON+= -DGPU -I/usr/local/cuda/include/
 CFLAGS+= -DGPU -Wno-deprecated-gpu-targets
-LDFLAGS+= -L/usr/local/cuda/lib64 -lcuda -lcudart -lcublas -lcurand
+LDFLAGS+= -L/usr/local/cuda-12.4/targets/x86_64-linux/lib -lcudart -lcublas -lcurand
 
 ifeq ($(DEBUG), 1)
 CFLAGS+= -g
@@ -93,8 +93,8 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		active.o bias.o cpu.o gemm.o im2col.o image.o pooling.o random.o softmax.o shortcut.o normalize.o \
 		session.o \
 		progress_bar.o \
-		binary_f.o text_f.o logging.o\
-		str_ops.o \
+		binary_f.o text_f.o \
+		str_ops.o data_log.o \
 		cJSON_Utils.o cJSON.o
 
 OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o softmax_gpu.o shortcut_gpu.o normalize_gpu.o \
