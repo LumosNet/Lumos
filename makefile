@@ -94,7 +94,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		session.o \
 		progress_bar.o \
 		binary_f.o text_f.o \
-		str_ops.o data_log.o \
+		str_ops.o logging.o \
 		cJSON_Utils.o cJSON.o
 
 OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o softmax_gpu.o shortcut_gpu.o normalize_gpu.o \

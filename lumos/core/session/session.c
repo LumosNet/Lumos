@@ -134,7 +134,6 @@ void create_workspace(Session *sess)
 
 void load_train_data(Session *sess, int index)
 {
-    index = 0;
     int h[1], w[1], c[1];
     float *im;
     int offset_i = 0;
