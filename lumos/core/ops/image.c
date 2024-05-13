@@ -55,7 +55,7 @@ void save_image_data(float *img, int w, int h, int c, char *savepath)
     {
         for (i = 0; i < w * h; ++i)
         {
-            data[i * c + k] = (unsigned char)(255 * img[i + k * w * h]);
+            data[i * c + k] = (unsigned char)img[i + k * w * h];
         }
     }
     stbi_write_png(savepath, w, h, c, data, w * c);

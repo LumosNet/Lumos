@@ -107,9 +107,9 @@ void lenet5_cifar10(char *type)
     append_layer2grpah(g, l8);
     append_layer2grpah(g, l9);
     append_layer2grpah(g, l10);
-    Session *sess = create_session(g, 32, 32, 4, 10, type);
-    set_train_params(sess, 15, 16, 16, 0.1);
-    init_session(sess, "./data/cifar10/train.txt", "./data/cifar10/train_label.txt");
+    Session *sess = create_session(g, 32, 32, 3, 10, type);
+    set_train_params(sess, 15, 16, 16, 0.01);
+    init_session(sess, "./data/cifar10/test.txt", "./data/cifar10/test_label.txt");
     train(sess);
 }
 
