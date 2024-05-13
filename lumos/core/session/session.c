@@ -52,10 +52,13 @@ void bind_train_data(Session *sess, char *path)
     char *tmp = fget(path);
     int *index = split(tmp, '\n');
     int lines = index[0];
+    char *data_path = NULL;
     sess->train_data_num = lines;
     sess->train_data_paths = malloc(lines*sizeof(char*));
     for (int i = 0; i < lines; ++i){
-        sess->train_data_paths[i] = tmp+index[i+1];
+        data_path = tmp+index[i+1];
+        strip(data_path, '\n');
+        sess->train_data_paths[i] = data_path;
     }
     free(index);
     fprintf(stderr, "\nGet Train Data List From %s\n", path);
@@ -66,10 +69,13 @@ void bind_test_data(Session *sess, char *path)
     char *tmp = fget(path);
     int *index = split(tmp, '\n');
     int lines = index[0];
+    char *data_path = NULL;
     sess->test_data_num = lines;
     sess->test_data_paths = malloc(lines*sizeof(char*));
     for (int i = 0; i < lines; ++i){
-        sess->test_data_paths[i] = tmp+index[i+1];
+        data_path = tmp+index[i+1];
+        strip(data_path, '\n');
+        sess->test_data_paths[i] = data_path;
     }
     free(index);
     fprintf(stderr, "\nGet Test Data List From %s\n", path);
@@ -80,9 +86,12 @@ void bind_train_label(Session *sess, char *path)
     char *tmp = fget(path);
     int *index = split(tmp, '\n');
     int lines = index[0];
+    char *label_path = NULL;
     sess->train_label_paths = malloc(lines*sizeof(char*));
     for (int i = 0; i < lines; ++i){
-        sess->train_label_paths[i] = tmp+index[i+1];
+        label_path = tmp+index[i+1];
+        strip(label_path, '\n');
+        sess->train_label_paths[i] = label_path;
     }
     free(index);
     fprintf(stderr, "\nGet Label List From %s\n", path);
@@ -93,9 +102,12 @@ void bind_test_label(Session *sess, char *path)
     char *tmp = fget(path);
     int *index = split(tmp, '\n');
     int lines = index[0];
+    char *label_path = NULL;
     sess->test_label_paths = malloc(lines*sizeof(char*));
     for (int i = 0; i < lines; ++i){
-        sess->test_label_paths[i] = tmp+index[i+1];
+        label_path = tmp+index[i+1];
+        strip(label_path, '\n');
+        sess->test_label_paths[i] = label_path;
     }
     free(index);
     fprintf(stderr, "\nGet Label List From %s\n", path);
