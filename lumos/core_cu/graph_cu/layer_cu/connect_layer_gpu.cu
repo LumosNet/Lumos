@@ -34,6 +34,7 @@ void weightinit_connect_layer_gpu(Layer l, FILE *fp)
         fread(kernel_weights, sizeof(float), l.outputs*l.inputs, fp);
         cudaMemcpy(l.kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
         cudaMemcpy(l.update_kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
+        free(kernel_weights);
         if (l.bias){
             float *bias_weights = (float*)calloc(l.outputs, sizeof(float));
             fread(bias_weights, sizeof(float), l.outputs, fp);
@@ -41,7 +42,6 @@ void weightinit_connect_layer_gpu(Layer l, FILE *fp)
             cudaMemcpy(l.update_bias_weights, bias_weights, l.outputs*sizeof(float), cudaMemcpyHostToDevice);
             free(bias_weights);
         }
-        free(kernel_weights);
         return;
     }
     float *kernel_weights = (float*)calloc(l.inputs*l.outputs, sizeof(float));

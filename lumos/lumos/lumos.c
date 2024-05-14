@@ -116,6 +116,6 @@ void lenet5_cifar10(char *type, char *path)
 int main(int argc, char **argv)
 {
     char *type = argv[1];
-    lenet5_cifar10(type, NULL);
+    lenet5_mnist(type, NULL);
     return 0;
 }

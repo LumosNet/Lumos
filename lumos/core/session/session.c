@@ -223,7 +223,7 @@ void train(Session *sess)
             update_graph(sess->graph, sess->coretype);
         }
     }
-    FILE *fp = fopen("./LuWeights", "w");
+    FILE *fp = fopen("./LuWeights", "wb");
     if (fp) {
         save_weights(sess->graph, sess->coretype, fp);
         fclose(fp);

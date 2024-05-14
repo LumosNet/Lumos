@@ -31,7 +31,7 @@ void init_graph(Graph *g, int w, int h, int c, int coretype, int subdivision, ch
     Layer *l;
     FILE *fp = NULL;
     if (weights_path){
-        fp = fopen(weights_path, "r");
+        fp = fopen(weights_path, "rb");
     }
     for (;;){
         if (layer){
