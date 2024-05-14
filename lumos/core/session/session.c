@@ -65,23 +65,6 @@ void bind_train_data(Session *sess, char *path)
     fprintf(stderr, "\nGet Train Data List From %s\n", path);
 }
 
-void bind_test_data(Session *sess, char *path)
-{
-    char *tmp = fget(path);
-    int *index = split(tmp, '\n');
-    int lines = index[0];
-    char *data_path = NULL;
-    sess->test_data_num = lines;
-    sess->test_data_paths = malloc(lines*sizeof(char*));
-    for (int i = 0; i < lines; ++i){
-        data_path = tmp+index[i+1];
-        strip(data_path, '\n');
-        sess->test_data_paths[i] = data_path;
-    }
-    free(index);
-    fprintf(stderr, "\nGet Test Data List From %s\n", path);
-}
-
 void bind_train_label(Session *sess, char *path)
 {
     char *tmp = fget(path);
@@ -98,28 +81,19 @@ void bind_train_label(Session *sess, char *path)
     fprintf(stderr, "\nGet Label List From %s\n", path);
 }
 
-void bind_test_label(Session *sess, char *path)
-{
-    char *tmp = fget(path);
-    int *index = split(tmp, '\n');
-    int lines = index[0];
-    char *label_path = NULL;
-    sess->test_label_paths = malloc(lines*sizeof(char*));
-    for (int i = 0; i < lines; ++i){
-        label_path = tmp+index[i+1];
-        strip(label_path, '\n');
-        sess->test_label_paths[i] = label_path;
-    }
-    free(index);
-    fprintf(stderr, "\nGet Label List From %s\n", path);
-}
-
 void set_train_params(Session *sess, int epoch, int batch, int subdivision, float learning_rate)
 {
     sess->epoch = epoch;
     sess->batch = batch;
     sess->subdivision = subdivision;
     sess->learning_rate = learning_rate;
+}
+
+void set_detect_params(Session *sess)
+{
+    sess->epoch = 1;
+    sess->batch = 1;
+    sess->subdivision = 1;
 }
 
 void create_workspace(Session *sess)
@@ -231,7 +205,41 @@ void train(Session *sess)
     fprintf(stderr, "\n\nSession Training Finished\n");
 }
 
-void detect(Session *sess)
+void detect_classification(Session *sess)
 {
-
+    fprintf(stderr, "\nSession Start To Running\n");
+    int num = 0;
+    float *truth = NULL;
+    float *detect = NULL;
+    float *loss = NULL;
+    Graph *g = sess->graph;
+    Node *layer = g->tail;
+    Layer *l = layer->l;
+    if (sess->coretype == GPU){
+        truth = calloc(sess->truth_num, sizeof(float));
+        detect = calloc(sess->truth_num, sizeof(float));
+        loss = calloc(1, sizeof(float));
+    }
+    for (int i = 0; i < sess->train_data_num; ++i){
+        load_train_data(sess, i);
+        load_train_label(sess, i);
+        forward_graph(sess->graph, sess->input, sess->coretype, sess->subdivision);
+        if (sess->coretype == GPU){
+            cudaMemcpy(truth, l->truth, sess->truth_num*sizeof(float), cudaMemcpyDeviceToHost);
+            cudaMemcpy(detect, l->input, sess->truth_num*sizeof(float), cudaMemcpyDeviceToHost);
+            cudaMemcpy(loss, l->loss, sizeof(float), cudaMemcpyDeviceToHost);
+        } else {
+            truth = l->truth;
+            detect = l->input;
+            loss = l->loss;
+        }
+        fprintf(stderr, "%s\n", sess->train_data_paths[i]);
+        fprintf(stderr, "Truth     Detect\n");
+        for (int j = 0; j < sess->truth_num; ++j){
+            fprintf(stderr, "%.3f %.3f\n", truth[j], detect[j]);
+            if (truth[j] == 1 && detect[j] > 0.5) num += 1;
+        }
+        fprintf(stderr, "Loss:%.4f\n\n", loss[0]);
+    }
+    fprintf(stderr, "Detct Classification: %d/%d  %.2f\n", num, sess->train_data_num, (float)(num)/(float)(sess->train_data_num));
 }
