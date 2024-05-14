@@ -24,6 +24,9 @@ Layer *make_connect_layer(int output, int bias, char *active)
     l->update = update_connect_layer_weights;
     l->updategpu = update_connect_layer_weights_gpu;
 
+    l->saveweights = save_connect_layer_weights;
+    l->saveweightsgpu = save_connect_layer_weights_gpu;
+
     fprintf(stderr, "Connect         Layer    :    [output=%4d, bias=%d, active=%s]\n", l->ksize, l->bias, active);
     return l;
 }
@@ -55,8 +58,17 @@ void init_connect_layer(Layer *l, int w, int h, int c, int subdivision)
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
 }
 
-void weightinit_connect_layer(Layer l)
+void weightinit_connect_layer(Layer l, FILE *fp)
 {
+    if (fp){
+        fread(l.kernel_weights, sizeof(float), l.outputs*l.inputs, fp);
+        memcpy(l.update_kernel_weights, l.kernel_weights, l.inputs*l.outputs*sizeof(float));
+        if (l.bias){
+            fread(l.bias_weights, sizeof(float), l.outputs, fp);
+            memcpy(l.update_bias_weights, l.bias_weights, l.outputs*sizeof(float));
+        }
+        return;
+    }
     float scale = sqrt((float)2 / l.inputs);
     for (int i = 0; i < l.inputs*l.outputs; ++i){
         l.kernel_weights[i] = scale*rand_uniform(-1, 1);
@@ -122,5 +134,13 @@ void update_connect_layer_weights(Layer l)
     memcpy(l.kernel_weights, l.update_kernel_weights, l.inputs*l.outputs*sizeof(float));
     if (l.bias){
         memcpy(l.bias_weights, l.update_bias_weights, l.outputs*sizeof(float));
+    }
+}
+
+void save_connect_layer_weights(Layer l, FILE *fp)
+{
+    fwrite(l.kernel_weights, sizeof(float), l.inputs*l.outputs, fp);
+    if (l.bias){
+        fwrite(l.bias_weights, sizeof(float), l.outputs, fp);
     }
 }

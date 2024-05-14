@@ -40,10 +40,15 @@ typedef void (*initialize_gpu) (struct layer *, int, int, int, int);
 typedef initialize Initialize;
 typedef initialize_gpu InitializeGpu;
 
-typedef void (*weightinit) (struct layer);
+typedef void (*weightinit) (struct layer, FILE*);
 typedef weightinit WeightInit;
-typedef void (*weightinit_gpu) (struct layer);
+typedef void (*weightinit_gpu) (struct layer, FILE*);
 typedef weightinit_gpu WeightInitGpu;
+
+typedef void (*saveweights) (struct layer, FILE*);
+typedef saveweights SaveWeights;
+typedef void (*saveweights_gpu) (struct layer, FILE*);
+typedef saveweights_gpu SaveWeightsGpu;
 
 struct layer{
     LayerType type;
@@ -116,6 +121,8 @@ struct layer{
     WeightInitGpu weightinitgpu;
 
     Activation active;
+    SaveWeights saveweights;
+    SaveWeightsGpu saveweightsgpu;
 };
 
 #ifdef __cplusplus

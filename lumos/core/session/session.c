@@ -1,6 +1,6 @@
 #include "session.h"
 
-Session *create_session(Graph *graph, int h, int w, int c, int truth_num, char *type)
+Session *create_session(Graph *graph, int h, int w, int c, int truth_num, char *type, char *path)
 {
     Session *sess = malloc(sizeof(Session));
     sess->graph = graph;
@@ -13,6 +13,7 @@ Session *create_session(Graph *graph, int h, int w, int c, int truth_num, char *
     sess->width = w;
     sess->channel = c;
     sess->truth_num = truth_num;
+    sess->weights_path = path;
     return sess;
 }
 
@@ -20,7 +21,7 @@ void init_session(Session *sess, char *data_path, char *label_path)
 {
     bind_train_data(sess, data_path);
     bind_train_label(sess, label_path);
-    init_graph(sess->graph, sess->width, sess->height, sess->channel, sess->coretype, sess->subdivision);
+    init_graph(sess->graph, sess->width, sess->height, sess->channel, sess->coretype, sess->subdivision, sess->weights_path);
     create_workspace(sess);
     if (sess->coretype == GPU){
         cudaMalloc((void**)&sess->input, sess->subdivision*sess->width*sess->height*sess->channel*sizeof(float));
@@ -221,6 +222,11 @@ void train(Session *sess)
             }
             update_graph(sess->graph, sess->coretype);
         }
+    }
+    FILE *fp = fopen("./LuWeights", "w");
+    if (fp) {
+        save_weights(sess->graph, sess->coretype, fp);
+        fclose(fp);
     }
     fprintf(stderr, "\n\nSession Training Finished\n");
 }

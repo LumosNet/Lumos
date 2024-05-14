@@ -23,21 +23,25 @@ void append_layer2grpah(Graph *graph, Layer *l)
     if (graph->head == NULL) graph->head = layer;
 }
 
-void init_graph(Graph *g, int w, int h, int c, int coretype, int subdivision)
+void init_graph(Graph *g, int w, int h, int c, int coretype, int subdivision, char *weights_path)
 {
     fprintf(stderr, "\nStart To Init Graph\n");
     fprintf(stderr, "[Lumos]                     Inputs         Outputs\n");
     Node *layer = g->head;
     Layer *l;
+    FILE *fp = NULL;
+    if (weights_path){
+        fp = fopen(weights_path, "r");
+    }
     for (;;){
         if (layer){
             l = layer->l;
             if (coretype == GPU){
                 l->initializegpu(l, w, h, c, subdivision);
-                if (l->weightinitgpu) l->weightinitgpu(*l);
+                if (l->weightinitgpu) l->weightinitgpu(*l, fp);
             } else {
                 l->initialize(l, w, h, c, subdivision);
-                if (l->weightinit) l->weightinit(*l);
+                if (l->weightinit) l->weightinit(*l, fp);
             }
         } else {
             break;
@@ -46,6 +50,9 @@ void init_graph(Graph *g, int w, int h, int c, int coretype, int subdivision)
         w = l->output_w;
         h = l->output_h;
         c = l->output_c;
+    }
+    if (fp){
+        fclose(fp);
     }
 }
 
@@ -117,6 +124,22 @@ void update_graph(Graph *g, int coretype)
             l = layer->l;
             if (coretype == GPU && l->updategpu) l->updategpu(*l);
             if (coretype == CPU && l->update) l->update(*l);
+        } else {
+            break;
+        }
+        layer = layer->next;
+    }
+}
+
+void save_weights(Graph *g, int coretype, FILE *fp)
+{
+    Node *layer = g->head;
+    Layer *l;
+    for (;;){
+        if (layer){
+            l = layer->l;
+            if (coretype == GPU && l->saveweightsgpu) l->saveweightsgpu(*l, fp);
+            if (coretype == CPU && l->saveweights) l->saveweights(*l, fp);
         } else {
             break;
         }

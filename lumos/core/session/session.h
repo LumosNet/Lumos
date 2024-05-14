@@ -49,9 +49,10 @@ typedef struct session{
     char **test_data_paths;
     char **test_label_paths;
 
+    char *weights_path;
 } Session;
 
-Session *create_session(Graph *graph, int h, int w, int c, int truth_num, char *type);
+Session *create_session(Graph *graph, int h, int w, int c, int truth_num, char *type, char *path);
 void init_session(Session *sess, char *data_path, char *label_path);
 
 void bind_train_data(Session *sess, char *path);
