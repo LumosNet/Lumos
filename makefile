@@ -24,7 +24,7 @@ VPATH=	./lib/: \
 		./lumos/core_cu/ops_cu/: \
 		./lumos/core_cu/graph_cu/layer_cu/: \
 		./lumos/core_cu/graph_cu/loss_layer_cu/ \
-		./lumos/lumos
+		./demo
 
 COMMON=	-Ilib \
 		-Iinclude \
@@ -42,9 +42,9 @@ COMMON=	-Ilib \
 		-Ilumos/core_cu/ops_cu \
 		-Ilumos/core_cu/graph_cu/layer_cu \
 		-Ilumos/core_cu/graph_cu/loss_layer_cu \
-		-Ilumos/lumos
+		-Idemo
 
-EXEC=lumos.exe
+EXEC=main.exe
 OBJDIR=./obj/
 
 CC=gcc
@@ -95,13 +95,14 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.
 		progress_bar.o \
 		binary_f.o text_f.o \
 		str_ops.o logging.o \
-		cJSON_Utils.o cJSON.o
+		cJSON_Utils.o cJSON.o \
+		xor.o lenet5_mnist.o lenet5_cifar10.o
 
 OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o softmax_gpu.o shortcut_gpu.o normalize_gpu.o \
 	  	avgpool_layer_gpu.o maxpool_layer_gpu.o connect_layer_gpu.o convolutional_layer_gpu.o im2col_layer_gpu.o \
 	  	softmax_layer_gpu.o mse_layer_gpu.o
 
-EXECOBJA=lumos.o
+EXECOBJA=main.o
 
 ifeq ($(TEST), 1)
 OBJ+=   analysis_benchmark_file.o compare.o run_test.o test_msg.o utest.o

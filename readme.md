@@ -10,144 +10,58 @@
 
 Lumos的目标从来不是为了比肩TensorFlow或者Pytorch这样的顶级开源框架，而是希望更好的展现底层算法实现，提供给使用者更灵活的使用体验。同时希望有更多的人不止能在上层框架构建成熟应用，更能对底层算法原理和实现技巧有更多的关注。
 
-
-
-## 开发状况
-
-当前Lumos提供基础的全连接神经网络和卷积神经网络基本组件，可以使用我们所提供的API快速开发网络模型。
-
-Lumos框架现在只提供了最基本的网络组件，对于一些特定算法的处理方法会在后续开发继续完善。
-
-我们支持您使用GPU进行模型加速，我们使用cuda优化了相关算法，您可以轻松的调用GPU加速您的网络模型。
+| 说明     | 链接                                                         |
+| -------- | ------------------------------------------------------------ |
+| 使用手册 | [<img src="https://img.shields.io/badge/Lumos-U-brightgreen" />] |
 
 
 
 ## 安装
 
-### 下载安装包
-版本                    | 链接                                                                                                                                                                           | Coretype
------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------
-**v0.1**                 | [<img src="https://img.shields.io/badge/Lumos-CPU-brightgreen" />](https://github.com/LumosNet/Lumos-Build/raw/main/v0.1.0/lumos_0.1.0_linux_cpu.run)           | CPU
-**v0.1**                 | [<img src="https://img.shields.io/badge/Lumos-GPU-brightgreen" />](https://github.com/LumosNet/Lumos-Build/raw/main/v0.1.0/lumos_0.1.0_linux_gpu.run)           | GPU
-
-Lumos基于
+Lumos不提供任何安装包，您需要直接编译源代码来使用
+```shell
+$ git clone https://github.com/LumosNet/Lumos.git
 ```
-cuda 10.2.89
-glibc 2.27 
-gcc 7
+我们推荐您使用最新版本代码，或main分支代码
+
+编译Lumos需要使用C/C++编译器，我们推荐您在Linux系统中使用gcc/g++编译器进行编译
+您需要提前安装CUDA，详细安装方法请参考[NVIDIA CUDA官方文档](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html)
+
+
+
+## 编译
+
+首先您需要修改我们为您提供的编译脚本makefile，在编译脚本59行
+```shell
+LDFLAGS+= -L -lcudart -lcublas -lcurand
 ```
-进行构建，请您采用如上版本工具
+您需要在-L后添加您cuda的静态链接库文件目录，如下
+```shell
+LDFLAGS+= -L/usr/local/cuda/lib -lcudart -lcublas -lcurand
+```
+完成修改后，在命令行使用编译命令make，进行编译
 
-### **Linux**
 
-使用如下命令进行安装
+
+
+## 测试
+
+编译完成后，您可以通过运行我们训练好的实例来初步使用Lumos
+我们为您提供了Cifar10数据集在Lenet5模型上的分类案例
+请您先下载我们训练完成的权重文件
+[<img src="https://img.shields.io/badge/Lumos-W-brightgreen" />]
+请将下载的权重文件存放至Lumos根目录下，并使用如下命令运行
 
 ```shell
-$ sudo sh lumos_0.1.0_linux_cpu.run
+$ ./lumos.exe gpu
+```
+您将会看到如下输出
 ```
 
-添加环境变量，在用户目录下~/.bashrc文件末尾添加如下语句
-
 ```
-export PATH=/usr/local/lumos/bin${PATH:+:${PATH}}
-export LD_LIBRARY_PATH=/usr/local/lumos/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-```
+最后一行您将看到测试数据集的正确率
+更为详细的Lumos使用教程请参考[使用手册]
 
-添加完成后，在命令行运行
-
-```shell
-source ~/.bashrc
-```
-
-来激活相关设置，此时您已经完成lumos的安装
-
-通过命令行验证安装
-
-```shell
-lumos --version
-```
-
-若出现以下版本信息，则您已经安装好了lumos
-
-```shell
-Lumos version: v0.1
-This is free software; see the source for copying conditions.  There is NO
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-```
-
-
-
-### **CUDA**
-
-Lumos支持cuda加速，如果您拥有支持cuda的GPU，并且希望使用GPU加速您的算法，那么请提前安装cuda，相关安装方法请参考[cuda文档](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html)
-
-安装文件分为CPU和GPU版，请酌情选择安装
-
-
-
-## 运行
-
-我们提供了丰富的用例demo，您可以尝试运行这些demo，来开启您的lumos之旅，请您从如下仓库clone我们的demos
-
-```shell
-git clone git@github.com:LumosNet/Lumos-Demos.git
-```
-
-您需要手动下载数据集，并放入demo目录下
-
-数据集：
-
-名                    | 链接                                                                                                                                                                           | 说明
------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------
-**MNIST**                 | [<img src="https://img.shields.io/badge/Lumos-CPU-brightgreen" />](https://pan.baidu.com/s/1Qm7HRy0oVx-eiVl0jBxC5A?pwd=6bxh )           | 手写数字数据集
-**XOR**                 | [<img src="https://img.shields.io/badge/Lumos-GPU-brightgreen" />](https://pan.baidu.com/s/1KMGSVsDKPFy7U9Wnfxd7yw?pwd=ec2o )           | 异或数据集
-
-在Lumos-Demos根目录下新建data文件夹，并将您下载好的数据集放入data文件夹中
-我们为您提供了编译的Makefile，您只需使用make命令编译即可
-
-编译完成后使用如下指令查看相关可操作内容
-
-```
-./lumos.exe --help
-```
-
-
-
-
-### 使用
-通过添加头文件: lumos.h
-```
-"lumos.h"
-```
-来调用我们提供的相关接口，接口详细信息请查看我们的接口描述文件
-编译时请添加如下命令
-链接动态库:
-```shell
--llumos
-```
-
-头文件引用路径:
-```shell
--I/usr/local/lumos/include/
-```
-
-编译时如果出现如下错误:
-```shell
-/usr/bin/ld: /usr/local/lumos/lib/../lib/liblumops.so: undefined reference to `omp_get_thread_num'
-/usr/bin/ld: /usr/local/lumos/lib/../lib/liblumops.so: undefined reference to `omp_get_num_threads'
-/usr/bin/ld: /usr/local/lumos/lib/../lib/liblumops.so: undefined reference to `GOMP_parallel'
-collect2: error: ld returned 1 exit status
-```
-
-请添加如下编译参数:
-```shell
--fopenmp
-```
-
-通常，正确的编译命令应该如下:
-```shell
-gcc -fopenmp main.c -I/usr/local/lumos/include/ -o main -L/usr/local/lumos/lib -llumos
-```
 
 
 
