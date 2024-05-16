@@ -1,4 +1,5 @@
 #!/bin/bash
+
 VERSION=v0.1
 CDIR=`pwd`
 
@@ -9,20 +10,18 @@ if [ -d "$BUILDDIR" ]; then
 fi
 
 mkdir $BUILDDIR
-mkdir $BUILDDIR/include
-mkdir $BUILDDIR/lib
-mkdir $BUILDDIR/obj
 wait
 
-# cp $CDIR/include/lumos.h $BUILDDIR/include/lumos.h
-# wait
+cp -r $CDIR/include $BUILDDIR/include
+cp -r $CDIR/lumos $BUILDDIR/lumos
+cp -r $CDIR/lib $BUILDDIR/lib
+cp $CDIR/script/makefile $BUILDDIR/makefile
 
-# tar zcvf lumos-$VERSION.tar.gz lumos-$VERSION
-# wait
+tar -zcvf lumos.tar.gz ./build
+cat $CDIR/script/install.sh lumos.tar.gz > lumos-$VERSION.run
 
-# if [ -d "$BUILDDIR" ]; then
-#     rm -rf "$BUILDDIR"
-# fi
+rm -f lumos.tar.gz
 
-# cat LumosInstall.sh lumos-$VERSION.tar.gz > lumos-$VERSION.run
-# rm lumos-$VERSION.tar.gz
+if [ -d "$BUILDDIR" ]; then
+    rm -rf "$BUILDDIR"
+fi

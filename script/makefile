@@ -1,5 +1,5 @@
 CUDAINCLUDE=/usr/local/cuda/include/
-CUDALIB=/usr/local/cuda-12.4/targets/x86_64-linux/lib
+CUDALIB=/usr/local/cuda/lib
 
 ARCH=	-gencode arch=compute_52,code=[sm_52,compute_52] \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
