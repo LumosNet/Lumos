@@ -16,12 +16,12 @@ tail -n +$ARCHIVE $0 > lumos.tar.gz
 tar -zxvf lumos.tar.gz
 wait
 
-rm -f lumos.tar
+rm -f lumos.tar.gz
 
-mv ./lumos-$VERSION/build/include $INSTALLDIR/include
-mv ./lumos-$VERSION/build/lib ./lib
-mv ./lumos-$VERSION/build/lumos ./lumos
-mv ./lumos-$VERSION/build/makefile ./makefile
+mv ./build/include $INSTALLDIR/include
+mv ./build/lib ./lib
+mv ./build/lumos ./lumos
+mv ./build/makefile ./makefile
 
 rm -rf ./build
 mkdir ./build
