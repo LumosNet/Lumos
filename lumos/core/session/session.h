@@ -15,9 +15,6 @@
 extern "C" {
 #endif
 
-#define CPU 0
-#define GPU 1
-
 typedef struct session{
     Graph *graph;
 

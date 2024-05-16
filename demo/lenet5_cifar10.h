@@ -5,15 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "connect_layer.h"
-#include "convolutional_layer.h"
-#include "avgpool_layer.h"
-#include "im2col_layer.h"
-#include "softmax_layer.h"
-#include "mse_layer.h"
-#include "graph.h"
-#include "layer.h"
-#include "session.h"
+#include "lumos.h"
 
 #ifdef __cplusplus
 extern "C" {
