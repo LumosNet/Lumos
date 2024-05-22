@@ -15,6 +15,7 @@ wait
 cp -r $CDIR/include $BUILDDIR/include
 cp -r $CDIR/lumos $BUILDDIR/lumos
 cp -r $CDIR/lib $BUILDDIR/lib
+cp -r $CDIR/utils $BUILDDIR/utils
 cp $CDIR/script/makefile $BUILDDIR/makefile
 
 tar -zcvf lumos.tar.gz ./build

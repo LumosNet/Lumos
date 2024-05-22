@@ -24,7 +24,6 @@ VPATH=	./lib/: \
 		./lumos/core_cu/graph_cu/loss_layer_cu/
 
 COMMON=	-Ilib \
-		-Iinclude \
 		-Ilumos/core/graph \
 		-Ilumos/core/graph/layer \
 		-Ilumos/core/graph/loss_layer \
@@ -74,9 +73,9 @@ COMMONGPU += --maxrregcount=64
 LDFLAGS+= -lstdc++
 
 OBJS = $(addprefix $(OBJDIR), $(OBJ))
-DEPS = build
+DEPS = makefile
 
-all: obj $(LIBLUMOS) $(LIBLUMOSCU)
+all: $(LIBLUMOS) $(LIBLUMOSCU)
 
 $(LIBLUMOS): $(OBJS)
 	$(CC) $(CFLAGS) -shared $^ -o $@ $(LDFLAGS)
@@ -86,8 +85,3 @@ $(OBJDIR)%.o: %.c $(DEPS)
 
 $(OBJDIR)%.o: %.cu $(DEPS)
 	$(NVCC) $(ARCH) $(COMMONGPU) --compiler-options "$(CFLAGS)" -c $< -o $@
-
-obj:
-	mkdir build
-	mkdir ./build/obj
-	mkdir ./build/lib
