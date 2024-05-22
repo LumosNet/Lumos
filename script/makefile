@@ -4,48 +4,48 @@ CUDALIB=/usr/local/cuda/lib
 ARCH=	-gencode arch=compute_52,code=[sm_52,compute_52] \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
 
-VPATH=	./lib/: \
-		./lumos/core/: \
-		./lumos/core/graph/: \
-		./lumos/core/graph/layer/: \
-		./lumos/core/graph/loss_layer/: \
-		./lumos/core/ops/: \
-		./lumos/core/session/: \
-		./utils/: \
-		./utils/cmd/: \
-		./utils/file/: \
-		./utils/str/: \
-		./utils/logging/: \
-		./: \
-		./lumos/core_cu/: \
-		./lumos/core_cu/graph_cu/: \
-		./lumos/core_cu/ops_cu/: \
-		./lumos/core_cu/graph_cu/layer_cu/: \
-		./lumos/core_cu/graph_cu/loss_layer_cu/
+VPATH=	./build/lib/: \
+		./build/lumos/core/: \
+		./build/lumos/core/graph/: \
+		./build/lumos/core/graph/layer/: \
+		./build/lumos/core/graph/loss_layer/: \
+		./build/lumos/core/ops/: \
+		./build/lumos/core/session/: \
+		./build/utils/: \
+		./build/utils/cmd/: \
+		./build/utils/file/: \
+		./build/utils/str/: \
+		./build/utils/logging/: \
+		./build/: \
+		./build/lumos/core_cu/: \
+		./build/lumos/core_cu/graph_cu/: \
+		./build/lumos/core_cu/ops_cu/: \
+		./build/lumos/core_cu/graph_cu/layer_cu/: \
+		./build/lumos/core_cu/graph_cu/loss_layer_cu/
 
-COMMON=	-Ilib \
-		-Ilumos/core/graph \
-		-Ilumos/core/graph/layer \
-		-Ilumos/core/graph/loss_layer \
-		-Ilumos/core/ops \
-		-Ilumos/core/session \
-		-Iutils/cmd \
-		-Iutils/file \
-		-Iutils/str \
-		-Iutils/logging \
-		-Ilumos/core_cu \
-		-Ilumos/core_cu/graph_cu \
-		-Ilumos/core_cu/ops_cu \
-		-Ilumos/core_cu/graph_cu/layer_cu \
-		-Ilumos/core_cu/graph_cu/loss_layer_cu
+COMMON=	-Ibuild/lib \
+		-Ibuild/lumos/core/graph \
+		-Ibuild/lumos/core/graph/layer \
+		-Ibuild/lumos/core/graph/loss_layer \
+		-Ibuild/lumos/core/ops \
+		-Ibuild/lumos/core/session \
+		-Ibuild/utils/cmd \
+		-Ibuild/utils/file \
+		-Ibuild/utils/str \
+		-Ibuild/utils/logging \
+		-Ibuild/lumos/core_cu \
+		-Ibuild/lumos/core_cu/graph_cu \
+		-Ibuild/lumos/core_cu/ops_cu \
+		-Ibuild/lumos/core_cu/graph_cu/layer_cu \
+		-Ibuild/lumos/core_cu/graph_cu/loss_layer_cu
 
 CC=gcc
 NVCC=nvcc
 
-LIBLUMOS=./build/lib/liblumos.so
+LIBLUMOS=./build/lulib/liblumos.so
 
 OBJDIR=./build/obj/
-LIBDIR=./build/lib/
+LIBDIR=./build/lulib/
 
 LDFLAGS= -lm -pthread
 COMMON+= -Iscripts

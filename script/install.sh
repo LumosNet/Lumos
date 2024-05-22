@@ -3,7 +3,7 @@
 VERSION=v0.1
 CDIR=`pwd`
 
-INSTALLDIR=~/libian
+INSTALLDIR=~/lumos
 CUDAINCLUDE=NULL
 CUDALIB=BULL
 
@@ -52,24 +52,16 @@ wait
 rm -f lumos.tar.gz
 
 mv ./build/include $INSTALLDIR/include
-mv ./build/lib ./lib
-mv ./build/lumos ./lumos
-mv ./build/utils ./utils
-mv ./build/makefile ./makefile
 
-mkdir ./build/lib
+mkdir ./build/lulib
 mkdir ./build/obj
 
-make -f makefile CUDAINCLUDE=$CUDAINCLUDE CUDALIB=$CUDALIB
+make -f ./build/makefile CUDAINCLUDE=$CUDAINCLUDE CUDALIB=$CUDALIB
 wait
 
-mv ./build/lib $INSTALLDIR/lib
+mv ./build/lulib $INSTALLDIR/lib
 
 rm -rf build
-rm -rf lib
-rm -rf lumos
-rm -rf utils
-rm -f makefile
 rm -f lumos-$VERSION.run
 
 exit 0
