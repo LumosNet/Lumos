@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define VERSION "0.1"
+#define VERSION "1.0"
 
 void analysis_argv(int argc, char **argv)
 {
