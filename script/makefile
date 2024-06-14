@@ -5,6 +5,7 @@ ARCH=	-gencode arch=compute_52,code=[sm_52,compute_52] \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
 
 VPATH=	./build/lib/: \
+		./build/lumos/: \
 		./build/lumos/core/: \
 		./build/lumos/core/graph/: \
 		./build/lumos/core/graph/layer/: \
@@ -80,7 +81,7 @@ OBJS = $(addprefix $(OBJDIR), $(OBJ))
 EXECOBJS = $(addprefix $(OBJDIR), $(EXECOBJ))
 DEPS = makefile
 
-all: $(LIBLUMOS) $(LIBLUMOSCU)
+all: $(LIBLUMOS) $(EXEC)
 
 $(EXEC): $(EXECOBJS)
 	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)

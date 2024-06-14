@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=v0.1
+VERSION=v1.0
 CDIR=`pwd`
 
 BUILDDIR=$CDIR/build

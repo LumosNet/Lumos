@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION=v0.1
+VERSION=v1.0
 CDIR=`pwd`
 
 INSTALLDIR=~/lumos
@@ -65,6 +65,8 @@ mv ./build/bin $INSTALLDIR/bin
 
 rm -rf build
 rm -f lumos-$VERSION.run
+
+echo "Installation Successful"
 
 exit 0
 __ARCHIVE_BOUNDARY__
