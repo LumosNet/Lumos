@@ -42,8 +42,10 @@ COMMON=	-Ibuild/lib \
 CC=gcc
 NVCC=nvcc
 
+EXEC=./build/bin/lumos
 LIBLUMOS=./build/lulib/liblumos.so
 
+BINDIR=./build/bin/
 OBJDIR=./build/obj/
 LIBDIR=./build/lulib/
 
@@ -54,6 +56,8 @@ CFLAGS=-fopenmp -Wall -Wno-unused-result -Wno-unknown-pragmtensor -Wfatal-errors
 COMMON+= -DGPU -I$(CUDAINCLUDE)
 CFLAGS+= -DGPU -Wno-deprecated-gpu-targets
 LDFLAGS+= -L$(CUDALIB) -lcudart -lcublas -lcurand
+
+EXECOBJ= lumos.o
 
 OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o im2col_layer.o maxpool_layer.o \
 		softmax_layer.o \
@@ -73,9 +77,13 @@ COMMONGPU += --maxrregcount=64
 LDFLAGS+= -lstdc++
 
 OBJS = $(addprefix $(OBJDIR), $(OBJ))
+EXECOBJS = $(addprefix $(OBJDIR), $(EXECOBJ))
 DEPS = makefile
 
 all: $(LIBLUMOS) $(LIBLUMOSCU)
+
+$(EXEC): $(EXECOBJS)
+	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(LIBLUMOS): $(OBJS)
 	$(CC) $(CFLAGS) -shared $^ -o $@ $(LDFLAGS)

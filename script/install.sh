@@ -55,11 +55,13 @@ mv ./build/include $INSTALLDIR/include
 
 mkdir ./build/lulib
 mkdir ./build/obj
+mkdir ./build/bin
 
 make -f ./build/makefile CUDAINCLUDE=$CUDAINCLUDE CUDALIB=$CUDALIB
 wait
 
 mv ./build/lulib $INSTALLDIR/lib
+mv ./build/bin $INSTALLDIR/bin
 
 rm -rf build
 rm -f lumos-$VERSION.run
