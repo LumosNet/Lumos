@@ -28,7 +28,7 @@ Lumos使用C语言开发，并且依赖于CUDA框架实现GPU加速，所以您�
 
 | 说明 | 链接                                                         |
 | ---- | ------------------------------------------------------------ |
-| v1.0 | [<img src="https://img.shields.io/badge/Lumos-Install-brightgreen" />](https://github.com/LumosNet/Lumos-Build/raw/main/v1.0/lumos-v1.0.run) |
+| v1.0 | [<img src="https://img.shields.io/badge/Lumos-Install-brightgreen" />](https://github.com/LumosNet/Lumos-Build/archive/refs/tags/v1.0.zip) |
 
 下载完成后使用如下命令进行安装
 
@@ -69,7 +69,7 @@ Lumos允许您快速实现深度学习模型，我们提供了简洁的接口，
 
 下面我们将用Lenet5模型实现MNIST手写数字识别，让您快速了解Lumos框架的使用
 
-完整的框架教程，请您参考[Lumos教程](https://lumos-docs.readthedocs.io/en/latest/docs/%E6%95%99%E7%A8%8B/index.html)
+完整的框架教程，请您参考[Lumos教程](https://lumos-docs.readthedocs.io/en/latest/docs/教程/index.html)
 
 
 
