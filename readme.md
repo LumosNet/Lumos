@@ -12,55 +12,140 @@ Lumos的目标从来不是为了比肩TensorFlow或者Pytorch这样的顶级开�
 
 | 说明     | 链接                                                         |
 | -------- | ------------------------------------------------------------ |
-| 使用手册 | [<img src="https://img.shields.io/badge/Lumos-U-brightgreen" />] |
+| 使用手册 | [<img src="https://img.shields.io/badge/Lumos-U-brightgreen" />](https://lumos-docs.readthedocs.io/en/latest/) |
 
+## 依赖
 
+Lumos使用C语言开发，并且依赖于CUDA框架实现GPU加速，所以您需要独立安装编译环境和CUDA
+
+您需要安装gcc/g++编译器以及make工具，您可以参考其官方文档
+
+我们还依赖于CUDA Toolkit进行GPU加速，您需要提前安装CUDA，详细安装方法请参考[NVIDIA CUDA官方文档](*https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html*)
 
 ## 安装
 
-Lumos不提供任何安装包，您需要直接编译源代码来使用
-```shell
-$ git clone https://github.com/LumosNet/Lumos.git
-```
-我们推荐您使用最新版本代码，或main分支代码
+您需要下载我们提供的安装包，请您下载您所需要的版本，最新版本安装包为
 
-编译Lumos需要使用C/C++编译器，我们推荐您在Linux系统中使用gcc/g++编译器进行编译
-您需要提前安装CUDA，详细安装方法请参考[NVIDIA CUDA官方文档](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html)
+| 说明 | 链接                                                         |
+| ---- | ------------------------------------------------------------ |
+| v1.0 | [<img src="https://img.shields.io/badge/Lumos-U-brightgreen" />](https://github.com/LumosNet/Lumos-Build/raw/main/v1.0/lumos-v1.0.run) |
 
-
-
-## 编译
-
-首先您需要修改我们为您提供的编译脚本makefile，在编译脚本59行
-```shell
-LDFLAGS+= -L -lcudart -lcublas -lcurand
-```
-您需要在-L后添加您cuda的静态链接库文件目录，如下
-```shell
-LDFLAGS+= -L/usr/local/cuda/lib -lcudart -lcublas -lcurand
-```
-完成修改后，在命令行使用编译命令make，进行编译
-
-
-
-
-## 测试
-
-编译完成后，您可以通过运行我们训练好的实例来初步使用Lumos
-我们为您提供了Cifar10数据集在Lenet5模型上的分类案例
-请您先下载我们训练完成的权重文件
-[<img src="https://img.shields.io/badge/Lumos-W-brightgreen" />]
-请将下载的权重文件存放至Lumos根目录下，并使用如下命令运行
+下载完成后使用如下命令进行安装
 
 ```shell
-$ ./lumos.exe gpu
-```
-您将会看到如下输出
+bash lumos-v1.0.run
 ```
 
+
+
+## 环境设置
+
+我们需要为Lumos进行环境配置，Lumos默认安装于用户目录下，请在~/.bashrc文件中添加如下内容
+
+```shell
+export PATH=/home/用户名/lumos/include/:$PATH
+export PATH=/home/用户名/lumos/bin:$PATH
+export LD_LIBRARY_PATH=/home/用户名/lumos/lib:$LD_LIBRARY_PATH
 ```
-最后一行您将看到测试数据集的正确率
-更为详细的Lumos使用教程请参考[使用手册]
+
+添加完成后使用如下命令激活
+
+```shell
+source ~/.bashrc
+```
+
+并使用
+
+```shell
+lumos --version
+```
+
+
+
+
+## 快速入门
+
+Lumos允许您快速实现深度学习模型，我们提供了简洁的接口，您可以在lumos/include目录下的lumos.h文件中查看我们提供的接口
+
+下面我们将用Lenet5模型实现MNIST手写数字识别，让您快速了解Lumos框架的使用
+
+完整的框架教程，请您参考[Lumos教程](https://lumos-docs.readthedocs.io/en/latest/docs/%E6%95%99%E7%A8%8B/index.html)
+
+
+
+### 模型构建
+
+我们通常将一个深度学习模型视为一个计算图，所以在Lumos中一个深度学习模型就是一个计算图，我们需要首先创建一个计算图类的实例
+
+```c
+Graph *g = create_graph()
+```
+
+在此之后您需要创建不同的计算层，并确定它们的链接方式
+
+```c
+Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, "relu");
+Layer *l2 = make_avgpool_layer(2, 2, 0);
+Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, "relu");
+Layer *l4 = make_avgpool_layer(2, 2, 0);
+Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, "relu");
+Layer *l6 = make_im2col_layer();
+Layer *l7 = make_connect_layer(84, 1, "relu");
+Layer *l8 = make_connect_layer(10, 1, "relu");
+Layer *l9 = make_softmax_layer(10);
+Layer *l10 = make_mse_layer(10);
+```
+
+```c
+append_layer2grpah(g, l1);
+append_layer2grpah(g, l2);
+append_layer2grpah(g, l3);
+append_layer2grpah(g, l4);
+append_layer2grpah(g, l5);
+append_layer2grpah(g, l6);
+append_layer2grpah(g, l7);
+append_layer2grpah(g, l8);
+append_layer2grpah(g, l9);
+append_layer2grpah(g, l10);
+```
+
+append_layer2grpah将您创建的计算层按顺序添加到计算图中，此时我们创建的计算图g，就是一个完整的静态深度学习模型
+
+完成模型创建后，我们需要调度模型进行计算，Lumos提供Session会话类来完成全部的计算调度，首先我们需要实例化一个会话
+
+```c
+Session *sess = create_session(g, 32, 32, 1, 10, type, path);
+```
+
+并设置训练超参数
+
+```c
+set_train_params(sess, 15, 16, 16, 0.1);
+```
+
+在训练开始前，Lumos需要完成内存等训练环境初始化
+
+```c
+init_session(sess, "./data/mnist/train.txt", "./data/mnist/train_label.txt");
+```
+
+现在一切准备就绪，可以开始训练了
+
+```c
+train(sess);
+```
+
+
+
+### 编译
+
+上述过程我们完成了模型代码，现在我们需要编译我们的代码，我们推荐您使用gcc编译器，因为Lumos框架在Linux下开发并发布，全面依赖gcc编译器特性
+
+如下我们提供了一个编译命令的参考实例，如果您对make工具和gcc较为熟悉，请您自行编写编译脚本
+
+```shell
+gcc -fopenmp lumos.c -I/home/用户名/lumos/include/ -o lumos -L/home/用户名/lumos/lib -llumos
+```
 
 
 
