@@ -6,13 +6,13 @@
 
 ## 简介
 
-[Lumos](https://gitee.com/lumos-net/lumos)是一个简洁的轻量级深度学习框架，帮助学习、研究深度学习算法和底层实现的学者和爱好者更容易学习相关内容，希望该框架是你学习过程中指引你的荧光。
+[Lumos](https://github.com/LumosNet/Lumos)是一个简洁的轻量级深度学习框架，帮助学习、研究深度学习算法和底层实现的学者和爱好者更容易学习相关内容，希望该框架是你学习过程中指引你的荧光。
 
 Lumos的目标从来不是为了比肩TensorFlow或者Pytorch这样的顶级开源框架，而是希望更好的展现底层算法实现，提供给使用者更灵活的使用体验。同时希望有更多的人不止能在上层框架构建成熟应用，更能对底层算法原理和实现技巧有更多的关注。
 
 | 说明     | 链接                                                         |
 | -------- | ------------------------------------------------------------ |
-| 使用手册 | [<img src="https://img.shields.io/badge/Lumos-U-brightgreen" />](https://lumos-docs.readthedocs.io/en/latest/) |
+| 使用手册 | [<img src="https://img.shields.io/badge/Lumos-Docs-brightgreen" />](https://lumos-docs.readthedocs.io/en/latest/) |
 
 ## 依赖
 
@@ -28,7 +28,7 @@ Lumos使用C语言开发，并且依赖于CUDA框架实现GPU加速，所以您�
 
 | 说明 | 链接                                                         |
 | ---- | ------------------------------------------------------------ |
-| v1.0 | [<img src="https://img.shields.io/badge/Lumos-U-brightgreen" />](https://github.com/LumosNet/Lumos-Build/raw/main/v1.0/lumos-v1.0.run) |
+| v1.0 | [<img src="https://img.shields.io/badge/Lumos-Install-brightgreen" />](https://github.com/LumosNet/Lumos-Build/raw/main/v1.0/lumos-v1.0.run) |
 
 下载完成后使用如下命令进行安装
 
