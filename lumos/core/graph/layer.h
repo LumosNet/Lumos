@@ -52,6 +52,7 @@ typedef saveweights_gpu SaveWeightsGpu;
 
 struct layer{
     LayerType type;
+    int status;
     int input_h;
     int input_w;
     int input_c;

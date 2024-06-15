@@ -80,6 +80,7 @@ void forward_graph(Graph *g, float *input, int coretype, int subdivision)
     for (;;){
         if (layer){
             l = layer->l;
+            l->status = g->status;
             l->input = input;
             if (coretype == GPU){
                 l->forwardgpu(*l, subdivision);

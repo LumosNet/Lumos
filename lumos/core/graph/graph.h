@@ -13,6 +13,7 @@ extern "C" {
 typedef struct node Node;
 
 typedef struct graph{
+    int status;
     float *input;
     float *output;
     float *delta;

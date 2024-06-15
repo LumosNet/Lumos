@@ -67,6 +67,7 @@ typedef saveweights_gpu SaveWeightsGpu;
 
 struct layer{
     LayerType type;
+    int status;
     int input_h;
     int input_w;
     int input_c;
@@ -141,6 +142,7 @@ struct layer{
 };
 
 typedef struct graph{
+    int status;
     float *input;
     float *output;
     float *delta;
@@ -197,6 +199,7 @@ void append_layer2grpah(Graph *graph, Layer *l);
 Layer *make_avgpool_layer(int ksize, int stride, int pad);
 Layer *make_connect_layer(int output, int bias, char *active);
 Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, char *active);
+Layer *make_dropout_layer(float probability);
 Layer *make_im2col_layer();
 Layer *make_maxpool_layer(int ksize, int stride, int pad);
 Layer *make_softmax_layer(int group);

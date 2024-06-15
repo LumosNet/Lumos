@@ -172,6 +172,8 @@ void train(Session *sess)
     float *loss = calloc(1, sizeof(float));
     clock_t start, final;
     double run_time = 0;
+    Graph *g = sess->graph;
+    g->status = 1;
     for (int i = 0; i < sess->epoch; ++i){
         fprintf(stderr, "\n\nEpoch %d/%d\n", i + 1, sess->epoch);
         start = clock();
@@ -213,6 +215,7 @@ void detect_classification(Session *sess)
     float *detect = NULL;
     float *loss = NULL;
     Graph *g = sess->graph;
+    g->status = 0;
     Node *layer = g->tail;
     Layer *l = layer->l;
     if (sess->coretype == GPU){
