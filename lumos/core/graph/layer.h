@@ -96,16 +96,19 @@ struct layer{
     float *update_kernel_weights;
     float *update_bias_weights;
 
-    /*normalize层参数*/
-    int mean_size;
-    int variance_size;
-
     float *mean;
     float *variance;
     float *rolling_mean;
     float *rolling_variance;
     float *x_norm;
     float *normalize_x;
+    float *mean_delta;
+    float *variance_delta;
+
+    float *bn_scale;
+    float *bn_bias;
+    float *update_bn_scale;
+    float *update_bn_bias;
 
     Forward forward;
     Backward backward;

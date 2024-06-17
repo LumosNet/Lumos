@@ -1,20 +1,28 @@
 #include "normalize.h"
 
-void normalize_mean(float *data, int h, int w, int c, float *mean)
+void normalize_mean(float *data, int h, int w, int c, int subdivision, float *mean)
 {
-    int offset = h*w;
     for (int i = 0; i < c; ++i){
-        float *data_c = data + i*offset;
-        mean_cpu(data_c, offset, mean+i);
+        mean[i] = 0;
+        for (int j = 0; j < subdivision; ++j){
+            for (int k = 0; k < h*w; ++k){
+                mean[i] += data[j*h*w*c+i*h*w+k];
+            }
+        }
+        mean[i] /= subdivision*h*w;
     }
 }
 
-void normalize_variance(float *data, int h, int w, int c, float *mean, float *variance)
+void normalize_variance(float *data, int h, int w, int c, int subdivision, float *mean, float *variance)
 {
-    int offset = h*w;
     for (int i = 0; i < c; ++i){
-        float *data_c = data + i*offset;
-        variance_cpu(data_c, mean[i], offset, variance+i);
+        variance[i] = 0;
+        for (int j = 0; j < subdivision; ++j){
+            for (int k = 0; k < h*w; ++k){
+                variance[i] += pow(data[j*h*w*c+i*h*w+k]-mean[i], 2);
+            }
+        }
+        variance[i] /= subdivision*h*w;
     }
 }
 
@@ -25,45 +33,38 @@ void normalize_cpu(float *data, float *mean, float *variance, int h, int w, int 
         float *data_c = data + i*offset;
         float *space_c = space + i*offset;
         for (int j = 0; j < offset; ++j){
-            space_c[j] = (data_c[j] - mean[i]) / (sqrt(variance[i]) + .000001f);
+            space_c[j] = (data_c[j] - mean[i]) / (sqrt(variance[i]) + .00001f);
         }
     }
 }
 
-void gradient_normalize_mean(float *beta, float *variance, int num, float *mean_delta)
+void gradient_normalize_mean(float *n_delta, float *variance, int h, int w, int c, float *mean_delta)
 {
-    for (int i = 0; i < num; ++i){
-        mean_delta[i] = 1./sqrt(variance[i] + .00001f)*beta[i];
+    for (int i = 0; i < c; ++i){
+        mean_delta[i] = 0;
+        for (int j = 0; j < h*w; ++j){
+            mean_delta[i] += n_delta[i*h*w+j];
+        }
+        mean_delta[i] *= (-1./sqrt(variance[i] + .00001f));
     }
 }
 
-void gradient_normalize_variance(float *beta, float *input, float *n_delta, float *mean, float *variance, int h, int w, int c, float *variance_delta)
+void gradient_normalize_variance(float *n_delta, float *input, float *mean, float *variance, int h, int w, int c, float *variance_delta)
 {
     for (int i = 0; i < c; ++i){
         variance_delta[i] = 0;
         for (int j = 0; j < h*w; ++j){
-            variance_delta[i] += n_delta[i*h*w + j]*(input[i*h*w + j]-mean[i]);
+            variance_delta[i] += n_delta[i*h*w+j]*(input[i*h*w+j]-mean[i]);
         }
-        variance_delta[i] *= -.5 * pow(variance[i] + .00001f, (float)(-3./2.)) * beta[i];
+        variance_delta[i] *= -.5 * pow(variance[i] + .00001f, (float)(-3./2.));
     }
 }
 
-void gradient_normalize_cpu(float *input, float *mean, float *mean_delta, float *variance_delta, int h, int w, int c, float *n_delta, float *l_delta, float *space)
-{
-    for (int i = 0; i < c; ++i){
-        space[i] = 0;
-        for (int j = 0; j < h*w; ++j){
-            l_delta[i*h*w + j] = n_delta[i*h*w + j] * mean_delta[i] + 2.0/(h*w)*(input[i*h*w + j]-mean[i])*variance_delta[i];
-            space[i] += l_delta[i*h*w + j];
-        }
-    }
-}
-
-void gradient_normalize_layer(int h, int w, int c, float *l_delta, float *space)
+void gradient_normalize_cpu(float *input, float *mean, float *variance, float *mean_delta, float *variance_delta, int h, int w, int c, float *n_delta, float *l_delta)
 {
     for (int i = 0; i < c; ++i){
         for (int j = 0; j < h*w; ++j){
-            l_delta[i*h*w + j] -= 1/(h*w)*space[i];
+            l_delta[i*h*w+j] = n_delta[i*h*w+j] * 1./(sqrt(variance[i] + .00001f)) + variance_delta[i] * 2. * (input[i*h*w+j] - mean[i]) / (h*w) + mean_delta[i]/(h*w);
         }
     }
 }
