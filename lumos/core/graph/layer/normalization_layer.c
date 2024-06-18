@@ -63,15 +63,10 @@ void backward_normalization_layer(Layer l, float rate, int num, float *n_delta)
         int offset_o = i * l.outputs;
         float *input = l.normalize_x + offset_o;
         float *delta_n = n_delta + offset_o;
-        float *delta_l = l.delta + offset_o;
-        float *mean = l.mean + i*l.output_c;
-        float *variance = l.variance + i*l.output_c;
-        float *mean_delta = l.mean_delta + i*l.output_c;
-        float *variance_delta = l.variance_delta + i*l.output_c;
         scale_bias(delta_n, l.bn_scale, l.output_c, l.output_h*l.output_w);
-        gradient_normalize_mean(delta_n, variance, l.output_h, l.output_w, l.output_c, mean_delta);
-        gradient_normalize_variance(delta_n, input, mean, variance, l.output_h, l.output_w, l.output_c, variance_delta);
-        gradient_normalize_cpu(input, mean, variance, mean_delta, variance_delta, l.output_h, l.output_w, l.output_c, delta_n, delta_l);
+        gradient_normalize_mean(delta_n, l.variance, l.output_h, l.output_w, l.output_c, l.mean_delta);
+        gradient_normalize_variance(delta_n, input, l.mean, l.variance, l.output_h, l.output_w, l.output_c, l.variance_delta);
+        gradient_normalize_cpu(input, l.mean, l.variance, l.mean_delta, l.variance_delta, l.output_h, l.output_w, l.output_c, delta_n, delta_n);
     }
 }
 

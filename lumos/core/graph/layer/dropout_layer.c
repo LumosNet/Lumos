@@ -20,6 +20,9 @@ Layer *make_dropout_layer(float probability)
     l->update = NULL;
     l->updategpu = NULL;
 
+    l->saveweights = NULL;
+    l->saveweightsgpu = NULL;
+
     fprintf(stderr, "Dropout   Layer    :    [probability=%.2f]\n", l->probability);
     return l;
 }

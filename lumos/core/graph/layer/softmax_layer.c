@@ -20,6 +20,9 @@ Layer *make_softmax_layer(int group)
     l->update = NULL;
     l->updategpu = NULL;
 
+    l->saveweights = NULL;
+    l->saveweightsgpu = NULL;
+
     fprintf(stderr, "Softmax         Layer    :    [output=%4d]\n", group);
     return l;
 }

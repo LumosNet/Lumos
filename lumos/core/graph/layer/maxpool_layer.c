@@ -22,6 +22,9 @@ Layer *make_maxpool_layer(int ksize, int stride, int pad)
     l->update = NULL;
     l->updategpu = NULL;
 
+    l->saveweights = NULL;
+    l->saveweightsgpu = NULL;
+
     fprintf(stderr, "Max Pooling     Layer    :    [ksize=%2d]\n", l->ksize);
     return l;
 }

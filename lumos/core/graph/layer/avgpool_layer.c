@@ -23,6 +23,9 @@ Layer *make_avgpool_layer(int ksize, int stride, int pad)
     l->update = NULL;
     l->updategpu = NULL;
 
+    l->saveweights = NULL;
+    l->saveweightsgpu = NULL;
+
     fprintf(stderr, "Avg Pooling     Layer    :    [ksize=%2d]\n", l->ksize);
     return l;
 }

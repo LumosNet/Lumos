@@ -19,6 +19,9 @@ Layer *make_im2col_layer()
     l->update = NULL;
     l->updategpu = NULL;
 
+    l->saveweights = NULL;
+    l->saveweightsgpu = NULL;
+
     fprintf(stderr, "Im2col          Layer\n");
     return l;
 }

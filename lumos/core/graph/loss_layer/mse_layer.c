@@ -20,6 +20,9 @@ Layer *make_mse_layer(int group)
     l->update = NULL;
     l->updategpu = NULL;
 
+    l->saveweights = NULL;
+    l->saveweightsgpu = NULL;
+
     fprintf(stderr, "Mse             Layer    :    [output=%4d]\n", 1);
     return l;
 }
