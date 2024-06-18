@@ -22,6 +22,7 @@ void init_convolutional_layer_gpu(Layer *l, int w, int h, int c, int subdivision
         cudaMalloc((void**)&l->bias_weights, l->filters*sizeof(float));
         cudaMalloc((void**)&l->update_bias_weights, l->filters*sizeof(float));
     }
+    if (l->normalize) init_normalization_layer_gpu(l, subdivision);
 
     fprintf(stderr, "Convolutional   Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
@@ -66,6 +67,7 @@ void weightinit_convolutional_layer_gpu(Layer l, FILE *fp)
     cudaMemcpy(l.kernel_weights, kernel_weights, l.filters*l.ksize*l.ksize*l.input_c*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(l.update_kernel_weights, kernel_weights, l.filters*l.ksize*l.ksize*l.input_c*sizeof(float), cudaMemcpyHostToDevice);
     free(kernel_weights);
+    if (l.normalize) weightinit_normalization_layer_gpu(l, fp);
 }
 
 void forward_convolutional_layer_gpu(Layer l, int num)
@@ -81,12 +83,18 @@ void forward_convolutional_layer_gpu(Layer l, int num)
         if (l.bias){
             add_bias_gpu(output, l.bias_weights, l.filters, l.output_h * l.output_w);
         }
+        if (l.normalize){
+            forward_normalization_layer_gpu(l, num);
+        }
         activate_list_gpu(output, l.outputs, l.active);
     }
 }
 
 void backward_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta)
 {
+    if (l.normalize){
+        backward_normalization_layer_gpu(l, rate, num, n_delta);
+    }
     for (int i = 0; i < num; ++i){
         int offset_i = i * l.inputs;
         int offset_o = i * l.outputs;
@@ -128,6 +136,7 @@ void update_convolutional_layer_weights_gpu(Layer l)
     if (l.bias){
         cudaMemcpy(l.bias_weights, l.update_bias_weights, l.filters*sizeof(float), cudaMemcpyDeviceToDevice);
     }
+    if (l.normalize) update_normalization_layer_weights_gpu(l);
 }
 
 void save_convolutional_layer_weights_gpu(Layer l, FILE *fp)
@@ -141,5 +150,8 @@ void save_convolutional_layer_weights_gpu(Layer l, FILE *fp)
         cudaMemcpy(bias_weights, l.bias_weights, l.filters*sizeof(float), cudaMemcpyDeviceToHost);
         fwrite(bias_weights, sizeof(float), l.filters, fp);
         free(bias_weights);
+    }
+    if (l.normalize){
+        save_normalization_layer_weights_gpu(l, fp);
     }
 }

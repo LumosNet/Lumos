@@ -99,6 +99,7 @@ struct layer{
     int group;
 
     int bias;
+    int normalize;
     // dropout 占比
     float probability;
 
@@ -111,16 +112,19 @@ struct layer{
     float *update_kernel_weights;
     float *update_bias_weights;
 
-    /*normalize层参数*/
-    int mean_size;
-    int variance_size;
-
     float *mean;
     float *variance;
     float *rolling_mean;
     float *rolling_variance;
     float *x_norm;
     float *normalize_x;
+    float *mean_delta;
+    float *variance_delta;
+
+    float *bn_scale;
+    float *bn_bias;
+    float *update_bn_scale;
+    float *update_bn_bias;
 
     Forward forward;
     Backward backward;
@@ -198,7 +202,7 @@ void append_layer2grpah(Graph *graph, Layer *l);
 
 Layer *make_avgpool_layer(int ksize, int stride, int pad);
 Layer *make_connect_layer(int output, int bias, char *active);
-Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, char *active);
+Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalize, char *active);
 Layer *make_dropout_layer(float probability);
 Layer *make_im2col_layer();
 Layer *make_maxpool_layer(int ksize, int stride, int pad);

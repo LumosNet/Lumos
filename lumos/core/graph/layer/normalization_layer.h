@@ -13,12 +13,13 @@
 extern "C" {
 #endif
 
-void init_normalization_layer(Layer *l, int w, int h, int c, int subdivision);
+void init_normalization_layer(Layer *l, int subdivision);
 void weightinit_normalization_layer(Layer l, FILE *fp);
 
 void forward_normalization_layer(Layer l, int num);
 void backward_normalization_layer(Layer l, float rate, int num, float *n_delta);
 void update_normalization_layer(Layer l, float rate, int num, float *n_delta);
+void update_normalization_layer_weights(Layer l);
 
 void save_normalization_layer_weights(Layer l, FILE *fp);
 

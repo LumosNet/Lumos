@@ -3,11 +3,11 @@
 void lenet5_mnist(char *type, char *path)
 {
     Graph *g = create_graph();
-    Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, "relu");
+    Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 0, "relu");
     Layer *l2 = make_avgpool_layer(2, 2, 0);
-    Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, "relu");
+    Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, 0, "relu");
     Layer *l4 = make_avgpool_layer(2, 2, 0);
-    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, "relu");
+    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, 0, "relu");
     Layer *l6 = make_im2col_layer();
     Layer *l7 = make_connect_layer(84, 1, "relu");
     Layer *l8 = make_connect_layer(10, 1, "relu");
@@ -32,11 +32,11 @@ void lenet5_mnist(char *type, char *path)
 void lenet5_mnist_detect(char*type, char *path)
 {
     Graph *g = create_graph();
-    Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, "relu");
+    Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 0, "relu");
     Layer *l2 = make_avgpool_layer(2, 2, 0);
-    Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, "relu");
+    Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, 0, "relu");
     Layer *l4 = make_avgpool_layer(2, 2, 0);
-    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, "relu");
+    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, 0, "relu");
     Layer *l6 = make_im2col_layer();
     Layer *l7 = make_connect_layer(84, 1, "relu");
     Layer *l8 = make_connect_layer(10, 1, "relu");

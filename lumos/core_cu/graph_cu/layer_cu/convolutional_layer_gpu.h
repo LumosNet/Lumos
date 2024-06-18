@@ -18,6 +18,7 @@
 #include "gemm_gpu.h"
 #include "im2col_gpu.h"
 #include "bias_gpu.h"
+#include "normalization_layer_gpu.h"
 
 #ifdef __cplusplus
 extern "C" {

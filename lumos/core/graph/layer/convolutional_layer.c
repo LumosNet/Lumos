@@ -1,6 +1,6 @@
 #include "convolutional_layer.h"
 
-Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, char *active)
+Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalize, char *active)
 {
     Layer *l = malloc(sizeof(Layer));
     l->type = CONVOLUTIONAL;
@@ -9,6 +9,7 @@ Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int
     l->stride = stride;
     l->pad = pad;
     l->bias = bias;
+    l->normalize = normalize;
 
     Activation type = load_activate_type(active);
     l->active = type;
@@ -57,6 +58,7 @@ void init_convolutional_layer(Layer *l, int w, int h, int c, int subdivision)
         l->bias_weights = calloc(l->filters, sizeof(float));
         l->update_bias_weights = calloc(l->filters, sizeof(float));
     }
+    if (l->normalize) init_normalization_layer(l, subdivision);
 
     fprintf(stderr, "Convolutional   Layer    %3d*%3d*%3d ==> %3d*%3d*%3d\n",
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
@@ -89,6 +91,7 @@ void weightinit_convolutional_layer(Layer l, FILE *fp)
         memcpy(l.update_bias_weights, l.bias_weights, l.filters*sizeof(float));
     }
     memcpy(l.update_kernel_weights, l.kernel_weights, l.filters*l.ksize*l.ksize*l.input_c*sizeof(float));
+    if (l.normalize) weightinit_normalization_layer(l, fp);
 }
 
 void forward_convolutional_layer(Layer l, int num)
@@ -104,12 +107,18 @@ void forward_convolutional_layer(Layer l, int num)
         if (l.bias){
             add_bias(output, l.bias_weights, l.filters, l.output_h * l.output_w);
         }
+        if (l.normalize){
+            forward_normalization_layer(l, num);
+        }
         activate_list(output, l.outputs, l.active);
     }
 }
 
 void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta)
 {
+    if (l.normalize){
+        backward_normalization_layer(l, rate, num, n_delta);
+    }
     for (int i = 0; i < num; ++i){
         int offset_i = i * l.inputs;
         int offset_o = i * l.outputs;
@@ -152,6 +161,7 @@ void update_convolutional_layer_weights(Layer l)
     if (l.bias){
         memcpy(l.bias_weights, l.update_bias_weights, l.filters*sizeof(float));
     }
+    if (l.normalize) update_normalization_layer_weights(l);
 }
 
 void save_convolutional_layer_weights(Layer l, FILE *fp)
@@ -159,5 +169,8 @@ void save_convolutional_layer_weights(Layer l, FILE *fp)
     fwrite(l.kernel_weights, sizeof(float), l.ksize*l.ksize*l.filters*l.input_c, fp);
     if (l.bias){
         fwrite(l.bias_weights, sizeof(float), l.filters, fp);
+    }
+    if (l.normalize){
+        save_normalization_layer_weights(l, fp);
     }
 }

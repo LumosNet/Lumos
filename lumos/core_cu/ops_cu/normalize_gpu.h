@@ -24,6 +24,9 @@ void gradient_normalize_mean_gpu(float *n_delta, float *variance, int h, int w, 
 void gradient_normalize_variance_gpu(float *n_delta, float *input, float *mean, float *variance, int h, int w, int c, float *variance_delta);
 void gradient_normalize_gpu(float *input, float *mean, float *variance, float *mean_delta, float *variance_delta, int h, int w, int c, float *n_delta, float *l_delta);
 
+void update_scale_gpu(float *output, float *delta, int h, int w, int c, float rate, float *space);
+void update_bias_gpu(float *delta, int h, int w, int c, float rate, float *space);
+
 #ifdef __cplusplus
 }
 #endif

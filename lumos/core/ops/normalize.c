@@ -33,7 +33,7 @@ void normalize_cpu(float *data, float *mean, float *variance, int h, int w, int 
         float *data_c = data + i*offset;
         float *space_c = space + i*offset;
         for (int j = 0; j < offset; ++j){
-            space_c[j] = (data_c[j] - mean[i]) / (sqrt(variance[i]) + .00001f);
+            space_c[j] = (data_c[j] - mean[i]) / (sqrt(variance[i] + .00001f));
         }
     }
 }
@@ -66,5 +66,27 @@ void gradient_normalize_cpu(float *input, float *mean, float *variance, float *m
         for (int j = 0; j < h*w; ++j){
             l_delta[i*h*w+j] = n_delta[i*h*w+j] * 1./(sqrt(variance[i] + .00001f)) + variance_delta[i] * 2. * (input[i*h*w+j] - mean[i]) / (h*w) + mean_delta[i]/(h*w);
         }
+    }
+}
+
+void update_scale(float *output, float *delta, int h, int w, int c, float rate, float *space)
+{
+    for (int i = 0; i < c; ++i){
+        float sum = 0;
+        for (int j = 0; j < h*w; ++j){
+            sum += output[i*h*w+j]*delta[i*h*w+j];
+        }
+        space[i] += rate * sum;
+    }
+}
+
+void update_bias(float *delta, int h, int w, int c, float rate, float *space)
+{
+    for (int i = 0; i < c; ++i){
+        float sum = 0;
+        for (int j = 0; j < h*w; ++j){
+            sum += delta[i*h*w+j];
+        }
+        space[i] += rate * sum;
     }
 }

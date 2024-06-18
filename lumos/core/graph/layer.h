@@ -84,6 +84,7 @@ struct layer{
     int group;
 
     int bias;
+    int normalize;
     // dropout 占比
     float probability;
 
