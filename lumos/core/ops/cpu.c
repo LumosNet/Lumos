@@ -137,3 +137,16 @@ void one_hot_encoding(int n, int label, float *space)
         space[label] = (float)1;
     }
 }
+
+int find_max(float *data, int num)
+{
+    int max_index = -1;
+    int max = -TMP_MAX;
+    for (int i = 0; i < num; ++i){
+        if (data[i] > max) {
+            max_index = i;
+            max = data[i];
+        }
+    }
+    return max_index;
+}

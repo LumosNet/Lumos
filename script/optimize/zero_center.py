@@ -20,19 +20,19 @@ def zero_center(path):
                     data += list(i[j])
             mean = sum(data) / len(data)
             data = [(data[i]-mean)/255 for i in range(len(data))]
-            with open('./build/data/'+name.split('.')[0], 'wb') as f:
+            with open('./build/new/'+name.split('.')[0], 'wb') as f:
                 pickle.dump(data, f)
                 f.close()
 
 def new_path(file):
     with open(file, "r") as fp:
-        with open("./build/train.txt", "w+") as fl:
+        with open("./build/path.txt", "w+") as fl:
             for line in fp.readlines():
-                path = "./build/data/" + line.split('/')[-1].split('.')[0]
+                path = "./build/new/" + line.split('/')[-1].split('.')[0]
                 fl.write(path+'\n')
             fl.close()
         fp.close()
 
-zero_center("./data/flower/train")
-new_path("./data/flower/label.txt")
+zero_center("./build/data")
+new_path("./build/train.txt")
 

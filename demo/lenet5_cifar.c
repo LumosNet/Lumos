@@ -1,6 +1,6 @@
-#include "lenet5.h"
+#include "lenet5_cifar.h"
 
-void lenet5(char *type, char *path)
+void lenet5_cifar(char *type, char *path)
 {
     Graph *g = create_graph();
     Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 0, "relu");
@@ -21,13 +21,13 @@ void lenet5(char *type, char *path)
     append_layer2grpah(g, l7);
     append_layer2grpah(g, l8);
     append_layer2grpah(g, l9);
-    Session *sess = create_session(g, 32, 32, 1, 10, type, path);
-    set_train_params(sess, 15, 4, 4, 0.01);
-    init_session(sess, "./data/mnist/train.txt", "./data/mnist/train_label.txt");
+    Session *sess = create_session(g, 32, 32, 3, 10, type, path);
+    set_train_params(sess, 1000, 64, 64, 0.001);
+    init_session(sess, "./data/cifar10/train.txt", "./data/cifar10/train_label.txt");
     train(sess, 0);
 }
 
-void lenet5_detect(char*type, char *path)
+void lenet5_cifar_detect(char*type, char *path)
 {
     Graph *g = create_graph();
     Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 0, "relu");
@@ -48,8 +48,8 @@ void lenet5_detect(char*type, char *path)
     append_layer2grpah(g, l7);
     append_layer2grpah(g, l8);
     append_layer2grpah(g, l9);
-    Session *sess = create_session(g, 32, 32, 1, 10, type, path);
+    Session *sess = create_session(g, 32, 32, 3, 10, type, path);
     set_detect_params(sess);
-    init_session(sess, "./data/mnist/test.txt", "./data/mnist/test_label.txt");
+    init_session(sess, "./data/cifar10/test.txt", "./data/cifar10/test_label.txt");
     detect_classification(sess, 0);
 }

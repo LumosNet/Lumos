@@ -1,7 +1,7 @@
 LINUX=1
 TEST=0
-DEBUG=0
-MEMDEBUG=0
+DEBUG=1
+MEMDEBUG=1
 
 ARCH=	-gencode arch=compute_52,code=[sm_52,compute_52] \
 		-gencode arch=compute_61,code=[sm_61,compute_61]
@@ -122,7 +122,7 @@ OBJ+=	im2col_call.o pooling_call.o
 endif
 
 ifeq ($(TEST), 0)
-OBJ+=	xor.o lenet5.o alexnet.o
+OBJ+=	xor.o lenet5.o alexnet.o lenet5_cifar.o
 endif
 
 ifeq ($(TEST),1)

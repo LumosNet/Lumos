@@ -21,5 +21,5 @@ def WritePathes(pathes):
             fp.write(new)
 
 if __name__ == "__main__":
-    scale("/home/lumos/Lumos/data/dogvscat/train", 256, 256)
+    scale("/home/lumos/Lumos/data/dogvscat/train", 224, 224)
     WritePathes("/home/lumos/Lumos/data/dogvscat/train.txt")
