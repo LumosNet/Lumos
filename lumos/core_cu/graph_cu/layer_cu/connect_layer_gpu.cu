@@ -27,7 +27,7 @@ void init_connect_layer_gpu(Layer *l, int w, int h, int c, int subdivision)
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
 }
 
-void weightinit_connect_layer_gpu(Layer l, FILE *fp)
+void weightinit_connect_layer_gpu(Layer l, InitCpt initcpt, FILE *fp)
 {
     if (fp){
         float *kernel_weights = (float*)calloc(l.inputs*l.outputs, sizeof(float));
@@ -44,21 +44,16 @@ void weightinit_connect_layer_gpu(Layer l, FILE *fp)
         }
         return;
     }
-    float *kernel_weights = (float*)calloc(l.inputs*l.outputs, sizeof(float));
-    float scale = sqrt((float)2 / l.inputs);
-    for (int i = 0; i < l.inputs*l.outputs; ++i){
-        kernel_weights[i] = scale*rand_uniform(-1, 1);
-    }
+    if (initcpt.initype == CONSTANT_I) connect_constant_init_gpu(l, initcpt.x);
+    else if (initcpt.initype == NORMAL_I) connect_normal_init_gpu(l, initcpt.mean, initcpt.std);
+    else connect_constant_init_gpu(l, 0);
     if (l.bias){
         float *bias_weights = (float*)calloc(l.outputs, sizeof(float));
-        fill_cpu(bias_weights, l.outputs, 0.001, 1);
+        fill_cpu(bias_weights, l.outputs, 0.0001, 1);
         cudaMemcpy(l.bias_weights, bias_weights, l.outputs*sizeof(float), cudaMemcpyHostToDevice);
         cudaMemcpy(l.update_bias_weights, bias_weights, l.outputs*sizeof(float), cudaMemcpyHostToDevice);
         free(bias_weights);
     }
-    cudaMemcpy(l.kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
-    cudaMemcpy(l.update_kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
-    free(kernel_weights);
 }
 
 void forward_connect_layer_gpu(Layer l, int num)
@@ -144,4 +139,26 @@ void free_connect_layer_gpu(Layer l)
         cudaFree(l.bias_weights);
         cudaFree(l.update_bias_weights);
     }
+}
+
+void connect_constant_init_gpu(Layer l, float x)
+{
+    float *kernel_weights = (float*)calloc(l.inputs*l.outputs, sizeof(float));
+    for (int i = 0; i < l.inputs*l.outputs; ++i){
+        kernel_weights[i] = x;
+    }
+    cudaMemcpy(l.kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(l.update_kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
+    free(kernel_weights);
+}
+
+void connect_normal_init_gpu(Layer l, float mean, float std)
+{
+    float *kernel_weights = (float*)calloc(l.inputs*l.outputs, sizeof(float));
+    for (int i = 0; i < l.inputs*l.outputs; ++i){
+        kernel_weights[i] = generate_normal(mean, std);
+    }
+    cudaMemcpy(l.kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(l.update_kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
+    free(kernel_weights);
 }

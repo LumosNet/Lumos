@@ -38,10 +38,10 @@ void init_graph(Graph *g, int w, int h, int c, int coretype, int subdivision, ch
             l = layer->l;
             if (coretype == GPU){
                 l->initializegpu(l, w, h, c, subdivision);
-                if (l->weightinitgpu) l->weightinitgpu(*l, fp);
+                if (l->weightinitgpu) l->weightinitgpu(*l, *g->initcpt, fp);
             } else {
                 l->initialize(l, w, h, c, subdivision);
-                if (l->weightinit) l->weightinit(*l, fp);
+                if (l->weightinit) l->weightinit(*l, *g->initcpt, fp);
             }
         } else {
             break;
@@ -162,4 +162,5 @@ void free_graph(Graph *g, int coretype)
         }
         layer = layer->next;
     }
+    free(g->initcpt);
 }

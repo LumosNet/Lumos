@@ -209,7 +209,7 @@ void train(Session *sess, int binary)
         }
         if ((i+1) % 100 == 0){
             char str[50];
-            sprintf(str, "./build/LW_%d", i+1);
+            sprintf(str, "./backup/LW_%d", i+1);
             FILE *fp = fopen(str, "wb");
             if (fp) {
                 save_weights(sess->graph, sess->coretype, fp);
@@ -218,7 +218,7 @@ void train(Session *sess, int binary)
         }
         rate = run_lrscheduler(sess->lrscheduler, rate, lr_max, i);
     }
-    FILE *fp = fopen("./build/LW_f", "wb");
+    FILE *fp = fopen("./backup/LW_f", "wb");
     if (fp) {
         save_weights(sess->graph, sess->coretype, fp);
         fclose(fp);
@@ -291,4 +291,23 @@ void lr_scheduler_cosineannealing(Session *sess, int T_max, float lr_min)
 {
     LrScheduler *lrscheduler = make_lrscheduler(CALR, 0, 0, NULL, T_max, lr_min, 0);
     sess->lrscheduler = lrscheduler;
+}
+
+void init_constant(Session *sess, float x)
+{
+    Graph *g = sess->graph;
+    InitCpt *initcpt = malloc(sizeof(InitCpt));
+    initcpt->initype = CONSTANT_I;
+    initcpt->x = x;
+    g->initcpt = initcpt;
+}
+
+void init_normal(Session *sess, float mean, float std)
+{
+    Graph *g = sess->graph;
+    InitCpt *initcpt = malloc(sizeof(InitCpt));
+    initcpt->initype = NORMAL_I;
+    initcpt->mean = mean;
+    initcpt->std = std;
+    g->initcpt = initcpt;
 }

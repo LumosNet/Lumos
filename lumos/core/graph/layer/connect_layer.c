@@ -61,7 +61,7 @@ void init_connect_layer(Layer *l, int w, int h, int c, int subdivision)
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
 }
 
-void weightinit_connect_layer(Layer l, FILE *fp)
+void weightinit_connect_layer(Layer l, InitCpt initcpt, FILE *fp)
 {
     if (fp){
         fread(l.kernel_weights, sizeof(float), l.outputs*l.inputs, fp);
@@ -72,15 +72,13 @@ void weightinit_connect_layer(Layer l, FILE *fp)
         }
         return;
     }
-    float scale = sqrt((float)2 / l.inputs);
-    for (int i = 0; i < l.inputs*l.outputs; ++i){
-        l.kernel_weights[i] = scale*rand_uniform(-1, 1);
-    }
+    if (initcpt.initype == CONSTANT_I) connect_constant_init(l, initcpt.x);
+    else if (initcpt.initype == NORMAL_I) connect_normal_init(l, initcpt.mean, initcpt.std);
+    else connect_constant_init(l, 0);
     if (l.bias){
-        fill_cpu(l.bias_weights, l.outputs, 0.001, 1);
-        memcpy(l.update_bias_weights, l.bias_weights, l.outputs*sizeof(float));
+        fill_cpu(l.bias_weights, l.outputs, 0.0001, 1);
+        fill_cpu(l.update_bias_weights, l.outputs, 0.0001, 1);
     }
-    memcpy(l.update_kernel_weights, l.kernel_weights, l.inputs*l.outputs*sizeof(float));
 }
 
 void forward_connect_layer(Layer l, int num)
@@ -158,4 +156,21 @@ void free_connect_layer(Layer l)
         free(l.bias_weights);
         free(l.update_bias_weights);
     }
+}
+
+void connect_constant_init(Layer l, float x)
+{
+    for (int i = 0; i < l.inputs*l.outputs; ++i){
+        l.kernel_weights[i] = x;
+    }
+    memcpy(l.update_kernel_weights, l.kernel_weights, l.inputs*l.outputs*sizeof(float));
+}
+
+void connect_normal_init(Layer l, float mean, float std)
+{
+    srand(time(NULL));
+    for (int i = 0; i < l.inputs*l.outputs; ++i){
+        l.kernel_weights[i] = generate_normal(mean, std);
+    }
+    memcpy(l.update_kernel_weights, l.kernel_weights, l.inputs*l.outputs*sizeof(float));
 }

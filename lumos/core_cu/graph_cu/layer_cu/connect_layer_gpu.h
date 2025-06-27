@@ -23,16 +23,16 @@ extern "C" {
 #endif
 
 void init_connect_layer_gpu(Layer *l, int w, int h, int c, int subdivision);
-void weightinit_connect_layer_gpu(Layer l, FILE *fp);
+void weightinit_connect_layer_gpu(Layer l, InitCpt initcpt, FILE *fp);
 void forward_connect_layer_gpu(Layer l, int num);
 void backward_connect_layer_gpu(Layer l, float rate, int num, float *n_delta);
-
 void update_connect_layer_gpu(Layer l, float rate, int num, float *n_delta);
 void update_connect_layer_weights_gpu(Layer l);
-
 void save_connect_layer_weights_gpu(Layer l, FILE *fp);
-
 void free_connect_layer_gpu(Layer l);
+
+void connect_constant_init_gpu(Layer l, float x);
+void connect_normal_init_gpu(Layer l, float mean, float std);
 
 #ifdef __cplusplus
 }

@@ -6,10 +6,13 @@
 
 int main()
 {
-    // alexnet("gpu", "./build/LW_f");
-    // alexnet_detect("gpu", "./build/LW_f");
+    alexnet("gpu", NULL);
+    alexnet_detect("gpu", "./backup/LW_f");
 
-    xor("gpu", NULL);
-    xor_detect("gpu", "./build/LW_f");
+    // xor("gpu", NULL);
+    // xor_detect("gpu", "./backup/LW_f");
+
+    // lenet5("gpu", NULL);
+    // lenet5_detect("gpu", "./backup/LW_f");
     return 0;
 }

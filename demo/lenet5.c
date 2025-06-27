@@ -3,13 +3,13 @@
 void lenet5(char *type, char *path)
 {
     Graph *g = create_graph();
-    Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 0, "relu");
+    Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 0, "logistic");
     Layer *l2 = make_maxpool_layer(2, 2, 0);
-    Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, 0, "relu");
+    Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, 0, "logistic");
     Layer *l4 = make_maxpool_layer(2, 2, 0);
-    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, 0, "relu");
-    Layer *l6 = make_connect_layer(84, 1, "relu");
-    Layer *l7 = make_connect_layer(10, 1, "relu");
+    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, 0, "logistic");
+    Layer *l6 = make_connect_layer(84, 1, "logistic");
+    Layer *l7 = make_connect_layer(10, 1, "logistic");
     Layer *l8 = make_softmax_layer(10);
     Layer *l9 = make_mse_layer(10);
     append_layer2grpah(g, l1);
@@ -23,6 +23,7 @@ void lenet5(char *type, char *path)
     append_layer2grpah(g, l9);
     Session *sess = create_session(g, 32, 32, 1, 10, type, path);
     set_train_params(sess, 15, 4, 4, 0.01);
+    init_normal(sess, 0, 1);
     init_session(sess, "./data/mnist/train.txt", "./data/mnist/train_label.txt");
     train(sess, 0);
 }
@@ -30,13 +31,13 @@ void lenet5(char *type, char *path)
 void lenet5_detect(char*type, char *path)
 {
     Graph *g = create_graph();
-    Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 0, "relu");
+    Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, 0, "logistic");
     Layer *l2 = make_maxpool_layer(2, 2, 0);
-    Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, 0, "relu");
+    Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, 0, "logistic");
     Layer *l4 = make_maxpool_layer(2, 2, 0);
-    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, 0, "relu");
-    Layer *l6 = make_connect_layer(84, 1, "relu");
-    Layer *l7 = make_connect_layer(10, 1, "relu");
+    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, 0, "logistic");
+    Layer *l6 = make_connect_layer(84, 1, "logistic");
+    Layer *l7 = make_connect_layer(10, 1, "logistic");
     Layer *l8 = make_softmax_layer(10);
     Layer *l9 = make_mse_layer(10);
     append_layer2grpah(g, l1);
@@ -50,6 +51,7 @@ void lenet5_detect(char*type, char *path)
     append_layer2grpah(g, l9);
     Session *sess = create_session(g, 32, 32, 1, 10, type, path);
     set_detect_params(sess);
+    init_normal(sess, 0, 1);
     init_session(sess, "./data/mnist/test.txt", "./data/mnist/test_label.txt");
     detect_classification(sess, 0);
 }

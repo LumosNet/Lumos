@@ -20,6 +20,18 @@ typedef enum {
     MSE, MAE, CE
 } LayerType;
 
+typedef enum {
+    CONSTANT_I, NORMAL_I
+} InitType;
+
+typedef struct initcpt{
+    InitType initype;
+    float x;
+    float mean;
+    float std;
+} initcpt, InitCpt;
+
+typedef struct initcpt InitCpt;
 typedef struct layer Layer;
 
 typedef void (*forward)  (struct layer, int);
@@ -41,9 +53,9 @@ typedef void (*initialize_gpu) (struct layer *, int, int, int, int);
 typedef initialize Initialize;
 typedef initialize_gpu InitializeGpu;
 
-typedef void (*weightinit) (struct layer, FILE*);
+typedef void (*weightinit) (struct layer, struct initcpt, FILE*);
 typedef weightinit WeightInit;
-typedef void (*weightinit_gpu) (struct layer, FILE*);
+typedef void (*weightinit_gpu) (struct layer, struct initcpt, FILE*);
 typedef weightinit_gpu WeightInitGpu;
 
 typedef void (*saveweights) (struct layer, FILE*);

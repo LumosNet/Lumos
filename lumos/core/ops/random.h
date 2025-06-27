@@ -22,8 +22,8 @@ void uniform_int_list(int a, int b, int num, float *space);
 
 float rand_normal();
 float rand_uniform(float min, float max);
-
 float rand_normal();
+double generate_normal(double mu, double sigma);
 
 #ifdef  __cplusplus
 }

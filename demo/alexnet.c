@@ -34,7 +34,8 @@ void alexnet(char *type, char *path)
     append_layer2grpah(g, l14);
     append_layer2grpah(g, l15);
     Session *sess = create_session(g, 224, 224, 3, 2, type, path);
-    set_train_params(sess, 10, 32, 32, 0.0001);
+    set_train_params(sess, 50, 32, 32, 0.0001);
+    init_normal(sess, 0, 0.01);
     init_session(sess, "./data/xray/train/train.txt", "./data/xray/train/label.txt");
     train(sess, 0);
 }
@@ -74,6 +75,7 @@ void alexnet_detect(char *type, char *path)
     append_layer2grpah(g, l15);
     Session *sess = create_session(g, 224, 224, 3, 2, type, path);
     set_detect_params(sess);
+    init_normal(sess, 0, 0.01);
     init_session(sess, "./data/xray/test/test.txt", "./data/xray/test/label.txt");
     detect_classification(sess, 0);
 }

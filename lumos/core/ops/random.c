@@ -1,5 +1,20 @@
 #include "random.h"
 
+void box_muller(double* z0, double* z1)
+{
+    double u1 = (double)rand() / RAND_MAX;
+    double u2 = (double)rand() / RAND_MAX;
+    *z0 = sqrt(-2 * log(u1)) * cos(2 * M_PI * u2);
+    *z1 = sqrt(-2 * log(u1)) * sin(2 * M_PI * u2);
+}
+
+double generate_normal(double mu, double sigma)
+{
+    double z0, z1;
+    box_muller(&z0, &z1);  // 生成两个标准正态分布的随机数
+    return mu + sigma * z0; // 转换为均值mu和标准差sigma的正态分布
+}
+
 float uniform_data(float a, float b, int *seed)
 {
 	float t;

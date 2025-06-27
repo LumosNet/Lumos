@@ -70,6 +70,9 @@ void lr_scheduler_multistep(Session *sess, int *milestones, int num, float gamma
 void lr_scheduler_exponential(Session *sess, float gamma);
 void lr_scheduler_cosineannealing(Session *sess, int T_max, float lr_min);
 
+void init_constant(Session *sess, float x);
+void init_normal(Session *sess, float mean, float std);
+
 #ifdef __cplusplus
 }
 #endif
