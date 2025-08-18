@@ -223,7 +223,8 @@ Layer *make_mse_layer(int group);
 Layer *make_mae_layer(int group);
 Layer *make_ce_layer(int group);
 
-void init_constant(Session *sess, float x);
-void init_normal(Session *sess, float mean, float std);
+void init_constant(Layer *l, float x);
+void init_normal(Layer *l, float mean, float std);
+void init_kaiming_normal(Layer *l, float a, char *mode, char *nonlinearity);
 
 #endif

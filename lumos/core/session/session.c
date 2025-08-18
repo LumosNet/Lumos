@@ -293,21 +293,29 @@ void lr_scheduler_cosineannealing(Session *sess, int T_max, float lr_min)
     sess->lrscheduler = lrscheduler;
 }
 
-void init_constant(Session *sess, float x)
+void init_constant(Layer *l, float x)
 {
-    Graph *g = sess->graph;
     InitCpt *initcpt = malloc(sizeof(InitCpt));
     initcpt->initype = CONSTANT_I;
     initcpt->x = x;
-    g->initcpt = initcpt;
+    l->initcpt = initcpt;
 }
 
-void init_normal(Session *sess, float mean, float std)
+void init_normal(Layer *l, float mean, float std)
 {
-    Graph *g = sess->graph;
     InitCpt *initcpt = malloc(sizeof(InitCpt));
     initcpt->initype = NORMAL_I;
     initcpt->mean = mean;
     initcpt->std = std;
-    g->initcpt = initcpt;
+    l->initcpt = initcpt;
+}
+
+void init_kaiming_normal(Layer *l, float a, char *mode, char *nonlinearity)
+{
+    InitCpt *initcpt = malloc(sizeof(InitCpt));
+    initcpt->initype = KAIMING_NORMAL_I;
+    initcpt->a = a;
+    initcpt->mode = mode;
+    initcpt->nonlinearity = nonlinearity;
+    l->initcpt = initcpt;
 }

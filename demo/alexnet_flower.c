@@ -1,6 +1,6 @@
-#include "alexnet.h"
+#include "alexnet_flower.h"
 
-void alexnet(char *type, char *path)
+void alexnet_flower(char *type, char *path)
 {
     Graph *g = create_graph();
     Layer *l1 = make_convolutional_layer(96, 11, 4, 0, 1, 0, "relu");
@@ -15,9 +15,9 @@ void alexnet(char *type, char *path)
     Layer *l10 = make_dropout_layer(0.5);
     Layer *l11 = make_connect_layer(4096, 1, "relu");
     Layer *l12 = make_dropout_layer(0.5);
-    Layer *l13 = make_connect_layer(2, 1, "linear");
-    Layer *l14 = make_softmax_layer(2);
-    Layer *l15 = make_mse_layer(2);
+    Layer *l13 = make_connect_layer(5, 1, "linear");
+    Layer *l14 = make_softmax_layer(5);
+    Layer *l15 = make_mse_layer(5);
     append_layer2grpah(g, l1);
     append_layer2grpah(g, l2);
     append_layer2grpah(g, l3);
@@ -33,14 +33,22 @@ void alexnet(char *type, char *path)
     append_layer2grpah(g, l13);
     append_layer2grpah(g, l14);
     append_layer2grpah(g, l15);
-    Session *sess = create_session(g, 224, 224, 3, 2, type, path);
-    set_train_params(sess, 200, 64, 64, 0.00001);
-    init_normal(sess, 0, 0.01);
-    init_session(sess, "./data/xray/train/train.txt", "./data/xray/train/label.txt");
+    init_kaiming_normal(l1, 0, "fan_out", "relu");
+    init_kaiming_normal(l3, 0, "fan_out", "relu");
+    init_kaiming_normal(l5, 0, "fan_out", "relu");
+    init_kaiming_normal(l6, 0, "fan_out", "relu");
+    init_kaiming_normal(l7, 0, "fan_out", "relu");
+
+    init_normal(l9, 0, 0.01);
+    init_normal(l11, 0, 0.01);
+    init_normal(l13, 0, 0.01);
+    Session *sess = create_session(g, 224, 224, 3, 5, type, path);
+    set_train_params(sess, 50, 64, 64, 0.001);
+    init_session(sess, "./data/flower/train.txt", "./data/flower/label.txt");
     train(sess, 0);
 }
 
-void alexnet_detect(char *type, char *path)
+void alexnet_flower_detect(char *type, char *path)
 {
     Graph *g = create_graph();
     Layer *l1 = make_convolutional_layer(96, 11, 4, 0, 1, 0, "relu");
@@ -55,9 +63,9 @@ void alexnet_detect(char *type, char *path)
     Layer *l10 = make_dropout_layer(0.5);
     Layer *l11 = make_connect_layer(4096, 1, "relu");
     Layer *l12 = make_dropout_layer(0.5);
-    Layer *l13 = make_connect_layer(2, 1, "linear");
-    Layer *l14 = make_softmax_layer(2);
-    Layer *l15 = make_mse_layer(2);
+    Layer *l13 = make_connect_layer(5, 1, "linear");
+    Layer *l14 = make_softmax_layer(5);
+    Layer *l15 = make_mse_layer(5);
     append_layer2grpah(g, l1);
     append_layer2grpah(g, l2);
     append_layer2grpah(g, l3);
@@ -73,9 +81,8 @@ void alexnet_detect(char *type, char *path)
     append_layer2grpah(g, l13);
     append_layer2grpah(g, l14);
     append_layer2grpah(g, l15);
-    Session *sess = create_session(g, 224, 224, 3, 2, type, path);
+    Session *sess = create_session(g, 224, 224, 3, 5, type, path);
     set_detect_params(sess);
-    init_normal(sess, 0, 0.01);
     init_session(sess, "./data/xray/test/test.txt", "./data/xray/test/label.txt");
     detect_classification(sess, 0);
 }

@@ -25,7 +25,7 @@ extern "C" {
 #endif
 
 void init_convolutional_layer_gpu(Layer *l, int w, int h, int c, int subdivision);
-void weightinit_convolutional_layer_gpu(Layer l, InitCpt initcpt, FILE *fp);
+void weightinit_convolutional_layer_gpu(Layer l, FILE *fp);
 void forward_convolutional_layer_gpu(Layer l, int num);
 void backward_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta);
 void update_convolutional_layer_gpu(Layer l, float rate, int num, float *n_delta);
@@ -35,6 +35,7 @@ void free_convolutional_layer_gpu(Layer l);
 
 void convolutional_constant_init_gpu(Layer l, float x);
 void convolutional_normal_init_gpu(Layer l, float mean, float std);
+void convolutional_kaiming_normal_init_gpu(Layer l, float a, char *mode, char *nonlinearity);
 
 #ifdef __cplusplus
 }

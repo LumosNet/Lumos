@@ -21,7 +21,7 @@ typedef enum {
 } LayerType;
 
 typedef enum {
-    CONSTANT_I, NORMAL_I
+    CONSTANT_I, NORMAL_I, KAIMING_NORMAL_I
 } InitType;
 
 typedef struct initcpt{
@@ -29,6 +29,9 @@ typedef struct initcpt{
     float x;
     float mean;
     float std;
+    float a;
+    char *mode;
+    char *nonlinearity;
 } initcpt, InitCpt;
 
 typedef struct initcpt InitCpt;
@@ -53,9 +56,9 @@ typedef void (*initialize_gpu) (struct layer *, int, int, int, int);
 typedef initialize Initialize;
 typedef initialize_gpu InitializeGpu;
 
-typedef void (*weightinit) (struct layer, struct initcpt, FILE*);
+typedef void (*weightinit) (struct layer, FILE*);
 typedef weightinit WeightInit;
-typedef void (*weightinit_gpu) (struct layer, struct initcpt, FILE*);
+typedef void (*weightinit_gpu) (struct layer, FILE*);
 typedef weightinit_gpu WeightInitGpu;
 
 typedef void (*saveweights) (struct layer, FILE*);
@@ -149,6 +152,8 @@ struct layer{
 
     FreeLayer freelayer;
     FreeLayerGpu freelayergpu;
+
+    InitCpt *initcpt;
 };
 
 #ifdef __cplusplus

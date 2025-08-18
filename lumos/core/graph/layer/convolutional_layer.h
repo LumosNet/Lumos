@@ -20,7 +20,7 @@ extern "C"{
 
 Layer *make_convolutional_layer(int filters, int ksize, int stride, int pad, int bias, int normalize, char *active);
 void init_convolutional_layer(Layer *l, int w, int h, int c, int subdivision);
-void weightinit_convolutional_layer(Layer l, InitCpt initcpt, FILE *fp);
+void weightinit_convolutional_layer(Layer l, FILE *fp);
 
 void forward_convolutional_layer(Layer l, int num);
 void backward_convolutional_layer(Layer l, float rate, int num, float *n_delta);
@@ -32,6 +32,7 @@ void free_convolutional_layer(Layer l);
 
 void convolutional_constant_init(Layer l, float x);
 void convolutional_normal_init(Layer l, float mean, float std);
+void convolutional_kaiming_normal_init(Layer l, float a, char *mode, char *nonlinearity);
 
 #ifdef __cplusplus
 }

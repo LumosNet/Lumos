@@ -1,18 +1,18 @@
-#include "lenet5_cifar.h"
-#include "alexnet.h"
-#include "xor.h"
-#include "binary_f.h"
-#include "lenet5.h"
+#include "alexnet_flower.h"
 
 int main()
 {
-    alexnet("gpu", NULL);
-    alexnet_detect("gpu", "./backup/LW_f");
+    // alexnet("gpu", "./backup/LW_f");
+    // alexnet_detect("gpu", "./backup/LW_f");
 
     // xor("gpu", NULL);
     // xor_detect("gpu", "./backup/LW_f");
 
     // lenet5("gpu", NULL);
     // lenet5_detect("gpu", "./backup/LW_f");
+
+    // lenet5_fmnist("gpu", NULL);
+
+    alexnet_flower("gpu", NULL);
     return 0;
 }

@@ -19,7 +19,6 @@ typedef struct graph{
     float *delta;
     Node *head;
     Node *tail;
-    InitCpt *initcpt;
 } graph, Graph;
 
 struct node{

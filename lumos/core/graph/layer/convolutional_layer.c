@@ -67,7 +67,7 @@ void init_convolutional_layer(Layer *l, int w, int h, int c, int subdivision)
             l->input_w, l->input_h, l->input_c, l->output_w, l->output_h, l->output_c);
 }
 
-void weightinit_convolutional_layer(Layer l, InitCpt initcpt, FILE *fp)
+void weightinit_convolutional_layer(Layer l, FILE *fp)
 {
     if (fp){
         fread(l.kernel_weights, sizeof(float), l.filters*l.ksize*l.ksize*l.input_c, fp);
@@ -78,8 +78,10 @@ void weightinit_convolutional_layer(Layer l, InitCpt initcpt, FILE *fp)
         }
         return;
     }
+    InitCpt initcpt = *l.initcpt;
     if (initcpt.initype == CONSTANT_I) convolutional_constant_init(l, initcpt.x);
     else if (initcpt.initype == NORMAL_I) convolutional_normal_init(l, initcpt.mean, initcpt.std);
+    else if (initcpt.initype == KAIMING_NORMAL_I) convolutional_kaiming_normal_init(l, initcpt.a, initcpt.mode, initcpt.nonlinearity);
     else convolutional_constant_init(l, 0);
     if (l.bias){
         fill_cpu(l.bias_weights, l.filters, 0.0001, 1);
@@ -205,6 +207,30 @@ void convolutional_normal_init(Layer l, float mean, float std)
         float *weight = l.kernel_weights + i*l.input_c*l.ksize*l.ksize;
         for (int j = 0; j < l.ksize*l.ksize; ++j){
             weight[j] = generate_normal(mean, std);
+        }
+        for (int j = 0; j < l.input_c-1; ++j){
+            float *weight_c = weight + (j+1)*l.ksize*l.ksize;
+            memcpy(weight_c, weight, l.ksize*l.ksize*sizeof(float));
+        }
+    }
+    memcpy(l.update_kernel_weights, l.kernel_weights, l.filters*l.ksize*l.ksize*l.input_c*sizeof(float));
+}
+
+void convolutional_kaiming_normal_init(Layer l, float a, char *mode, char *nonlinearity)
+{
+    if (0 == strcmp(nonlinearity, "relu")) a = 0;
+    else if (0 == strcmp(nonlinearity, "leaky relu")) a = 0.1;
+    else a = 0;
+    int num = 0;
+    if (0 == strcmp(mode, "fan_in")) num = l.ksize*l.ksize*l.input_c;
+    else if (0 == strcmp(mode, "fan_out")) num = l.ksize*l.ksize*l.output_c;
+    else num = l.ksize*l.ksize*l.input_c;
+    float scale = sqrt((float)2/(1+a*a)*num);
+    srand(time(NULL));
+    for (int i = 0; i < l.filters; ++i){
+        float *weight = l.kernel_weights + i*l.input_c*l.ksize*l.ksize;
+        for (int j = 0; j < l.ksize*l.ksize; ++j){
+            weight[j] = scale*generate_normal(0, 1);
         }
         for (int j = 0; j < l.input_c-1; ++j){
             float *weight_c = weight + (j+1)*l.ksize*l.ksize;

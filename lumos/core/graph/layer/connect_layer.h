@@ -18,7 +18,7 @@ extern "C" {
 
 Layer *make_connect_layer(int output, int bias, char *active);
 void init_connect_layer(Layer *l, int w, int h, int c, int subdivision);
-void weightinit_connect_layer(Layer l, InitCpt initcpt, FILE *fp);
+void weightinit_connect_layer(Layer l, FILE *fp);
 
 void forward_connect_layer(Layer l, int num);
 void backward_connect_layer(Layer l, float rate, int num, float *n_delta);
@@ -30,6 +30,7 @@ void free_connect_layer(Layer l);
 
 void connect_constant_init(Layer l, float x);
 void connect_normal_init(Layer l, float mean, float std);
+void connect_kaiming_normal_init(Layer l, float a, char *mode, char *nonlinearity);
 
 #ifdef __cplusplus
 }
