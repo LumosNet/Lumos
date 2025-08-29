@@ -119,10 +119,12 @@ OBJ+= 	avgpool_layer_call.o connect_layer_call.o mse_layer_call.o
 OBJ+= 	avgpool_layer_gpu_call.o connect_layer_gpu_call.o mse_layer_gpu_call.o
 
 OBJ+=	im2col_call.o pooling_call.o
+
+OBJ+=	layer_delta_call.o
 endif
 
 ifeq ($(TEST), 0)
-OBJ+=	alexnet_flower.o
+OBJ+=	xor.o lenet5_mnist.o
 endif
 
 ifeq ($(TEST),1)

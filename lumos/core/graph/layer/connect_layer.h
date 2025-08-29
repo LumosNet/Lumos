@@ -30,7 +30,9 @@ void free_connect_layer(Layer l);
 
 void connect_constant_init(Layer l, float x);
 void connect_normal_init(Layer l, float mean, float std);
+void connect_uniform_init(Layer l, float min, float max);
 void connect_kaiming_normal_init(Layer l, float a, char *mode, char *nonlinearity);
+void connect_kaiming_uniform_init(Layer l, float a, char *mode, char *nonlinearity);
 
 #ifdef __cplusplus
 }

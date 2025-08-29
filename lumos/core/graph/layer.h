@@ -21,7 +21,7 @@ typedef enum {
 } LayerType;
 
 typedef enum {
-    CONSTANT_I, NORMAL_I, KAIMING_NORMAL_I
+    CONSTANT_I, NORMAL_I, UNIFORM_I, KAIMING_NORMAL_I, KAIMING_UNIFORM_I
 } InitType;
 
 typedef struct initcpt{
@@ -30,6 +30,8 @@ typedef struct initcpt{
     float mean;
     float std;
     float a;
+    float min;
+    float max;
     char *mode;
     char *nonlinearity;
 } initcpt, InitCpt;

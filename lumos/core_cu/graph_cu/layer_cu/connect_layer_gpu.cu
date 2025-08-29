@@ -47,11 +47,13 @@ void weightinit_connect_layer_gpu(Layer l, FILE *fp)
     InitCpt initcpt = *l.initcpt;
     if (initcpt.initype == CONSTANT_I) connect_constant_init_gpu(l, initcpt.x);
     else if (initcpt.initype == NORMAL_I) connect_normal_init_gpu(l, initcpt.mean, initcpt.std);
+    else if (initcpt.initype == UNIFORM_I) connect_uniform_init_gpu(l, initcpt.min, initcpt.max);
     else if (initcpt.initype == KAIMING_NORMAL_I) connect_kaiming_normal_init_gpu(l, initcpt.a, initcpt.mode, initcpt.nonlinearity);
+    else if (initcpt.initype == KAIMING_UNIFORM_I) connect_kaiming_uniform_init_gpu(l, initcpt.a, initcpt.mode, initcpt.nonlinearity);
     else connect_constant_init_gpu(l, 0);
     if (l.bias){
         float *bias_weights = (float*)calloc(l.outputs, sizeof(float));
-        fill_cpu(bias_weights, l.outputs, 0.0001, 1);
+        fill_cpu(bias_weights, l.outputs, 0.001, 1);
         cudaMemcpy(l.bias_weights, bias_weights, l.outputs*sizeof(float), cudaMemcpyHostToDevice);
         cudaMemcpy(l.update_bias_weights, bias_weights, l.outputs*sizeof(float), cudaMemcpyHostToDevice);
         free(bias_weights);
@@ -156,10 +158,20 @@ void connect_constant_init_gpu(Layer l, float x)
 
 void connect_normal_init_gpu(Layer l, float mean, float std)
 {
-    srand(time(NULL));
     float *kernel_weights = (float*)calloc(l.inputs*l.outputs, sizeof(float));
     for (int i = 0; i < l.inputs*l.outputs; ++i){
         kernel_weights[i] = generate_normal(mean, std);
+    }
+    cudaMemcpy(l.kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(l.update_kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
+    free(kernel_weights);
+}
+
+void connect_uniform_init_gpu(Layer l, float min, float max)
+{
+    float *kernel_weights = (float*)calloc(l.inputs*l.outputs, sizeof(float));
+    for (int i = 0; i < l.inputs*l.outputs; ++i){
+        kernel_weights[i] = rand_uniform(min, max);
     }
     cudaMemcpy(l.kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(l.update_kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
@@ -174,12 +186,30 @@ void connect_kaiming_normal_init_gpu(Layer l, float a, char *mode, char *nonline
     int num = 0;
     if (0 == strcmp(mode, "fan_in")) num = l.inputs;
     else if (0 == strcmp(mode, "fan_out")) num = l.outputs;
-    else num = l.ksize*l.ksize*l.input_c;
+    else num = l.inputs;
     float scale = sqrt((float)2/(1+a*a)*num);
-    srand(time(NULL));
     float *kernel_weights = (float*)calloc(l.inputs*l.outputs, sizeof(float));
     for (int i = 0; i < l.inputs*l.outputs; ++i){
         kernel_weights[i] = scale*generate_normal(0, 1);
+    }
+    cudaMemcpy(l.kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(l.update_kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
+    free(kernel_weights);
+}
+
+void connect_kaiming_uniform_init_gpu(Layer l, float a, char *mode, char *nonlinearity)
+{
+    if (0 == strcmp(nonlinearity, "relu")) a = 0;
+    else if (0 == strcmp(nonlinearity, "leaky relu")) a = 0.1;
+    else a = 0;
+    int num = 0;
+    if (0 == strcmp(mode, "fan_in")) num = l.inputs;
+    else if (0 == strcmp(mode, "fan_out")) num = l.outputs;
+    else num = l.inputs;
+    float scale = sqrt((float)2/(1+a*a)*num);
+    float *kernel_weights = (float*)calloc(l.inputs*l.outputs, sizeof(float));
+    for (int i = 0; i < l.inputs*l.outputs; ++i){
+        kernel_weights[i] = scale*rand_uniform(-1, 1);
     }
     cudaMemcpy(l.kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(l.update_kernel_weights, kernel_weights, l.inputs*l.outputs*sizeof(float), cudaMemcpyHostToDevice);

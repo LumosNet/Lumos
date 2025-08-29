@@ -33,8 +33,8 @@ void alexnet(char *type, char *path)
     append_layer2grpah(g, l13);
     append_layer2grpah(g, l14);
     append_layer2grpah(g, l15);
-    Session *sess = create_session(g, 224, 224, 3, 2, type, path);
-    set_train_params(sess, 200, 64, 64, 0.00001);
+    Session *sess = create_session(g, 224, 224, 1, 2, type, path);
+    set_train_params(sess, 200, 32, 32, 0.0001);
     init_normal(sess, 0, 0.01);
     init_session(sess, "./data/xray/train/train.txt", "./data/xray/train/label.txt");
     train(sess, 0);

@@ -177,13 +177,14 @@ void train(Session *sess, int binary)
     fprintf(stderr, "\nSession Start To Running\n");
     float rate = -sess->learning_rate / (float)sess->batch;
     float lr_max = rate;
-    float *loss = calloc(1, sizeof(float));
+    float *loss = calloc(2, sizeof(float));
     clock_t start, final;
     double run_time = 0;
     Graph *g = sess->graph;
     g->status = 1;
     for (int i = 0; i < sess->epoch; ++i){
         fprintf(stderr, "\n\nEpoch %d/%d\n", i + 1, sess->epoch);
+        loss[0] = 0;
         start = clock();
         int sub_epochs = (int)(sess->train_data_num / sess->batch);
         int sub_batchs = (int)(sess->batch / sess->subdivision);
@@ -199,14 +200,16 @@ void train(Session *sess, int binary)
                 run_time = (double)(final - start) / CLOCKS_PER_SEC;
                 if (sess->coretype == CPU) {
                     run_time /= 10;
-                    loss[0] = sess->loss[0];
+                    loss[0] += sess->loss[0];
                 } else{
-                    cudaMemcpy(loss, sess->loss, sizeof(float), cudaMemcpyDeviceToHost);
+                    cudaMemcpy(loss+1, sess->loss, sizeof(float), cudaMemcpyDeviceToHost);
+                    loss[0] += loss[1];
                 }
-                progress_bar(j * sub_batchs + k + 1, sub_epochs * sub_batchs, run_time, loss[0]);
+                progress_bar(j * sub_batchs + k + 1, sub_epochs * sub_batchs, run_time);
             }
             update_graph(sess->graph, sess->coretype);
         }
+        fprintf(stderr, " AvgLoss:%.3f", loss[0]);
         if ((i+1) % 100 == 0){
             char str[50];
             sprintf(str, "./backup/LW_%d", i+1);
@@ -310,10 +313,29 @@ void init_normal(Layer *l, float mean, float std)
     l->initcpt = initcpt;
 }
 
+void init_uniform(Layer *l, float min, float max)
+{
+    InitCpt *initcpt = malloc(sizeof(InitCpt));
+    initcpt->initype = UNIFORM_I;
+    initcpt->min = min;
+    initcpt->max = max;
+    l->initcpt = initcpt;
+}
+
 void init_kaiming_normal(Layer *l, float a, char *mode, char *nonlinearity)
 {
     InitCpt *initcpt = malloc(sizeof(InitCpt));
     initcpt->initype = KAIMING_NORMAL_I;
+    initcpt->a = a;
+    initcpt->mode = mode;
+    initcpt->nonlinearity = nonlinearity;
+    l->initcpt = initcpt;
+}
+
+void init_kaiming_uniform(Layer *l, float a, char *mode, char *nonlinearity)
+{
+    InitCpt *initcpt = malloc(sizeof(InitCpt));
+    initcpt->initype = KAIMING_UNIFORM_I;
     initcpt->a = a;
     initcpt->mode = mode;
     initcpt->nonlinearity = nonlinearity;

@@ -72,7 +72,9 @@ void lr_scheduler_cosineannealing(Session *sess, int T_max, float lr_min);
 
 void init_constant(Layer *l, float x);
 void init_normal(Layer *l, float mean, float std);
+void init_uniform(Layer *l, float min, float max);
 void init_kaiming_normal(Layer *l, float a, char *mode, char *nonlinearity);
+void init_kaiming_uniform(Layer *l, float a, char *mode, char *nonlinearity);
 
 #ifdef __cplusplus
 }
