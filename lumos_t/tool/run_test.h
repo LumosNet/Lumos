@@ -12,7 +12,6 @@
 #include "utest.h"
 #include "compare.h"
 #include "logging.h"
-
 #include "text_f.h"
 
 #include "bias_call.h"
@@ -21,6 +20,12 @@
 #include "im2col_call.h"
 #include "image_call.h"
 #include "pooling_call.h"
+
+#include "bias_gpu_call.h"
+#include "cpu_gpu_call.h"
+#include "gemm_gpu_call.h"
+#include "im2col_gpu_call.h"
+#include "pooling_gpu_call.h"
 
 #ifdef  __cplusplus
 extern "C" {
@@ -32,7 +37,8 @@ extern "C" {
 
 int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype, FILE *logfp);
 int run_all_benchmark(int coretype, FILE *logfp);
-TestInterface get_interface(char *name);
+TestInterface get_interface_cpu(char *name);
+TestInterface get_interface_gpu(char *name);
 
 #ifdef __cplusplus
 }

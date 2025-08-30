@@ -18,6 +18,7 @@ extern "C" {
 #endif
 
 void call_add_bias_gpu(void **params, void **ret);
+void call_scale_bias_gpu(void **params, void **ret);
 
 #ifdef __cplusplus
 }

@@ -28,6 +28,7 @@ void matrix_divide_cpu(float *data_a, float *data_b, int num, float *space);
 void saxpy_cpu(float *data_a, float *data_b, int num, float x, float *space);
 void sum_channel_cpu(float *data, int h, int w, int c, float ALPHA, float *space);
 
+// 暂未使用
 void one_hot_encoding(int n, int label, float *space);
 
 #ifdef __cplusplus

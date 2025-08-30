@@ -12,6 +12,7 @@ extern "C" {
 #endif
 
 void call_add_bias(void **params, void **ret);
+void call_scale_bias(void **params, void **ret);
 
 #ifdef __cplusplus
 }

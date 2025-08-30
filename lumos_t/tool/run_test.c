@@ -2,6 +2,7 @@
 
 int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype, FILE *logfp)
 {
+    if (0 == strcmp(path, "NULL")) return -1;
     cJSON *CJbenchmark = NULL;
     cJSON *CJpublic = NULL;
     cJSON *CJsinglebench = NULL;
@@ -110,9 +111,14 @@ int run_all_benchmark(int coretype, FILE *logfp)
     int *index = split(tmp, '\n');
     int lines = index[0];
     char *interface_line = NULL;
+    int *interface_index = NULL;
+    TestInterface FUNC = NULL;
     for (int i = 0; i < lines; ++i){
         interface_line = tmp+index[i+1];
-        printf("%s\n", interface_line);
+        interface_index = split(interface_line, ' ');
+        if (coretype == CPU) FUNC = get_interface_cpu(interface_line+interface_index[1]);
+        else if (coretype == GPU) FUNC = get_interface_gpu(interface_line+interface_index[1]);;
+        run_by_benchmark_file(interface_line+interface_index[2], FUNC, coretype, logfp);
     }
     return 0;
 }
@@ -120,6 +126,7 @@ int run_all_benchmark(int coretype, FILE *logfp)
 TestInterface get_interface_cpu(char *name)
 {
     if (0 == strcmp(name, "add_bias")) return call_add_bias;
+    else if (0 == strcmp(name, "scale_bias")) return call_scale_bias;
     else if (0 == strcmp(name, "fill_cpu")) return call_fill_cpu;
     else if (0 == strcmp(name, "multy_cpu")) return call_multy_cpu;
     else if (0 == strcmp(name, "add_cpu")) return call_add_cpu;
@@ -127,5 +134,59 @@ TestInterface get_interface_cpu(char *name)
     else if (0 == strcmp(name, "max_cpu")) return call_max_cpu;
     else if (0 == strcmp(name, "sum_cpu")) return call_sum_cpu;
     else if (0 == strcmp(name, "mean_cpu")) return call_mean_cpu;
+    else if (0 == strcmp(name, "matrix_add_cpu")) return call_matrix_add_cpu;
+    else if (0 == strcmp(name, "matrix_subtract_cpu")) return call_matrix_subtract_cpu;
+    else if (0 == strcmp(name, "matrix_multiply_cpu")) return call_matrix_multiply_cpu;
+    else if (0 == strcmp(name, "matrix_divide_cpu")) return call_matrix_divide_cpu;
+    else if (0 == strcmp(name, "saxpy_cpu")) return call_saxpy_cpu;
+    else if (0 == strcmp(name, "sum_channel_cpu")) return call_sum_channel_cpu;
+    else if (0 == strcmp(name, "one_hot_encoding")) return call_one_hot_encoding;
+    else if (0 == strcmp(name, "gemm")) return call_gemm;
+    else if (0 == strcmp(name, "gemm_nn")) return call_gemm_nn;
+    else if (0 == strcmp(name, "gemm_tn")) return call_gemm_tn;
+    else if (0 == strcmp(name, "gemm_nt")) return call_gemm_nt;
+    else if (0 == strcmp(name, "gemm_tt")) return call_gemm_tt;
+    else if (0 == strcmp(name, "im2col")) return call_im2col;
+    else if (0 == strcmp(name, "col2im")) return call_col2im;
+    else if (0 == strcmp(name, "census_image_pixel")) return call_census_image_pixel;
+    else if (0 == strcmp(name, "census_channel_pixel")) return call_census_channel_pixel;
+    else if (0 == strcmp(name, "load_image_data")) return call_load_image_data;
+    else if (0 == strcmp(name, "save_image_data")) return call_save_image_data;
+    else if (0 == strcmp(name, "resize_im")) return call_resize_im;
+    else if (0 == strcmp(name, "avgpool")) return call_avgpool;
+    else if (0 == strcmp(name, "maxpool")) return call_maxpool;
+    else if (0 == strcmp(name, "avgpool_gradient")) return call_avgpool_gradient;
+    else if (0 == strcmp(name, "maxpool_gradient")) return call_maxpool_gradient;
+    else return NULL;
+}
+
+TestInterface get_interface_gpu(char *name)
+{
+    if (0 == strcmp(name, "add_bias")) return call_add_bias_gpu;
+    else if (0 == strcmp(name, "scale_bias")) return call_scale_bias_gpu;
+    else if (0 == strcmp(name, "fill_cpu")) return call_fill_gpu;
+    else if (0 == strcmp(name, "multy_cpu")) return call_multy_gpu;
+    else if (0 == strcmp(name, "add_cpu")) return call_add_gpu;
+    else if (0 == strcmp(name, "min_cpu")) return call_min_gpu;
+    else if (0 == strcmp(name, "max_cpu")) return call_max_gpu;
+    else if (0 == strcmp(name, "sum_cpu")) return call_sum_gpu;
+    else if (0 == strcmp(name, "mean_cpu")) return call_mean_gpu;
+    else if (0 == strcmp(name, "matrix_add_cpu")) return call_matrix_add_gpu;
+    else if (0 == strcmp(name, "matrix_subtract_cpu")) return call_matrix_subtract_gpu;
+    else if (0 == strcmp(name, "matrix_multiply_cpu")) return call_matrix_multiply_gpu;
+    else if (0 == strcmp(name, "matrix_divide_cpu")) return call_matrix_divide_gpu;
+    else if (0 == strcmp(name, "saxpy_cpu")) return call_saxpy_gpu;
+    else if (0 == strcmp(name, "sum_channel_cpu")) return call_sum_channel_gpu;
+    else if (0 == strcmp(name, "gemm")) return call_gemm_gpu;
+    else if (0 == strcmp(name, "gemm_nn")) return call_gemm_nn_gpu;
+    else if (0 == strcmp(name, "gemm_tn")) return call_gemm_tn_gpu;
+    else if (0 == strcmp(name, "gemm_nt")) return call_gemm_nt_gpu;
+    else if (0 == strcmp(name, "gemm_tt")) return call_gemm_tt_gpu;
+    else if (0 == strcmp(name, "im2col")) return call_im2col_gpu;
+    else if (0 == strcmp(name, "col2im")) return call_col2im_gpu;
+    else if (0 == strcmp(name, "avgpool")) return call_avgpool_gpu;
+    else if (0 == strcmp(name, "maxpool")) return call_maxpool_gpu;
+    else if (0 == strcmp(name, "avgpool_gradient")) return call_avgpool_gradient_gpu;
+    else if (0 == strcmp(name, "maxpool_gradient")) return call_maxpool_gradient_gpu;
     else return NULL;
 }
