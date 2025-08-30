@@ -57,8 +57,6 @@ int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype, FILE *lo
             FUNC(space, ret);
         }
         fprintf(stderr, "  Running test case \e[0;32mFINISH\e[0m\n");
-        logging_info(logfp, interface, 0);
-        logging_info(logfp, cases[i], 0);
         for (int j = 0; j < compares_num; ++j){
             if (coretype == CPU){
                 flag = compare_array(compare[j], ret[j], compares_types[j], compares_num_list[j], logfp);
@@ -68,6 +66,10 @@ int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype, FILE *lo
             if (flag == 1){
                 fprintf(stderr, "  Interface %s: %s \e[0;32mPASS\e[0m\n", interface, compares[j]);
             } else {
+                logging_msg(3, "Compare Data:\n", logfp);
+                logging_data(compares_types[j], compare[j], 1, compares_num_list[j], 1, logfp);
+                logging_msg(3, "Return Data:\n", logfp);
+                logging_data(compares_types[j], ret[j], 1, compares_num_list[j], 1, logfp);
                 fprintf(stderr, "  Interface %s: %s \e[0;31mFAIL\e[0m\n", interface, compares[j]);
                 all_flag = 0;
             }
@@ -103,7 +105,7 @@ int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype, FILE *lo
 
 int run_all_benchmark(int coretype, FILE *logfp)
 {
-    char *interface_list = "./lumos_t/benchmark/all"
+    char *interface_list = "./lumos_t/benchmark/all";
     char *tmp = fget(interface_list);
     int *index = split(tmp, '\n');
     int lines = index[0];
@@ -123,7 +125,7 @@ TestInterface get_interface_cpu(char *name)
     else if (0 == strcmp(name, "add_cpu")) return call_add_cpu;
     else if (0 == strcmp(name, "min_cpu")) return call_min_cpu;
     else if (0 == strcmp(name, "max_cpu")) return call_max_cpu;
-    else if (0 == strcmp(name, "sum_cpu")) return call_sum_gpu;
+    else if (0 == strcmp(name, "sum_cpu")) return call_sum_cpu;
     else if (0 == strcmp(name, "mean_cpu")) return call_mean_cpu;
     else return NULL;
 }
