@@ -13,6 +13,15 @@
 #include "compare.h"
 #include "logging.h"
 
+#include "text_f.h"
+
+#include "bias_call.h"
+#include "cpu_call.h"
+#include "gemm_call.h"
+#include "im2col_call.h"
+#include "image_call.h"
+#include "pooling_call.h"
+
 #ifdef  __cplusplus
 extern "C" {
 #endif
@@ -22,6 +31,8 @@ extern "C" {
 #define ALL 2
 
 int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype, FILE *logfp);
+int run_all_benchmark(int coretype, FILE *logfp);
+TestInterface get_interface(char *name);
 
 #ifdef __cplusplus
 }

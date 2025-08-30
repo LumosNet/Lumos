@@ -100,3 +100,30 @@ int run_by_benchmark_file(char *path, TestInterface FUNC, int coretype, FILE *lo
     free(compares_types);
     return all_flag;
 }
+
+int run_all_benchmark(int coretype, FILE *logfp)
+{
+    char *interface_list = "./lumos_t/benchmark/all"
+    char *tmp = fget(interface_list);
+    int *index = split(tmp, '\n');
+    int lines = index[0];
+    char *interface_line = NULL;
+    for (int i = 0; i < lines; ++i){
+        interface_line = tmp+index[i+1];
+        printf("%s\n", interface_line);
+    }
+    return 0;
+}
+
+TestInterface get_interface_cpu(char *name)
+{
+    if (0 == strcmp(name, "add_bias")) return call_add_bias;
+    else if (0 == strcmp(name, "fill_cpu")) return call_fill_cpu;
+    else if (0 == strcmp(name, "multy_cpu")) return call_multy_cpu;
+    else if (0 == strcmp(name, "add_cpu")) return call_add_cpu;
+    else if (0 == strcmp(name, "min_cpu")) return call_min_cpu;
+    else if (0 == strcmp(name, "max_cpu")) return call_max_cpu;
+    else if (0 == strcmp(name, "sum_cpu")) return call_sum_gpu;
+    else if (0 == strcmp(name, "mean_cpu")) return call_mean_cpu;
+    else return NULL;
+}

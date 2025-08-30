@@ -1,5 +1,5 @@
 LINUX=1
-TEST=0
+TEST=1
 DEBUG=0
 MEMDEBUG=0
 
@@ -113,11 +113,8 @@ EXECOBJA=lumos.o
 ifeq ($(TEST), 1)
 OBJ+=   analysis_benchmark_file.o compare.o run_test.o test_msg.o utest.o cJSON.o cJSON_Utils.o logging.o
 
-OBJ+= 	avgpool_layer_call.o connect_layer_call.o mse_layer_call.o
-
-OBJ+= 	avgpool_layer_gpu_call.o connect_layer_gpu_call.o mse_layer_gpu_call.o
-
-OBJ+=	im2col_call.o pooling_call.o
+OBJ+= 	bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_call.o \
+		bias_gpu_call.o cpu_gpu_call.o gemm_gpu_call.o im2col_gpu_call.o pooling_gpu_call.o
 endif
 
 ifeq ($(TEST), 0)

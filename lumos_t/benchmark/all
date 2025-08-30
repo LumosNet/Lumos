@@ -1,0 +1,8 @@
+add_bias ./lumos_t/benchmark/core/ops/bias/add_bias.json
+fill_cpu ./lumos_t/benchmark/core/ops/cpu/fill_cpu.json
+multy_cpu ./lumos_t/benchmark/core/ops/cpu/multy_cpu.json
+add_cpu ./lumos_t/benchmark/core/ops/cpu/add_cpu.json
+min_cpu ./lumos_t/benchmark/core/ops/cpu/min_cpu.json
+max_cpu ./lumos_t/benchmark/core/ops/cpu/max_cpu.json
+sum_cpu ./lumos_t/benchmark/core/ops/cpu/sum_cpu.json
+mean_cpu ./lumos_t/benchmark/core/ops/cpu/mean_cpu.json
