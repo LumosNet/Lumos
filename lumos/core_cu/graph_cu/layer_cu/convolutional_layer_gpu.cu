@@ -199,7 +199,7 @@ void convolutional_kaiming_normal_init_gpu(Layer l, float a, char *mode, char *n
     if (0 == strcmp(mode, "fan_in")) num = l.ksize*l.ksize*l.input_c;
     else if (0 == strcmp(mode, "fan_out")) num = l.ksize*l.ksize*l.output_c;
     else num = l.ksize*l.ksize*l.input_c;
-    float scale = sqrt((float)2/(1+a*a)*num);
+    float scale = sqrt((float)2/((1+a*a)*num));
     float *kernel_weights = (float*)calloc(l.filters*l.ksize*l.ksize*l.input_c, sizeof(float));
     for (int i = 0; i < l.filters; ++i){
         float *weight = kernel_weights + i*l.input_c*l.ksize*l.ksize;
@@ -225,7 +225,7 @@ void convolutional_kaiming_uniform_init_gpu(Layer l, float a, char *mode, char *
     if (0 == strcmp(mode, "fan_in")) num = l.ksize*l.ksize*l.input_c;
     else if (0 == strcmp(mode, "fan_out")) num = l.ksize*l.ksize*l.output_c;
     else num = l.ksize*l.ksize*l.input_c;
-    float scale = sqrt((float)2/(1+a*a)*num);
+    float scale = sqrt((float)2/((1+a*a)*num));
     float *kernel_weights = (float*)calloc(l.filters*l.ksize*l.ksize*l.input_c, sizeof(float));
     for (int i = 0; i < l.filters; ++i){
         float *weight = kernel_weights + i*l.input_c*l.ksize*l.ksize;

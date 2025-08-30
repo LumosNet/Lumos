@@ -180,7 +180,7 @@ void connect_kaiming_normal_init(Layer l, float a, char *mode, char *nonlinearit
     if (0 == strcmp(mode, "fan_in")) num = l.inputs;
     else if (0 == strcmp(mode, "fan_out")) num = l.outputs;
     else num = l.inputs;
-    float scale = sqrt((float)2/(1+a*a)*num);
+    float scale = sqrt((float)2/((1+a*a)*num));
     for (int i = 0; i < l.inputs*l.outputs; ++i){
         l.kernel_weights[i] = scale*generate_normal(0, 1);
     }
@@ -196,7 +196,7 @@ void connect_kaiming_uniform_init(Layer l, float a, char *mode, char *nonlineari
     if (0 == strcmp(mode, "fan_in")) num = l.inputs;
     else if (0 == strcmp(mode, "fan_out")) num = l.outputs;
     else num = l.inputs;
-    float scale = sqrt((float)2/(1+a*a)*num);
+    float scale = sqrt((float)2/((1+a*a)*num));
     for (int i = 0; i < l.inputs*l.outputs; ++i){
         l.kernel_weights[i] = scale*rand_uniform(-1, 1);
     }

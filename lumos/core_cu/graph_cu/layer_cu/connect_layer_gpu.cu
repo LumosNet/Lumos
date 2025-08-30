@@ -175,7 +175,7 @@ void connect_kaiming_normal_init_gpu(Layer l, float a, char *mode, char *nonline
     if (0 == strcmp(mode, "fan_in")) num = l.inputs;
     else if (0 == strcmp(mode, "fan_out")) num = l.outputs;
     else num = l.inputs;
-    float scale = sqrt((float)2/(1+a*a)*num);
+    float scale = sqrt((float)2/((1+a*a)*num));
     float *kernel_weights = (float*)calloc(l.inputs*l.outputs, sizeof(float));
     for (int i = 0; i < l.inputs*l.outputs; ++i){
         kernel_weights[i] = scale*generate_normal(0, 1);
@@ -194,7 +194,7 @@ void connect_kaiming_uniform_init_gpu(Layer l, float a, char *mode, char *nonlin
     if (0 == strcmp(mode, "fan_in")) num = l.inputs;
     else if (0 == strcmp(mode, "fan_out")) num = l.outputs;
     else num = l.inputs;
-    float scale = sqrt((float)2/(1+a*a)*num);
+    float scale = sqrt((float)2/((1+a*a)*num));
     float *kernel_weights = (float*)calloc(l.inputs*l.outputs, sizeof(float));
     for (int i = 0; i < l.inputs*l.outputs; ++i){
         kernel_weights[i] = scale*rand_uniform(-1, 1);

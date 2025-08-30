@@ -8,6 +8,6 @@ int main()
     // lenet5_cifar10_detect("gpu", "./LuWeights");
     // lenet5_mnist("gpu", NULL);
     // lenet5_mnist_detect("gpu", "./LuWeights");
-    xor("gpu", NULL);
-    xor_detect("gpu", "./LuWeights");
+    xor("cpu", NULL);
+    xor_detect("cpu", "./LuWeights");
 }
