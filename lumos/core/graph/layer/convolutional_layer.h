@@ -28,6 +28,12 @@ void update_convolutional_layer_weights(Layer l);
 
 void save_convolutional_layer_weights(Layer l, FILE *fp);
 
+void convolutional_constant_init(Layer l, float x);
+void convolutional_normal_init(Layer l, float mean, float std);
+void convolutional_uniform_init(Layer l, float min, float max);
+void convolutional_kaiming_normal_init(Layer l, float a, char *mode, char *nonlinearity);
+void convolutional_kaiming_uniform_init(Layer l, float a, char *mode, char *nonlinearity);
+
 #ifdef __cplusplus
 }
 #endif

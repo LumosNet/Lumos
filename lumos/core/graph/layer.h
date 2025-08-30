@@ -19,6 +19,22 @@ typedef enum {
     DROPOUT, MSE, SOFTMAX, SHORTCUT, NORMALIZE
 } LayerType;
 
+typedef enum {
+    CONSTANT_I, NORMAL_I, UNIFORM_I, KAIMING_NORMAL_I, KAIMING_UNIFORM_I
+} InitType;
+
+typedef struct initcpt{
+    InitType initype;
+    float x;
+    float mean;
+    float std;
+    float a;
+    float min;
+    float max;
+    char *mode;
+    char *nonlinearity;
+} initcpt, InitCpt;
+
 typedef struct layer Layer;
 
 typedef void (*forward)  (struct layer, int);
@@ -123,6 +139,8 @@ struct layer{
     Activation active;
     SaveWeights saveweights;
     SaveWeightsGpu saveweightsgpu;
+
+    InitCpt *initcpt;
 };
 
 #ifdef __cplusplus

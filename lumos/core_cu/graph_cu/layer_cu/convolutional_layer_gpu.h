@@ -32,6 +32,12 @@ void update_convolutional_layer_weights_gpu(Layer l);
 
 void save_convolutional_layer_weights_gpu(Layer l, FILE *fp);
 
+void convolutional_constant_init_gpu(Layer l, float x);
+void convolutional_normal_init_gpu(Layer l, float mean, float std);
+void convolutional_uniform_init_gpu(Layer l, float min, float max);
+void convolutional_kaiming_normal_init_gpu(Layer l, float a, char *mode, char *nonlinearity);
+void convolutional_kaiming_uniform_init_gpu(Layer l, float a, char *mode, char *nonlinearity);
+
 #ifdef __cplusplus
 }
 #endif

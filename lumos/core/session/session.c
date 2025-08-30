@@ -243,3 +243,49 @@ void detect_classification(Session *sess)
     }
     fprintf(stderr, "Detct Classification: %d/%d  %.2f\n", num, sess->train_data_num, (float)(num)/(float)(sess->train_data_num));
 }
+
+void init_constant(Layer *l, float x)
+{
+    InitCpt *initcpt = malloc(sizeof(InitCpt));
+    initcpt->initype = CONSTANT_I;
+    initcpt->x = x;
+    l->initcpt = initcpt;
+}
+
+void init_normal(Layer *l, float mean, float std)
+{
+    InitCpt *initcpt = malloc(sizeof(InitCpt));
+    initcpt->initype = NORMAL_I;
+    initcpt->mean = mean;
+    initcpt->std = std;
+    l->initcpt = initcpt;
+}
+
+void init_uniform(Layer *l, float min, float max)
+{
+    InitCpt *initcpt = malloc(sizeof(InitCpt));
+    initcpt->initype = UNIFORM_I;
+    initcpt->min = min;
+    initcpt->max = max;
+    l->initcpt = initcpt;
+}
+
+void init_kaiming_normal(Layer *l, float a, char *mode, char *nonlinearity)
+{
+    InitCpt *initcpt = malloc(sizeof(InitCpt));
+    initcpt->initype = KAIMING_NORMAL_I;
+    initcpt->a = a;
+    initcpt->mode = mode;
+    initcpt->nonlinearity = nonlinearity;
+    l->initcpt = initcpt;
+}
+
+void init_kaiming_uniform(Layer *l, float a, char *mode, char *nonlinearity)
+{
+    InitCpt *initcpt = malloc(sizeof(InitCpt));
+    initcpt->initype = KAIMING_UNIFORM_I;
+    initcpt->a = a;
+    initcpt->mode = mode;
+    initcpt->nonlinearity = nonlinearity;
+    l->initcpt = initcpt;
+}

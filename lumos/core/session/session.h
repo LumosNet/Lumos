@@ -60,6 +60,12 @@ void detect_classification(Session *sess);
 void load_train_data(Session *sess, int index);
 void load_train_label(Session *sess, int index);
 
+void init_constant(Layer *l, float x);
+void init_normal(Layer *l, float mean, float std);
+void init_uniform(Layer *l, float min, float max);
+void init_kaiming_normal(Layer *l, float a, char *mode, char *nonlinearity);
+void init_kaiming_uniform(Layer *l, float a, char *mode, char *nonlinearity);
+
 #ifdef __cplusplus
 }
 #endif

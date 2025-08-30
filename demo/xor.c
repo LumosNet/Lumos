@@ -11,6 +11,8 @@ void xor(char *type, char *path)
     append_layer2grpah(g, l2);
     append_layer2grpah(g, l3);
     append_layer2grpah(g, l4);
+    init_kaiming_uniform(l2, 0, "fan_in", "relu");
+    init_kaiming_uniform(l3, 0, "fan_in", "relu");
     Session *sess = create_session(g, 1, 2, 1, 2, type, path);
     set_train_params(sess, 50, 2, 2, 0.1);
     init_session(sess, "./data/xor/data.txt", "./data/xor/label.txt");

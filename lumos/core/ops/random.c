@@ -80,6 +80,13 @@ float rand_normal()
     return sqrt(rand1) * cos(rand2);
 }
 
+double generate_normal(double mu, double sigma)
+{
+    double res;
+    res = mu + sigma * rand_normal();
+    return res;
+}
+
 float rand_uniform(float min, float max)
 {
     if(max < min){
