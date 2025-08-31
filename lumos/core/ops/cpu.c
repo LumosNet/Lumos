@@ -70,6 +70,34 @@ void variance_cpu(float *data, float mean, int num, float *space)
     space[0] *= 1./num;
 }
 
+int find_max_cpu(float *data, int num)
+{
+    float max = data[0];
+    int index = 0;
+    for (int i = 1; i < num; ++i)
+    {
+        if (data[i] > max){
+            max = data[i];
+            index = i;
+        }
+    }
+    return index;
+}
+
+int find_min_cpu(float *data, int num)
+{
+    float min = data[0];
+    int index = 0;
+    for (int i = 1; i < num; ++i)
+    {
+        if (data[i] < min){
+            min = data[i];
+            index = i;
+        }
+    }
+    return index;
+}
+
 void matrix_add_cpu(float *data_a, float *data_b, int num, float *space)
 {
     for (int i = 0; i < num; ++i)

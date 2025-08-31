@@ -20,6 +20,9 @@ void sum_cpu(float *data, int num, float *space);
 void mean_cpu(float *data, int num, float *space);
 void variance_cpu(float *data, float mean, int num, float *space);
 
+int find_max_cpu(float *data, int num);
+int find_min_cpu(float *data, int num);
+
 void matrix_add_cpu(float *data_a, float *data_b, int num, float *space);
 void matrix_subtract_cpu(float *data_a, float *data_b, int num, float *space);
 void matrix_multiply_cpu(float *data_a, float *data_b, int num, float *space);

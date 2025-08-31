@@ -95,8 +95,8 @@ COMMON+= -Idemo
 VPATH+= ./demo
 endif
 
-OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o maxpool_layer.o softmax_layer.o \
-		mse_layer.o im2col_layer.o\
+OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o dropout_layer.o maxpool_layer.o softmax_layer.o \
+		mse_layer.o im2col_layer.o graph.o\
 		active.o bias.o cpu.o gemm.o im2col.o image.o pooling.o random.o softmax.o shortcut.o normalize.o \
 		session.o \
 		progress_bar.o \
@@ -104,7 +104,7 @@ OBJ=	avgpool_layer.o connect_layer.o convolutional_layer.o graph.o maxpool_layer
 		str_ops.o logging.o
 
 OBJ+= 	active_gpu.o bias_gpu.o cpu_gpu.o gemm_gpu.o im2col_gpu.o pooling_gpu.o softmax_gpu.o shortcut_gpu.o normalize_gpu.o \
-	  	avgpool_layer_gpu.o maxpool_layer_gpu.o connect_layer_gpu.o convolutional_layer_gpu.o \
+	  	avgpool_layer_gpu.o maxpool_layer_gpu.o connect_layer_gpu.o convolutional_layer_gpu.o dropout_layer_gpu.o \
 	  	softmax_layer_gpu.o \
 		mse_layer_gpu.o im2col_layer_gpu.o
 
@@ -118,7 +118,7 @@ OBJ+= 	bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_cal
 endif
 
 ifeq ($(TEST), 0)
-OBJ+=	xor.o
+OBJ+=	xor.o lenet5_mnist.o lenet5_cifar10.o alexnet_xray.o
 endif
 
 ifeq ($(TEST),1)

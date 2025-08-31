@@ -169,9 +169,11 @@ void train(Session *sess)
 {
     fprintf(stderr, "\nSession Start To Running\n");
     float rate = -sess->learning_rate / (float)sess->batch;
-    float *loss = calloc(1, sizeof(float));
+    float *loss = calloc(2, sizeof(float));
     clock_t start, final;
     double run_time = 0;
+    Graph *g = sess->graph;
+    g->status = 1;
     for (int i = 0; i < sess->epoch; ++i){
         fprintf(stderr, "\n\nEpoch %d/%d\n", i + 1, sess->epoch);
         start = clock();
@@ -188,14 +190,18 @@ void train(Session *sess)
                 run_time = (double)(final - start) / CLOCKS_PER_SEC;
                 if (sess->coretype == CPU) {
                     run_time /= 10;
-                    loss[0] = sess->loss[0];
+                    loss[0] += sess->loss[0];
+                    loss[1] = sess->loss[0];
                 } else{
-                    cudaMemcpy(loss, sess->loss, sizeof(float), cudaMemcpyDeviceToHost);
+                    cudaMemcpy(loss+1, sess->loss, sizeof(float), cudaMemcpyDeviceToHost);
+                    loss[0] += loss[1];
                 }
-                progress_bar(j * sub_batchs + k + 1, sub_epochs * sub_batchs, run_time, loss[0]);
+                progress_bar(j * sub_batchs + k + 1, sub_epochs * sub_batchs, run_time, loss[1]);
             }
             update_graph(sess->graph, sess->coretype);
         }
+        fprintf(stderr, " AvgLoss:%.5f", loss[0]/sub_epochs*100);
+        loss[0] = 0;
     }
     FILE *fp = fopen("./LuWeights", "wb");
     if (fp) {
@@ -237,8 +243,9 @@ void detect_classification(Session *sess)
         fprintf(stderr, "Truth     Detect\n");
         for (int j = 0; j < sess->truth_num; ++j){
             fprintf(stderr, "%.3f %.3f\n", truth[j], detect[j]);
-            if (truth[j] == 1 && detect[j] > 0.5) num += 1;
         }
+        int index = find_max_cpu(detect, sess->truth_num);
+        if (truth[index] == 1) num += 1;
         fprintf(stderr, "Loss:%.4f\n\n", loss[0]);
     }
     fprintf(stderr, "Detct Classification: %d/%d  %.2f\n", num, sess->train_data_num, (float)(num)/(float)(sess->train_data_num));

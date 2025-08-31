@@ -13,6 +13,6 @@ void progress_bar(int n, int m, double time, float loss)
         fprintf(stderr, " ");
     }
     fprintf(stderr, "]");
-    fprintf(stderr, "  Time: %.3lfs", time);
-    fprintf(stderr, "  Loss: %.3f", loss);
+    fprintf(stderr, "  Time:%.3lfs", time);
+    fprintf(stderr, "  Loss:%.3f", loss*100);
 }

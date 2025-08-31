@@ -68,6 +68,7 @@ typedef saveweights_gpu SaveWeightsGpu;
 
 struct layer{
     LayerType type;
+    int status;
     int input_h;
     int input_w;
     int input_c;
@@ -89,7 +90,6 @@ struct layer{
     float *workspace;
 
     int *maxpool_index;
-    //为社么是指针
     int *dropout_rand;
 
     int filters;
