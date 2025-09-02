@@ -1,6 +1,6 @@
-#include "lenet5_mnist.h"
+#include "cifar10.h"
 
-void lenet5_mnist(char *type, char *path)
+void cifar10(char *type, char *path)
 {
     Graph *g = create_graph();
     Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, "relu");
@@ -29,13 +29,13 @@ void lenet5_mnist(char *type, char *path)
     init_kaiming_uniform(l6, 0, "fan_in", "relu");
     init_kaiming_uniform(l7, 0, "fan_in", "relu");
     init_kaiming_uniform(l8, 0, "fan_in", "relu");
-    Session *sess = create_session(g, 32, 32, 1, 10, type, path);
-    set_train_params(sess, 20, 16, 16, 0.1);
-    init_session(sess, "./data/mnist/train.txt", "./data/mnist/train_label.txt");
+    Session *sess = create_session(g, 32, 32, 3, 10, type, path);
+    set_train_params(sess, 100, 64, 64, 0.0001);
+    init_session(sess, "./data/cifar10/train.txt", "./data/cifar10/train_label.txt");
     train(sess);
 }
 
-void lenet5_mnist_detect(char*type, char *path)
+void cifar10_detect(char *type, char *path)
 {
     Graph *g = create_graph();
     Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, "relu");
@@ -58,8 +58,8 @@ void lenet5_mnist_detect(char*type, char *path)
     append_layer2grpah(g, l8);
     append_layer2grpah(g, l9);
     append_layer2grpah(g, l10);
-    Session *sess = create_session(g, 32, 32, 1, 10, type, path);
+    Session *sess = create_session(g, 32, 32, 3, 10, type, path);
     set_detect_params(sess);
-    init_session(sess, "./data/mnist/test.txt", "./data/mnist/test_label.txt");
+    init_session(sess, "./data/cifar10/test.txt", "./data/cifar10/test_label.txt");
     detect_classification(sess);
 }

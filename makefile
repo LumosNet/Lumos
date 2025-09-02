@@ -118,7 +118,7 @@ OBJ+= 	bias_call.o cpu_call.o gemm_call.o im2col_call.o image_call.o pooling_cal
 endif
 
 ifeq ($(TEST), 0)
-OBJ+=	xor.o lenet5_mnist.o lenet5_cifar10.o alexnet_xray.o
+OBJ+=	xor.o lenet5_mnist.o cifar10.o alexnet_xray.o lenet5_fmnist.o
 endif
 
 ifeq ($(TEST),1)

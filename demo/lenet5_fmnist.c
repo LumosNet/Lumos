@@ -1,14 +1,14 @@
-#include "lenet5_cifar10.h"
+#include "lenet5_fmnist.h"
 
-void lenet5_cifar10(char *type, char *path)
+void lenet5_fmnist(char *type, char *path)
 {
     Graph *g = create_graph();
     Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, "relu");
-    Layer *l2 = make_maxpool_layer(2, 2, 0);
+    Layer *l2 = make_avgpool_layer(2, 2, 0);
     Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, "relu");
-    Layer *l4 = make_maxpool_layer(2, 2, 0);
-    Layer *l5 = make_im2col_layer();
-    Layer *l6 = make_connect_layer(120, 1, "relu");
+    Layer *l4 = make_avgpool_layer(2, 2, 0);
+    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, "relu");
+    Layer *l6 = make_im2col_layer();
     Layer *l7 = make_connect_layer(84, 1, "relu");
     Layer *l8 = make_connect_layer(10, 1, "linear");
     Layer *l9 = make_softmax_layer(10);
@@ -25,29 +25,25 @@ void lenet5_cifar10(char *type, char *path)
     append_layer2grpah(g, l10);
     init_kaiming_normal(l1, 0, "fan_in", "relu");
     init_kaiming_normal(l3, 0, "fan_in", "relu");
+    init_kaiming_normal(l5, 0, "fan_in", "relu");
     init_kaiming_uniform(l6, 0, "fan_in", "relu");
     init_kaiming_uniform(l7, 0, "fan_in", "relu");
     init_kaiming_uniform(l8, 0, "fan_in", "relu");
-    // init_normal(l1, 0, 0.01);
-    // init_normal(l3, 0, 0.01);
-    // init_normal(l5, 0, 0.01);
-    // init_uniform(l7, -0.01, 0.01);
-    // init_uniform(l8, -0.01, 0.01);
-    Session *sess = create_session(g, 32, 32, 3, 10, type, path);
-    set_train_params(sess, 10, 16, 16, 0.01);
-    init_session(sess, "./data/cifar10/train.txt", "./data/cifar10/train_label.txt");
+    Session *sess = create_session(g, 32, 32, 1, 10, type, path);
+    set_train_params(sess, 10, 16, 16, 0.001);
+    init_session(sess, "./data/fmnist/train.txt", "./data/fmnist/train_label.txt");
     train(sess);
 }
 
-void lenet5_cifar10_detect(char *type, char *path)
+void lenet5_fmnist_detect(char*type, char *path)
 {
     Graph *g = create_graph();
     Layer *l1 = make_convolutional_layer(6, 5, 1, 0, 1, "relu");
-    Layer *l2 = make_maxpool_layer(2, 2, 0);
+    Layer *l2 = make_avgpool_layer(2, 2, 0);
     Layer *l3 = make_convolutional_layer(16, 5, 1, 0, 1, "relu");
-    Layer *l4 = make_maxpool_layer(2, 2, 0);
-    Layer *l5 = make_im2col_layer();
-    Layer *l6 = make_connect_layer(120, 1, "relu");
+    Layer *l4 = make_avgpool_layer(2, 2, 0);
+    Layer *l5 = make_convolutional_layer(120, 5, 1, 0, 1, "relu");
+    Layer *l6 = make_im2col_layer();
     Layer *l7 = make_connect_layer(84, 1, "relu");
     Layer *l8 = make_connect_layer(10, 1, "linear");
     Layer *l9 = make_softmax_layer(10);
@@ -62,8 +58,8 @@ void lenet5_cifar10_detect(char *type, char *path)
     append_layer2grpah(g, l8);
     append_layer2grpah(g, l9);
     append_layer2grpah(g, l10);
-    Session *sess = create_session(g, 32, 32, 3, 10, type, path);
+    Session *sess = create_session(g, 32, 32, 1, 10, type, path);
     set_detect_params(sess);
-    init_session(sess, "./data/cifar10/test.txt", "./data/cifar10/test_label.txt");
+    init_session(sess, "./data/fmnist/test.txt", "./data/fmnist/test_label.txt");
     detect_classification(sess);
 }

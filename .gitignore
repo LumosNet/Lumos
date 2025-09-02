@@ -9,6 +9,7 @@
 .idea
 .vscode
 .log
+.zip
 obj
 main.c
 main
